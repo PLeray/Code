@@ -4,8 +4,8 @@ include 'res/CATConnexionAPI.php';
 include 'res/CATFonctions.php';
 include 'res/ConvertCSV.php';
 
-$repOmmandeLABO = "../CMDLABO/";
-//$GLOBALS['repOmmandeLABO']
+$repCommandesLABO = "../CMDLABO/";
+//$GLOBALS['repCommandesLABO']
 //include 'res/BDD.php';
 //AMP ?
 $isAMP = false;
@@ -110,12 +110,12 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 	}
 	else {
 		
-		if (file_exists($GLOBALS['repOmmandeLABO'] . $strAPI_CMDLAB)){
-			$strCMDLabo = RecupPlanchesFichierLab($GLOBALS['repOmmandeLABO'] . $strAPI_CMDLAB);
+		if (file_exists($GLOBALS['repCommandesLABO'] . $strAPI_CMDLAB)){
+			$strCMDLabo = RecupPlanchesFichierLab($GLOBALS['repCommandesLABO'] . $strAPI_CMDLAB);
 			return 'OK' . $strCMDLabo;
 		}
 		else {
-			return " le fichier " .$GLOBALS['repOmmandeLABO'] . $strAPI_CMDLAB . " est manquant !";
+			return " le fichier " .$GLOBALS['repCommandesLABO'] . $strAPI_CMDLAB . " est manquant !";
 			return "APIPhotoProd : erreur 33";
 		}		
 	}
@@ -123,12 +123,12 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 
 function API_GetFILELAB($strAPI_FILELAB){
 	
-	if (file_exists($GLOBALS['repOmmandeLABO'] . $strAPI_FILELAB)){
-		$strCMDLabo = RecupFichierLabTotal($GLOBALS['repOmmandeLABO'] . $strAPI_FILELAB);
+	if (file_exists($GLOBALS['repCommandesLABO'] . $strAPI_FILELAB)){
+		$strCMDLabo = RecupFichierLabTotal($GLOBALS['repCommandesLABO'] . $strAPI_FILELAB);
 		return 'OK' . $strCMDLabo;
 	}
 	else {
-		return " le fichier " .$GLOBALS['repOmmandeLABO'] . $strAPI_FILELAB . " est manquant !";
+		return " le fichier " .$GLOBALS['repCommandesLABO'] . $strAPI_FILELAB . " est manquant !";
 		return "APIPhotoProd : erreur 55";
 	}		
 }
@@ -137,8 +137,9 @@ function API_PostFILELAB() {//upload de fichier
 	$retourMSG = '';
 	$retourMSG .= '	<div class="msgcontainer">';
 	
-	$target_file_seul = utf8_decode(basename($_FILES['myfile']['name']));
-	$target_file = $GLOBALS['repOmmandeLABO'] . $target_file_seul;
+	//$target_file_seul = utf8_decode(basename($_FILES['myfile']['name']));
+	$target_file_seul = SUPRAccents(basename($_FILES['myfile']['name']));
+	$target_file = $GLOBALS['repCommandesLABO'] . $target_file_seul;
 	//echo $target_file;
 	$target_file = $target_file . "0"; // 0 etat : uploadé / enregistré
 	$uploadOk = 1;
@@ -164,7 +165,7 @@ function API_PostFILELAB() {//upload de fichier
 				//Verif si fichier de commande web iso ou groupe ou pas bon !
 				if (ConvertirCMDcsvEnlab($TabCSV, $_FILES["myfile"]["tmp_name"], $target_file) != '') {					
 					$retourMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
-					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,8,-5)) . "</h2>";					
+					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,11,-5)) . "</h2>";					
 					$uploadOk = 2; // Flag test si OK
 					$target_file_seul = substr($target_file, 8, -1); // Pour etre dans la même forme que . lab pas lab0
 				}				

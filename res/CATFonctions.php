@@ -144,7 +144,8 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 		//echo "Extension : " . $Extension ."<br>";
 		$nb_fichier++;
 		$DateFichierLAb = strftime('%A %d %B %Y', strtotime(substr($fichier,0,10)));
-		$NonFichierEcole = utf8_encode(pathinfo(substr($fichier,11))['filename']);
+		//$NonFichierEcole = utf8_encode(pathinfo(substr($fichier,11))['filename']);
+		$NonFichierEcole = pathinfo(substr($fichier,11))['filename'];
 
 		$ResumeCMD = "init ZZ";
 		$EtatCMD = 0;
@@ -168,13 +169,20 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 				
 			//if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode(substr($tabFichierLabo[$i], 0, -5)).'.Erreur')){
 			if (file_exists($GLOBALS['repCMDLABO'] . substr($tabFichierLabo[$i], 0, -5) .'.Erreur')){				
-				$affiche_Tableau .=	'			
+				/*$affiche_Tableau .=	'			
 				<div class="tooltip"><a href="../CMDLABO/'. utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs sur '.$NonFichierEcole . '">
 					<img src="img/ERREUR.png" alt="ERREUR">
 					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
 					' . LienIMGSuprFichierLab(substr($tabFichierLabo[$i], 0, -5) . '.Erreur', 'Erreur') . '
 					</div>			
-				</div>';					
+				</div>';	*/
+				$affiche_Tableau .=	'			
+				<div class="tooltip"><a href="../CMDLABO/'. htmlentities(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs sur '.$NonFichierEcole . '">
+					<img src="img/ERREUR.png" alt="ERREUR">
+					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
+					' . LienIMGSuprFichierLab(substr($tabFichierLabo[$i], 0, -5) . '.Erreur', 'Erreur') . '
+					</div>			
+				</div>';				
 			}
 			$affiche_Tableau .=	'
 			<div class="boiteProgressBar">

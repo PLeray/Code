@@ -39,7 +39,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 	}
 	else{
 		if ($TabCSV[1]["Type"] == 'groupee'){
-			$target_file = date("Y-m-d") . '-L2-WEB-' . $TabCSV[1]["Nom de l'ecole"] . '-' . $TabCSV[1]["Ville ecole"] . '.lab0';	
+			$target_file = date("Y-m-d") . '-L2-WEB-' . SUPRAccents($TabCSV[1]["Nom de l'ecole"]) . '-' . $TabCSV[1]["Ville ecole"] . '.lab0';	
 			$PrefixeTirage = 'L2-';			
 		}else { 
 			if ($TabCSV[1]["Type"] == 'isolee'){
@@ -112,7 +112,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		//$affiche_Tableau = str_replace('<br>', '\n', $affiche_Tableau);
 		
 		# Chemin vers fichier texte
-		$target_file =  $GLOBALS['repOmmandeLABO'] . $target_file ;
+		$target_file =  $GLOBALS['repCommandesLABO'] . $target_file ;
 
 		$txtFichier = str_replace("<br>", "\n", $affiche_Tableau);
 		$txtFichier = str_replace("&#60;", "<", $txtFichier);
@@ -158,8 +158,8 @@ function EcrireEcole($Ecole, $PrefixeTirage)
 	if ($Ecole != $GLOBALS['Ecole_EnCOURS']) {   
 		$GLOBALS['Ecole_EnCOURS'] = $Ecole;
 		//PAs suprimer accent 1-10
-		$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . $Ecole . '@ <br>';
-		//	$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . SUPRAccents($Ecole) . '@ <br>';
+		//$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . $Ecole . '@ <br>';
+		$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . SUPRAccents($Ecole) . '@ <br>';
 		
 	}
 	//return utf8_decode($valRetour);
@@ -272,6 +272,7 @@ function SUPRAccents($str, $charset='utf-8' ) {
     $str = preg_replace( '#&[^;]+;#', '', $str );    
     return $str;
 }
+
 
 ?>
 
