@@ -1,0 +1,111 @@
+/* HORS IMPRESSION */
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* On screens that are 600px wide or less, make the menu links stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .topnav a {
+    float: none;
+    width: 100%;
+  }
+}
+
+/* CONTENU A IMPRIMER */
+
+body { /* Modifications : la couleur de fond de page - la police - l'unité utilisée pour la taille de la police  */
+	background-color:#eee;
+	font-family:Arial;
+	font-size:10pt;
+}
+
+.facture {
+	text-align:left;
+	position:relative;
+	background:#fff;
+	height: 25cm;
+	width: 20cm;
+	border:1px solid #CFCFCF;
+	-moz-border-radius:6px;
+	border-radius:6px;
+}
+
+.zoneEntete {
+    position: absolute; 
+    top: 0;
+    left: 0;
+}
+.zoneNumFacture {
+    position: absolute; 
+	top: 0;
+    right: 1cm;
+	width: 10cm;
+	text-align: right;
+}
+.zoneDestinataire {
+    position: absolute;
+	top: 3cm;
+    left: 7cm;
+}
+.zoneCommandes {
+	margin: 0 10pt 0 10pt;
+    position: absolute;
+    top: 5.5cm;
+}
+.zoneTotal {
+    margin: 0 10pt 0 0;
+	text-align: right;
+}
+.zoneAdministration {
+		text-align: center;
+}
+
+#myTable {
+	border-collapse: collapse;
+	/*border: 1px solid var(--ligneTableauGrisFonce);*/
+	font-size: 8pt;
+}
+
+#myTable th, #myTable td {
+  padding: 4pt;
+}
+
+#myTable tr {
+  border-bottom: 1px solid var(--ligneTableauGrisFonce);
+}
+
+#myTable tr.header   {
+	margin: 10px;
+	vertical-align : middle;
+	background-color: var(--ligneTableauGrisClair); /*var(--boutonVert);*/
+	color: black;
+}
+
+#myTable td:nth-child(1) {
+    text-align: left;
+}
+#myTable td:nth-child(2) {
+    text-align: center;
+}
+#myTable td:nth-child(3) {
+    text-align: right;
+}
