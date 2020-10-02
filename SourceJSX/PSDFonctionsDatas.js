@@ -80,15 +80,15 @@ function PhotosDeClasse(CodeLigne) {
 function Ecole(CodeLigne) {
 	//this.Code = CodeLigne;
 	this.Code = CodeLigne.substr(1,CodeLigne.indexOf(sepNumLigne)-2); 
-	//alert('this.Code' + CodeLigne);
+	
 	this.TableauInfo = this.Code.split('_');
     
     this.DateTirage = this.TableauInfo[0];
 	this.NomEcole = this.TableauInfo[1];
 	this.CodeRefEcole = this.TableauInfo[2];
 	this.Commentaire = this.TableauInfo[3];
-	//this.Commentaire2 = function(){return this.TableauInfo.length + 'apple :: ' + this.Commentaire;};
-	//alert('this.CodeRefEcole'  + this.CodeRefEcole);
+	//alert('lastIndexOf("Ecole web !") ' + (this.Commentaire.lastIndexOf("Ecole web !") > 0));
+	this.isEcoleWEB = function(){return (this.Commentaire.substr(0, 11) == "Ecole web !");};
 }
 
 function isEcole(ligne) {

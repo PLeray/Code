@@ -803,13 +803,14 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 				}
 			}
 		}
+		//alert("FIN InitClasseIndiv START sur " + leRepSOURCE);
 		return theFiles;
 	}
 	catch(err) {
 		//alert ("Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message, "ERREUR : CreerRepertoire()", true);
 		MsgERREUR("Commande  : " + g_CommandePDTEncours + " ERREUR : InitGroupesClasseIndiv()", ErreurInfoMSG(err));
 		return '';
-	}	
+	}		
 }
 
 function NumeroClasseDepuisNomGroupe(strNOMdeClasse){

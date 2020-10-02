@@ -6,11 +6,14 @@ var g_CommandeAVANCEMENT = '';
 
 var g_TabFichierATraiter = [];
 
-function InitCommande(leFichierCMD) { 
+function InitCommande() { 
 	g_CommandePDTEncours = '';
 	g_CommandeECOLEEncours = ''; 
 	g_CommandeAVANCEMENT = ''; 
-	txtFichier.text = leFichierCMD;
+	//txtFichier.text = leFichierCMD;
+	
+	PHOTOLAB.text = g_NomVersion + '         traitement de : ' + g_NomFichierEnCours;
+	
 	g_SelectFichierLab = 0;
 	g_BilanGeneration.length = 0; // = [];
 	
@@ -19,50 +22,42 @@ function InitCommande(leFichierCMD) {
 }
 
 function Auto() { 
-	var leFichierEnCours = ''; 
+	//var leFichierEnCours = ''; 
 	Raffraichir(); 
 	//alert("Auto : ");		
 	RecupNomOrdi();
 	var nbFichierATraiter = ChercherFichierLab();
-	if (checkAuto.value){
-		g_IsPhotoLabON = true;
-		g_IsTravail = true;
-		while (g_IsPhotoLabON && g_IsTravail){ 
-			// TANT QU'IL Y A DES FICHIERS 0
-			//g_ToutFichier = false;
-			//initialiser tableau de fichier a traiter
-			//alert('g_TabListeCompilationFichier.length : ' + g_TabListeCompilationFichier.length);
-			for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
-				leFichierEnCours = g_TabListeCompilationFichier[i];
-				InitCommande(leFichierEnCours);
-				//alert('leFichierEnCours : ' + leFichierEnCours);
-				//alert('nbErreur Avant generer : '+ g_BilanGeneration.length + ' leFichierEnCours : '+ leFichierEnCours);
-				GenererLeFichierNOM(leFichierEnCours); //du tableau
-				//alert('nbErreur Apres generer : '+ g_BilanGeneration.length + ' leFichierEnCours : '+ leFichierEnCours);
-			} 		
-			nbFichierATraiter = ChercherFichierLab('SansLesErreurs');
-			g_IsTravail = (nbFichierATraiter > 0);			
-			//alert("TableauTOStr(g_TabListeCompilationFichier) : " + TableauTOStr(g_TabListeCompilationFichier));	
-			//alert("nbFichierATraiter : " + nbFichierATraiter);			
-		} 	
+	//if (checkAuto.value){
+	g_IsPhotoLabON = true;
+	g_IsTravail = true;
+	while (g_IsPhotoLabON && g_IsTravail){ 
+		// TANT QU'IL Y A DES FICHIERS 0
+		//g_ToutFichier = false;
+		//initialiser tableau de fichier a traiter
+		//alert('g_TabListeCompilationFichier.length : ' + g_TabListeCompilationFichier.length);
+		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
+			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
+			InitCommande();
+			GenererLeFichierNOM(); //du tableau
+		} 		
+		nbFichierATraiter = ChercherFichierLab('SansLesErreurs');
+		g_IsTravail = (nbFichierATraiter > 0);			
+		//alert("TableauTOStr(g_TabListeCompilationFichier) : " + TableauTOStr(g_TabListeCompilationFichier));	
+		//alert("nbFichierATraiter : " + nbFichierATraiter);			
+	} 	
+	PHOTOLAB.text = g_NomVersion;
 		//PHOTOLAB.close();		
-	}
+	//}
 }
 
-function GenererLeFichierNOM(fileName) { 
+function GenererLeFichierNOM() { 
 	PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 	g_IsGenerationEnCours =true;
 	g_IsGenerationEnPause = false;	
 	buttonConfig.enabled = false;
 	Raffraichir();
-	//alert("g_SelectFichierLab " + g_SelectFichierLab + "  / fileName  " + fileName );
 
-	/*if (! g_SelectFichierLab) {
-		// ici on verifiera si enregistrée
-		OuvrirSelectFichierLab0(fileName);		
-	}
-	*/
-	if (OuvrirSelectFichierLab0(fileName)){
+	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
 		InitTableauFichier();
 		
 		if (g_IsPlancheSiteWEB){
@@ -72,7 +67,7 @@ function GenererLeFichierNOM(fileName) {
 			GenererFichiersLABO();
 		}	
 	}
-	//alert("GenererLeFichierNOM " + fileName );
+	//alert("GenererLeFichierNOM " + g_NomFichierEnCours );
 	g_IsGenerationEnCours = false;
 	g_IsGenerationEnPause = true;
 	SetBoutonGenerer();
@@ -82,7 +77,7 @@ function GenererLeFichierNOM(fileName) {
 }
 
 
-function InitUI(isAuto){ 
+/*function InitUI(isAuto){ 
 	Select_Generer.enabled = !isAuto;
 	//ComboFichierLab.enabled = !isAuto;
 	//checkFile.enabled = !isAuto;
@@ -91,7 +86,7 @@ function InitUI(isAuto){
 	PHOTOLAB.size.height = g_HauteurUI;
 	laTaille = (laTaille) ? false : true ;
 
-}
+}*/
 
 
 function OuvrirSelectFichierLab0(fileName) {
@@ -202,8 +197,7 @@ function OuvrirFichierLabo() {
 		if(g_SelectFichierLab && TestAPI()){
 			//Select_InfoAPI.enabled = true;
 			MsgINFO('Fichier Labo a compiler : ' + g_SelectFichierLab);
-			g_CommandeLabo = new CommandesLabo(OuvrirFichierToTableauDeLigne(g_SelectFichierLab), txtFichier.text);			
-			//alert('g_CommandeLabo.FichierLab : ' + g_CommandeLabo.FichierLab);
+			g_CommandeLabo = new CommandesLabo(OuvrirFichierToTableauDeLigne(g_SelectFichierLab), g_NomFichierEnCours);			
 			if (g_CommandeLabo.isRecord()){
 				if (g_CommandeLabo.isValide()){
 					g_CommandeLabo.InitListePlanches();
@@ -263,8 +257,8 @@ function MAJinfoEcole(uneEcole) {
 		if (isRepertoireExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
 				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
-			} else {		
-
+			} else {					
+				//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
 				if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
 					var ladate=new Date();
 					repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
@@ -282,7 +276,7 @@ function MAJinfoEcole(uneEcole) {
 			MsgINFO('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));
 			//alert('InitGroupesClasseIndive : ' + uneEcole.Commentaire);
 			g_GroupeIndiv.length = 0;
-			InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); 
+			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
 			valRetour = true;		
 		}
 		else{
@@ -304,7 +298,7 @@ function GestionBoutonGenerer() {
 	g_IsGenerationEnPause = !g_IsGenerationEnPause;	
 	SetBoutonGenerer();
 	if (!g_IsGenerationEnCours){ //  On n'est pas en cours de generation !!!
-		GenererLeFichierNOM(txtFichier.text);
+		GenererLeFichierNOM();
 		g_IsGenerationEnPause = false;	
 	}		
 }
@@ -608,6 +602,8 @@ function ArborescenceWEB(typeTraitement){
 	}	
 }
 
+
+
 function DLGValidationNomClasse(){
 	// DIALOG
 	// ======
@@ -650,7 +646,7 @@ function DLGValidationNomClasse(){
 	var buttonScanSOURCE = GroupeInfo1.add("button", undefined, undefined, {name: "buttonScanSOURCE"}); 
 		buttonScanSOURCE.text = "Sélectionner un répertoire /SOURCE"; 
 	
-	buttonScanSOURCE.onClick = function () {		
+	buttonScanSOURCE.onClick = function () {	
 		var leRepSOURCE = Folder.selectDialog ("Sélectionnez un repertoire de Photos /SOURCE'...");		
 		g_RepSOURCE  = leRepSOURCE.path + '/' + leRepSOURCE.name ;
 		//alert("Rep : " + g_RepSOURCE);  
@@ -663,7 +659,7 @@ function DLGValidationNomClasse(){
 		}	
 		EditRefClasse.text = refClasse;
 		EditNomClasse.text = nomClasse;
-	}			
+	}		
 
 	// DIALOG
 	// ======
@@ -1016,7 +1012,7 @@ function DLGConfiguration(){
 			file.writeln("// editFTPDossier");		
 			file.writeln(encodeURIComponent(editFTPDossier.text));
 		file.close();
-		alert("Ensuite il faudra fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications.");
+		alert("Fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications.");
 				
 		dialog.close();
 	}	

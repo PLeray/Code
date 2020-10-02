@@ -7,8 +7,8 @@ var g_CeCalculateur = '';
 var g_CodeClient = '';
 
 
-var g_Version = 3.0;
-var g_LargeurUI = 655;
+var g_NomVersion = 'PhotoLab PLUGIN v3.0';
+var g_LargeurUI = 800;
 var g_HauteurDetailsUI = 1080;
 var g_HauteurUI = 240;
 
@@ -24,7 +24,11 @@ var g_BilanGeneration = [];
 
 var g_Erreur = '';
 
+var g_IsEcoleWEB = true;
+
 var g_SelectFichierLab;
+var g_NomFichierEnCours = '';
+
 var g_VersionLab;
 
 var g_TabFichierAvecErreur = [];
@@ -68,6 +72,7 @@ InitConfig();
 
 //RECHERCHE REPERTOIRE SOURCE
 var g_UIWINRechercheSource = new Window ('palette');
+
 g_UIWINRechercheSource.frameLocation = [ -4,g_HauteurUI + 30 ];
 g_UIWINRechercheSource.graphics.backgroundColor = g_UIWINRechercheSource.graphics.newBrush (g_UIWINRechercheSource.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 //g_UIWINRechercheSource.add ("statictext", [0,0,800,20], "SCAN POUR TROUVER LES SOURCES DES IMAGES");
@@ -81,8 +86,9 @@ UIRepertoireSource.graphics.foregroundColor =UIRepertoireSource.graphics.newPen 
 //RECHERCHE REPERTOIRE SOURCE
 
 //PHOTOLAB
-var PHOTOLAB = new Window ('palette', 'PHOTOLAB PLUGIN ' + g_Version, undefined, {resizeable: true}); 
+var PHOTOLAB = new Window ('palette', g_NomVersion, undefined); 
 //var PHOTOLAB = new Window ('dialog', 'PHOTOLAB PLUGIN '); 
+//PHOTOLAB.size.height = 150;
 PHOTOLAB.frameLocation = [ -4, -4 ];
 PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 
@@ -99,10 +105,26 @@ var ZoneOption= Entete.add ("group");
 ZoneOption.alignment = "right";
 ZoneOption.orientation = "column"; 
 
+var ZoneAction= ZoneOption.add ("group");
+ZoneAction.orientation = "row";
 
+var buttonScanCMD = ZoneAction.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
+buttonScanCMD.alignment = "left";
+buttonScanCMD.helpTip = "Scanner le repertoire des commandes pour vérifier s'il y a des des commandes à traiter"; 
+buttonScanCMD.onClick = function () {	
+	Auto(); 
+}
 
-var checkAuto = ZoneOption.add ("checkbox", [0,0,g_LargeurUI/3,20], "Mode Auto"); 
+var buttonSourceWeb = ZoneAction.add ("button", [0,0,g_LargeurUI/4,25], "Créer arborecence web");
+buttonSourceWeb.alignment = "left";
+buttonSourceWeb.helpTip = "Générer une arborescence structurée par classes des fichiers photos à uploader sur le site web Lumys"; 
+buttonSourceWeb.onClick = function () {	
+	DLGValidationNomClasse(); 
+}
+
+/*var checkAuto = ZoneOption.add ("checkbox", [0,0,g_LargeurUI/3,20], "Mode Auto"); 
 checkAuto.shortcutKey = "a";
+*/
 //var checkFile =ZoneOption.add ("checkbox", [0,0,g_LargeurUI/3,20], "Tous les fichiers"); checkFile.shortcutKey = "c";
 
 var checkOrdre = ZoneOption.add ("checkbox", [0,0,g_LargeurUI/3,20], "Ordre des planches inversé"); checkOrdre.shortcutKey = "c";
@@ -110,15 +132,6 @@ checkOrdre.value=true;
 
 var txtTraitement = ZoneOption.add ('statictext', [0,0,g_LargeurUI/3,35], '0/0', {multiline: true});
 txtTraitement.graphics.font = ScriptUI.newFont ("Arial", 'BOLD', 16);
-
-
-
-var buttonSourceWeb = ZoneOption.add ("button", [0,0,g_LargeurUI/3,25], "Créer arborecence web");
-buttonSourceWeb.alignment = "left";
-buttonSourceWeb.helpTip = "Générer une arborescence structurée par classes des fichiers photos à uploader sur le site web Lumys"; 
-buttonSourceWeb.onClick = function () {	
-	DLGValidationNomClasse(); 
-}
 
 g_ToutFichier=false;
 /*checkFile.value=false;
@@ -132,8 +145,6 @@ var ZoneBoutton= Entete.add ("group");
 
 ZoneBoutton.alignment = "right";
 ZoneBoutton.orientation = "column";
-
-
 
 
 var imgConfig = {a: File(g_RepIMG+"Config.png"), b: File(g_RepIMG+"Config-Disable.png"), c: File(g_RepIMG+"Config-Click.png"), d: File(g_RepIMG+"Config-Over.png")};
@@ -163,8 +174,10 @@ Select_Generer.onClick = function () {
 
 
 // ZONE TRAITEMENT
+/*
 var ZoneTraitement = PHOTOLAB.add ("group");
 ZoneTraitement.orientation = "row";
+*/
 
 /*var ComboFichierLab = ZoneOption.add ("dropdownlist", undefined, []);
 ComboFichierLab.preferredSize.width = 560;
@@ -175,7 +188,7 @@ ComboFichierLab.onChange = function () {
 */
 
 
-var laTaille = false; 
+//var laTaille = false; 
 
 /*
     var MiniTaille = ZoneTraitement.add ("button", [0,0,70,20], "Détails");
@@ -188,7 +201,7 @@ MiniTaille.onClick = function () {
 */
 
 
-var txtFichier = ZoneTraitement.add ('statictext',  [0,0,560,12], 'Initialisation liste de commande...', {multiline: true});
+//var txtFichier = ZoneTraitement.add ('statictext',  [0,0,560,12], 'Initialisation liste de commande...', {multiline: true});
 //txtFichier.graphics.font = ScriptUI.newFont ("Arial", 'BOLD', 12);
 
 // PROGRESS BAR
@@ -217,11 +230,12 @@ PHOTOLAB.onDeactivate = function(){
     PHOTOLAB.update();
 };
 
+/*
 checkAuto.onClick = function () { 
 	g_IsPhotoLabON = checkAuto.value;
     InitUI(checkAuto.value);
 	Auto();
-}
+}*/
 
 // keep palette opened until user click button or close window
 var FermerPhotoLab = false;
@@ -237,10 +251,10 @@ PHOTOLAB.onClose = function(){
 
 PHOTOLAB.show();	
 
-checkAuto.value=true; //False pour normal ! True auto
-InitUI(checkAuto.value);
+/*checkAuto.value=true; //False pour normal ! True auto
+InitUI(checkAuto.value);*/
 
-Auto();
+//Auto();
 
 while(FermerPhotoLab == false){
    app.refresh();
