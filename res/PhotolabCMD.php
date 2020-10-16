@@ -1,10 +1,10 @@
 <?php
 setlocale(LC_TIME, 'french');
-//$isAMP = false;  //MODIFIER SI NECESSAIRE
+//$codeMembre = false;  //MODIFIER SI NECESSAIRE
 
 
-$isAMP = file_exists ('../amp.ini');
-//if ($isAMP){$isDebug = false;}
+$codeMembre = file_exists ('../amp.ini');
+//if ($codeMembre){$isDebug = false;}
 $isDebug = file_exists ('../debug.txt'); 
 
 
@@ -12,7 +12,7 @@ include 'CATConnexionAPI.php';
 include 'CATFonctions.php';
 
 
-$maConnexionAPI = new CConnexionAPI($isAMP,$isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 
 ?>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $maConnexionAPI = new CConnexionAPI($isAMP,$isDebug);
 <head>
 	<META HTTP-EQUIV="Refresh" CONTENT="10; URL=<?php echo 'PhotolabCMD.php' . ArgumentURL(); ?>">
 	<title id="GO-PHOTOLAB">PhotoLab : commandes en cours</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isAMP)?'AMP':''; ?>.css">
+    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($codeMembre)?'AMP':''; ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/PhotolabCMD.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 	<!-- <script type="text/javascript" src="res/js/CATFonctions.js"></script>
@@ -60,7 +60,7 @@ $nb_fichier = 0;
 $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true);
 
 //echo '<a href="' . $maConnexionAPI->Adresse() . '&apiUI_SELECTFILELAB=*" style="width:auto" class="ajoutFICHIER" title="Ajouter un fichier de commande (.lab) au gestionnaire des commandes"> + </a><br>';
-//$cmd = '?isAMP=' . ($isAMP ? 'OK' : 'KO') . '&isDebug=' .($isDebug ? 'Debug' : 'Prod');
+//$cmd = '?codeMembre=' . ($codeMembre ? 'OK' : 'KO') . '&isDebug=' .($isDebug ? 'Debug' : 'Prod');
 ?>
 
 

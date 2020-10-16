@@ -402,7 +402,7 @@ function LienEtatLab($fichier, $Etat) {
 }
 
 function LienFichierLab($fichier) {
-	$Environnement = '?isAMP=' . ($GLOBALS['isAMP']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	$Environnement = '?codeMembre=' . ($GLOBALS['codeMembre']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 	$Extension = strrchr($fichier, '.');
 	$LienFichier = "#";
 	switch ($Extension) {

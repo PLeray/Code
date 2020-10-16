@@ -1,16 +1,16 @@
 <?php
 ////////////////////////////// APIConnexion LOCAL //////////////////////////////////////////////
 class CConnexionLOCAL {
-	var $isAMP;
+	var $codeMembre;
 	var $Service;
     var $URL;
 	var $Domaine;
 	var $Bdd;
 	var $isDebug;
 	
-    function __construct($isAMP, $isDebug){
-		$this->isAMP = $isAMP;
-        if ($isAMP){
+    function __construct($codeMembre, $isDebug){
+		$this->codeMembre = $codeMembre;
+        if ($codeMembre){
             $this->Service = 'Code/res/PhotolabCMD.php';
             $this->URL = 'https://amp-serveur.local:998';
 			//$Bdd = 'mysql:host=localhost;dbname=id4963524_photolab;charset=utf8', 'id4963524_admin', '0314delphine314';
@@ -36,7 +36,7 @@ class CConnexionLOCAL {
     function TalkServeur($CMDLocal){
         return 'res/talkServeur.php' . $CMDLocal;
 		
-		$cmd = '?isAMP=' . ($this->isAMP ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
+		$cmd = '?codeMembre=' . ($this->codeMembre ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
         return $this->URL .'/res/talkServeur.php' . $cmd . $CMDLocal;		
     } 	
 }

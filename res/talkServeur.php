@@ -1,12 +1,12 @@
 <?php
 include 'CConnexionLOCAL.php';
 //include 'BDD.php';
-$isAMP = false;
-if (isset($_POST['isAMP']) ){
-	$isAMP = ($_POST['isAMP'] == 'OK');
+$codeMembre = false;
+if (isset($_POST['codeMembre']) ){
+	$codeMembre = ($_POST['codeMembre'] == 'OK');
 }
-if (isset($_GET['isAMP'])) { // Test connexion l'API
-	$isAMP = ($_GET['isAMP'] == 'OK');
+if (isset($_GET['codeMembre'])) { // Test connexion l'API
+	$codeMembre = ($_GET['codeMembre'] == 'OK');
 }
 //DEBUG ?
 $isDebug = false;
@@ -36,7 +36,7 @@ foreach($_GET as $i =>$var) { // pour chaque valeur du tableau $_GET on crée une
 		$CMDhttpLocal = $CMDhttpLocal .'&' .  $i . '=' . urlencode(($var));
 	}
 }
-$maConnexionLOCAL = new CConnexionLOCAL($isAMP);
+$maConnexionLOCAL = new CConnexionLOCAL($codeMembre);
 echo '	
 	<html>
 	<head>

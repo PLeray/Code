@@ -3,12 +3,12 @@
 include 'CATConnexionAPI.php';
 include 'CATFonctions.php';
 //AMP ?
-$isAMP = false;
-if (isset($_POST['isAMP']) ){
-	$isAMP = ($_POST['isAMP'] == 'OK');
+$codeMembre = false;
+if (isset($_POST['codeMembre']) ){
+	$codeMembre = ($_POST['codeMembre'] == 'OK');
 }
-if (isset($_GET['isAMP'])) { // Test connexion l'API
-	$isAMP = ($_GET['isAMP'] == 'OK');
+if (isset($_GET['codeMembre'])) { // Test connexion l'API
+	$codeMembre = ($_GET['codeMembre'] == 'OK');
 }
 //DEBUG ?
 
@@ -23,14 +23,14 @@ if (isset($_GET['isDebug'])) { // Test connexion l'API
 	$isDebug = ($_GET['isDebug'] == 'Debug');
 }
 
-$maConnexionAPI = new CConnexionAPI($isAMP, $isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug);
 
 $EnteteHTML = 
     '<!DOCTYPE html>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <html>
     <head>
-	<link rel="stylesheet" type="text/css" href="css/Couleurs' . (($isAMP == 'OK')?'AMP':'') .'.css">
+	<link rel="stylesheet" type="text/css" href="css/Couleurs' . (($codeMembre == 'OK')?'AMP':'') .'.css">
     <link rel="stylesheet" type="text/css" href="css/API_PhotoLab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
@@ -272,7 +272,7 @@ function API_UIConfirmation($strAPI_fichierLAB, $Etat){
 	if ($GLOBALS['isDebug']){$retourMSG = $retourMSG . "<br><h3>".$Etat." (en Debug)<br><br></h3>";}
 	$retourMSG = $retourMSG . "<br><h3>Si oui valider !</h3><br>";
 
-	$CMDhttpLocal = '?isAMP=' . ($GLOBALS['isAMP'] ? 'OK' : 'KO') . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
+	$CMDhttpLocal = '?codeMembre=' . ($GLOBALS['codeMembre'] ? 'OK' : 'KO') . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
 	$CMDhttpLocal = $CMDhttpLocal . '&apiChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
 	
 	$retourMSG .= '<br><br>

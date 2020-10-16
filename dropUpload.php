@@ -94,7 +94,7 @@ elseif (isset($_FILES['fileToDrop'])) {
 } 
 
 else {
-	if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
+	if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé par DROP (15 octobre)
 		echo $EnteteHTML . API_PostFILELAB();
 	} 
 	else echo 'Rien à Afficher pas de parametres ?! !';		
@@ -133,7 +133,12 @@ function API_GetFILELAB($strAPI_FILELAB){
 	}		
 }
 
-function API_PostFILELAB() {//upload de fichier
+function API_PostFILELAB2() {
+	
+	return 'API_PostFILELAB2()';	
+}
+
+function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 	$retourMSG = '';
 	$retourMSG .= '	<div class="msgcontainer">';
 	

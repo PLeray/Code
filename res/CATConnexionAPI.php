@@ -9,14 +9,14 @@ $repTIRAGES = "../../TIRAGES/";
 ////////////////////////////// APIConnexion //////////////////////////////////////////////
 class CConnexionAPI {
 	var $isDebug;
-    var $isAMP;
+    var $codeMembre;
 	var $Service;
     var $URL;
 	var $Domaine;
 	
-    function __construct($isAMP ,$isDebug){
+    function __construct($codeMembre ,$isDebug){
         $this->isDebug = $isDebug;
-        $this->isAMP = $isAMP;
+        $this->codeMembre = $codeMembre;
 		if ($isDebug){
             $this->Service = '/PhotoLab.php';
             $this->URL = 'http://localhost/API_photolab';  //"http://localhost/online/res/drop.php" 
@@ -31,12 +31,12 @@ class CConnexionAPI {
     }
     function Adresse($ParamGET = true){
 		if ($ParamGET){
-			$cmd = '?isAMP=' . ($this->isAMP ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
+			$cmd = '?codeMembre=' . ($this->codeMembre ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
 		}
         return $this->URL . $this->Service . $cmd;
     } 
     function TalkServeur($CMDLocal){
-		$cmd = '?isAMP=' . ($this->isAMP ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
+		$cmd = '?codeMembre=' . ($this->codeMembre ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
         return $this->URL .'/res/talkServeur.php' . $cmd . $CMDLocal;
     } 	
 }
@@ -46,20 +46,20 @@ function VersionPhotoLab(){
 }
 
 function ArgumentURL(){
-	return '?isAMP=' . ($GLOBALS['isAMP'] ? 'OK' : 'KO') . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
+	return '?codeMembre=' . ($GLOBALS['codeMembre'] ? 'OK' : 'KO') . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
 }
 
 
 ////////////////////////////// APIConnexion LOCAL //////////////////////////////////////////////
 /*class CConnexionLOCAL {
-	var $isAMP;
+	var $codeMembre;
 	var $Service;
     var $URL;
 	var $Domaine;
 	
-    function __construct($isAMP){
-		$this->isAMP = $isAMP;
-        if ($isAMP){
+    function __construct($codeMembre){
+		$this->codeMembre = $codeMembre;
+        if ($codeMembre){
             $this->Service = '/index.php';
             $this->URL = 'http://amp-serveur.local:999';  //https://amp-serveur.local:998/index.php
         }

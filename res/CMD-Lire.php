@@ -104,7 +104,7 @@ function RetourEcranFichier($myfileName){
     if ($Etat >= 4){
 		$RetourEcran = 'Historique.php';
 	}
-	return $RetourEcran . '?isAMP=' . ($GLOBALS['isAMP']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+	return $RetourEcran . '?codeMembre=' . ($GLOBALS['codeMembre']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }	
 
 
@@ -403,7 +403,7 @@ function PaginatorCMD($tabCMDLabo, $nb_results_p_page, $numero_CMD_courante, $nb
 }
 
 function LienLocal($Commande){
-	$Environnement = '?isAMP=' . ($GLOBALS['isAMP']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . ($GLOBALS['NbCMDAffiche']?$GLOBALS['NbCMDAffiche']:1);
+	$Environnement = '?codeMembre=' . ($GLOBALS['codeMembre']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . ($GLOBALS['NbCMDAffiche']?$GLOBALS['NbCMDAffiche']:1);
 	$Environnement = $Environnement . $Commande;
 	$LienFichier = htmlspecialchars($_SERVER['PHP_SELF']) . $Environnement;
 	//echo $LienFichier;
@@ -448,7 +448,7 @@ function LienAffichePlusMoins($signe,$Commande){
 		$NbCMD=$GLOBALS['NbCMDAffiche'] + 1;
 	}  
 	//
-	$Environnement = '?isAMP=' . ($GLOBALS['isAMP']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . $NbCMD;
+	$Environnement = '?codeMembre=' . ($GLOBALS['codeMembre']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . $NbCMD;
 	$Environnement = $Environnement . $Commande;
 	$LienFichier = htmlspecialchars($_SERVER['PHP_SELF']) . $Environnement;
 	//echo $LienFichier;
