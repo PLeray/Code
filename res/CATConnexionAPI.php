@@ -1,7 +1,6 @@
 <?php
 $VERSION = '2020';
 
-
 $repCMDLABO = "../../CMDLABO/";
 $repMINIATURES = "../../CMDLABO/MINIATURES/";
 $repTIRAGES = "../../TIRAGES/";
@@ -18,12 +17,12 @@ class CConnexionAPI {
         $this->isDebug = $isDebug;
         $this->codeMembre = $codeMembre;
 		if ($isDebug){
-            $this->Service = '/PhotoLab.php';
+            $this->Service = '/res/LOGPhotoLab.php';
             $this->URL = 'http://localhost/API_photolab';  //"http://localhost/online/res/drop.php" 
             $this->Domaine = 'localhost:80';  
 		}
         else {
-            $this->Service = '/PhotoLab.php';
+            $this->Service = '/res/LOGPhotoLab.php';
             $this->URL = 'https://photolab-site.fr'; //https://www.studio-carre.fr/PeterTest/API_photolab/   
             $this->Domaine = 'www.photolab-site.fr:80';  
 			
@@ -31,12 +30,12 @@ class CConnexionAPI {
     }
     function Adresse($ParamGET = true){
 		if ($ParamGET){
-			$cmd = '?codeMembre=' . ($this->codeMembre ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
+			$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
 		}
         return $this->URL . $this->Service . $cmd;
     } 
-    function TalkServeur($CMDLocal){
-		$cmd = '?codeMembre=' . ($this->codeMembre ? 'OK' : 'KO') . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
+    function CallServeur($CMDLocal){
+		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
         return $this->URL .'/res/talkServeur.php' . $cmd . $CMDLocal;
     } 	
 }
@@ -46,32 +45,7 @@ function VersionPhotoLab(){
 }
 
 function ArgumentURL(){
-	return '?codeMembre=' . ($GLOBALS['codeMembre'] ? 'OK' : 'KO') . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
+	return '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
 }
-
-
-////////////////////////////// APIConnexion LOCAL //////////////////////////////////////////////
-/*class CConnexionLOCAL {
-	var $codeMembre;
-	var $Service;
-    var $URL;
-	var $Domaine;
-	
-    function __construct($codeMembre){
-		$this->codeMembre = $codeMembre;
-        if ($codeMembre){
-            $this->Service = '/index.php';
-            $this->URL = 'http://amp-serveur.local:999';  //https://amp-serveur.local:998/index.php
-        }
-        else {
-            $this->Service = '/index.php';
-            $this->URL = 'http://localhost/PhotoLab';
-            //$this->URL = 'http://Photoprod';
-        }
-    }
-    function Adresse($CMDLocal){
-        return $this->URL . $this->Service . $CMDLocal;
-    } 
-}*/
 
 ?>

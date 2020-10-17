@@ -21,7 +21,7 @@ function SuprimeFichier($strFILELAB){
 }
 	
 function LienIMGSuprFichierLab($fichier, $Etat) {
-	$Lien = 'PhotolabCMD.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($fichier);// . '&apiEtat=' . $Etat;
+	$Lien = 'CMDPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($fichier);// . '&apiEtat=' . $Etat;
 	$retour = '';
 	if ($Etat == 'Erreur'){
 		$retour = '<a href="'.$Lien.'"  title="' . "Pour recompiler, supprimer l'alerte d'erreur " .  '"><img src="img/poubelle.png"></a>'; 		
@@ -395,14 +395,14 @@ function LienImageEtatWEB($Etat){
 
 function LienEtatLab($fichier, $Etat) {
 	if (strrchr($fichier, '.') != ".lab0"){
-		return $GLOBALS['maConnexionAPI']->TalkServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);			
+		return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);			
 	} else {
 		return 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}
 }
 
 function LienFichierLab($fichier) {
-	$Environnement = '?codeMembre=' . ($GLOBALS['codeMembre']?'OK':'KO') . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 	$Extension = strrchr($fichier, '.');
 	$LienFichier = "#";
 	switch ($Extension) {

@@ -5,8 +5,8 @@
 
 	$myfileName = (isset($_GET['fichierLAB'])) ? $_GET['fichierLAB'] :'';
 	
-	$codeMembre = false;
-	if (isset($_GET['codeMembre'])) { $codeMembre = ($_GET['codeMembre'] == 'OK') ? true : false;}
+	$codeMembre = 0;
+	if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 	$isDebug = false;
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 	//$isDebug = false;
@@ -18,7 +18,7 @@
 <html>
 <head>
     <title id="GO-PHOTOLAB">PhotoLab : Cartonnage</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($codeMembre)?'AMP':''; ?>.css">
+    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
     <link rel="stylesheet" type="text/css" href="css/CMD-View.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<script type="text/javascript" src="js/CMD-View.js"></script>

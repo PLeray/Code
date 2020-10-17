@@ -3,10 +3,10 @@ setlocale(LC_TIME, 'french');
 //$codeMembre = false;  //MODIFIER SI NECESSAIRE
 
 
-$codeMembre = file_exists ('../amp.ini');
-//if ($codeMembre){$isDebug = false;}
-$isDebug = file_exists ('../debug.txt'); 
-
+$codeMembre = 0;
+if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
+$isDebug = file_exists ('../debug.txt');
+if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 include 'CATConnexionAPI.php';
 include 'CATFonctions.php';
@@ -19,7 +19,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <html>
 <head>
 	<title id="GO-PHOTOLAB">PhotoLab : historique des commandes</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($codeMembre)?'AMP':''; ?>.css">
+    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/PhotolabCMD.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<script type="text/javascript" src="js/CATFonctions.js"></script>
@@ -31,7 +31,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
 -->
 <div class="logo">
-<a href="<?php echo '../index.php' . ArgumentURL(); ?>"><img src="img/LogoHistorique.png" alt="Image de fichier"></a>
+<a href="<?php echo 'index.php' . ArgumentURL(); ?>"><img src="img/LogoHistorique.png" alt="Image de fichier"></a>
 </div>
 
 <?php
@@ -52,12 +52,10 @@ elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) {
 $nb_fichier = 0;
 $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 
-//echo '<a href="' . $maConnexionAPI->Adresse() . '&apiUI_SELECTFILELAB=*" style="width:auto" class="ajoutFICHIER" title="Ajouter un fichier de commande (.lab) au gestionnaire des commandes"> + </a><br>';
-//$cmd = '?codeMembre=' . ($codeMembre ? 'OK' : 'KO') . '&isDebug=' .($isDebug ? 'Debug' : 'Prod');
 ?>
 <BR>
 <div class="recherche">	
-	<a href="<?php echo 'PhotolabCMD.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a>
+	<a href="<?php echo 'CMDPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a>
 	<h1>Historique des commandes (nombre : <?php echo $nb_fichier; ?>)</h1>
 	<!-- RECHERCHE -->
 	<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tapez les premières lettres, pour rechercher une commande..." title="Tapez les premières lettres...">

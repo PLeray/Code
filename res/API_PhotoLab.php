@@ -5,10 +5,10 @@ include 'CATFonctions.php';
 //AMP ?
 $codeMembre = false;
 if (isset($_POST['codeMembre']) ){
-	$codeMembre = ($_POST['codeMembre'] == 'OK');
+	$codeMembre = $_POST['codeMembre'];
 }
 if (isset($_GET['codeMembre'])) { // Test connexion l'API
-	$codeMembre = ($_GET['codeMembre'] == 'OK');
+	$codeMembre = $_POST['codeMembre'];
 }
 //DEBUG ?
 
@@ -30,7 +30,7 @@ $EnteteHTML =
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <html>
     <head>
-	<link rel="stylesheet" type="text/css" href="css/Couleurs' . (($codeMembre == 'OK')?'AMP':'') .'.css">
+	<link rel="stylesheet" type="text/css" href="css/Couleurs' . ($isDebug?'':'AMP') .'.css">
     <link rel="stylesheet" type="text/css" href="css/API_PhotoLab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
@@ -165,7 +165,7 @@ function API_PostFILELAB() {//upload de fichier
 				$CMDhttpLocal = $CMDhttpLocal . '&CMDnbPlanches=' . NBPlanchesFichierLab($target_file);
 				$CMDhttpLocal = $CMDhttpLocal . '&BDDFileLab=' . urlencode(basename($_FILES['myfile']['name']));
 				$retourMSG = $retourMSG .'<br><br>
-					<a href="' . $GLOBALS['maConnexionAPI']->TalkServeur($CMDhttpLocal)  . ' " class="OK" title="Valider et retour écran général des commandes">Retour aux Commandes</a>		
+					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal)  . ' " class="OK" title="Valider et retour écran général des commandes">Retour aux Commandes</a>		
 					
 					<br><br><br>';
 			} 
@@ -204,7 +204,7 @@ function API_DropFILELAB() {//upload de fichier
 		<p> => Taille : '.$sFileSize.'</p>';
 
 	//echo $CMDhttpLocal ;
-	$maLocation = $GLOBALS['maConnexionAPI']->TalkServeur($CMDhttpLocal);
+	$maLocation = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
 	echo $maLocation;
 	echo '</div>';
 	header('Location: ' .$maLocation); /**/
@@ -272,12 +272,12 @@ function API_UIConfirmation($strAPI_fichierLAB, $Etat){
 	if ($GLOBALS['isDebug']){$retourMSG = $retourMSG . "<br><h3>".$Etat." (en Debug)<br><br></h3>";}
 	$retourMSG = $retourMSG . "<br><h3>Si oui valider !</h3><br>";
 
-	$CMDhttpLocal = '?codeMembre=' . ($GLOBALS['codeMembre'] ? 'OK' : 'KO') . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
+	$CMDhttpLocal = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
 	$CMDhttpLocal = $CMDhttpLocal . '&apiChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
 	
 	$retourMSG .= '<br><br>
 		<a href="../index.php" class="KO" title="Valider et retour écran général des commandes">Annuler</a>
-		<a href="' . $GLOBALS['maConnexionAPI']->TalkServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">Valider</a>		
+		<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">Valider</a>		
 			<br><br><br>';
 
 	$retourMSG .= '
@@ -293,7 +293,7 @@ function API_Photoshop($strAPI_fichierLAB){
 	'<div id="apiReponse" class="modal">
 		<div class="modal-content animate" >
 			<div class="imgcontainer">
-				<a href="PhotolabCMD.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
+				<a href="CMDPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
 				
 			</div>';	
 
@@ -304,7 +304,7 @@ function API_Photoshop($strAPI_fichierLAB){
 	$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
 	$retourMSG .= '<h3>Démarrer le plug-in PhotoLab pour Photoshop<br>(PhotoLab-AUTO.jsxbin) sur PC.</h3><br>';
 	$retourMSG .= '<br><br>
-		<a href="PhotolabCMD.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
+		<a href="CMDPhotolab.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
 			<br><br><br>';
 	$retourMSG .= '
 		</div>	  

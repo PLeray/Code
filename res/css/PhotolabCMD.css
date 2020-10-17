@@ -160,7 +160,7 @@ img {
 .BoutonVoirenCours:focus, .BoutonVoirhistorique:focus {
 	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
 }
-
+/*
 #dropArea {
   position: absolute;
   display: inline-block;
@@ -182,7 +182,7 @@ img {
 	font-size: 14px;
 	padding: 50px;
 	
-	color: var(--boutonRouge); /*var(--texteGris);*/
+	color: var(--boutonRouge); 
     letter-spacing: 3px;
 
 	font-family: "Courier New", Times, serif;	
@@ -209,6 +209,9 @@ img {
 	font-size: 12px;
 	color: #FFF;
 }
+
+
+*/
 
 /*Commandes*/
 #commandes {
@@ -248,7 +251,7 @@ img {
 
 #commandes th {
   text-align: center;
-  background-color: var(--FondLigneTabGrisSombre); /*#aaa;*/
+  background-color: var(--FondEnteteTableau);
   color: white;
 }
 

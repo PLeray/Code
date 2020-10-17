@@ -1,16 +1,13 @@
 <?php
 setlocale(LC_TIME, 'french');
-//$codeMembre = false;  //MODIFIER SI NECESSAIRE
 
-
-$codeMembre = file_exists ('../amp.ini');
-//if ($codeMembre){$isDebug = false;}
-$isDebug = file_exists ('../debug.txt'); 
-
+$codeMembre = 0;
+if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
+$isDebug = file_exists ('../debug.txt');
+if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 include 'CATConnexionAPI.php';
 include 'CATFonctions.php';
-
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 
@@ -19,9 +16,9 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-	<META HTTP-EQUIV="Refresh" CONTENT="10; URL=<?php echo 'PhotolabCMD.php' . ArgumentURL(); ?>">
+	<META HTTP-EQUIV="Refresh" CONTENT="10; URL=<?php echo 'CMDPhotolab.php' . ArgumentURL(); ?>">
 	<title id="GO-PHOTOLAB">PhotoLab : commandes en cours</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($codeMembre)?'AMP':''; ?>.css">
+    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/PhotolabCMD.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 	<!-- <script type="text/javascript" src="res/js/CATFonctions.js"></script>
@@ -34,7 +31,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
 -->
 <div class="logo">
-	<a href="<?php echo '../index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
+	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
 </div>
 
 <?php
@@ -59,16 +56,12 @@ elseif (isset($_GET['apiSupprimer'])) {
 $nb_fichier = 0;
 $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true);
 
-//echo '<a href="' . $maConnexionAPI->Adresse() . '&apiUI_SELECTFILELAB=*" style="width:auto" class="ajoutFICHIER" title="Ajouter un fichier de commande (.lab) au gestionnaire des commandes"> + </a><br>';
-//$cmd = '?codeMembre=' . ($codeMembre ? 'OK' : 'KO') . '&isDebug=' .($isDebug ? 'Debug' : 'Prod');
 ?>
 
 
-<!--<a href="<?php //echo /*$maConnexionAPI->Adresse()*/ 'res/API_Photolab.php' . ArgumentURL() . '&apiUI_SELECTFILELAB=*'; ?>" style="width:auto" class="ajoutFICHIER" title="Ajouter un fichier de commande (.lab) au gestionnaire des commandes"> + </a><br>
--->
 <BR><BR><BR>
 <div class="recherche">	
-<a href="<?php echo 'Historique.php' . ArgumentURL(); ?>" style="width:auto" 
+<a href="<?php echo 'CMDHistorique.php' . ArgumentURL(); ?>" style="width:auto" 
 	class="BoutonVoirhistorique" title="Rechercher dans l'historique des commandes">Voir l'historique des commandes
 	<img src="img/LogoHistorique.png" style="width: 50px;" ></a>
 </div>
@@ -84,7 +77,7 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true);
 		<th style="width:110px;"><H3>Etat</H3></th>
 		<th  style="width:100px;" ><H3>Nb de Planches</H3></th>	
 		<th  style="width:90px;" ><H3>Planches crées</H3></th>
-		<th  style="width:90px;" ><H3>Envoyées labo</H3></th>
+		<th  style="width:90px;" ><H3>Envoyées au labo</H3></th>
 		<th  style="width:90px;" ><H3>Cartonnage en cours</H3></th>
 		<th  style="width:90px;" ><H3>Colis prêt</H3></th>
 		<th  style="width:40px;" ><H3>X</H3></th>
