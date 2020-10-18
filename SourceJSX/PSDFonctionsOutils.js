@@ -97,22 +97,22 @@ function isCMDEnregistree(fileName) {
 
 function RecupNomOrdi() {	
 	if (g_CeCalculateur == ''){
-		//alert ('g_CeCalculateur : ' + g_CeCalculateur);			
-		var fileName = 'C:\\PhotoLab.ini';
-
+				
+		var fileName = 'C:\\PhotoLab-Plugin.ini';
+//alert ('g_CeCalculateur : ' + g_CeCalculateur);	
 		if (isFichierExiste(fileName)){			
 			var file = new File(fileName);
 			file.open("r"); // open file with write access
 				g_CeCalculateur = file.readln();
-				//alert ('PhotoLab Plugin utilise ' + g_CeCalculateur);
-				PHOTOLAB.text =  'PHOTOLAB PLUGIN ' + g_Version + ' [' + g_CeCalculateur + ']';
+//alert ('PhotoLab Plugin utilise ' + g_CeCalculateur);
+				//PHOTOLAB.text =  'PHOTOLAB PLUGIN ' + g_Version + ' [' + g_CeCalculateur + ']';
 			file.close();
 		}
 		else{
 			alert ('Pas de Calculateur !');
 		}
 	}
-	//alert ('g_CeCalculateur : ' + g_CeCalculateur);		
+//alert ('g_CeCalculateur : ' + g_CeCalculateur);		
 }	
 
 function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
@@ -590,7 +590,7 @@ function CreerUnProduitPourLeSiteWEB(unProduit){
 function OrdreTirageIndex(unProduit){
 ////////// A CHANGER POUR ORDRE DE TIRAGE INVERSE ///////////
 	var Index = 0;
-	if (checkOrdre.value){
+	if (g_OrdreInversePlanche){		
 		Index = (g_TabLigneOriginale.length - unProduit.indexOriginal);	
 	}
 	else{
@@ -874,7 +874,6 @@ function ChercherFichierJPGRepertoire(theFolder, theFiles) {
 //////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 function ChercherRefRepertoire(theFolder, RepChercheRep, reference, Profondeur) {
-   // if (!theFiles) {var theFiles = []};
     var theContent = theFolder.getFiles();
 	//alert('ChercherRefRepertoire ' + theContent);
 	var laProfondeur = Profondeur;
@@ -884,41 +883,31 @@ function ChercherRefRepertoire(theFolder, RepChercheRep, reference, Profondeur) 
         if (theObject.constructor.name == "Folder") {
 			// UI Affichage 
 			UIRepertoireSource.text  = theObject.path + '/' + theObject.name;
-			
-			//alert('theObject.path +  theObject.name ' + theObject.path + '/' + theObject.name);
 			UIText = theObject.path + '/' + theObject.name; //UIRepertoireSource.text + '.';
-			//alert('TEst Rep ' + UIText);
-			//g_UIWINRechercheSource.update();
-			 //win.update();
-			 $.sleep(1);
-			 g_UIWINRechercheSource.update();
+
 			// UI Affichage
+			//g_UIWINRechercheSource.update();
+			app.refresh();
+			$.sleep(1);
+			
             if (theObject.name.indexOf(reference) != -1){ 
                 RepChercheRep = theObject.path + '/' + theObject.name ;
+//alert(' g_ProfondeurMAX : ' + g_ProfondeurMAX + ' laProfondeur : ' + laProfondeur);				
 				g_ProfondeurMAX = laProfondeur;
                 break;
             }
             //alert(' REP : ' + theObject.path + '/' + theObject.name);
 			if (laProfondeur < g_ProfondeurMAX){
-				//laProfondeur = laProfondeur + 1;
 				RepChercheRep = ChercherRefRepertoire(theObject, RepChercheRep, reference, laProfondeur + 1);			
 			}
          }
     }
-	//alert('RepChercheRep ' + RepChercheRep);
    return RepChercheRep; /**/
 }
 	
 function TrouverSOURCE(refEcole) {
 	var repRech = '';
-	//g_IsProdoshopON = true;
 	g_UIWINRechercheSource.show();
-	//MsgINFO('Recherche de Sources... ');
-	
-	//alert('g_RepBASESOURCE ' + g_RepBASESOURCE );
-	//var repDepart = RepDepartRechercheSOURCE();
-	
-	//alert('      repDepart ' + repDepart);
 	
 	var repDepart = g_RepBASESOURCE;
 	UIRepertoireSource.text = 'Recherche de Sources... ';
@@ -926,40 +915,12 @@ function TrouverSOURCE(refEcole) {
 	var theFolder = new Folder(repDepart);	
 	repRech = ChercherRefRepertoire(theFolder, '', refEcole, 0);
 	UIRepertoireSource.text = repRech;
-	//MsgINFO('Recherche de Sources... ',repRech);
-	//UIRepertoireSource.onChange = function () {	g_UIWINRechercheSource.update();}	
+
 	g_UIWINRechercheSource.onClose = function() {return repRech ;}
 	g_UIWINRechercheSource.close();
 	//alert('repRech ' + repRech);
 	return repRech ;
 }
-
-/*
-function RepDepartRechercheSOURCE() {
-	// LIRE FICHIER INI
-	var leRepDepart = "";
-	//alert('leRepDepart : ' + leRepDepart);
-	var fileName = g_Rep_PHOTOLAB + '/PhotoLab.ini';	
-	var file = new File(fileName);
-	if ( file.open("r")){
-		leRepDepart = file.readln();
-		g_RepBASESOURCE = leRepDepart;
-		file.close();
-	}
-	
-	if(!isRepertoireExiste(leRepDepart)) {
-		leRepDepart = Folder.selectDialog ("Sélèctionne un repertoire proche de la source comme 'Printemps 2018'...");
-		if (leRepDepart) {
-			// ECRIRE FICHIER INI
-			file.open("w"); // open file with write access
-				file.writeln(leRepDepart);
-			file.close();		
-		}
-	}
-	//alert('leRepDepart : ' + leRepDepart);
-	return leRepDepart;
-}
-*/
 
 function ErreurInfoMSG(err){
 	var msg = "     Fichier : " + err.fileName +  "   Ligne n° " + err.lineNumber + "    msg : " + err.message;
@@ -1001,20 +962,14 @@ function ExtensionTeinte(uneTeinte){
 	return extTeinte;
 }
 /////////////// NEW JUILLET 2020 ///////////////////////////////////////
-
 function InitialisationSourcePourLewEB(leRepSOURCE, theFiles) {
 	try {
-		//alert("InitClasseIndiv START sur " + leRepSOURCE);
 		if (!theFiles) {var theFiles = []};
 		var leContenuRep = leRepSOURCE.getFiles();
-		
-		//g_TabListeNomsClasses.length = 0;
+
 		var strNOMClasse = '';
-		
 		var strNUMEROClasse = '';
 		var StrLesGroupesClasse = '';
-		//var TabLesGroupesClasse = [];
-		//OK alert("boucle sur : " + leContenuRep.length + " fichiers : ");
 		leContenuRep.sort();
 		for (var n = 0; n < leContenuRep.length; n++){
 			var theObject = leContenuRep[n];
@@ -1022,10 +977,9 @@ function InitialisationSourcePourLewEB(leRepSOURCE, theFiles) {
 				theFiles = InitialisationSourcePourLewEB(theObject, theFiles);
 			}
 			if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
-				//ok alert("boucle : " + theObject.name + " taille : " + theObject.name.length);
-				if (theObject.name.length >= g_MinimuNomClasse) { // C'est un Groupe  :: 000PANOgs(.jpg)// C'est un petit nom de groupe !
+				if (theObject.name.length >= g_MinimuNomClasse) { 
+					// C'est un Groupe  :: 000PANOgs(.jpg)// C'est un petit nom de groupe !
 					//On ajoute le groupe à TabLesGroupesClasse
-					//alert("strNUMEROClasse : " + strNUMEROClasse + "    NumeroClasseDepuisNomGroupe(theObject.name) :  " + NumeroClasseDepuisNomGroupe(theObject.name));
 					if (strNUMEROClasse != NumeroClasseDepuisNomGroupe(theObject.name)){
 							//TabLesGroupesClasse.length = 0; // = [];
 							strNUMEROClasse = NumeroClasseDepuisNomGroupe(theObject.name);							
@@ -1033,26 +987,17 @@ function InitialisationSourcePourLewEB(leRepSOURCE, theFiles) {
 							//alert("strNOMClasse.name : " + strNOMClasse);
 							g_TabListeNomsClasses[strNUMEROClasse] = strNOMClasse;	
 					}					
-					//TabLesGroupesClasse = TabLesGroupesClasse.concat(theObject.name);	
-					//strNUMEROClasse = NumeroClasseDepuisNomGroupe(theObject.name);
-					
 					// Même pour les groupe classes
-					//StrLesGroupesClasse = RecupPhotoDeGroupe(TabLesGroupesClasse, StrLesGroupesClasse);
 					g_GroupeIndiv[theObject.name] = strNOMClasse;
 				}
 				else {
-					//StrLesGroupesClasse = RecupPhotoDeGroupe(TabLesGroupesClasse, StrLesGroupesClasse);
-					//alert("g_GroupeIndiv[theObject.name] : " + theObject.name + " [  " + StrLesGroupesClasse);
-					//TabLesGroupesClasse.length = 0; // = [];
 					g_GroupeIndiv[theObject.name] = strNOMClasse;
-					//strNUMEROClasse = "";
 				}
 			}
 		}
 		return theFiles;
 	}
 	catch(err) {
-		//alert ("Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message, "ERREUR : CreerRepertoire()", true);
 		MsgERREUR("Commande  : " + g_CommandePDTEncours + " ERREUR : CreationSOURCEWEB()", ErreurInfoMSG(err));
 		return '';
 	}	

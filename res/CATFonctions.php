@@ -21,7 +21,7 @@ function SuprimeFichier($strFILELAB){
 }
 	
 function LienIMGSuprFichierLab($fichier, $Etat) {
-	$Lien = 'CMDPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($fichier);// . '&apiEtat=' . $Etat;
+	$Lien = 'CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($fichier);// . '&apiEtat=' . $Etat;
 	$retour = '';
 	if ($Etat == 'Erreur'){
 		$retour = '<a href="'.$Lien.'"  title="' . "Pour recompiler, supprimer l'alerte d'erreur " .  '"><img src="img/poubelle.png"></a>'; 		
@@ -94,7 +94,6 @@ function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 			}
 		}
 	fclose($file);	
-
 }
 
 function RECFileLab($strRECFileLab){
@@ -125,7 +124,7 @@ function RECFileLab($strRECFileLab){
 		$file = fopen($NewFichier, 'w');
 			fputs($file, $line);
 		fclose($file);
-		//rename($NewFichier, "CMDLABO/" . utf8_decode($strRECFileLab) . "0" );
+
 }
 
 function SetCatalog($strTRANSFileLab){
@@ -169,15 +168,8 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 				
 			//if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode(substr($tabFichierLabo[$i], 0, -5)).'.Erreur')){
 			if (file_exists($GLOBALS['repCMDLABO'] . substr($tabFichierLabo[$i], 0, -5) .'.Erreur')){				
-				/*$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="../CMDLABO/'. utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs sur '.$NonFichierEcole . '">
-					<img src="img/ERREUR.png" alt="ERREUR">
-					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
-					' . LienIMGSuprFichierLab(substr($tabFichierLabo[$i], 0, -5) . '.Erreur', 'Erreur') . '
-					</div>			
-				</div>';	*/
 				$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="../CMDLABO/'. htmlentities(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs sur '.$NonFichierEcole . '">
+				<div class="tooltip"><a href="'. $GLOBALS['repCMDLABO'] . htmlentities(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs sur '.$NonFichierEcole . '">
 					<img src="img/ERREUR.png" alt="ERREUR">
 					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
 					' . LienIMGSuprFichierLab(substr($tabFichierLabo[$i], 0, -5) . '.Erreur', 'Erreur') . '
@@ -239,7 +231,7 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 			<td colspan=2>';
 			if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode(substr($tabFichierLabo[$i], 0, -5)).'.Erreur')){
 				$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="../CMDLABO/'. utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs">
+				<div class="tooltip"><a href="'. $GLOBALS['repCMDLABO'] . utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs">
 					<img src="img/ERREUR.png" alt="ERREUR">
 					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
 					' . LienIMGSuprFichierLab(utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur', 'Erreur') . '

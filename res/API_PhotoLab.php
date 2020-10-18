@@ -1,6 +1,6 @@
 <?php
 //include 'CConnexionLOCAL.php';
-include 'CATConnexionAPI.php';
+include 'APIConnexion.php';
 include 'CATFonctions.php';
 //AMP ?
 $codeMembre = false;
@@ -293,7 +293,7 @@ function API_Photoshop($strAPI_fichierLAB){
 	'<div id="apiReponse" class="modal">
 		<div class="modal-content animate" >
 			<div class="imgcontainer">
-				<a href="CMDPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
+				<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
 				
 			</div>';	
 
@@ -304,7 +304,7 @@ function API_Photoshop($strAPI_fichierLAB){
 	$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
 	$retourMSG .= '<h3>Démarrer le plug-in PhotoLab pour Photoshop<br>(PhotoLab-AUTO.jsxbin) sur PC.</h3><br>';
 	$retourMSG .= '<br><br>
-		<a href="CMDPhotolab.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
+		<a href="CATPhotolab.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
 			<br><br><br>';
 	$retourMSG .= '
 		</div>	  

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'CATConnexionAPI.php';
+	include 'APIConnexion.php';
 	include 'CMD-Lire.php';
 
 	$myfileName = (isset($_GET['fichierLAB'])) ? $_GET['fichierLAB'] :'';

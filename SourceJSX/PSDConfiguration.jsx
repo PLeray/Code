@@ -1,9 +1,4 @@
 ﻿
-/*
-Code for Import https://scriptui.joonas.me — (Triple click to select): 
-{"activeId":32,"items":{"item-0":{"id":0,"type":"Dialog","parentId":false,"style":{"enabled":true,"varName":null,"windowType":"Dialog","creationProps":{"su1PanelCoordinates":false,"maximizeButton":false,"minimizeButton":false,"independent":false,"closeButton":true,"borderless":false,"resizeable":false},"text":"Paramétrage de PhotoLab","preferredSize":[0,0],"margins":16,"orientation":"column","spacing":10,"alignChildren":["right","top"]}},"item-8":{"id":8,"type":"Panel","parentId":0,"style":{"enabled":true,"varName":null,"creationProps":{"borderStyle":"etched","su1PanelCoordinates":false},"text":"Généralités","preferredSize":[0,0],"margins":10,"orientation":"column","spacing":10,"alignChildren":["left","top"],"alignment":null}},"item-9":{"id":9,"type":"Group","parentId":0,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":null}},"item-15":{"id":15,"type":"Button","parentId":9,"style":{"enabled":true,"varName":null,"text":"Valider","justify":"center","preferredSize":[0,0],"alignment":null,"helpTip":null}},"item-16":{"id":16,"type":"Button","parentId":9,"style":{"enabled":true,"varName":null,"text":"Annuler","justify":"center","preferredSize":[0,0],"alignment":null,"helpTip":null}},"item-17":{"id":17,"type":"Group","parentId":8,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-18":{"id":18,"type":"StaticText","parentId":17,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"url du site PhotoLab en ligne","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"A prioris rien à changer ici ..."}},"item-19":{"id":19,"type":"EditText","parentId":17,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"https://www.photolab-site.fr","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-20":{"id":20,"type":"Group","parentId":8,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-21":{"id":21,"type":"StaticText","parentId":20,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Code Client","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Saisit ici son code client"}},"item-22":{"id":22,"type":"EditText","parentId":20,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"AMP2018","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-26":{"id":26,"type":"Panel","parentId":0,"style":{"enabled":true,"varName":null,"creationProps":{"borderStyle":"etched","su1PanelCoordinates":false},"text":"Localisation des photos Source","preferredSize":[0,0],"margins":10,"orientation":"column","spacing":10,"alignChildren":["left","top"],"alignment":null}},"item-27":{"id":27,"type":"Group","parentId":26,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-28":{"id":28,"type":"StaticText","parentId":27,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Nom du dossier de script à utiliser dans Photoshop","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Tous les scripts (ou actions) de photoshop qui sont utilisés par photolab\\ndoivent se trouver dans ce dossier de scripts de Photoshop"}},"item-29":{"id":29,"type":"EditText","parentId":27,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"PhotoLab-Script","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-30":{"id":30,"type":"Group","parentId":26,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-31":{"id":31,"type":"StaticText","parentId":30,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Dossier de base des  photos sources ","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"C'est dans ce dossier que se trouveront les sous dossier comprenant le code du projet. \\nPar exemple un dossier nommé 'St Joseph-Nantes (AFF3456)'"}},"item-32":{"id":32,"type":"EditText","parentId":30,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"'D:\\Prises de vue\\'","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-33":{"id":33,"type":"Group","parentId":26,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-34":{"id":34,"type":"StaticText","parentId":33,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Sous dossier source d'un dossier 'projet'","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Selon son organisation de dossier 'projet', on peut souhaiter ranger les photos à exploiter dans un sous dossier particulier. A saisir ici"}},"item-35":{"id":35,"type":"EditText","parentId":33,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"\\PHOTOS\\SOURCE","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-36":{"id":36,"type":"Group","parentId":8,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-37":{"id":37,"type":"StaticText","parentId":36,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"url du site PhotoLab local","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"voir dans la config de votre serveur ou est installé PhotoLab ou XamPP, Wamp, ..."}},"item-38":{"id":38,"type":"EditText","parentId":36,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"http://localhost/PhotoLab/","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-41":{"id":41,"type":"Panel","parentId":0,"style":{"enabled":true,"varName":null,"creationProps":{"borderStyle":"etched","su1PanelCoordinates":false},"text":"(optionnel) Paramètres FTP imprimeur","preferredSize":[0,0],"margins":10,"orientation":"column","spacing":10,"alignChildren":["left","top"],"alignment":null}},"item-42":{"id":42,"type":"Group","parentId":41,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-43":{"id":43,"type":"StaticText","parentId":42,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Hôte","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Saisir le nom du serveur FTP d'échange avec l'imprimeur (optionnel)"}},"item-44":{"id":44,"type":"EditText","parentId":42,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"crepes.o2ftp.net","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-45":{"id":45,"type":"Group","parentId":41,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-46":{"id":46,"type":"StaticText","parentId":45,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Identifiant","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Login FTP (optionnel)"}},"item-47":{"id":47,"type":"EditText","parentId":45,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"bibi","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-48":{"id":48,"type":"Group","parentId":41,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-49":{"id":49,"type":"StaticText","parentId":48,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Mot de passe","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Mot de passe FTP (optionnel)"}},"item-50":{"id":50,"type":"EditText","parentId":48,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"*****","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-51":{"id":51,"type":"Group","parentId":41,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-52":{"id":52,"type":"StaticText","parentId":51,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Dossier distant ou déposer les tirages","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Login FTP (optionnel)"}},"item-53":{"id":53,"type":"EditText","parentId":51,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"/LABO-TIRAGES","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}},"item-54":{"id":54,"type":"Group","parentId":26,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":"right"}},"item-55":{"id":55,"type":"StaticText","parentId":54,"style":{"enabled":true,"varName":null,"creationProps":{"truncate":"none","multiline":false,"scrolling":false},"softWrap":false,"text":"Profondeur de sous niveau à explorer ","justify":"left","preferredSize":[0,0],"alignment":null,"helpTip":"Si vos projet sont directement sous le répertoire de Base,\\nexemple : D:\\Prises de vue\\St Joseph-Nantes (AFF3456) saisir 1\\nexemple : D:\\Prises de vue\\Novembre 2019\\St Joseph-Nantes (AFF3456) saisir 2\\nexemple : D:\\Prises de vue\\2019-2020\\Novembre 2019\\St Joseph-Nantes (AFF3456) saisir 3"}},"item-56":{"id":56,"type":"EditText","parentId":54,"style":{"enabled":true,"varName":null,"creationProps":{"noecho":false,"readonly":false,"multiline":false,"scrollable":false,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"2","justify":"left","preferredSize":[400,0],"alignment":null,"helpTip":null}}},"order":[0,8,20,21,22,36,37,38,17,18,19,26,27,28,29,30,31,32,54,55,56,33,34,35,41,42,43,44,45,46,47,48,49,50,51,52,53,9,16,15],"settings":{"importJSON":true,"indentSize":false,"cepExport":false,"includeCSSJS":true,"showDialog":true,"functionWrapper":false,"afterEffectsDockable":false,"itemReferenceList":"None"}}
-*/ 
-
 // DIALOG
 // ======
 var dialog = new Window("dialog"); 
@@ -244,3 +239,346 @@ var button2 = group12.add("button", undefined, undefined, {name: "button2"});
 dialog.show();
 
 //photoshop.quit()
+
+
+
+// CONFIG AVANT 18-10
+
+function DLGConfiguration(){
+	// DIALOG
+	// ======
+	var dialog = new Window("dialog"); 
+		dialog.text = "Paramétrage de PhotoLab"; 
+		dialog.orientation = "column"; 
+		dialog.alignChildren = ["right","top"]; 
+		dialog.spacing = 10; 
+		dialog.margins = 16; 
+		
+		dialog.frameLocation = [ -1,0 ];
+		dialog.graphics.backgroundColor = dialog.graphics.newBrush (dialog.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+
+		dialog.graphics.foregroundColor =UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);	
+
+	// PANEL1
+	// ======
+	var panel1 = dialog.add("panel", undefined, undefined, {name: "panel1"}); 
+		panel1.text = "Généralités"; 
+		panel1.orientation = "column"; 
+		panel1.alignChildren = ["left","top"]; 
+		panel1.spacing = 10; 
+		panel1.margins = 10; 
+	// GROUP1
+	// ======
+	var group1 = panel1.add("group", undefined, {name: "group1"}); 
+		group1.orientation = "row"; 
+		group1.alignChildren = ["left","center"]; 
+		group1.spacing = 10; 
+		group1.margins = 0; 
+		group1.alignment = ["right","top"]; 
+	var staticCodeClient = group1.add("statictext", undefined, undefined, {name: "staticCodeClient"}); 
+		staticCodeClient.text = "Code Client"; 
+	var editCodeClient = group1.add('edittext {properties: {name: "editCodeClient"}}'); 
+		editCodeClient.text = "AMP2018"; 
+		editCodeClient.preferredSize.width = 400; 
+		editCodeClient.helpTip = "Saisir ici son code client";
+	// GROUP2
+	// ======
+	var group2 = panel1.add("group", undefined, {name: "group2"}); 
+		group2.orientation = "row"; 
+		group2.alignChildren = ["left","center"]; 
+		group2.spacing = 10; 
+		group2.margins = 0; 
+		group2.alignment = ["right","top"]; 
+	var staticURLLocal = group2.add("statictext", undefined, undefined, {name: "staticURLLocal"}); 
+		staticURLLocal.text = "url du site PhotoLab local"; 
+	var editURLLocal = group2.add('edittext {properties: {name: "editURLLocal"}}'); 
+		editURLLocal.text = "http://localhost/PhotoLab/"; 
+		editURLLocal.preferredSize.width = 400; 
+		editURLLocal.helpTip = "voir dans la config de votre serveur ou est installé PhotoLab ou XamPP, Wamp, ..."; 
+	// GROUP3
+	// ======
+	var group3 = panel1.add("group", undefined, {name: "group3"}); 
+		group3.orientation = "row"; 
+		group3.alignChildren = ["left","center"]; 
+		group3.spacing = 10; 
+		group3.margins = 0; 
+		group3.alignment = ["right","top"]; 
+	var staticURLOnLigne = group3.add("statictext", undefined, undefined, {name: "staticURLOnLigne"}); 
+		staticURLOnLigne.text = "url du site PhotoLab en ligne"; 
+	var editURLOnLigne = group3.add('edittext {properties: {name: "editURLOnLigne"}}'); 
+		editURLOnLigne.text = "https://www.photolab-site.fr"; 
+		editURLOnLigne.preferredSize.width = 400; 
+		editURLOnLigne.helpTip = "A prioris rien à changer ici ..."; 
+	// PANEL2
+	// ======
+	var panel2 = dialog.add("panel", undefined, undefined, {name: "panel2"}); 
+		panel2.text = "Localisation des photos Source"; 
+		panel2.orientation = "column"; 
+		panel2.alignChildren = ["left","top"]; 
+		panel2.spacing = 10; 
+		panel2.margins = 10; 
+	// GROUP4
+	// ======
+	var group4 = panel2.add("group", undefined, {name: "group4"}); 
+		group4.orientation = "row"; 
+		group4.alignChildren = ["left","center"]; 
+		group4.spacing = 10; 
+		group4.margins = 0; 
+		group4.alignment = ["right","top"]; 
+	var staticDossierScript = group4.add("statictext", undefined, undefined, {name: "staticDossierScript"}); 
+		staticDossierScript.text = "Nom du dossier de script à utiliser dans Photoshop"; 
+	var editDossierScript = group4.add('edittext {properties: {name: "editDossierScript"}}'); 
+		editDossierScript.text = "PhotoLab-Script"; 
+		editDossierScript.preferredSize.width = 400; 
+		editDossierScript.helpTip = "Tous les scripts (ou actions) de photoshop qui sont utilisés par photolab\ndoivent se trouver dans ce dossier de scripts de Photoshop"; 
+	// GROUP5
+	// ======
+	var group5 = panel2.add("group", undefined, {name: "group5"}); 
+		group5.orientation = "row"; 
+		group5.alignChildren = ["left","center"]; 
+		group5.spacing = 10; 
+		group5.margins = 0; 
+		group5.alignment = ["right","top"]; 
+	var staticDossierBASESource = group5.add("statictext", undefined, undefined, {name: "staticDossierBASESource"}); 
+		staticDossierBASESource.text = "Dossier de base des  photos sources "; 
+	var editDossierBASESource = group5.add('edittext {properties: {name: "editDossierBASESource"}}'); 
+		editDossierBASESource.text = "'D:\Prises de vue\'"; 
+		editDossierBASESource.preferredSize.width = 400; 
+		editDossierBASESource.helpTip = "C'est dans ce dossier que se trouveront les sous dossier comprenant le code du projet.\nPar exemple un dossier nommé 'St Joseph-Nantes (AFF3456)'"; 
+	// GROUP6
+	// ======
+	var group6 = panel2.add("group", undefined, {name: "group6"}); 
+		group6.orientation = "row"; 
+		group6.alignChildren = ["left","center"]; 
+		group6.spacing = 10; 
+		group6.margins = 0; 
+		group6.alignment = ["right","top"]; 
+	var staticProfondeurSOURCE = group6.add("statictext", undefined, undefined, {name: "staticProfondeurSOURCE"}); 
+		staticProfondeurSOURCE.text = "Profondeur de sous niveau à explorer "; 
+	var editProfondeurSOURCE = group6.add('edittext {properties: {name: "editProfondeurSOURCE"}}'); 
+		editProfondeurSOURCE.text = "2"; 
+		editProfondeurSOURCE.preferredSize.width = 400; 
+		editProfondeurSOURCE.helpTip = "Si vos projet sont directement sous le répertoire de Base,\nexemple : D:\Prises de vue\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\Prises de vue\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\Prises de vue\2019-2020\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 3"; 
+	// GROUP7
+	// ======
+	var group7 = panel2.add("group", undefined, {name: "group7"}); 
+		group7.orientation = "row"; 
+		group7.alignChildren = ["left","center"]; 
+		group7.spacing = 10; 
+		group7.margins = 0; 
+		group7.alignment = ["right","top"]; 
+	var staticURLSousDossierSOURCE = group7.add("statictext", undefined, undefined, {name: "staticURLSousDossierSOURCE"}); 
+		staticURLSousDossierSOURCE.text = "Sous dossier source d'un dossier 'projet'"; 
+	var editURLSousDossierSOURCE = group7.add('edittext {properties: {name: "editURLSousDossierSOURCE"}}'); 
+		editURLSousDossierSOURCE.text = "\PHOTOS\SOURCE"; 
+		editURLSousDossierSOURCE.preferredSize.width = 400; 
+		editURLSousDossierSOURCE.helpTip = "Selon son organisation de dossier 'projet', on peut souhaiter ranger les photos à exploiter dans un sous dossier particulier. A saisir ici"; 
+	// PANEL3
+	// ======
+	var panel3 = dialog.add("panel", undefined, undefined, {name: "panel3"}); 
+		panel3.text = "(optionnel) Paramètres FTP imprimeur"; 
+		panel3.orientation = "column"; 
+		panel3.alignChildren = ["left","top"]; 
+		panel3.spacing = 10; 
+		panel3.margins = 10; 
+	// GROUP8
+	// ======
+	var group8 = panel3.add("group", undefined, {name: "group8"}); 
+		group8.orientation = "row"; 
+		group8.alignChildren = ["left","center"]; 
+		group8.spacing = 10; 
+		group8.margins = 0; 
+		group8.alignment = ["right","top"]; 
+	var staticFTPHote = group8.add("statictext", undefined, undefined, {name: "staticFTPHote"}); 
+		staticFTPHote.text = "Hôte"; 
+	var editFTPHote = group8.add('edittext {properties: {name: "editFTPHote"}}'); 
+		editFTPHote.text = "crepes.o2ftp.net"; 
+		editFTPHote.preferredSize.width = 400; 
+		editFTPHote.helpTip = "Saisir le nom du serveur FTP d'échange avec l'imprimeur (optionnel)"; 
+	// GROUP9
+	// ======
+	var group9 = panel3.add("group", undefined, {name: "group9"}); 
+		group9.orientation = "row"; 
+		group9.alignChildren = ["left","center"]; 
+		group9.spacing = 10; 
+		group9.margins = 0; 
+		group9.alignment = ["right","top"]; 
+	var staticFTPId = group9.add("statictext", undefined, undefined, {name: "staticFTPId"}); 
+		staticFTPId.text = "Identifiant"; 
+	var editFTPId = group9.add('edittext {properties: {name: "editFTPId"}}'); 
+		editFTPId.text = "bibi"; 
+		editFTPId.preferredSize.width = 400; 
+		editFTPId.helpTip = "Login FTP (optionnel)"; 
+	// GROUP10
+	// =======
+	var group10 = panel3.add("group", undefined, {name: "group10"}); 
+		group10.orientation = "row"; 
+		group10.alignChildren = ["left","center"]; 
+		group10.spacing = 10; 
+		group10.margins = 0; 
+		group10.alignment = ["right","top"]; 
+	var staticFTPMp = group10.add("statictext", undefined, undefined, {name: "staticFTPMp"}); 
+		staticFTPMp.text = "Mot de passe"; 
+	var editFTPMp = group10.add('edittext {properties: {name: "editFTPMp"}}'); 
+		editFTPMp.text = "*****"; 
+		editFTPMp.preferredSize.width = 400; 
+		editFTPMp.helpTip = "Mot de passe FTP (optionnel)"; 
+	// GROUP11
+	// =======
+	var group11 = panel3.add("group", undefined, {name: "group11"}); 
+		group11.orientation = "row"; 
+		group11.alignChildren = ["left","center"]; 
+		group11.spacing = 10; 
+		group11.margins = 0; 
+		group11.alignment = ["right","top"]; 
+	var staticFTPDossier = group11.add("statictext", undefined, undefined, {name: "staticFTPDossier"}); 
+		staticFTPDossier.text = "Dossier distant ou déposer les tirages"; 
+	var editFTPDossier = group11.add('edittext {properties: {name: "editFTPDossier"}}'); 
+		editFTPDossier.text = "/LABO-TIRAGES"; 
+		editFTPDossier.preferredSize.width = 400; 
+		editFTPDossier.helpTip = "Login FTP (optionnel)"; 
+	// GROUP12
+	// =======
+	var group12 = dialog.add("group", undefined, {name: "group12"}); 
+		group12.orientation = "row"; 
+		group12.alignChildren = ["left","center"]; 
+		group12.spacing = 10; 
+		group12.margins = 0; 
+
+	var buttonAnnuler = group12.add("button", undefined, undefined, {name: "button1"}); 
+		buttonAnnuler.text = "Annuler"; 
+
+	var buttonValider = group12.add("button", undefined, undefined, {name: "button2"}); 
+		buttonValider.text = "Valider"; 
+		buttonValider.helpTip = "Ensuite il faudra fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications."; 
+
+	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+	var file = new File(fileName);
+	if ( file.open("r")){
+		file.readln();	
+		editCodeClient.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editURLLocal.text = decodeURIComponent(file.readln());		
+		
+		file.readln();		
+		editURLOnLigne.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editDossierScript.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editDossierBASESource.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editProfondeurSOURCE.text = decodeURIComponent(file.readln());
+		
+		file.readln();	
+		editURLSousDossierSOURCE.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editFTPHote.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editFTPId.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editFTPMp.text = decodeURIComponent(file.readln());
+		
+		file.readln();		
+		editFTPDossier.text = decodeURIComponent(file.readln());		
+
+		file.close();
+	}
+
+	buttonAnnuler.onClick = function () {		
+		dialog.close();
+	}
+
+	buttonValider.onClick = function () {		
+		var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+		var file = new File(fileName);
+		file.open("w"); // open file with write access
+			file.writeln("// editCodeClient");		
+			file.writeln(encodeURIComponent(editCodeClient.text));
+			
+			file.writeln("// editURLLocal");		
+			file.writeln(encodeURIComponent(editURLLocal.text));		
+			
+			file.writeln("// editURLOnLigne");		
+			file.writeln(encodeURIComponent(editURLOnLigne.text));
+			
+			file.writeln("// editDossierScript");		
+			file.writeln(encodeURIComponent(editDossierScript.text));
+			
+			file.writeln("// editDossierBASESource");		
+			file.writeln(encodeURIComponent(editDossierBASESource.text));
+			
+			file.writeln("// editProfondeurSOURCE");		
+			file.writeln(encodeURIComponent(editProfondeurSOURCE.text));
+			
+			file.writeln("// editURLSousDossierSOURCE");		
+			file.writeln(encodeURIComponent(editURLSousDossierSOURCE.text));
+			
+			file.writeln("// editFTPHote");		
+			file.writeln(encodeURIComponent(editFTPHote.text));
+			
+			file.writeln("// editFTPId");		
+			file.writeln(encodeURIComponent(editFTPId.text));
+			
+			file.writeln("// editFTPMp");		
+			file.writeln(encodeURIComponent(editFTPMp.text));
+			
+			file.writeln("// editFTPDossier");		
+			file.writeln(encodeURIComponent(editFTPDossier.text));
+		file.close();
+		alert("Fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications.");
+				
+		dialog.close();
+	}	
+
+dialog.show();
+}
+
+
+function InitConfig() {
+	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+	var file = new File(fileName);
+	if ( file.open("r")){
+		file.readln();	
+		g_CodeClient = file.readln();
+		
+		file.readln();		//editURLLocal.text = 
+		file.readln();		
+		
+		file.readln();		//editURLOnLigne.text = 
+		file.readln();
+		
+		file.readln();		// editDossierScript"		
+		g_RepSCRIPTSPhotoshop = decodeURIComponent(file.readln());
+		
+		file.readln();		//editDossierBASESource
+		g_RepBASESOURCE = decodeURIComponent(file.readln());		
+		//alert(g_RepBASESOURCE);
+		
+		file.readln();		//editProfondeurSOURCE.text = 
+		file.readln();
+		
+		file.readln();		//editURLSousDossierSOURCE.text = 
+		g_SousRepSOURCE = decodeURIComponent(file.readln());
+		
+		file.readln();		//editFTPHote.text = 
+		file.readln();
+		
+		file.readln();		//editFTPId.text = 
+		file.readln();
+		
+		file.readln();		//editFTPMp.text = 
+		file.readln();
+		
+		file.readln();		//editFTPDossier.text = 
+		file.readln();		
+	/**/
+		file.close();
+	}
+}

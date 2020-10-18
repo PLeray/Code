@@ -8,7 +8,7 @@ if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
-include 'CATConnexionAPI.php';
+include 'APIConnexion.php';
 include 'CATFonctions.php';
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
@@ -20,7 +20,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <head>
 	<title id="GO-PHOTOLAB">PhotoLab : historique des commandes</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-	<link rel="stylesheet" type="text/css" href="css/PhotolabCMD.css">
+	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<script type="text/javascript" src="js/CATFonctions.js"></script>
 	<!-- <script type="text/javascript" src="res/APIConnexion.js"></script>	 -->
@@ -55,7 +55,7 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 ?>
 <BR>
 <div class="recherche">	
-	<a href="<?php echo 'CMDPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a>
+	<a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a>
 	<h1>Historique des commandes (nombre : <?php echo $nb_fichier; ?>)</h1>
 	<!-- RECHERCHE -->
 	<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tapez les premières lettres, pour rechercher une commande..." title="Tapez les premières lettres...">

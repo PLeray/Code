@@ -100,9 +100,9 @@ function LireFichierLab($myfileName){
 
 function RetourEcranFichier($myfileName){
 	$Etat = substr($myfileName, -1);
-	$RetourEcran = 'CMDPhotolab.php';	
+	$RetourEcran = 'CATPhotolab.php';	
     if ($Etat >= 4){
-		$RetourEcran = 'CMDHistorique.php';
+		$RetourEcran = 'CATHistorique.php';
 	}
 	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }	
@@ -314,7 +314,7 @@ function LienJPG($filename){
 	
 	
 	//$ImageLien = '<img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '">';
-	$ImageLien = '<a href="CMD-Planche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
+	$ImageLien = '<a href="CMD-AffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
 	
 
 	

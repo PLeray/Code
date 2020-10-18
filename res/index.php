@@ -1,7 +1,7 @@
 <?php
 setlocale(LC_TIME, 'french');
 
-include 'CATConnexionAPI.php';
+include 'APIConnexion.php';
 
 /*include 'res/CATFonctions.php';
 include 'res/ConvertCSV.php';
@@ -42,12 +42,12 @@ if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab up
 		</div>
 		<br><br>
 
-		<a href="<?php echo 'CMDPhotolab.php' . ArgumentURL(); ?>"><img src="img/PhotoLabCMD.png" alt="Commandes en cours"></a>  
-		<a href="<?php echo 'CMDHistorique.php' . ArgumentURL(); ?>"><img src="img/PhotoLabHISTO.png" alt="Historique des commandes"></a>
+		<a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>"><img src="img/PhotoLabCMD.png" alt="Commandes en cours"></a>  
+		<a href="<?php echo 'CATHistorique.php' . ArgumentURL(); ?>"><img src="img/PhotoLabHISTO.png" alt="Historique des commandes"></a>
 		<a href="<?php echo $maConnexionAPI->Adresse(); ?>"><img src="img/PhotoLabFACT.png" alt="Commandes Enregistrées"></a>	
 		<br><br><br><br>
 		<?php 
-		if ($codeMembre != ''){
+		if ($codeMembre != '' && $codeMembre != '0'){
 			echo '<div id="dropArea"><br>Glisser déposer un fichier commandes dans cette zone.<br>
 			Soit un fichier (.lab ou .web) créé par ProdEcole (Excel).<br>
 			Soit un fichier (.csv) téléchargé depuis le site de vente en ligne Lumys.<br>

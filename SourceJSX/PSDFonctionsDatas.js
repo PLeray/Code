@@ -42,7 +42,7 @@ var g_PdtNotLABO = [
 ];
 
 var g_MinimuNomClasse = 11;
-var g_ProfondeurMAX = 3;
+
 //var g_ProfondeurRech = 0;
 
 

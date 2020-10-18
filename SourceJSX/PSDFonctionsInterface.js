@@ -12,7 +12,8 @@ function InitCommande() {
 	g_CommandeAVANCEMENT = ''; 
 	//txtFichier.text = leFichierCMD;
 	
-	PHOTOLAB.text = g_NomVersion + '         traitement de : ' + g_NomFichierEnCours;
+	//PHOTOLAB.text = g_NomVersion + 
+	fichierEnCours.text = '         traitement de : ' + g_NomFichierEnCours;
 	
 	g_SelectFichierLab = 0;
 	g_BilanGeneration.length = 0; // = [];
@@ -22,32 +23,21 @@ function InitCommande() {
 }
 
 function Auto() { 
-	//var leFichierEnCours = ''; 
 	Raffraichir(); 
-	//alert("Auto : ");		
-	RecupNomOrdi();
+	
 	var nbFichierATraiter = ChercherFichierLab();
-	//if (checkAuto.value){
 	g_IsPhotoLabON = true;
 	g_IsTravail = true;
 	while (g_IsPhotoLabON && g_IsTravail){ 
-		// TANT QU'IL Y A DES FICHIERS 0
-		//g_ToutFichier = false;
-		//initialiser tableau de fichier a traiter
-		//alert('g_TabListeCompilationFichier.length : ' + g_TabListeCompilationFichier.length);
+		// TANT QU'IL Y A DES FICHIERS '0' > initialiser tableau de fichier a traiter
 		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
 			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
 			InitCommande();
 			GenererLeFichierNOM(); //du tableau
 		} 		
 		nbFichierATraiter = ChercherFichierLab('SansLesErreurs');
-		g_IsTravail = (nbFichierATraiter > 0);			
-		//alert("TableauTOStr(g_TabListeCompilationFichier) : " + TableauTOStr(g_TabListeCompilationFichier));	
-		//alert("nbFichierATraiter : " + nbFichierATraiter);			
+		g_IsTravail = (nbFichierATraiter > 0);						
 	} 	
-	PHOTOLAB.text = g_NomVersion;
-		//PHOTOLAB.close();		
-	//}
 }
 
 function GenererLeFichierNOM() { 
@@ -59,7 +49,6 @@ function GenererLeFichierNOM() {
 
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
 		InitTableauFichier();
-		
 		if (g_IsPlancheSiteWEB){
 			GenererFichiersWEB();
 		}
@@ -67,7 +56,6 @@ function GenererLeFichierNOM() {
 			GenererFichiersLABO();
 		}	
 	}
-	//alert("GenererLeFichierNOM " + g_NomFichierEnCours );
 	g_IsGenerationEnCours = false;
 	g_IsGenerationEnPause = true;
 	SetBoutonGenerer();
@@ -76,25 +64,11 @@ function GenererLeFichierNOM() {
 	buttonConfig.enabled = true;
 }
 
-
-/*function InitUI(isAuto){ 
-	Select_Generer.enabled = !isAuto;
-	//ComboFichierLab.enabled = !isAuto;
-	//checkFile.enabled = !isAuto;
-	checkOrdre.enabled = !isAuto;
-	//PHOTOLAB.size.height = (!isAuto) ? g_HauteurDetailsUI : g_HauteurUI;
-	PHOTOLAB.size.height = g_HauteurUI;
-	laTaille = (laTaille) ? false : true ;
-
-}*/
-
-
 function OuvrirSelectFichierLab0(fileName) {
 	var valRetour = false;
 	if (g_IsPhotoLabON){
 		g_IsPlancheSiteWEB = (fileName.slice(-5) == ".web0") ? true : false ; 
 		//alert('OuvrirSeleFichierLab0 : ' + fileName);
-		//var fileNamePath = g_Rep_PHOTOLAB + 'CMDLABO/' + '/' + fileName;
 		var fileNamePath = g_Rep_PHOTOLAB + 'CMDLABO/' + fileName;
 		if (isDroitCompiler(fileNamePath.substr(0,fileNamePath.length-1) + '1')){
 			//alert('isDroitCompiler ok pour : ' + fileNamePath);
@@ -146,29 +120,23 @@ function ChercherFichierLab(avecErreur) {
 				}
 				if(!$YAutre){
 					//Ajout dans la liste des fichiers en errreur						
-					if (isFichierExiste(g_Rep_PHOTOLAB + 'CMDLABO/' + strBaseName + '.Erreur')) {								
+					if (isFichierExiste(g_Rep_PHOTOLAB + 'CMDLABO/' + strBaseName + '.Erreur')) {							
 						g_TabFichierAvecErreur.push(leFichier);
-
 					}
 					//ComboFichierLab.add ("item", leFichier); 
 					if (avecErreur == 'AvecLesErreurs'){
-						g_TabListeCompilationFichier.push(leFichier);								
-						//alert('Avec Erreur g_TabListeCompilationFichier.push(g_TabFichierATraiter[n]);  ' + TableauTOStr(g_TabListeCompilationFichier));								
+						g_TabListeCompilationFichier.push(leFichier);										
 					}
 					else
-					{   //alert('g_TabFichierAvecErreur  ' + TableauTOStr(g_TabFichierAvecErreur) + ' g_TabFichierATraiter[n] : ' + g_TabFichierATraiter[n]);
+					{   //alert('g_TabFichierAvecErreur  ' + TableauTOStr(g_TabFichierAvecErreur) + ' 
 						if (!isFichierErreur(leFichier)) {								
-							g_TabListeCompilationFichier.push(leFichier);
-							//alert('SANS Erreur g_TabListeCompilationFichier.push(g_TabFichierATraiter[n]);  ' + TableauTOStr(g_TabListeCompilationFichier));	
-						
+							g_TabListeCompilationFichier.push(leFichier);					
 						}							
-					}						
-					//alert('g_TabFichierATraiter.length 2: ' + g_TabListeCompilationFichier.length);				
+					}								
 				}									
 			}			
 		}		
 	}   
-	//alert('MoOOOOde : ' + avecErreur + ' Final TableauTOStr(g_TabListeCompilationFichier) : ' + TableauTOStr(g_TabListeCompilationFichier));		
 	return g_TabListeCompilationFichier.length;		
 }
 
@@ -212,7 +180,6 @@ function OuvrirFichierLabo() {
 				}
 			}else{
 				//Gestion erreur pas de code a faire !!
-				//alert('Pas enregistree');
 				msg = "PROBLEME : Le fichier de commande n'est pas enregistré";
 				AjoutBilanGeneration(msg);
 				msg = "     SOLUTION : Déposer de nouveau le fichier de commande (.csv, . lab ou .web) par drag and Drop pour essayer de le ré-enregistrer !";
@@ -236,7 +203,6 @@ function MAJinfoEcole(uneEcole) {
 	var repTirage = '';
 	//UI alert('UI MAJinfoEcole()');
 	g_RepSOURCE = TrouverSOURCE('('+ uneEcole.CodeRefEcole +')');
-	//alert('MAJinfoEcole uneEcole.CodeRefEcole  = ' + uneEcole.CodeRefEcole );
     if (g_RepSOURCE ==''){
 		msg = "Ecole en cours : " + g_CommandeECOLEEncours
 		AjoutBilanGeneration(msg);
@@ -646,6 +612,61 @@ function DLGValidationNomClasse(){
 	var buttonScanSOURCE = GroupeInfo1.add("button", undefined, undefined, {name: "buttonScanSOURCE"}); 
 		buttonScanSOURCE.text = "Sélectionner un répertoire /SOURCE"; 
 	
+	
+
+	// DIALOG
+	// ======
+	var divider1 = dialog.add("panel", undefined, undefined, {name: "divider1"}); 
+		divider1.alignment = "fill"; 
+
+	// GROUPEINFO2
+	// ===========
+	var GroupeInfo2 = dialog.add("group", undefined, {name: "GroupeInfo2"}); 
+		GroupeInfo2.orientation = "column"; 
+		GroupeInfo2.alignChildren = ["center","top"]; 
+		GroupeInfo2.spacing = 10; 
+		GroupeInfo2.margins = 0; 
+
+	/*var statictext2 = GroupeInfo2.add("statictext", undefined, undefined, {name: "statictext2", multiline: true}); 
+		statictext2.text = "Ref Classe"; 
+		statictext2.preferredSize.width = 80; 
+		statictext2.justify = "right"; 
+
+	var divider2 = GroupeInfo2.add("panel", undefined, undefined, {name: "divider2"}); 
+		divider2.alignment = "fill"; */
+
+	var statictext3 = GroupeInfo2.add("statictext", undefined, undefined, {name: "dsfsdf", justify: "center"}); 
+	statictext3.text = "Noms des classes trouvés :"; 
+	statictext3.preferredSize.width = 300; 
+		
+	var listtext3 = GroupeInfo2.add ("edittext", [0, 0, 300, 400], " ", {name: "Noms des classes :", multiline: true});
+	listtext3.text = "Aucune ..."; 
+		
+
+	// GROUPEINFO3
+	// ===========
+	/*var GroupeInfo3 = dialog.add("group", undefined, {name: "GroupeInfo3"}); 
+		GroupeInfo3.orientation = "row"; 
+		GroupeInfo3.alignChildren = ["left","top"]; 
+		GroupeInfo3.spacing = 10; 
+		GroupeInfo3.margins = 0; 
+*/
+	//var EditRefClasse = GroupeInfo3.add('edittext {size: [80,200], properties: {name: "EditRefClasse", readonly: true, multiline: true, scrollable: true}}'); 
+    //EditRefClasse.text = "Nom Classe 1\rNom Classe 2";
+
+	//var EditNomClasse = GroupeInfo3.add('edittext {size: [400,200], properties: {name: "EditNomClasse", multiline: true, scrollable: true, borderless: true}}'); 
+		//EditNomClasse.text = "Nom Classe 1\rNom Classe 2"; 
+
+	// GROUPEINFO4
+	// ===========
+	var GroupeInfo4 = dialog.add("group", undefined, {name: "GroupeInfo4"}); 
+		GroupeInfo4.orientation = "row"; 
+		GroupeInfo4.alignChildren = ["left","center"]; 
+		GroupeInfo4.spacing = 10; 
+		GroupeInfo4.margins = 0; 
+		GroupeInfo4.alignment = ["right","top"]; 
+		
+		
 	buttonScanSOURCE.onClick = function () {	
 		var leRepSOURCE = Folder.selectDialog ("Sélectionnez un repertoire de Photos /SOURCE'...");		
 		g_RepSOURCE  = leRepSOURCE.path + '/' + leRepSOURCE.name ;
@@ -657,67 +678,29 @@ function DLGValidationNomClasse(){
 			 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
 			 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
 		}	
-		EditRefClasse.text = refClasse;
-		EditNomClasse.text = nomClasse;
-	}		
-
-	// DIALOG
-	// ======
-	var divider1 = dialog.add("panel", undefined, undefined, {name: "divider1"}); 
-		divider1.alignment = "fill"; 
-
-	// GROUPEINFO2
-	// ===========
-	var GroupeInfo2 = dialog.add("group", undefined, {name: "GroupeInfo2"}); 
-		GroupeInfo2.orientation = "row"; 
-		GroupeInfo2.alignChildren = ["left","top"]; 
-		GroupeInfo2.spacing = 10; 
-		GroupeInfo2.margins = 0; 
-
-	var statictext2 = GroupeInfo2.add("statictext", undefined, undefined, {name: "statictext2", multiline: true}); 
-		statictext2.text = "Ref Classe"; 
-		statictext2.preferredSize.width = 80; 
-		statictext2.justify = "right"; 
-
-	var divider2 = GroupeInfo2.add("panel", undefined, undefined, {name: "divider2"}); 
-		divider2.alignment = "fill"; 
-
-	var statictext3 = GroupeInfo2.add("statictext", undefined, undefined, {name: "statictext3", multiline: true}); 
-		statictext3.text = "Nom Classe (Modifiable)"; 
-		statictext3.preferredSize.width = 400; 
-
-	// GROUPEINFO3
-	// ===========
-	var GroupeInfo3 = dialog.add("group", undefined, {name: "GroupeInfo3"}); 
-		GroupeInfo3.orientation = "row"; 
-		GroupeInfo3.alignChildren = ["left","top"]; 
-		GroupeInfo3.spacing = 10; 
-		GroupeInfo3.margins = 0; 
-
-	var EditRefClasse = GroupeInfo3.add('edittext {size: [80,200], properties: {name: "EditRefClasse", readonly: true, multiline: true, scrollable: true}}'); 
-    EditRefClasse.text = "0100\r0200";
-
-	var EditNomClasse = GroupeInfo3.add('edittext {size: [400,200], properties: {name: "EditNomClasse", multiline: true, scrollable: true, borderless: true}}'); 
-		EditNomClasse.text = "Nom Classe 1\rNom Classe 2"; 
-
-	// GROUPEINFO4
-	// ===========
-	var GroupeInfo4 = dialog.add("group", undefined, {name: "GroupeInfo4"}); 
-		GroupeInfo4.orientation = "row"; 
-		GroupeInfo4.alignChildren = ["left","center"]; 
-		GroupeInfo4.spacing = 10; 
-		GroupeInfo4.margins = 0; 
-		GroupeInfo4.alignment = ["right","top"]; 
+		//EditRefClasse.text = refClasse;
+		//EditRefClasse.text = "Noms des classes trouvés :\n" + decodeURIComponent(nomClasse);
+		listtext3.text = "Noms des classes trouvés :\n" + decodeURIComponent(nomClasse);
+		//EditNomClasse.text = nomClasse;
+	}			
+		
+		
+		
+		
 
 	var buttonGenerererArboWEB = GroupeInfo4.add("button", undefined, undefined, {name: "buttonGenerererArboWEB"}); 
 		buttonGenerererArboWEB.text = "Générer Arborescence WEB"; 
 		
 		
 	buttonGenerererArboWEB.onClick = function () {	
-		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + editNomArbo.text;
-		ArborescenceWEB('I.WEB-QUATTRO');
-
-		dialog.close();
+		if (editNomArbo.text == "NomArborecence"){
+			alert("Choisissez un nom pour l'arborescence web");
+		}
+		else{
+			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + editNomArbo.text;
+			ArborescenceWEB('I.WEB-QUATTRO');
+			dialog.close();		
+		}
 	}		
 
 	dialog.show();
@@ -728,7 +711,7 @@ function DLGConfiguration(){
 	// DIALOG
 	// ======
 	var dialog = new Window("dialog"); 
-		dialog.text = "Paramétrage de PhotoLab"; 
+		dialog.text = "Paramétrage du plugin PhotoLab"; 
 		dialog.orientation = "column"; 
 		dialog.alignChildren = ["right","top"]; 
 		dialog.spacing = 10; 
@@ -739,60 +722,11 @@ function DLGConfiguration(){
 
 		dialog.graphics.foregroundColor =UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);	
 
-	// PANEL1
-	// ======
-	var panel1 = dialog.add("panel", undefined, undefined, {name: "panel1"}); 
-		panel1.text = "Généralités"; 
-		panel1.orientation = "column"; 
-		panel1.alignChildren = ["left","top"]; 
-		panel1.spacing = 10; 
-		panel1.margins = 10; 
-	// GROUP1
-	// ======
-	var group1 = panel1.add("group", undefined, {name: "group1"}); 
-		group1.orientation = "row"; 
-		group1.alignChildren = ["left","center"]; 
-		group1.spacing = 10; 
-		group1.margins = 0; 
-		group1.alignment = ["right","top"]; 
-	var staticCodeClient = group1.add("statictext", undefined, undefined, {name: "staticCodeClient"}); 
-		staticCodeClient.text = "Code Client"; 
-	var editCodeClient = group1.add('edittext {properties: {name: "editCodeClient"}}'); 
-		editCodeClient.text = "AMP2018"; 
-		editCodeClient.preferredSize.width = 400; 
-		editCodeClient.helpTip = "Saisir ici son code client";
-	// GROUP2
-	// ======
-	var group2 = panel1.add("group", undefined, {name: "group2"}); 
-		group2.orientation = "row"; 
-		group2.alignChildren = ["left","center"]; 
-		group2.spacing = 10; 
-		group2.margins = 0; 
-		group2.alignment = ["right","top"]; 
-	var staticURLLocal = group2.add("statictext", undefined, undefined, {name: "staticURLLocal"}); 
-		staticURLLocal.text = "url du site PhotoLab local"; 
-	var editURLLocal = group2.add('edittext {properties: {name: "editURLLocal"}}'); 
-		editURLLocal.text = "http://localhost/PhotoLab/"; 
-		editURLLocal.preferredSize.width = 400; 
-		editURLLocal.helpTip = "voir dans la config de votre serveur ou est installé PhotoLab ou XamPP, Wamp, ..."; 
-	// GROUP3
-	// ======
-	var group3 = panel1.add("group", undefined, {name: "group3"}); 
-		group3.orientation = "row"; 
-		group3.alignChildren = ["left","center"]; 
-		group3.spacing = 10; 
-		group3.margins = 0; 
-		group3.alignment = ["right","top"]; 
-	var staticURLOnLigne = group3.add("statictext", undefined, undefined, {name: "staticURLOnLigne"}); 
-		staticURLOnLigne.text = "url du site PhotoLab en ligne"; 
-	var editURLOnLigne = group3.add('edittext {properties: {name: "editURLOnLigne"}}'); 
-		editURLOnLigne.text = "https://www.photolab-site.fr"; 
-		editURLOnLigne.preferredSize.width = 400; 
-		editURLOnLigne.helpTip = "A prioris rien à changer ici ..."; 
+
 	// PANEL2
 	// ======
 	var panel2 = dialog.add("panel", undefined, undefined, {name: "panel2"}); 
-		panel2.text = "Localisation des photos Source"; 
+		panel2.text = "Paramètres : "; 
 		panel2.orientation = "column"; 
 		panel2.alignChildren = ["left","top"]; 
 		panel2.spacing = 10; 
@@ -808,9 +742,9 @@ function DLGConfiguration(){
 	var staticDossierScript = group4.add("statictext", undefined, undefined, {name: "staticDossierScript"}); 
 		staticDossierScript.text = "Nom du dossier de script à utiliser dans Photoshop"; 
 	var editDossierScript = group4.add('edittext {properties: {name: "editDossierScript"}}'); 
-		editDossierScript.text = "PhotoLab-Script"; 
+		editDossierScript.text = "PhotoLabsdfsdf-Script"; 
 		editDossierScript.preferredSize.width = 400; 
-		editDossierScript.helpTip = "Tous les scripts (ou actions) de photoshop qui sont utilisés par photolab\ndoivent se trouver dans ce dossier de scripts de Photoshop"; 
+		editDossierScript.helpTip = "Tous les scripts (ou actions) de photoshop qui sont utilisés par photolab\n doivent se trouver dans ce dossier de scripts de Photoshop"; 
 	// GROUP5
 	// ======
 	var group5 = panel2.add("group", undefined, {name: "group5"}); 
@@ -822,12 +756,12 @@ function DLGConfiguration(){
 	var staticDossierBASESource = group5.add("statictext", undefined, undefined, {name: "staticDossierBASESource"}); 
 		staticDossierBASESource.text = "Dossier de base des  photos sources "; 
 	var editDossierBASESource = group5.add('edittext {properties: {name: "editDossierBASESource"}}'); 
-		editDossierBASESource.text = "'D:\Prises de vue\'"; 
+		editDossierBASESource.text = "'D:\Prisedsfsdfs de vue\'"; 
 		editDossierBASESource.preferredSize.width = 400; 
 		editDossierBASESource.helpTip = "C'est dans ce dossier que se trouveront les sous dossier comprenant le code du projet.\nPar exemple un dossier nommé 'St Joseph-Nantes (AFF3456)'"; 
 	// GROUP6
 	// ======
-	var group6 = panel2.add("group", undefined, {name: "group6"}); 
+	/*var group6 = panel2.add("group", undefined, {name: "group6"}); 
 		group6.orientation = "row"; 
 		group6.alignChildren = ["left","center"]; 
 		group6.spacing = 10; 
@@ -838,7 +772,8 @@ function DLGConfiguration(){
 	var editProfondeurSOURCE = group6.add('edittext {properties: {name: "editProfondeurSOURCE"}}'); 
 		editProfondeurSOURCE.text = "2"; 
 		editProfondeurSOURCE.preferredSize.width = 400; 
-		editProfondeurSOURCE.helpTip = "Si vos projet sont directement sous le répertoire de Base,\nexemple : D:\Prises de vue\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\Prises de vue\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\Prises de vue\2019-2020\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 3"; 
+		editProfondeurSOURCE.helpTip = "Si vos projet sont directement sous le répertoire de Base,\nexemple : D:\\Prises de vue\\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\\Prises de vue\\Novembre 2019\\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\\Prises de vue\\2019-2020\\Novembre 2019\\St Joseph-Nantes (AFF3456) saisir 3"; 
+		*/
 	// GROUP7
 	// ======
 	var group7 = panel2.add("group", undefined, {name: "group7"}); 
@@ -850,73 +785,24 @@ function DLGConfiguration(){
 	var staticURLSousDossierSOURCE = group7.add("statictext", undefined, undefined, {name: "staticURLSousDossierSOURCE"}); 
 		staticURLSousDossierSOURCE.text = "Sous dossier source d'un dossier 'projet'"; 
 	var editURLSousDossierSOURCE = group7.add('edittext {properties: {name: "editURLSousDossierSOURCE"}}'); 
-		editURLSousDossierSOURCE.text = "\PHOTOS\SOURCE"; 
+		editURLSousDossierSOURCE.text = "\PHOsfdsdfsdfTOS\SOURCE"; 
 		editURLSousDossierSOURCE.preferredSize.width = 400; 
 		editURLSousDossierSOURCE.helpTip = "Selon son organisation de dossier 'projet', on peut souhaiter ranger les photos à exploiter dans un sous dossier particulier. A saisir ici"; 
-	// PANEL3
-	// ======
-	var panel3 = dialog.add("panel", undefined, undefined, {name: "panel3"}); 
-		panel3.text = "(optionnel) Paramètres FTP imprimeur"; 
-		panel3.orientation = "column"; 
-		panel3.alignChildren = ["left","top"]; 
-		panel3.spacing = 10; 
-		panel3.margins = 10; 
+		
 	// GROUP8
 	// ======
-	var group8 = panel3.add("group", undefined, {name: "group8"}); 
+	var group8 = panel2.add("group", undefined, {name: "group8"}); 
 		group8.orientation = "row"; 
 		group8.alignChildren = ["left","center"]; 
 		group8.spacing = 10; 
 		group8.margins = 0; 
 		group8.alignment = ["right","top"]; 
-	var staticFTPHote = group8.add("statictext", undefined, undefined, {name: "staticFTPHote"}); 
-		staticFTPHote.text = "Hôte"; 
-	var editFTPHote = group8.add('edittext {properties: {name: "editFTPHote"}}'); 
-		editFTPHote.text = "crepes.o2ftp.net"; 
-		editFTPHote.preferredSize.width = 400; 
-		editFTPHote.helpTip = "Saisir le nom du serveur FTP d'échange avec l'imprimeur (optionnel)"; 
-	// GROUP9
-	// ======
-	var group9 = panel3.add("group", undefined, {name: "group9"}); 
-		group9.orientation = "row"; 
-		group9.alignChildren = ["left","center"]; 
-		group9.spacing = 10; 
-		group9.margins = 0; 
-		group9.alignment = ["right","top"]; 
-	var staticFTPId = group9.add("statictext", undefined, undefined, {name: "staticFTPId"}); 
-		staticFTPId.text = "Identifiant"; 
-	var editFTPId = group9.add('edittext {properties: {name: "editFTPId"}}'); 
-		editFTPId.text = "bibi"; 
-		editFTPId.preferredSize.width = 400; 
-		editFTPId.helpTip = "Login FTP (optionnel)"; 
-	// GROUP10
-	// =======
-	var group10 = panel3.add("group", undefined, {name: "group10"}); 
-		group10.orientation = "row"; 
-		group10.alignChildren = ["left","center"]; 
-		group10.spacing = 10; 
-		group10.margins = 0; 
-		group10.alignment = ["right","top"]; 
-	var staticFTPMp = group10.add("statictext", undefined, undefined, {name: "staticFTPMp"}); 
-		staticFTPMp.text = "Mot de passe"; 
-	var editFTPMp = group10.add('edittext {properties: {name: "editFTPMp"}}'); 
-		editFTPMp.text = "*****"; 
-		editFTPMp.preferredSize.width = 400; 
-		editFTPMp.helpTip = "Mot de passe FTP (optionnel)"; 
-	// GROUP11
-	// =======
-	var group11 = panel3.add("group", undefined, {name: "group11"}); 
-		group11.orientation = "row"; 
-		group11.alignChildren = ["left","center"]; 
-		group11.spacing = 10; 
-		group11.margins = 0; 
-		group11.alignment = ["right","top"]; 
-	var staticFTPDossier = group11.add("statictext", undefined, undefined, {name: "staticFTPDossier"}); 
-		staticFTPDossier.text = "Dossier distant ou déposer les tirages"; 
-	var editFTPDossier = group11.add('edittext {properties: {name: "editFTPDossier"}}'); 
-		editFTPDossier.text = "/LABO-TIRAGES"; 
-		editFTPDossier.preferredSize.width = 400; 
-		editFTPDossier.helpTip = "Login FTP (optionnel)"; 
+
+		
+	var editcheckOrdre = group8.add ("checkbox", [0,0,400,20], "Ordre des planches inversé"); 		
+		editcheckOrdre.helpTip = "Cocher si vous souhaiter=z que les planches sortent en ordre inversé pour l'imprimeur..."; 
+		editcheckOrdre.value = true;
+	
 	// GROUP12
 	// =======
 	var group12 = dialog.add("group", undefined, {name: "group12"}); 
@@ -935,14 +821,6 @@ function DLGConfiguration(){
 	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
-		file.readln();	
-		editCodeClient.text = decodeURIComponent(file.readln());
-		
-		file.readln();		
-		editURLLocal.text = decodeURIComponent(file.readln());		
-		
-		file.readln();		
-		editURLOnLigne.text = decodeURIComponent(file.readln());
 		
 		file.readln();		
 		editDossierScript.text = decodeURIComponent(file.readln());
@@ -950,24 +828,15 @@ function DLGConfiguration(){
 		file.readln();		
 		editDossierBASESource.text = decodeURIComponent(file.readln());
 		
-		file.readln();		
-		editProfondeurSOURCE.text = decodeURIComponent(file.readln());
+		//file.readln();		
+		//editProfondeurSOURCE.text = decodeURIComponent(file.readln());
 		
 		file.readln();	
 		editURLSousDossierSOURCE.text = decodeURIComponent(file.readln());
 		
-		file.readln();		
-		editFTPHote.text = decodeURIComponent(file.readln());
+		file.readln();		//Planche inversé ?	
+		editcheckOrdre.value = (file.readln() == 'true');		
 		
-		file.readln();		
-		editFTPId.text = decodeURIComponent(file.readln());
-		
-		file.readln();		
-		editFTPMp.text = decodeURIComponent(file.readln());
-		
-		file.readln();		
-		editFTPDossier.text = decodeURIComponent(file.readln());		
-
 		file.close();
 	}
 
@@ -979,14 +848,6 @@ function DLGConfiguration(){
 		var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
 		var file = new File(fileName);
 		file.open("w"); // open file with write access
-			file.writeln("// editCodeClient");		
-			file.writeln(encodeURIComponent(editCodeClient.text));
-			
-			file.writeln("// editURLLocal");		
-			file.writeln(encodeURIComponent(editURLLocal.text));		
-			
-			file.writeln("// editURLOnLigne");		
-			file.writeln(encodeURIComponent(editURLOnLigne.text));
 			
 			file.writeln("// editDossierScript");		
 			file.writeln(encodeURIComponent(editDossierScript.text));
@@ -994,23 +855,15 @@ function DLGConfiguration(){
 			file.writeln("// editDossierBASESource");		
 			file.writeln(encodeURIComponent(editDossierBASESource.text));
 			
-			file.writeln("// editProfondeurSOURCE");		
-			file.writeln(encodeURIComponent(editProfondeurSOURCE.text));
+			//file.writeln("// editProfondeurSOURCE");		
+			//file.writeln(encodeURIComponent(editProfondeurSOURCE.text));
 			
 			file.writeln("// editURLSousDossierSOURCE");		
 			file.writeln(encodeURIComponent(editURLSousDossierSOURCE.text));
 			
-			file.writeln("// editFTPHote");		
-			file.writeln(encodeURIComponent(editFTPHote.text));
+			file.writeln("// Planche inversé ?");		
+			file.writeln(editcheckOrdre.value);	
 			
-			file.writeln("// editFTPId");		
-			file.writeln(encodeURIComponent(editFTPId.text));
-			
-			file.writeln("// editFTPMp");		
-			file.writeln(encodeURIComponent(editFTPMp.text));
-			
-			file.writeln("// editFTPDossier");		
-			file.writeln(encodeURIComponent(editFTPDossier.text));
 		file.close();
 		alert("Fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications.");
 				
@@ -1025,14 +878,6 @@ function InitConfig() {
 	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
-		file.readln();	
-		g_CodeClient = file.readln();
-		
-		file.readln();		//editURLLocal.text = 
-		file.readln();		
-		
-		file.readln();		//editURLOnLigne.text = 
-		file.readln();
 		
 		file.readln();		// editDossierScript"		
 		g_RepSCRIPTSPhotoshop = decodeURIComponent(file.readln());
@@ -1041,24 +886,15 @@ function InitConfig() {
 		g_RepBASESOURCE = decodeURIComponent(file.readln());		
 		//alert(g_RepBASESOURCE);
 		
-		file.readln();		//editProfondeurSOURCE.text = 
-		file.readln();
+		//file.readln();		//editProfondeurSOURCE.text = 
+		//file.readln();
 		
 		file.readln();		//editURLSousDossierSOURCE.text = 
-		g_SousRepSOURCE = decodeURIComponent(file.readln());
-		
-		file.readln();		//editFTPHote.text = 
-		file.readln();
-		
-		file.readln();		//editFTPId.text = 
-		file.readln();
-		
-		file.readln();		//editFTPMp.text = 
-		file.readln();
-		
-		file.readln();		//editFTPDossier.text = 
-		file.readln();		
-	/**/
+		g_SousRepSOURCE = decodeURIComponent(file.readln());		
+
+		file.readln();		//Planche inversé ?			
+		g_OrdreInversePlanche = (file.readln() == 'true');
+
 		file.close();
 	}
 }

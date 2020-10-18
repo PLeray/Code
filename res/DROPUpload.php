@@ -1,14 +1,14 @@
 <?php
 //include 'res/CConnexionLOCAL.php';
 /*
-include 'res/CATConnexionAPI.php';
+include 'res/APIConnexion.php';
 include 'res/CATFonctions.php';
 include 'res/ConvertCSV.php';
 
 $repCommandesLABO = "../CMDLABO/";
 */
 
-include 'CATConnexionAPI.php';
+include 'APIConnexion.php';
 include 'CATFonctions.php';
 include 'ConvertCSV.php';
 
