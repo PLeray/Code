@@ -178,7 +178,7 @@ Zone2Progression.orientation = "column";
 var fichierEnCours = Zone2Progression.add ('statictext {justify: "center"}'); //,  [0,0,g_LargeurUI,10]);
 
 
-var progressBar = Zone2Progression.add ('progressbar', [0,0,g_LargeurUI,10], 0, 5);
+var progressBar = Zone2Progression.add ('progressbar', [0,0,g_LargeurUI,10], 0, 15);
 
 
 PHOTOLAB.onDeactivate = function(){
@@ -195,7 +195,7 @@ PHOTOLAB.onClose = function(){
     app.displayDialogs = g_OriginalDisplayDialogs; // Reset display dialogs   
     app.preferences.typeUnits  = g_OriginalTypeUnits; // Reset ruler units to original settings   
     app.preferences.rulerUnits = g_OriginalRulerUnits; // Reset units to original settings     
-    //photoshop.quit()
+    photoshop.quit()
 };
 
 PHOTOLAB.show();	

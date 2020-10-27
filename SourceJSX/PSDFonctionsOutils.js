@@ -134,7 +134,8 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 					file.writeln('{Etat 1 :' + g_CommandeAVANCEMENT + recuRESUME.substr(recuRESUME.indexOf('%%')));						
 				}
 				else{
-					file.writeln('{Etat 2 : Création des planches terminées' + recuRESUME.substr(recuRESUME.indexOf('%%')));												
+					file.writeln('{Etat 2 : Création des planches terminées' + recuRESUME.substr(recuRESUME.indexOf('%%')));
+					
 				}
 				break;
 			default:
@@ -142,6 +143,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 			} 
 		}		
 	file.close();
+	if (numEtatCompil != 1) {alert (TableauTOStr(g_TabLigneOriginale));}
 	//alert('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB\n');
 	
 	MsgINFO('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB');
@@ -460,9 +462,14 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					
 					// CADRE-CARRE-ID !!!!!!!!!
 					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
-						//reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
+						//reussiteTraitement = reussiteTraitement && 
 						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
 					}	
+					// CADRE-CARRE-ID !!!!!!!!!
+					if (unProduit.Type.indexOf('INSITU-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+						//reussiteTraitement = reussiteTraitement && 
+						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
+					}						
 					
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 					if (unProduit.Type != "PORTRAIT" 
@@ -470,7 +477,8 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						&& unProduit.Type != "TRAD" 
 						&& unProduit.Type != "CUBE" 
 						&& unProduit.Type != "RUCH"						
-						&& unProduit.Type != "CADRE-GP"){
+						&& unProduit.Type != "CADRE-GP" // utilité ???
+						&& unProduit.Type != "INSITU-GP"){
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Type);
 						//Raffraichir(); AVOIR new 27-08
 					}
@@ -782,7 +790,7 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 			}
 			if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
 				//ok alert("boucle : " + theObject.name + " taille : " + theObject.name.length);
-				if (theObject.name.length >= g_MinimuNomClasse) { // C'est un Groupe  :: 000PANOgs(.jpg)// C'est un petit nom de groupe !
+				if (theObject.name.length >= g_MinimuNomClasse) { // C'est un petit nom de groupe !
 					//On ajoute le groupe à TabLesGroupesClasse
 					//alert("theObject.name : " + theObject.name + "    strNUMEROClasse :  " + strNUMEROClasse);
 					if ((strNUMEROClasse != "") && (strNUMEROClasse != NumeroClasseDepuisNomGroupe(theObject.name))){
@@ -814,33 +822,29 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 }
 
 function NumeroClasseDepuisNomGroupe(strNOMdeClasse){
-	/*if ( strNOMdeClasse.indexOf('TRAD') > -1) { // c'est un groupe TRAD
-		return strNOMdeClasse.substr(strNOMdeClasse.indexOf('TRAD')+4,5);
-	}
-	if ( strNOMdeClasse.indexOf('PANO') > -1) { // c'est un groupe PANO
-		return strNOMdeClasse.substr(strNOMdeClasse.indexOf('PANO')+4,5);
-	}
-	if ( strNOMdeClasse.indexOf('CUBE') > -1) { // c'est un groupe CUBE
-		return strNOMdeClasse.substr(strNOMdeClasse.indexOf('CUBE')+4,5);
-	}
-		if ( strNOMdeClasse.indexOf('RUCH') > -1) { // c'est un groupe RUCHE
-		return strNOMdeClasse.substr(strNOMdeClasse.indexOf('RUCH')+4,5);
-	}
-	// marche ?
-	return strNOMdeClasse.substr(0,4);*/	
 	var retour = '';
-	//alert('isProduitGroupe ' + g_PdtGROUPE[1] );
-	for (var i = 0; i < g_TypeGROUPE.length; i++) {
-		if ( strNOMdeClasse.indexOf(g_TypeGROUPE[i]) > -1) { // c'est un groupe repertorié
-			retour = strNOMdeClasse.substr(0, 4);
-		}
-	} 
+	if ( strNOMdeClasse.toLowerCase().indexOf('fratrie') > -1) { // c'est une classe fratrie 
+		retour = strNOMdeClasse.substr(0, 4);
+	}
+	else{
+		//alert('isProduitGroupe ' + g_PdtGROUPE[1] );
+		for (var i = 0; i < g_TypeGROUPE.length; i++) {
+			if ( strNOMdeClasse.indexOf(g_TypeGROUPE[i]) > -1) { // c'est un groupe repertorié
+				retour = strNOMdeClasse.substr(0, 4);
+			}
+		} 
+	}
 	return retour;
 }
 
 function NomClasseDepuisNomGroupe(strNOMdeClasse){
 	var retour = '';
-	retour = strNOMdeClasse.slice(10,-4);
+	if ( strNOMdeClasse.toLowerCase().indexOf('fratrie') > -1) { // c'est une classe fratrie 
+			retour = 'Fratries';
+	}
+	else{
+		retour = strNOMdeClasse.slice(10,-4);		
+	}
 	return retour;
 }
 

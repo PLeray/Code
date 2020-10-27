@@ -8,11 +8,13 @@ var sepRetourLigne = 'RCSL';
 var g_IsFratrie = false;
 
 var g_TypeGROUPE = [
+'FRATRIE', 
 'PANO', 
 'TRAD', 
 'CUBE', 
 'RUCH', 
 'CADR',
+'SITU',
 ];
 
 var g_PdtGROUPE = [
@@ -74,6 +76,9 @@ function PhotosDeClasse(CodeLigne) {
 	}	
 	if  (thefilename.indexOf('CADR') > -1) { // c'est un groupe CADR
 		leGroupe = thefilename.substr(0,thefilename.indexOf('CADR')-1);
+	}	
+	if  (thefilename.indexOf('SITU') > -1) { // c'est un groupe SITU
+		leGroupe = thefilename.substr(0,thefilename.indexOf('SITU')-1);
 	}		
 }
 

@@ -14,11 +14,12 @@ $isDebug = file_exists ('debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
-/*
-if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé par DROP (15 octobre)
-	echo  API_PostFILELAB();
-}	
-	*/
+
+if ($codeMembre == '' || $codeMembre == '0'){
+	header('Location: ' . $maConnexionAPI->URL . '/index.php?PourConnexionLOCAL=true');
+
+}
+
 ?>
 
 <!DOCTYPE html>

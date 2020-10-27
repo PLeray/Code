@@ -555,16 +555,24 @@ function ArborescenceWEB(typeTraitement){
 	//laDate = Date.now();
 	//laDate.getDate();
 	
-	/**/var size = 0;
+	/**/
+	var size = 0;
+	var i = 0;
 	for(var fichier in g_GroupeIndiv){
 		size++;
 	}	
 	progressBar.maxvalue = size;
+	progressBar.value = 15;
+	Raffraichir();
 	for(var fichier in g_GroupeIndiv){
-		//alert("fichier : " + fichier + " g_TabListeNomsClasses[fichier] : " + g_GroupeIndiv[fichier]);
+		i = i + 1;
+		 progressBar.value = i;
+		 txtTraitement.text = String (i) + " / " + String (size);
+		 Raffraichir();
+
+		 //alert("fichier : " + fichier + " g_TabListeNomsClasses[fichier] : " + g_GroupeIndiv[fichier]);
 		 CreerFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier], typeTraitement );
-		 progressBar.value ++;
-		 Raffraichir(); 
+
 	}	
 }
 
@@ -680,7 +688,7 @@ function DLGValidationNomClasse(){
 		}	
 		//EditRefClasse.text = refClasse;
 		//EditRefClasse.text = "Noms des classes trouvés :\n" + decodeURIComponent(nomClasse);
-		listtext3.text = "Noms des classes trouvés :\n" + decodeURIComponent(nomClasse);
+		listtext3.text = decodeURIComponent(nomClasse);
 		//EditNomClasse.text = nomClasse;
 	}			
 		

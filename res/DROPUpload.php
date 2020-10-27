@@ -67,9 +67,12 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				//Verif si fichier de commande web iso ou groupe ou pas bon !
 				if (ConvertirCMDcsvEnlab($TabCSV, $_FILES["myfile"]["tmp_name"], $target_file) != '') {					
 					$retourMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
-					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,11,-5)) . "</h2>";					
+					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";					
 					$uploadOk = 2; // Flag test si OK
-					$target_file_seul = substr($target_file, 8, -1); // Pour etre dans la même forme que . lab pas lab0
+					//$target_file_seul = substr($target_file, 8, -1); // Pour etre dans la même forme que . lab pas lab0
+					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
+					echo '<br><br>target_file_seul : ' . $target_file_seul;
+					echo '<br>target_file : ' . $target_file;
 				}				
 			} 
 			else {

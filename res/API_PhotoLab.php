@@ -8,7 +8,7 @@ if (isset($_POST['codeMembre']) ){
 	$codeMembre = $_POST['codeMembre'];
 }
 if (isset($_GET['codeMembre'])) { // Test connexion l'API
-	$codeMembre = $_POST['codeMembre'];
+	$codeMembre = $_GET['codeMembre'];
 }
 //DEBUG ?
 
