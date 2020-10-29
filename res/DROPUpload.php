@@ -71,8 +71,8 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 					$uploadOk = 2; // Flag test si OK
 					//$target_file_seul = substr($target_file, 8, -1); // Pour etre dans la même forme que . lab pas lab0
 					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
-					echo '<br><br>target_file_seul : ' . $target_file_seul;
-					echo '<br>target_file : ' . $target_file;
+					//echo '<br><br>target_file_seul : ' . $target_file_seul;
+					//echo '<br>target_file : ' . $target_file;
 				}				
 			} 
 			else {
