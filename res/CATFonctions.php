@@ -157,10 +157,9 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 			<td>' . substr($fichier,0,10) .'</td>
 			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($fichier) . '">'.LienImageVoir($Extension).' ' . $NonFichierEcole . '</a>
 				<span class="tooltiptext">'. $ResumeCMD . '</span></div></td>
-			<td><div class="tooltip"><a href="' . LienFichierLab($fichier) . '"><img src="img/' . $Extension . '-Etat.png"></a>
-				<span class="tooltiptext">'. $ResumeCMD . '</span></div></td>	
+			<td><div class="tooltip"><a href="' . LienFichierLab($fichier) . '"><img src="img/' . $Extension . '-Etat.png"></a></div></td>	
 			<td><div class="tooltip"><a href="#" >' . $NBPlanche . '</a>
-				<span class="tooltiptext">'. $ResumeCMD . '</span></div></td>';
+				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>';
 		
 		if($Extension < 2){
 			$affiche_Tableau .=	'
@@ -402,10 +401,10 @@ function LienFichierLab($fichier) {
 			$LienFichier = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 			break;
 		/*case ".lab1":
-			$LienFichier = "CMD-View.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
+			$LienFichier = "CMDView.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
 			break;*/
 		default:
-			$LienFichier = "CMD-View.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
+			$LienFichier = "CMDView.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
 			break;		
 	}
   

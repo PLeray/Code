@@ -452,7 +452,7 @@ function DLGConfiguration(){
 		buttonValider.text = "Valider"; 
 		buttonValider.helpTip = "Ensuite il faudra fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications."; 
 
-	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
 		file.readln();	
@@ -496,7 +496,7 @@ function DLGConfiguration(){
 	}
 
 	buttonValider.onClick = function () {		
-		var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+		var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 		var file = new File(fileName);
 		file.open("w"); // open file with write access
 			file.writeln("// editCodeClient");		
@@ -542,7 +542,7 @@ dialog.show();
 
 
 function InitConfig() {
-	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
 		file.readln();	

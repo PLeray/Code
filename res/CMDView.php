@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 	include 'APIConnexion.php';
-	include 'CMD-Lire.php';
+	include 'CMDLire.php';
 
 	$myfileName = (isset($_GET['fichierLAB'])) ? $_GET['fichierLAB'] :'';
 	

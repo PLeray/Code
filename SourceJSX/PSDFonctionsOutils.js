@@ -143,7 +143,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 			} 
 		}		
 	file.close();
-	if (numEtatCompil != 1) {alert (TableauTOStr(g_TabLigneOriginale));}
+	//if (numEtatCompil != 1) {alert (TableauTOStr(g_TabLigneOriginale));}
 	//alert('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB\n');
 	
 	MsgINFO('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB');
@@ -434,6 +434,10 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					nomFichierPhoto = NextQuattro(nomFichierPhoto);										
 				}	
 				
+				if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
+					nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
+				}					
+				
 				//alert('Avant OUverture CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
 				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
 				var reussiteTraitement = (laPhoto != null);	
@@ -465,11 +469,11 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						//reussiteTraitement = reussiteTraitement && 
 						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
 					}	
-					// CADRE-CARRE-ID !!!!!!!!!
+					// INSITU-CARRE-ID !!!!!!!!!
 					if (unProduit.Type.indexOf('INSITU-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
 						//reussiteTraitement = reussiteTraitement && 
 						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
-					}						
+					}								
 					
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 					if (unProduit.Type != "PORTRAIT" 
@@ -1019,7 +1023,7 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire, traiteme
 	var copieNormal = '';
 	//alert('unPathPlanche ' + unPathPlanche + "/" + unNomdePlanche);
 	try {
-		copieNormal = TypeTraitement(unfichier, traitement, false);
+		copieNormal = TypeTraitement(unfichier, repertoire, traitement, false);
 		if (copieNormal != 'KO') {
 			if(!isFichierExiste(unPathPlanche + "/" + nomFichierPhoto)){	
 				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
@@ -1032,7 +1036,7 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire, traiteme
 					//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + nomFichierPhoto);
 					SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
 					//PAS BON !! SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unfichier.slice(0,-4) + '_zz' + '.jpg');
-					traitement = TypeTraitement(unfichier, traitement, true);
+					traitement = TypeTraitement(unfichier, repertoire, traitement, true);
 					//alert ('traitement' + traitement);
 					if (traitement != 'KO') {
 						if (traitement == 'WEB-QUATTRO'){
@@ -1084,44 +1088,51 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire, traiteme
 	return valRetour;	
 }
 
-function TypeTraitement(unfichier, traitement, isTraitement){
+function TypeTraitement(unFichier, unRepertoire, traitement, isTraitement){
 	var pasLesGroupe = (traitement.substr(0,1) == 'I');
+	var pasLesFratries = (traitement.substr(1,1) != 'F');
 	var retourval = traitement;
 	var isQuattro = (traitement.substr(2) == 'WEB-QUATTRO');
 	var numFichierIndiv = 0;
 	retourval = traitement.substr(2);
-	if ((unfichier.length >= g_MinimuNomClasse) && pasLesGroupe && isTraitement) { // Pas sur Groupe
+	if ((unFichier.length >= g_MinimuNomClasse) && pasLesGroupe && isTraitement) { // Pas sur Groupe
 			retourval = 'KO';
 	}
-	if ((unfichier.length <= g_MinimuNomClasse) && isQuattro) { // Pas sur Groupe
-		numFichierIndiv = parseFloat(unfichier.slice(0,-4));	
-		if (numFichierIndiv != NaN){
-			if ((numFichierIndiv % 5) == 0)	{
-				retourval = 'KO';
-			}					
+	if ((unRepertoire.indexOf('Fratrie') > -1) && pasLesFratries && isTraitement) { // Pas sur les Fratries ?
+			retourval = 'KO';
+	}
+	else{
+		if ((unFichier.length <= g_MinimuNomClasse) && isQuattro) { // Pas sur Groupe
+			numFichierIndiv = parseFloat(unFichier.slice(0,-4));	
+			if (numFichierIndiv != NaN){
+				
+				if (((numFichierIndiv % 5) == 0) && !((unRepertoire.indexOf('Fratrie') > -1) && pasLesFratries))	{
+					retourval = 'KO';
+				}					
+			}
+				
 		}
-			
 	}
 	/*alert('numFichierIndiv ' + numFichierIndiv 
 	+ ' pasLesGroupe ' 	+ pasLesGroupe 
-	+ ' traitement ' + unfichier 
+	+ ' traitement ' + unFichier 
 	+ ' traitement ' + retourval 
 	+ ' isQuattro ' + isQuattro);*/
 	return retourval;
 }
 
-function NextQuattro(unfichier){
+function NextQuattro(unFichier){
 	var retourval = '';
 	var numFichierIndiv = 0;
-	//alert ('unfichier  ' + unfichier);
-	if ((unfichier.length <= g_MinimuNomClasse)) { // Pas sur Groupe
-		numFichierIndiv = parseFloat(unfichier.slice(0,-4));	
+	//alert ('unFichier  ' + unFichier);
+	if ((unFichier.length <= g_MinimuNomClasse)) { // Pas sur Groupe
+		numFichierIndiv = parseFloat(unFichier.slice(0,-4));	
 		while ((numFichierIndiv % 5) != 0) {
 			numFichierIndiv++;
 		}			
 	}
 	retourval = ("0000" + numFichierIndiv).slice(-4) + '.jpg';
-	//alert ( 'unfichier  ' + unfichier + ' Quattro ' + retourval);
+	//alert ( 'unFichier  ' + unFichier + ' Quattro ' + retourval);
 	return retourval;
 }
 

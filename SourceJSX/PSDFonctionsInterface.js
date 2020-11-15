@@ -203,6 +203,9 @@ function MAJinfoEcole(uneEcole) {
 	var repTirage = '';
 	//UI alert('UI MAJinfoEcole()');
 	g_RepSOURCE = TrouverSOURCE('('+ uneEcole.CodeRefEcole +')');
+	alert('Ancien g_RepSOURCE : ' + g_RepSOURCE);
+	g_RepSOURCE = TrouverRepSOURCEdansBibliotheque(uneEcole.CodeRefEcole);
+	alert('Nouveau g_RepSOURCE : ' + g_RepSOURCE);
     if (g_RepSOURCE ==''){
 		msg = "Ecole en cours : " + g_CommandeECOLEEncours
 		AjoutBilanGeneration(msg);
@@ -218,7 +221,7 @@ function MAJinfoEcole(uneEcole) {
 		g_Erreur = msg;
 	}
 	else {
-		g_RepSOURCE = g_RepSOURCE + g_SousRepSOURCE; //'/PHOTOS/SOURCE' ;
+		//g_RepSOURCE = g_RepSOURCE + g_SousRepSOURCE; //'/PHOTOS/SOURCE' ;
 		//alert('MAJinfoEcole g_RepSOURCE !!!!!!!!!!!!!!!!!!! : ' + g_RepSOURCE);
 		if (isRepertoireExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
@@ -551,7 +554,7 @@ function MAJTableauLOG(Col1, Col2, Col3, isCoche, isNew){
 */	
 }
 
-function ArborescenceWEB(typeTraitement){
+function ArborescenceWEB(selonTypeTraitement){
 	//laDate = Date.now();
 	//laDate.getDate();
 	
@@ -568,10 +571,11 @@ function ArborescenceWEB(typeTraitement){
 		i = i + 1;
 		 progressBar.value = i;
 		 txtTraitement.text = String (i) + " / " + String (size);
+		 fichierEnCours.text = 'traitement WEB : ' + fichier;
 		 Raffraichir();
 
 		 //alert("fichier : " + fichier + " g_TabListeNomsClasses[fichier] : " + g_GroupeIndiv[fichier]);
-		 CreerFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier], typeTraitement );
+		 CreerFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier], selonTypeTraitement );
 
 	}	
 }
@@ -706,8 +710,10 @@ function DLGValidationNomClasse(){
 		}
 		else{
 			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + editNomArbo.text;
+			dialog.close();
+			
 			ArborescenceWEB('I.WEB-QUATTRO');
-			dialog.close();		
+	
 		}
 	}		
 
@@ -826,7 +832,7 @@ function DLGConfiguration(){
 		buttonValider.text = "Valider"; 
 		buttonValider.helpTip = "Ensuite il faudra fermer le plug-in PhotoLab et redémarrez le pour prendre en compte vos modifications."; 
 
-	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
 		
@@ -853,7 +859,7 @@ function DLGConfiguration(){
 	}
 
 	buttonValider.onClick = function () {		
-		var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+		var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 		var file = new File(fileName);
 		file.open("w"); // open file with write access
 			
@@ -883,7 +889,7 @@ dialog.show();
 
 
 function InitConfig() {
-	var fileName = g_Rep_PHOTOLAB + '/Code/PhotoLab-config.ini';	
+	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
 		

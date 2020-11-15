@@ -314,7 +314,7 @@ function LienJPG($filename){
 	
 	
 	//$ImageLien = '<img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '">';
-	$ImageLien = '<a href="CMD-AffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
+	$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
 	
 
 	
