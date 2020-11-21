@@ -80,7 +80,6 @@ class CPlanche {
 			$this->Type = $morceau[2];
 			$this->Taille = $morceau[3]; 
 		}
-
     }   
 }
 
@@ -101,7 +100,7 @@ function LireFichierLab($myfileName){
 function RetourEcranFichier($myfileName){
 	$Etat = substr($myfileName, -1);
 	$RetourEcran = 'CATPhotolab.php';	
-    if ($Etat >= 4){
+    if ($Etat > 4){
 		$RetourEcran = 'CATHistorique.php';
 	}
 	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
@@ -235,7 +234,7 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 	if ($curseur < count($tabFICHIERLabo)){
 		$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 		if ($identifiant == "<") {
-			$resultat = '<div class="polaroid">'; //Debut du produit
+			$resultat = '<div class="produit">'; //Debut du produit
 			$NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
 			$NomProduit = str_replace("%", "<br>", $NomProduit);
 			$curseur++;
@@ -300,26 +299,18 @@ function LienJPG($filename){
 			//$cheminIMG = $repertoireTirages . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/' ; 		
 			// Juste pour le # !!! ...
 			$valideNomPlanche = str_replace("#", "%23", $maPlanche->FichierPlanche);
-			$Lien = $repertoireMiniatures . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
+			$Lien = $repertoireMiniatures . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;
+			
 			$LienBig = $repertoireTirages . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;				
 			
 			break;
-		
 	}		
-    //$ImageLien = '<img src="' . $Lien . '" title="'. urldecode($filename) . '">';
-	
-	//$LienJS = "'" . $Lien . "'";
-	
-    //$ImageLien = '<img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '" onclick="openbox(' . $LienJS . ');">';
-	
-	
-	//$ImageLien = '<img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '">';
+	if (!file_exists($LienBig)){
+		$LienBig = $Lien;
+	}
 	$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
-	
 
-	
 	return $ImageLien;
-
 }
 
 function TitrePhotoJPG($filename){
@@ -351,51 +342,57 @@ function TitrePhotoJPG($filename){
 
 function PaginatorCMD($tabCMDLabo, $nb_results_p_page, $numero_CMD_courante, $nb_avant, $nb_apres)//, $premiere, $derniere)
 {
+	$resultat = '<div class="pagination">';
 	$nb_results = count($tabCMDLabo);
+	//echo "$nb_results ". $GLOBALS['NbCMDAffiche'];
     //global $myfileName;
-	
-	$myfileName = urlencode($GLOBALS['myfileName']);
+	if 	($nb_results > $GLOBALS['NbCMDAffiche']){
+		$myfileName = urlencode($GLOBALS['myfileName']);
 
-    // Initialisation de la variable a retourner
-    $resultat = '<div class="pagination">';
+		// Initialisation de la variable a retourner
 
-    // nombre total de pages
-    $nb_CMD = ceil($nb_results / $nb_results_p_page);
-    // nombre de pages avant
-    //$avant = $numero_CMD_courante > ($nb_avant + 1) ? $nb_avant : $numero_CMD_courante - 1;
-    // nombre de pages apres
-    $apres = $numero_CMD_courante <= $nb_CMD - $nb_apres ? $nb_apres : $nb_CMD - $numero_CMD_courante;
 
-    // premiere page
-	if ($numero_CMD_courante  > 1){	
-		$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD=1') .'" title="Premiere(s) commande(s) : '. $tabCMDLabo[0]->FormatNumCmd() . '" class="buton">|<</a>&nbsp;';
-	}
-	else { $resultat .= '<a class="disabled">|<</a>&nbsp;';}		
+		// nombre total de pages
+		$nb_CMD = ceil($nb_results / $nb_results_p_page);
+		// nombre de pages avant
+		//$avant = $numero_CMD_courante > ($nb_avant + 1) ? $nb_avant : $numero_CMD_courante - 1;
+		// nombre de pages apres
+		$apres = $numero_CMD_courante <= $nb_CMD - $nb_apres ? $nb_apres : $nb_CMD - $numero_CMD_courante;
 
-    // page precedente
-	if ($numero_CMD_courante > $GLOBALS['NbCMDAffiche']){ 
-		$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD='. ($numero_CMD_courante - $GLOBALS['NbCMDAffiche'])) .'" title="Commande(s) precedente(s) : '. $tabCMDLabo[$numero_CMD_courante - $GLOBALS['NbCMDAffiche'] - 1]->FormatNumCmd() . '" class="buton"><</a>&nbsp;';
-	}
-	else { $resultat .= '<a class="disabled"><</a>&nbsp;';}		
-    // affichage des numeros de page
-	$resultat .= '	';
-	for ($i = $numero_CMD_courante;  $i < $numero_CMD_courante + $GLOBALS['NbCMDAffiche']; $i++)    {
-        // pages courantes
-		if ($i <= $nb_results){
-			$resultat .= '<a href="#" class="active">' . $tabCMDLabo[$i -1]->FormatNumCmd() . '</a>';		
+		// premiere page
+		if ($numero_CMD_courante  > 1){	
+			$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD=1') .'" title="Premiere(s) commande(s) : '. $tabCMDLabo[0]->FormatNumCmd() . '" class="buton">|<</a>&nbsp;';
 		}
-    }
-    // page suivante
-	$resultat .= '	';
-	if ($numero_CMD_courante < $nb_CMD - $GLOBALS['NbCMDAffiche']){	
-		$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD='. ($numero_CMD_courante + $GLOBALS['NbCMDAffiche'])) .'" title="Consulter la(s) commande(s) suivante(s) : '. $tabCMDLabo[$numero_CMD_courante + $GLOBALS['NbCMDAffiche']-1]->FormatNumCmd() . '" class="buton">></a>&nbsp;';
+		else { $resultat .= '<a class="disabled">|<</a>&nbsp;';}		
+
+		// page precedente
+		if ($numero_CMD_courante > $GLOBALS['NbCMDAffiche']){ 
+			$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD='. ($numero_CMD_courante - $GLOBALS['NbCMDAffiche'])) .'" title="Commande(s) precedente(s) : '. $tabCMDLabo[$numero_CMD_courante - $GLOBALS['NbCMDAffiche'] - 1]->FormatNumCmd() . '" class="buton"><</a>&nbsp;';
+		}
+		else { $resultat .= '<a class="disabled"><</a>&nbsp;';}		
+		// affichage des numeros de page
+		$resultat .= '	';
+		for ($i = $numero_CMD_courante;  $i < $numero_CMD_courante + $GLOBALS['NbCMDAffiche']; $i++)    {
+			// pages courantes
+			if ($i <= $nb_results){
+				$resultat .= '<a href="#" class="active">' . $tabCMDLabo[$i -1]->FormatNumCmd() . '</a>';		
+			}
+		}
+		// page suivante
+		$resultat .= '	';
+		if ($numero_CMD_courante < $nb_CMD - $GLOBALS['NbCMDAffiche']){	
+			$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD='. ($numero_CMD_courante + $GLOBALS['NbCMDAffiche'])) .'" title="Consulter la(s) commande(s) suivante(s) : '. $tabCMDLabo[$numero_CMD_courante + $GLOBALS['NbCMDAffiche']-1]->FormatNumCmd() . '" class="buton">></a>&nbsp;';
+		}
+		else { $resultat .= '<a class="disabled">></a>&nbsp;';}	
+		// derniere page
+		if (($numero_CMD_courante ) < $nb_CMD- $GLOBALS['NbCMDAffiche']){
+			$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD='. (1+$nb_CMD-$GLOBALS['NbCMDAffiche'])) .'" title="Derniere(s) commande(s) : '. $tabCMDLabo[$nb_CMD-$GLOBALS['NbCMDAffiche']]->FormatNumCmd() . '" class="buton">>|</a>&nbsp;';
+		}
+		else { $resultat .= '<a class="disabled">>|</a>&nbsp;';}
+		
+		
 	}
-	else { $resultat .= '<a class="disabled">></a>&nbsp;';}	
-	// derniere page
-	if (($numero_CMD_courante ) < $nb_CMD- $GLOBALS['NbCMDAffiche']){
-		$resultat .= '<a href="'. LienLocal('&fichierLAB='.$myfileName.'& numeroCMD='. (1+$nb_CMD-$GLOBALS['NbCMDAffiche'])) .'" title="Derniere(s) commande(s) : '. $tabCMDLabo[$nb_CMD-$GLOBALS['NbCMDAffiche']]->FormatNumCmd() . '" class="buton">>|</a>&nbsp;';
-	}
-	else { $resultat .= '<a class="disabled">>|</a>&nbsp;';}
+	
 
     $resultat .= '</div>'  ;  
     // On retourne le resultat

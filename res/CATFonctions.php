@@ -1,6 +1,78 @@
 <?php
 
+class CINFOfichierLab {
+	var $Fichier;	
+	var $FichierERREUR;	
+	var $EtatFichier;  // 0, 1 , 2 , 3
+	var $PourcentageAvancement = 0;
+	var $SyntheseCMD;
+	var $Compilateur;
+    var $NbPlanches = 0;
+    var $NomEcole;
+    var $DateTirage;
 
+    function __construct($myfileName){
+		$tabFICHIERLabo = LireFichierLab($GLOBALS['repCMDLABO'] . $myfileName);
+		$this->Fichier = $myfileName;
+		$this->EtatFichier = substr(strrchr($myfileName, '.'),4);
+		$this->FichierERREUR = substr($myfileName, 0, -5) . '.Erreur';
+
+		for($i = 0; $i < count($tabFICHIERLabo); $i++){
+			$identifiant = substr($tabFICHIERLabo[$i],0,1);
+			if (($identifiant != '[') && ($identifiant != '{') && ($identifiant != '#') && ($identifiant != '@') && ($identifiant != '<') && ($identifiant != '')) {
+				$this->NbPlanches = $this->NbPlanches + 1 ;
+				//echo $this->NbPlanches;
+			}else {
+				if ($identifiant == '{')  {
+					$this->SyntheseCMD = utf8_encode(substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1));
+					$this->SyntheseCMD = str_replace("%", "<br>", $this->SyntheseCMD);
+					$this->SyntheseCMD = str_replace("{", "<br>", $this->SyntheseCMD) . "<br>";
+
+					$this->PourcentageAvancement = 100 * floatval(str_replace(",", ".", substr(stristr($tabFICHIERLabo[$i], '%%', true), 9)));
+				}
+				if ($identifiant == '[')  {
+					$this->Compilateur = strstr(strrchr($tabFICHIERLabo[$i], '%'), 1, -1);
+				}		
+				if ($identifiant == '@')  {
+					$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
+					$this->DateTirage = $morceau[0];
+					$this->NomEcole = $morceau[1];			
+				}	
+			}		
+		}
+	}
+    function RepTirage(){
+		$leRepTirage = '';
+		if ($this->EtatFichier){
+			if (stripos($this->NomEcole, '(ISOLEES)') !== false) { // C'est des ISOLEES
+				$leRepTirage = substr($this->Fichier, strripos($this->Fichier, '/'),10) . '-CMD-ISOLEES' ;
+			}	
+			else{
+				$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;	
+			}	
+		}
+		return $leRepTirage;
+    } 
+	
+    function LienFichierERREUR(){
+		return $GLOBALS['repCMDLABO'] . $this->FichierERREUR;
+    }	
+	function Avancement(){
+		switch ($this->EtatFichier) {
+		case "0":
+			$RetourEtat = 0;
+			break;		
+		case "1":
+			$RetourEtat = floatval($this->PourcentageAvancement);
+			break;			
+		default:
+			$RetourEtat = 100;
+			break;		
+		}
+		//echo 'Avancement($Extension, $this->PourcentageAvancement)$this->EtatFichier: ' . $this->EtatFichier . '  this->PourcentageAvancement : ' . $this->PourcentageAvancement . '  $RetourEtat: ' . $RetourEtat;
+		return $RetourEtat;  	
+	}	
+}
 
 /////////////////// Les Fonctions ... ///////////////////    
 
@@ -138,58 +210,64 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 	$tabFichierLabo = TableauRepFichier('.lab', $isEnCours);
 	rsort($tabFichierLabo);
 	for($i = 0; $i < count($tabFichierLabo); $i++){
-		$fichier = $tabFichierLabo[$i];
-		$Extension = substr(strrchr($fichier, '.'),4);
-		//echo "Extension : " . $Extension ."<br>";
+		// Un objet pour récupérer les infos Fichier !!! 
+		$mesInfosFichier = new CINFOfichierLab($tabFichierLabo[$i]); 
 		$nb_fichier++;
-		$DateFichierLAb = strftime('%A %d %B %Y', strtotime(substr($fichier,0,10)));
-		//$NonFichierEcole = utf8_encode(pathinfo(substr($fichier,11))['filename']);
-		$NonFichierEcole = pathinfo(substr($fichier,11))['filename'];
+		
+		//$fichier = $mesInfosFichier->Fichier;
+		//$Extension = substr(strrchr($fichier, '.'),4);
 
-		$ResumeCMD = "init ZZ";
-		$EtatCMD = 0;
-		$Compilateur = "init ZZ";
-		$NBPlanche = INFOsurFichierLab($GLOBALS['repCMDLABO'] . $fichier, $EtatCMD, $ResumeCMD, $Compilateur);
+		//$DateFichierLAb = strftime('%A %d %B %Y', strtotime(substr($fichier,0,10)));
+		//$NonFichierEcole = utf8_encode(pathinfo(substr($fichier,11))['filename']);
+		//$NonFichierEcole = pathinfo(substr($fichier,11))['filename'];
+
+		//$ResumeCMD = "init ZZ";
+		//$EtatCMD = 0;
+		//$Compilateur = "init ZZ";
+		//$NBPlanche = INFOsurFichierLab($GLOBALS['repCMDLABO'] . $fichier, $EtatCMD, $ResumeCMD, $Compilateur);
 		//$ResumeCMD = RESUMEFichierLab($ResumeCMD);
+
+		//$ResumeCMD = $mesInfosFichier->SyntheseCMD;
+
 		$affiche_Tableau .=
 		'<tr>
-
-			<td>' . substr($fichier,0,10) .'</td>
-			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($fichier) . '">'.LienImageVoir($Extension).' ' . $NonFichierEcole . '</a>
-				<span class="tooltiptext">'. $ResumeCMD . '</span></div></td>
-			<td><div class="tooltip"><a href="' . LienFichierLab($fichier) . '"><img src="img/' . $Extension . '-Etat.png"></a></div></td>	
-			<td><div class="tooltip"><a href="#" >' . $NBPlanche . '</a>
+			<td>' . $mesInfosFichier->DateTirage .'</td>
+			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->NomEcole . '</a>
+				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>
+			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '"><img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>	
+			<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbPlanches . '</a>
 				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>';
 		
-		if($Extension < 2){
+		if($mesInfosFichier->EtatFichier < 2){
 			$affiche_Tableau .=	'
 			<td colspan=4>';
 				
 			//if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode(substr($tabFichierLabo[$i], 0, -5)).'.Erreur')){
-			if (file_exists($GLOBALS['repCMDLABO'] . substr($tabFichierLabo[$i], 0, -5) .'.Erreur')){				
-				$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="'. $GLOBALS['repCMDLABO'] . htmlentities(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs sur '.$NonFichierEcole . '">
+			//if (file_exists($GLOBALS['repCMDLABO'] . substr($tabFichierLabo[$i], 0, -5) .'.Erreur')){				
+			if (file_exists($mesInfosFichier->LienFichierERREUR())){	
+			$affiche_Tableau .=	'			
+				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR() . '." title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
 					<img src="img/ERREUR.png" alt="ERREUR">
 					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
-					' . LienIMGSuprFichierLab(substr($tabFichierLabo[$i], 0, -5) . '.Erreur', 'Erreur') . '
+					' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
 					</div>			
 				</div>';				
 			}
 			$affiche_Tableau .=	'
 			<div class="boiteProgressBar">
-			<div class="progressBar" style="width:'.Avancement($Extension, $EtatCMD).'%;" >';
-			$affiche_Tableau .=	'<font size="2" >'. $Compilateur . '> '. number_format(Avancement($Extension, $EtatCMD), 1).'%</font>';			
+			<div class="progressBar" style="width:'.$mesInfosFichier->Avancement().'%;" >';
+			$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '> '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
 			$affiche_Tableau .=	'</div>
 				</div>';			
 		}else {
 			$affiche_Tableau .=	'
-				<td><a href="' . LienEtatLab($fichier,2) . '"  title="'. TitleEtat(2) . '">' . LienImageOKKO($Extension >= "2") . '</a></td>
-				<td><a href="' . LienEtatLab($fichier,3) . '"  title="'. TitleEtat(3) . '">' . LienImageOKKO($Extension >= "3") . '</a></td>
-				<td><a href="' . LienEtatLab($fichier,4) . '"  title="'. TitleEtat(4) . '">' . LienImageOKKO($Extension >= "4") . '</a></td>
-				<td><a href="' . LienEtatLab($fichier,5) . '"  title="'. TitleEtat(5) . '">' . LienImageOKKO($Extension >= "5") . '</a></td>'	
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '"  title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . '"  title="'. TitleEtat(3) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,4) . '"  title="'. TitleEtat(4) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "4") . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,5) . '"  title="'. TitleEtat(5) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "5") . '</a></td>'	
 			;				
 		}
-		$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($fichier, $Extension) . '</td>';
+		$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
 	}
 	$affiche_Tableau .=	'</tr>';
 	return $affiche_Tableau;
@@ -204,53 +282,43 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 	rsort($tabFichierLabo);
 	
 	for($i = 0; $i < count($tabFichierLabo); $i++){
-		$fichier = $tabFichierLabo[$i];
-		$Extension = substr(strrchr($fichier, '.'),4);
-		//echo "Extension : " . $Extension ."<br>";
-		$nb_fichier++;
-		$DateFichierLAb = strftime('%A %d %B %Y', strtotime(substr($fichier,0,10)));
-		$NonFichierEcole = pathinfo(utf8_encode(substr($fichier,11)))['filename'];
-		//$NonFichierEcole = utf8_encode($fichier);
+		// Un objet pour récupérer les infos Fichier !!! 
+		$mesInfosFichier = new CINFOfichierLab($tabFichierLabo[$i]); 		
+		$nb_fichier++;		
 		
-		$ResumeCMD = "init ZZ";
-		$EtatCMD = 0;
-		$Compilateur = "init ZZ";
-		$NBPlanche = INFOsurFichierLab($GLOBALS['repCMDLABO'] . $fichier, $EtatCMD, $ResumeCMD, $Compilateur);
-		
-		//$ResumeCMD = RESUMEFichierLab($ResumeCMD);		
 		$affiche_Tableau .=
 		'<tr>
-			<td>' . substr($fichier,0,10) .'</td>				
-			<td align="left">' . $NonFichierEcole . '</a></td>	
-			<td>'.LienImageEtatWEB($Extension).'</a></td>		
-			<td>' . $NBPlanche . '</a></td>';
+			<td>' . $mesInfosFichier->DateTirage .'</td>				
+			<td align="left">' . $mesInfosFichier->NomEcole . '</a></td>	
+			<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>		
+			<td>' . $mesInfosFichier->NbPlanches . '</a></td>';
 
-		if($Extension < 2){
+		if($mesInfosFichier->EtatFichier < 2){
 			$affiche_Tableau .=	'
 			<td colspan=2>';
-			if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode(substr($tabFichierLabo[$i], 0, -5)).'.Erreur')){
+			if (file_exists($mesInfosFichier->LienFichierERREUR())){
 				$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="'. $GLOBALS['repCMDLABO'] . utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur" title="Afficher les erreurs">
+				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '." title="Afficher les erreurs">
 					<img src="img/ERREUR.png" alt="ERREUR">
 					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
-					' . LienIMGSuprFichierLab(utf8_encode(substr($tabFichierLabo[$i], 0, -5)) . '.Erreur', 'Erreur') . '
+					' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
 					</div>			';					
 			}
 			$affiche_Tableau .=	'
 			<div class="boiteProgressBar">
-			<div class="progressBar" style="width:'.Avancement($Extension, $EtatCMD).'%;" >';
-			$affiche_Tableau .=	'<font size="2" >'. $Compilateur . '> '. number_format(Avancement($Extension, $EtatCMD), 1).'%</font>';			
+			<div class="progressBar" style="width:'.$mesInfosFichier->Avancement().'%;" >';
+			$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '> '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
 			$affiche_Tableau .=	'</div>
 				</div>';	
 		}else {
 			$affiche_Tableau .=	'
-			<td><div class="tooltip"><a href="' . LienEtatLab($fichier,2) . '" title="'. TitleEtat(2) . '">' . LienImageOKKO($Extension >= "2") . '</a>
-				<span class="tooltiptext">'. $ResumeCMD . '</span></div></td>					
-			<td><div class="tooltip"><a href="' . LienEtatLab($fichier,3) . '" title="'. TitleEtat(3) . '">' . LienImageOKKO($Extension >= "3") . '</a>
-				<span class="tooltiptext">'. $ResumeCMD . '</span></div></td>'	
+			<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '" title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a>
+				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>					
+			<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . '" title="'. TitleEtat(3) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a>
+				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>'	
 			;				
 		}		
-		$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($fichier, $Extension) . '</td>';
+		$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
 	}
 	$affiche_Tableau .=	'</tr>';
 	return $affiche_Tableau;
@@ -400,27 +468,28 @@ function LienFichierLab($fichier) {
 		case ".lab0":
 			$LienFichier = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 			break;
-		/*case ".lab1":
-			$LienFichier = "CMDView.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
-			break;*/
 		default:
 			$LienFichier = "CMDView.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
 			break;		
 	}
   
-$isDebug = true;
+//$isDebug = true;
 	return $LienFichier;
 }
-/* //////////////  New du 12 Juin 2019 /////////////////////  */
-function RESUMEFichierLab($ResumeCMD){
 
-	$ResumeCMD = utf8_encode(substr(stristr($ResumeCMD, '%%'),1,-1)); // New 26-08
-	
-	$ResumeCMD = str_replace("%", "<br>", $ResumeCMD);
-	$ResumeCMD = str_replace("{", "<br>", $ResumeCMD);
-	return $ResumeCMD . "<br>";
+function LienOuvrirRepTIRAGE($repertoire) {
+	$LienFichier = '#';
+	if ($repertoire != ''){
+		$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+		$LienFichier = "CATPhotolab.php". $Environnement . "&OpenRep=" . urlencode($repertoire);		
+	}
+	return $LienFichier;
 }
 
+/* //////////////  New du 12 Juin 2019 /////////////////////  */
+
+
+/*
 function INFOsurFichierLab($myfileName, &$Pourcentage, &$ResumeCMD, &$Compilateur){
 	$tabFICHIERLabo = LireFichierLab($myfileName);
 	//echo count($tabFICHIERLabo);
@@ -443,6 +512,20 @@ function INFOsurFichierLab($myfileName, &$Pourcentage, &$ResumeCMD, &$Compilateu
 	 }
 	return $nbPlanches;
 }
+
+function RESUMEFichierLab($ResumeCMD){
+
+	$ResumeCMD = utf8_encode(substr(stristr($ResumeCMD, '%%'),1,-1)); // New 26-08
+	
+	$ResumeCMD = str_replace("%", "<br>", $ResumeCMD);
+	$ResumeCMD = str_replace("{", "<br>", $ResumeCMD);
+	return $ResumeCMD . "<br>";
+}
+
+
+
+
+
 function Avancement($Etat, $EtatCMD){
 	switch ($Etat) {
 	case "0":
@@ -458,7 +541,7 @@ function Avancement($Etat, $EtatCMD){
 	//echo 'Avancement($Extension, $EtatCMD)$Etat: ' . $Etat . '  EtatCMD : ' . $EtatCMD . '  $RetourEtat: ' . $RetourEtat;
 	return $RetourEtat;  	
 }
-
+*/
 
 /* //////////////  FIN New du 12 Juin 2019 /////////////////////  */
 
@@ -476,5 +559,14 @@ function LireFichierLab($myfileName){
 
 function TypeFichier($myfileName){
 	return substr($myfileName, -4, 3);
+}
+
+function execInBackground($cmd) {
+    if (substr(php_uname(), 0, 7) == "Windows"){
+        pclose(popen("start /B ". $cmd, "r")); 
+    }
+    else {
+        exec($cmd . " > /dev/null &");  
+    }
 }
 ?>

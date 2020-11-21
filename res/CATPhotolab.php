@@ -35,7 +35,13 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 </div>
 
 <?php
-
+if (isset($_GET['OpenRep'])) { // OUVRIR REP !
+	$leRep = str_replace("/","\\",$repTIRAGES. $_GET['OpenRep']);
+	if ($GLOBALS['isDebug']){
+		echo 'le rep  a ouvrir : explorer /select,"'.$leRep.'"' ;
+	}
+	execInBackground('explorer /select,"'.$leRep.'"');
+} 
 if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
 	if ($GLOBALS['isDebug']){
 		echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';

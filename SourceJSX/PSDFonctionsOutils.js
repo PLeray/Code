@@ -252,7 +252,7 @@ function ChercherSourcePhoto(theFolder, FichierTrouve, nomFichierATrouver) {
    for (var n = 0; n < theContent.length; n++) {
       var theObject = theContent[n];
       if (theObject.constructor.name == "Folder") {
-	  //alert ( "nomFichierATrouver : " + nomFichierATrouver + "\n\n dansrep rep : " + theFolder);
+	  //alert ( "nomFichierATrouver : " + nomFichierATrouver + "\n\n dansrep rep : " + theObject);
          FichierTrouve = ChercherSourcePhoto(theObject, FichierTrouve, nomFichierATrouver);
       }		
       if (theObject.name == encodeURI(nomFichierATrouver)) {
@@ -444,13 +444,14 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 				if (reussiteTraitement) {
 					var docName = laPhoto.name;
 					//var basename = docName.match(/(.*)\.[^\.]+$/)[1];
-					var docPath = laPhoto.path;								
+					//var docPath = laPhoto.path;		SUPRESSION 17/11/2020 ??!!						
 					////////  Cas des fratrie ou Indiv en paysage =>> Portrait /////////
-					g_IsFratrie = false;
+					var isFratrie = false;
 					var myDocument = app.activeDocument; 
 					if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {
-						if (myDocument.width > myDocument.height) {  
-							g_IsFratrie = true;
+						if (myDocument.width > myDocument.height) { 
+							alert('rotateCanvas' ); 						
+							isFratrie = true;
 							myDocument.rotateCanvas(90)  
 						}  
 					}	
@@ -492,13 +493,17 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						Raffraichir(); 
 					}*/					
 					// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-					//if (unProduit.Type == "PORTRAIT"){
-						
+					if (g_RepSCRIPTSPhotoshop == "PHOTOLAB-Studio²"){ // QQue pour Studio² !!!						
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
-						
-						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);					
-						//Raffraichir(); AVOIR new 27-08
-					//}					
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+					}
+					else{ // Sinon !!!		
+						// A REVOIR !!!!!!!		
+						if ((unProduit.Type.lastIndexOf("PORTRAIT") > -1)||(unProduit.Type.lastIndexOf("TRAD") > -1)){ // QQue pour Studio² !!!	
+							//alert('lastIndexOf("Agrandissements") ');
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);		
+						}
+					}	
 					
 					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
 					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
@@ -561,7 +566,7 @@ function CreerUnProduitPourLeSiteWEB(unProduit){
 					//var basename = docName.match(/(.*)\.[^\.]+$/)[1];
 					var docPath = laPhoto.path;								
 					////////  Cas des fratrie ou Indiv en paysage =>> Portrait /////////
-					g_IsFratrie = false;
+					var isFratrie = false;
 					var myDocument = app.activeDocument; 	
 					//////////////// TRANSFORMATIONS //////////////////////
 					// 1 : LA TEINTE  DE L'IMAGE /////////////////////////
@@ -1025,7 +1030,9 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire, traiteme
 	try {
 		copieNormal = TypeTraitement(unfichier, repertoire, traitement, false);
 		if (copieNormal != 'KO') {
-			if(!isFichierExiste(unPathPlanche + "/" + nomFichierPhoto)){	
+			//if(!isFichierExiste(unPathPlanche + "/" + nomFichierPhoto)){	
+			if(	(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEB)) || 				(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBVariante)) ||  (isFichierIdentite(nomFichierPhoto) && (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBFiche)))  ){		
+
 				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
 				var reussiteTraitement = (laPhoto != null);
 				reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche);
@@ -1035,7 +1042,7 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire, traiteme
 					//La sauvegarde ...	
 					//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + nomFichierPhoto);
 					SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
-					//PAS BON !! SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unfichier.slice(0,-4) + '_zz' + '.jpg');
+					
 					traitement = TypeTraitement(unfichier, repertoire, traitement, true);
 					//alert ('traitement' + traitement);
 					if (traitement != 'KO') {

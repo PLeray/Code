@@ -96,23 +96,7 @@ div.ecole {
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.24); 
 }
 
-div.commande {
-    /*border: 1px solid gray;
-    width: auto;*/
-	width: auto; /*97%;*/
-	float: left;
-	text-align: center;
-	margin: 10px;
-	/*padding: 110px;
-	padding-top: 2px;
-	
-	margin-top: 1px;
-	margin-bottom: 14px;*/
-	position: relative;/**/
-	background-color: white;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-transition: max-height 0.2s ease-out;
-}
+
 
 div.copyright {
 	width: 100%;
@@ -189,17 +173,36 @@ white-space: nowrap;
 color: red;
 }
 */
+div.commande {
+    /*border: 1px solid gray;
+    width: auto;*/
+	width: auto; /*97%;*/
+	/*display: inline-block;*/
+	float: left;
+	text-align: center;
+	margin: 10px;
+	/*padding: 110px;
+	padding-top: 2px;
+	
+	margin-top: 1px;
+	margin-bottom: 14px;*/
+	position: relative;/**/
+	background-color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+transition: max-height 0.2s ease-out;
+}
 
-div.polaroid {
+div.produit {
 	width: auto;
 	height: auto;
-	float: left;
+	/**/float: left;
+	
 	text-align: center;
 	padding: 8px;
 	margin: 8px; 
 	padding-bottom: -14px;
 	
-	position: relative;
+	
 	background-color: white;
 	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	animation: shake 0.2s;
@@ -210,27 +213,29 @@ div.polaroid {
 	animation-duration: 3s;
 	animation-delay: 0s;*/	
 }
-
+   /*
 div.produit {
 	padding: 1px;
 	background-color: var(--FondLigneTabGrisSombre);
 	margin-top: 3px;
 	padding-bottom:0px;
 	text-align: center;
-}
+	
+}*/	
 
-.planche {
+div.planche {
+	display: inline;
+	/*position: relative;
+	float: left;
 	width: auto;
 	height: auto;
-	float: center;
-	/**/	
+	*/
+		
 }
 
 #myImgPlanche {
 	cursor: pointer;
-
-
-	max-height: 150px;
+	/*max-height: 150px;*/
 	width: auto; 
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	animation: shake 0.2s;
@@ -238,10 +243,7 @@ div.produit {
 }
 #myImgPlanche:hover {opacity: 0.7;}
 
-img {
 
-	
-}
 
 
 div.lettre {
@@ -327,7 +329,6 @@ div.pagination {
 
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;
-	
 }
 
 .pagination a.disabled {
@@ -568,8 +569,6 @@ left: 5%;
 	width:100%;
 	height:100%;
 	text-align: center;
-	
-
 }
 
 #boxtitle

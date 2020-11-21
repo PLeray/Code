@@ -3,16 +3,21 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
+var g_NumVersion = 2.6;
+
+var g_NomVersion = 'PhotoLab PLUGIN v3.3';
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
 var g_FichierSource = g_Rep_PHOTOLAB + 'Code/Sources.csv';
 var isDebug = ($.fileName.substr(-4) == '.jsx'); //et non .jsxbin !
+
+var g_NomVersion = 'PhotoLab PLUGIN v' + g_NumVersion + (isDebug?' !!! BETA !!!':'');
 //alert('$.fileName.substr(-4)  : ' + $.fileName.substr(-4) + ' is debug : ' + isDebug);
 
 var g_CeCalculateur = '';
 var g_CodeClient = '';
 
 
-var g_NomVersion = 'PhotoLab PLUGIN v3.3';
+
 var g_LargeurUI = 650;
 var g_HauteurDetailsUI = 1080;
 var g_HauteurRechercheUI = 240;
@@ -115,9 +120,11 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	var buttonBibliotheque = Zone11Config.add ("iconbutton", undefined, ScriptUI.newImage (imgBibliotheque.a, imgBibliotheque.b, imgBibliotheque.c, imgBibliotheque.d), {style: "toolbutton"});  // Ne fonctionne pas
 	//buttonConfig.alignment = "right";
 	buttonBibliotheque.enabled = true;
-	buttonBibliotheque.helpTip = "Bibliuotheque des sources photo pour de PhotoLab"; 
+	buttonBibliotheque.helpTip = "Bibliothèque des sources photo pour PhotoLab"; 
 	buttonBibliotheque.onClick = function () {
-		 AfficheListeSOURCE();
+		if (AfficheListeSOURCE() == 3){
+			ArborescenceWEB('I.WEB-QUATTRO');
+		} 		 
 	}	
 	
 	var imgConfig = {a: File(g_RepIMG+"Config.png"), b: File(g_RepIMG+"Config-Disable.png"), c: File(g_RepIMG+"Config-Click.png"), d: File(g_RepIMG+"Config-Over.png")};
@@ -150,13 +157,17 @@ var Zone1Entete = PHOTOLAB.add ("group");
 		buttonScanCMD.onClick = function () {	
 			Auto(); 
 		}
-
+		/*  §§§§§§§§§§§§§§§§§§§§ SUPRIMER SOURCE DERRIERE
 		var buttonSourceWeb = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Créer arborecence web");
 		buttonSourceWeb.alignment = "left";
 		buttonSourceWeb.helpTip = "Générer une arborescence structurée par classes des fichiers photos à uploader sur le site web Lumys"; 
 		buttonSourceWeb.onClick = function () {	
-			DLGValidationNomClasse(); 
+			if (AfficheValidationNomClasse() == true){
+				ArborescenceWEB('I.WEB-QUATTRO');
+			} 
+			
 		}
+		/*
 	/*
 	var checkOrdre = Zone13Option.add ("checkbox", [0,0,g_LargeurUI/3,20], "Ordre des planches inversé"); 
 	checkOrdre.value = g_OrdreInversePlanche;

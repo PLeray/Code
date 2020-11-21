@@ -9,7 +9,8 @@
 	if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 	$isDebug = false;
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
-	//$isDebug = false;
+	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");	}
+
 	$NbCMDAffiche = 17;
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
 ?>
@@ -60,6 +61,7 @@
 	<div id="myDropdown" class="dropdown-content" onmouseout="myFunction()"	>
 	
 	<?php 
+	//echo 'kdsjghskdhgf';
 	echo LienMEGA($tabCMDLabo, $numeroCMD);
 		//<a href="#about">About</a>
 	?>

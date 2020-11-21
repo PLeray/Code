@@ -5,7 +5,7 @@
 //var g_IsDebug = true;
 var sepNumLigne = '§';
 var sepRetourLigne = 'RCSL';
-var g_IsFratrie = false;
+//var g_IsFratrie = false;
 
 var g_TypeGROUPE = [
 'FRATRIE', 

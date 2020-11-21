@@ -23,7 +23,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 	$TabCSV = array();
 	//$ProduitsWEB = csv_to_array('res/CatalogueProduits.csv', ';');
 	//$GLOBALS['ProduitsWEB'] = csv_to_array('res/CatalogueProduits.csv', ';');
-	$GLOBALS['ProduitsWEB'] = csv_to_array('CatalogueProduits.csv', ';'); // New 22-10
+	$GLOBALS['ProduitsWEB'] = csv_to_array('../CatalogueProduits.csv', ';'); // New 22-10
 	//var_dump( $GLOBALS['ProduitsWEB']) ;
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');

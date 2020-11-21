@@ -201,6 +201,67 @@ function MAJinfoEcole(uneEcole) {
 	var valRetour = false;
 	var msg = '';
 	var repTirage = '';
+
+	g_RepSOURCE = TrouverRepSOURCEdansBibliotheque(uneEcole.CodeRefEcole);
+	g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole.CodeRefEcole);
+    if (g_RepSOURCE ==''){
+		msg = "Ecole en cours : " + g_CommandeECOLEEncours
+		AjoutBilanGeneration(msg);
+
+		msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE dans la bilvliotheque avec ce code (" + uneEcole.CodeRefEcole + ")";
+		AjoutBilanGeneration(msg);
+		msg = "     SOLUTION PROBABLE : Créer ou ajouter le repertoire de photo avec le code : " + uneEcole.CodeRefEcole + " dans la bibliotheque de PhotoLAb !";
+		AjoutBilanGeneration(msg);			
+		AjoutBilanGeneration('');
+		MsgERREUR('Erreur de dossier /SOURCE !', msg);
+		g_Erreur = msg;
+	}
+	else {
+
+		if (isRepertoireExiste(g_RepSOURCE)){
+			if (g_IsPlancheSiteWEB){
+				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
+			} else {					
+				//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
+				if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
+					var ladate=new Date();
+					repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
+				}
+				else{
+					repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
+				}				
+				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
+				g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
+			}
+			nbFichiers = 0;
+			nbFichiers = NbJPGArborescence(Folder(g_RepSOURCE),nbFichiers) ;
+
+			MsgINFO('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
+			MsgINFO('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));
+			//alert('InitGroupesClasseIndive : ' + uneEcole.Commentaire);
+			g_GroupeIndiv.length = 0;
+			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
+			valRetour = true;		
+		}
+		else{
+			msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE pour les photos avec ce code (" + uneEcole.CodeRefEcole + ")";
+			AjoutBilanGeneration(msg);
+			msg = "     SOLUTION PROBABLE : Modifier ou ajouter le code (" + uneEcole.CodeRefEcole + ") dans le nom du repertoire de l'école " + g_CommandeECOLEEncours;
+			AjoutBilanGeneration(msg);			
+			AjoutBilanGeneration('');
+			MsgERREUR('Erreur de dossier /SOURCE !', msg);
+			g_Erreur = msg;			
+			
+			valRetour = false;		
+		}
+	}
+	return valRetour;
+}
+/*
+function MAJinfoEcoleOLD(uneEcole) {   
+	var valRetour = false;
+	var msg = '';
+	var repTirage = '';
 	//UI alert('UI MAJinfoEcole()');
 	g_RepSOURCE = TrouverSOURCE('('+ uneEcole.CodeRefEcole +')');
 	alert('Ancien g_RepSOURCE : ' + g_RepSOURCE);
@@ -262,7 +323,7 @@ function MAJinfoEcole(uneEcole) {
 	}
 	return valRetour;
 }
-
+*/
 function GestionBoutonGenerer() { 
 	g_IsGenerationEnPause = !g_IsGenerationEnPause;	
 	SetBoutonGenerer();
@@ -565,11 +626,13 @@ function ArborescenceWEB(selonTypeTraitement){
 		size++;
 	}	
 	progressBar.maxvalue = size;
-	progressBar.value = 15;
+	//alert('progressBar.maxvalue : ' + progressBar.maxvalue);
+	//progressBar.value = 15;
+	//alert('progressBar.value : ' + progressBar.value);
 	Raffraichir();
 	for(var fichier in g_GroupeIndiv){
-		i = i + 1;
-		 progressBar.value = i;
+		i = i + 1
+		 progressBar.value = i ;
 		 txtTraitement.text = String (i) + " / " + String (size);
 		 fichierEnCours.text = 'traitement WEB : ' + fichier;
 		 Raffraichir();
@@ -582,24 +645,25 @@ function ArborescenceWEB(selonTypeTraitement){
 
 
 
-function DLGValidationNomClasse(){
+function AfficheValidationNomClasse(){
+	var valRetour = false;
 	// DIALOG
 	// ======
-	var dialog = new Window("dialog", 'Générer Arborescence WEB '); 
-		//dialog.text = "Validation des noms de classes"; 
-		dialog.orientation = "column"; 
-		dialog.alignChildren = ["center","top"]; 
-		dialog.spacing = 10; 
-		dialog.margins = 16; 
+	var dlgArboWEB = new Window("dialog", 'Générer Arborescence WEB '); 
+		//dlgArboWEB.text = "Validation des noms de classes"; 
+		dlgArboWEB.orientation = "column"; 
+		dlgArboWEB.alignChildren = ["center","top"]; 
+		dlgArboWEB.spacing = 10; 
+		dlgArboWEB.margins = 16; 
 		
-		dialog.frameLocation = [ 0, 20 ];
-		dialog.graphics.backgroundColor = dialog.graphics.newBrush (dialog.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+		dlgArboWEB.frameLocation = [ 0, 20 ];
+		dlgArboWEB.graphics.backgroundColor = dlgArboWEB.graphics.newBrush (dlgArboWEB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 
-		dialog.graphics.foregroundColor =UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);		
+		dlgArboWEB.graphics.foregroundColor =UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);		
 
 	// GROUPEINFO
 	// ==========
-	var GroupeInfo = dialog.add("group", undefined, {name: "GroupeInfo"}); 
+	var GroupeInfo = dlgArboWEB.add("group", undefined, {name: "GroupeInfo"}); 
 		GroupeInfo.orientation = "row"; 
 		GroupeInfo.alignChildren = ["left","center"]; 
 		GroupeInfo.spacing = 10; 
@@ -614,7 +678,7 @@ function DLGValidationNomClasse(){
 
 	// GROUPEINFO1
 	// ===========
-	var GroupeInfo1 = dialog.add("group", undefined, {name: "GroupeInfo1"}); 
+	var GroupeInfo1 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo1"}); 
 		GroupeInfo1.orientation = "row"; 
 		GroupeInfo1.alignChildren = ["left","center"]; 
 		GroupeInfo1.spacing = 10; 
@@ -624,16 +688,13 @@ function DLGValidationNomClasse(){
 	var buttonScanSOURCE = GroupeInfo1.add("button", undefined, undefined, {name: "buttonScanSOURCE"}); 
 		buttonScanSOURCE.text = "Sélectionner un répertoire /SOURCE"; 
 	
-	
 
-	// DIALOG
-	// ======
-	var divider1 = dialog.add("panel", undefined, undefined, {name: "divider1"}); 
+	var divider1 = dlgArboWEB.add("panel", undefined, undefined, {name: "divider1"}); 
 		divider1.alignment = "fill"; 
 
 	// GROUPEINFO2
 	// ===========
-	var GroupeInfo2 = dialog.add("group", undefined, {name: "GroupeInfo2"}); 
+	var GroupeInfo2 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo2"}); 
 		GroupeInfo2.orientation = "column"; 
 		GroupeInfo2.alignChildren = ["center","top"]; 
 		GroupeInfo2.spacing = 10; 
@@ -657,7 +718,7 @@ function DLGValidationNomClasse(){
 
 	// GROUPEINFO3
 	// ===========
-	/*var GroupeInfo3 = dialog.add("group", undefined, {name: "GroupeInfo3"}); 
+	/*var GroupeInfo3 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo3"}); 
 		GroupeInfo3.orientation = "row"; 
 		GroupeInfo3.alignChildren = ["left","top"]; 
 		GroupeInfo3.spacing = 10; 
@@ -671,7 +732,7 @@ function DLGValidationNomClasse(){
 
 	// GROUPEINFO4
 	// ===========
-	var GroupeInfo4 = dialog.add("group", undefined, {name: "GroupeInfo4"}); 
+	var GroupeInfo4 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo4"}); 
 		GroupeInfo4.orientation = "row"; 
 		GroupeInfo4.alignChildren = ["left","center"]; 
 		GroupeInfo4.spacing = 10; 
@@ -710,15 +771,23 @@ function DLGValidationNomClasse(){
 		}
 		else{
 			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + editNomArbo.text;
-			dialog.close();
-			
-			ArborescenceWEB('I.WEB-QUATTRO');
+			valRetour = true;
+			//return valRetour;	
+			dlgArboWEB.close();
+		
+			//ArborescenceWEB('I.WEB-QUATTRO');
 	
 		}
 	}		
 
-	dialog.show();
-
+	//dlgArboWEB.show();
+	
+	if (dlgArboWEB.show () != 2){			
+		return valRetour;	
+	}
+	
+	
+	//return valRetour;
 }
 
 function DLGConfiguration(){
