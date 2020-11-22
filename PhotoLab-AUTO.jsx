@@ -3,7 +3,7 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 2.6;
+var g_NumVersion = 2.7;
 
 var g_NomVersion = 'PhotoLab PLUGIN v3.3';
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
@@ -55,12 +55,16 @@ var g_ToutFichier = false;
 var g_RepSCRIPTSPhotoshop = 'PHOTOLAB-STUDIO2';
 
 var g_RepSOURCE;
-var g_RepBASESOURCE;
-var g_SousRepSOURCE = '\PHOTOS\SOURCE';
+//var g_RepBASESOURCE;
+//var g_SousRepSOURCE = '\PHOTOS\SOURCE';
 
 var g_ProfondeurMAX = 1;
 
 var g_OrdreInversePlanche = true;
+var g_CONFIGtypeConfigWeb = 'WEB-QUATTRO';
+var g_CONFIGisPhotosGroupes = true;
+var g_CONFIGisPhotosIndiv = true;	
+var g_CONFIGisPhotosFratrie = true;
 
 
 var g_RepTIRAGES_DateEcole;
@@ -77,11 +81,12 @@ var g_IsGenerationEnCours = false;
 var g_IsGenerationEnPause = true;
 UIindex = 4; //Pour un, deux, trois, GO!
 
-InitConfig();
+LoadConfig();
 
 RecupNomOrdi();
 
 //RECHERCHE REPERTOIRE SOURCE
+/*
 var g_UIWINRechercheSource = new Window ('palette');
 
 g_UIWINRechercheSource.frameLocation = [ -4,g_HauteurRechercheUI + 30 ];
@@ -92,7 +97,7 @@ g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,20], "SCAN POUR TROUV
 
 var UIRepertoireSource = g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,50], "Recherche de Sources", {multiline: true});
 UIRepertoireSource.graphics.foregroundColor = UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);
-
+*/
 //RECHERCHE REPERTOIRE SOURCE
 
 //PHOTOLAB
@@ -101,7 +106,7 @@ var PHOTOLAB = new Window ('palette', g_NomVersion + '     [' + g_CeCalculateur 
 //PHOTOLAB.size.height = 150;
 PHOTOLAB.frameLocation = [ -4, -4 ];
 PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-PHOTOLAB.graphics.foregroundColor = UIRepertoireSource.graphics.newPen(UIRepertoireSource.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+PHOTOLAB.graphics.foregroundColor = PHOTOLAB.graphics.newPen(PHOTOLAB.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
 
 
 
@@ -123,10 +128,10 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	buttonBibliotheque.helpTip = "Bibliothèque des sources photo pour PhotoLab"; 
 	buttonBibliotheque.onClick = function () {
 		if (AfficheListeSOURCE() == 3){
-			ArborescenceWEB('I.WEB-QUATTRO');
+			ArborescenceWEB();
 		} 		 
 	}	
-	
+	/*
 	var imgConfig = {a: File(g_RepIMG+"Config.png"), b: File(g_RepIMG+"Config-Disable.png"), c: File(g_RepIMG+"Config-Click.png"), d: File(g_RepIMG+"Config-Over.png")};
 	var buttonConfig = Zone11Config.add ("iconbutton", undefined, ScriptUI.newImage (imgConfig.a, imgConfig.b, imgConfig.c, imgConfig.d), {style: "toolbutton"});  // Ne fonctionne pas
 	//buttonConfig.alignment = "right";
@@ -135,7 +140,7 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	buttonConfig.onClick = function () {
 		 DLGConfiguration();
 	}
-	
+	*/
 	
 	
 

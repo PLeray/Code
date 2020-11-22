@@ -207,7 +207,8 @@ function AffichageCMD($tabFICHIERLabo, $numCMD, &$curEcole, $NbCMDAffiche){
 									
 					if ($isAfficheEcole) {
 						$resultat .= '<div class="ecole">';	
-						$resultat .= ' <h1>' .$curEcole->Nom . '</h1>';
+						//$resultat .= ' <h1>' .$curEcole->Nom . '</h1>';
+						$resultat .= $curEcole->Nom;
 						$CodeAfficheEcole = $curEcole->Details;
 						$isAfficheEcole = false;
 						$resultat .= '</div>';
@@ -234,22 +235,28 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 	if ($curseur < count($tabFICHIERLabo)){
 		$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 		if ($identifiant == "<") {
-			$resultat = '<div class="produit">'; //Debut du produit
+			//$resultat = '<div class="produit">'; //Debut du produit
+			$resultat = '<span class="produit">'; //Debut du produit
 			$NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
 			$NomProduit = str_replace("%", "<br>", $NomProduit);
 			$curseur++;
 			$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 			while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '<') && ($identifiant != '')) { 
-			$resultat .= '<h4>'.$NomProduit.'</h4>'  ;
-			// tant qu'on est sur le meme Produit
-				//echo 'tabFICHIERLabo[curseur]  : ' . $tabFICHIERLabo[$curseur];
-				$resultat .= AffichagePlanche($tabFICHIERLabo, $curseur);
-				$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
+				//$resultat = '<span class="produit">'; //Debut du produit
+				$resultat .= '<h4>'.$NomProduit.'</h4><br>'  ;
+				// tant qu'on est sur le meme Produit
+					//echo 'tabFICHIERLabo[curseur]  : ' . $tabFICHIERLabo[$curseur];
+					$resultat .= AffichagePlanche($tabFICHIERLabo, $curseur);
+					
+								
+					
+					
+					
+					$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
+					//$resultat .= '</span>';
 			}
-			//$resultat .= '<div class="produit">'; //<h3>'.$NomProduit.'</h3> ';
-			//$resultat .= '<h3>'.$NomProduit.'</h3>  </div>';
-			
-			$resultat .= '</div>';
+			//$resultat .= '</div>';		
+			$resultat .= '</span>';
 			//$resultat .= '<h3>'. substr($NomProduit,0,18) .'</h3>  </div>';
 
 		}
@@ -260,7 +267,7 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 function AffichagePlanche($tabFICHIERLabo, &$curseur){
 	$resultat = '';    
 	if ($curseur < count($tabFICHIERLabo)){
-        //$resultat .= '<div class="planche">';
+        $resultat .= '<span class="planche">';
 		$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 		if (($identifiant != '@') && ($identifiant != '#') && ($identifiant != '<') && ($identifiant != '')) {
 			//$resultat .= '<img src="' . LienJPG($tabFICHIERLabo[$curseur]) . '" title="'. urldecode($tabFICHIERLabo[$curseur]) . '">';// . '">&nbsp;';
@@ -268,12 +275,12 @@ function AffichagePlanche($tabFICHIERLabo, &$curseur){
 			
 			//$resultat .= '<div id="plancheIMG">' . LienJPG($tabFICHIERLabo[$curseur]) . '</div>';
 			$resultat .=  LienJPG($tabFICHIERLabo[$curseur]) ;
-			
+			//$resultat .= TitrePhotoJPG($tabFICHIERLabo[$curseur]);
 			$resultat .= '<p>'.TitrePhotoJPG($tabFICHIERLabo[$curseur]).'</p>';
 			//$resultat .= '<br>'.TitrePhotoJPG($tabFICHIERLabo[$curseur]).'<br>';
 			$curseur++;
 		}
-        //$resultat .= '</div> ';
+        $resultat .= '</span> ';
 	}
 	return $resultat;
 }
@@ -294,21 +301,20 @@ function LienJPG($filename){
 			global $repertoireTirages;
 			global $repertoireMiniatures;
 			global $curEcole;
-			$maPlanche = new CPlanche($filename);
-			
+			$maPlanche = new CPlanche($filename);			
 			//$cheminIMG = $repertoireTirages . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/' ; 		
 			// Juste pour le # !!! ...
 			$valideNomPlanche = str_replace("#", "%23", $maPlanche->FichierPlanche);
 			$Lien = $repertoireMiniatures . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;
 			
 			$LienBig = $repertoireTirages . $curEcole->RepTirage(). '/' . $maPlanche->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;				
-			
 			break;
 	}		
 	if (!file_exists($LienBig)){
 		$LienBig = $Lien;
 	}
-	$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
+	//$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
+	$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';	
 
 	return $ImageLien;
 }

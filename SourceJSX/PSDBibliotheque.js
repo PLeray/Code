@@ -250,8 +250,7 @@ function AfficheEditionSOURCE(uneSource) {
 			statictext1.text = "Nom Projet :"; 
 
 		var editNomProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 
-			//editNomProjet.text = leNomProjet; 
-			editNomProjet.text = uneSource.NomProjet; 		
+			editNomProjet.text = decodeURI(uneSource.NomProjet); 		
 			editNomProjet.preferredSize.width = 300; 
 
 	// GROUP2
@@ -271,7 +270,7 @@ function AfficheEditionSOURCE(uneSource) {
 
 		var editCodeEcole = group2.add('edittext {properties: {name: "editCodeEcole"}}'); 
 			//editCodeEcole.text = leCode; 
-			editCodeEcole.text = uneSource.CodeEcole; 
+			editCodeEcole.text = decodeURI(uneSource.CodeEcole); 
 			editCodeEcole.preferredSize.width = 120; 
 			
 	// GROUP3
@@ -286,7 +285,7 @@ function AfficheEditionSOURCE(uneSource) {
 
 		var editRepScriptPS = group3.add('edittext {properties: {name: "editRepScriptPS"}}'); 
 			//editCodeEcole.text = leCode; 
-			editRepScriptPS.text = uneSource.RepScriptPS; 
+			editRepScriptPS.text = decodeURI(uneSource.RepScriptPS); 
 			editRepScriptPS.preferredSize.width = 150; 			
 	
 	var staticRepertoire = dlgEditPOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
@@ -316,7 +315,7 @@ function AfficheEditionSOURCE(uneSource) {
 	
 	btnArboWeb.onClick = function () {	
 		if (uneSource.isValide()){
-			if(AfficheClassesAvantArboWeb(editNomProjet.text, staticRepertoire.text)){
+			if(AfficheClassesAvantArboWeb(uneSource)){
 				isMAJ = 3; // MAJ Source + Arrbo WEB
 				dlgEditPOURCE.close();
 			}								
@@ -342,10 +341,10 @@ function AfficheEditionSOURCE(uneSource) {
 			btnOK.text = "OK"; 
 		
 		btnOK.onClick = function () {	
-			uneSource.CodeEcole = editCodeEcole.text;
-			uneSource.NomProjet = editNomProjet.text;
+			uneSource.CodeEcole = encodeURI(editCodeEcole.text);
+			uneSource.NomProjet = encodeURI(editNomProjet.text);
 			uneSource.Annee = dropdownAnnee.selection.text;
-			uneSource.RepScriptPS = editRepScriptPS.text;
+			uneSource.RepScriptPS = encodeURI(editRepScriptPS.text);
 			uneSource.Repertoire = encodeURI(staticRepertoire.text);
 			if (uneSource.isValide()){
 				//MAJFichierSource();
@@ -358,11 +357,13 @@ function AfficheEditionSOURCE(uneSource) {
 	return isMAJ;
 }
 
-function AfficheClassesAvantArboWeb(NomProjet, leRertoireSource){
+//function AfficheClassesAvantArboWeb(NomProjet, leRertoireSource){
+function AfficheClassesAvantArboWeb(uneSource){
+	LoadConfig();	
 	var valRetour = false;
 	// DIALOG
 	// ======
-	var dlgArboWEB = new Window("dialog", 'WEB : ' + NomProjet); 
+	var dlgArboWEB = new Window("dialog", 'WEB : ' + uneSource.NomProjet); 
 		//dlgArboWEB.text = "Validation des noms de classes"; 
 		dlgArboWEB.orientation = "column"; 
 		dlgArboWEB.alignChildren = ["center","top"]; 
@@ -372,7 +373,7 @@ function AfficheClassesAvantArboWeb(NomProjet, leRertoireSource){
 		//dlgArboWEB.frameLocation = [ 0, 20 ];
 		dlgArboWEB.graphics.backgroundColor = dlgArboWEB.graphics.newBrush (dlgArboWEB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 
-		dlgArboWEB.graphics.foregroundColor =UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);			
+		dlgArboWEB.graphics.foregroundColor =dlgArboWEB.graphics.newPen (dlgArboWEB.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);			
 	
 	// GROUPEINFO2
 	// ===========
@@ -391,32 +392,76 @@ function AfficheClassesAvantArboWeb(NomProjet, leRertoireSource){
 		
 ////////A VOIR POSITION
 
-	g_RepSOURCE  = leRertoireSource ;
-
-	g_TabListeNomsClasses = [];
-	//alert('Avant initialisation');
-	InitialisationSourcePourLewEB(Folder(g_RepSOURCE), []);
-	var nbclasses = 0;	
-	var isfratrie = false;
-	var refClasse = '';
-	var nomClasse = '';
-	for(var valeur in g_TabListeNomsClasses){
-		 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
-		 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
-		 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
-			 isfratrie = true;
-		}else{
-			nbclasses = nbclasses + 1;	
-		}
-
-	}	
-	listtext3.text = decodeURIComponent(nomClasse);
-	statictext3.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
 
 
-/////////
 
+////CONFIGURATION /////
 
+	// PANEL1
+	// ======
+	var panel1 = dlgArboWEB.add("panel", undefined, undefined, {name: "panel1"}); 
+		panel1.text = "Configuration de la compilation Web"; 
+		panel1.orientation = "column"; 
+		panel1.alignChildren = ["left","top"]; 
+		panel1.spacing = 10; 
+		panel1.margins = 10; 
+
+	var statictext1 = panel1.add("statictext", undefined, undefined, {name: "statictext1"}); 
+		statictext1.text = "Type :"; 
+
+	// GROUP1
+	// ======
+	var group1 = panel1.add("group", undefined, {name: "group1"}); 
+		group1.orientation = "row"; 
+		group1.alignChildren = ["left","center"]; 
+		group1.spacing = 10; 
+		group1.margins = 0; 
+		
+	var radioStandard = group1.add("radiobutton", undefined, undefined, {name: "radioStandard"}); 
+		radioStandard.text = "Standard"; 
+		radioStandard.value = (g_CONFIGtypeConfigWeb == 'Rien');		
+
+	var radioNB = group1.add("radiobutton", undefined, undefined, {name: "radioNB"}); 
+		radioNB.text = "Noir et Blanc personnalisé"; 
+		radioNB.value = (g_CONFIGtypeConfigWeb == 'NOIR-ET-BLANC');
+
+	var radioQuattro = group1.add("radiobutton", undefined, undefined, {name: "radioQuattro"}); 
+		radioQuattro.text = "Quattro"; 
+		radioQuattro.value = (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO');
+
+	// PANEL1
+	// ======
+	var divider1 = panel1.add("panel", undefined, undefined, {name: "divider1"}); 
+		divider1.alignment = "fill"; 
+		
+	var statictext2 = panel1.add("statictext", undefined, undefined, {name: "statictext2"}); 
+		statictext2.text = "Pour quelles photos :"; 
+
+	// GROUP2
+	// ======
+	var group2 = panel1.add("group", undefined, {name: "group2"}); 
+		group2.orientation = "row"; 
+		group2.alignChildren = ["left","center"]; 
+		group2.spacing = 10; 
+		group2.margins = 0; 
+
+	var checkPhotosGroupes = group2.add("checkbox", undefined, undefined, {name: "checkPhotosGroupes"}); 
+		checkPhotosGroupes.text = "Groupes"; 
+		checkPhotosGroupes.value = g_CONFIGisPhotosGroupes;
+
+	var checkPhotosIndiv = group2.add("checkbox", undefined, undefined, {name: "checkPhotosIndiv"}); 
+		checkPhotosIndiv.text = "Individuelles";
+		checkPhotosIndiv.value = g_CONFIGisPhotosIndiv;		
+
+	var checkPhotosFratrie = group2.add("checkbox", undefined, undefined, {name: "checkPhotosFratrie"}); 
+		checkPhotosFratrie.text = "Fratries"; 	
+		checkPhotosFratrie.value = g_CONFIGisPhotosFratrie;
+	
+	
+
+	
+	
+	
 	// GROUPEINFO4
 	// ===========
 	var GroupeInfo4 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo4"}); 
@@ -431,11 +476,48 @@ function AfficheClassesAvantArboWeb(NomProjet, leRertoireSource){
 		
 		
 	buttonGenerererArboWEB.onClick = function () {	
-			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/LUMYS-' + NomProjet;
+			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/LUMYS-' +  uneSource.NomProjet;
 			valRetour = true;
+			var typeConfig = '';
+			if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
+			if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
+			if (radioStandard.value){typeConfig='Rien';}
+			
+			SaveConfig(g_OrdreInversePlanche, typeConfig, checkPhotosGroupes.value, checkPhotosIndiv.value, checkPhotosFratrie.value);
+			g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;
 			//return valRetour;	
+			
 			dlgArboWEB.close();	
 	}		
+	
+	dlgArboWEB.onActivate = function(){	
+		app.refresh(); // or, alternatively, waitForRedraw(); 
+		dlgArboWEB.update(); // A voir sur MAC?
+		
+		g_RepSOURCE  = uneSource.Repertoire;
+
+		g_TabListeNomsClasses = [];
+		//alert('Avant initialisation');
+		InitialisationSourcePourLewEB(Folder(g_RepSOURCE), []);
+		var nbclasses = 0;	
+		var isfratrie = false;
+		var refClasse = '';
+		var nomClasse = '';
+		for(var valeur in g_TabListeNomsClasses){
+			 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
+			 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
+			 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
+				 isfratrie = true;
+			}else{
+				nbclasses = nbclasses + 1;	
+			}
+
+		}	
+		listtext3.text = decodeURIComponent(nomClasse);
+		statictext3.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
+	};
+	
+	
 
 	//dlgArboWEB.show();
 	

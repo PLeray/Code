@@ -40,7 +40,7 @@ h3 {
 }
 
 h4 { /*Police texte produit */
-	display: inline-block;/* */
+
     color: var(--FondLigneTabGrisSombre);
     letter-spacing: 2px;
 	padding-top: 0px;
@@ -49,7 +49,7 @@ h4 { /*Police texte produit */
 	font-family: "Courier New", Times, serif;
 	text-align: center;
 	
-	/*max-width: 180px;*/
+	max-width: 180px;
 	
 }
 
@@ -58,10 +58,16 @@ p {/*Police Détails Fichier commande et commun  */
 	line-height: 0;
 	font-size: 10px;
 	color: var(--FondLigneTabGrisSombre);
-	/*color: var(--boutonVert);*/
 }
 
-
+.mention {/* les mentions  */
+    letter-spacing: 1px;
+	line-height: 1;
+	font-size: 10px;
+    text-align: right;	
+	color: var(--FondLigneTabGrisSombre);
+	
+}
 
 /******************************/
 /*         CMD-VIEW           */
@@ -74,35 +80,64 @@ p {/*Police Détails Fichier commande et commun  */
 	text-align: center;
     border-radius: 10px 10px 0px 0px;
 }*/
-
-.ecole {
-    text-align: center;
-	font-size: 20px;
+div.ecole {
+    /*border: 1px solid gray;
+    width: auto;*/
+	width: 99%;
+	float: left;
+	text-align: center;
+	padding: 5px;
 	
-	
-	padding: 10px;
-	/*padding: 5px;
-	margin-top: 1px;
+	margin: 10px;
+	/*margin-top: 1px;
 	margin-bottom: 14px;*/
 	position: relative;/**/
-	
-	color: var(--FondLigneTabGrisSombre);
-	background-color: var(--FondsurvolLigneTab);
-	
 	
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.24); 
 }
 
 
+
+div.copyright {
+	width: 100%;
+	height: auto;
+	float: left;    
+	
+	/*border: 1px solid var(--boutonVert);gray;*/
+	background-color: white; /*var(--FondLigneTabGrisClair);*/
+	
+	text-align: right;
+    margin-top: 10px;
+	text-indent:10px;
+    border-radius:  0px 0px 10px 10px;
+	
+}
+/*
+div.Titrecommande {
+
+}
+.Titrecommande:after {
+  content: '\2212';
+  
+  font-weight: bold;
+  float: right;
+}
+
+.active:after {
+  content: "\002B";
+}
+
+*/
+
 .Titrecommande {
   content: '\2212';
   cursor: pointer;
-  /*margin-left: -10px;*/
+  margin-left: -10px;
   padding: 10px 10px 10px 10px;
   width: 100%;
   border: none;
   outline: none;
-    color: var(--FondLigneTabGrisSombre);
+    color: var(--FondLigneTabGrisSombre);;
 
 	text-align: left;
     letter-spacing: 2px;
@@ -125,13 +160,26 @@ p {/*Police Détails Fichier commande et commun  */
   float: right;
 }
 
+/*
+.active:after {
+  content: '\002B';
+}
+.Contenucommande:block {
+  content: 'HHH';
+}
+
+.Contenucommande {
+white-space: nowrap;
+color: red;
+}
+*/
 div.commande {
     /*border: 1px solid gray;
     width: auto;*/
-	width: auto; /*97%;
-	display: inline-block;*/
-	/*float: left;
-	text-align: center;*/
+	width: auto; /*97%;*/
+	/*display: inline-block;*/
+	float: left;
+	text-align: center;
 	margin: 10px;
 	/*padding: 110px;
 	padding-top: 2px;
@@ -141,34 +189,21 @@ div.commande {
 	position: relative;/**/
 	background-color: white;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	transition: max-height 0.2s ease-out;
+transition: max-height 0.2s ease-out;
 }
 
-.Contenucommande {background-color: pink;
-	/*width: auto;
+div.produit {
+	width: auto;
 	height: auto;
-	float: left;
-	position: relative;*/
+	/**/float: left;
 	
-}
-
-.produit {background-color: Aqua;
-    /*border: 1px solid gray;
-    width: auto;*/
-	width: auto; /*97%;*/
-	display: inline-block;
-	/*float: left;*/
 	text-align: center;
-	margin: 10px;
-	/*padding: 110px;
-	padding-top: 2px;
-	
-	margin-top: 1px;
-	margin-bottom: 14px;*/
-	position: relative;/**/
+	padding: 8px;
+	margin: 8px; 
+	padding-bottom: -14px;
 	
 	
-	
+	background-color: white;
 	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	animation: shake 0.2s;
 	animation-iteration-count: 1;
@@ -178,33 +213,90 @@ div.commande {
 	animation-duration: 3s;
 	animation-delay: 0s;*/	
 }
+   /*
+div.produit {
+	padding: 1px;
+	background-color: var(--FondLigneTabGrisSombre);
+	margin-top: 3px;
+	padding-bottom:0px;
+	text-align: center;
+	
+}*/	
 
-.planche {background-color: Yellow;
-	display: inline-block;	 
-	/*float: left;
-	margin: 10px; A Revoir margin: 10px 10px 10px 10px;
-*/
-margin: 10px 10px 10px 10px;
-	
-	
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	animation: shake 0.2s;
-	animation-iteration-count: 1;		
-	cursor: pointer;
+div.planche {
+	display: inline;
+	/*position: relative;
+	float: left;
+	width: auto;
+	height: auto;
+	*/
 		
 }
 
-.planche :hover {opacity: 0.7;}
+#myImgPlanche {
+	cursor: pointer;
+	/*max-height: 150px;*/
+	width: auto; 
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	animation: shake 0.2s;
+	animation-iteration-count: 1;	
+}
+#myImgPlanche:hover {opacity: 0.7;}
 
 
-.mention {/* les mentions  */
-    letter-spacing: 1px;
-	line-height: 1;
-	font-size: 10px;
-    text-align: right;	
+
+
+div.lettre {
+	width: auto;
+	float: left;
+	text-align: center;
+	padding: 20px;
+	padding-top: 90px;
+	margin: 10px; 
+	position: relative;
+	background-color: white;
+	background: url(../img/timbre.jpg) right top no-repeat;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	animation: shake 0.2s;
+	animation-iteration-count: 1;
+	/*-webkit-animation-name: chute;  Safari 4.0 - 8.0 */
+    /*-webkit-animation-duration: 3s;  Safari 4.0 - 8.0 
+	animation-name: chute;
+	animation-duration: 3s;
+	animation-delay: 0s;*/
 }
 
-.pagination {
+/* Standard syntax 
+@keyframes chute {
+    0%   { left:-1500px; top:0px;}
+    80%  { left:10px; top:0px;}
+    100% { left:0px; top:0px;}
+}*/
+
+/* Safari 4.0 - 8.0 
+@-webkit-keyframes chute {
+    0%   { left:-1500px; top:0px;}
+    80%  { left:10px; top:0px;}
+    100% { left:0px; top:0px;}
+}*/
+
+
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+div.pagination {
     text-align: center;
     padding: 5px;
 	font-size: 12px;
@@ -264,7 +356,7 @@ margin: 10px 10px 10px 10px;
 }
 
 /* ////////////////////////   BOUTON + ET - ///////////////////// */
-.affichageNBPage {
+div.affichageNBPage {
     position: absolute;
     Right: 150px;
 
@@ -312,7 +404,7 @@ margin: 10px 10px 10px 10px;
   z-index: 1; 
 }
 
-.titreFichier {
+div.titreFichier {
 	position: absolute;
 	padding: 1px;
 	text-align: left;
@@ -324,7 +416,7 @@ margin: 10px 10px 10px 10px;
     letter-spacing: 3px;	
 }
 
-.recherche {
+div.recherche {
 	padding: 1px;
 	padding-Top: 28px;
 	text-align: center;
@@ -345,7 +437,7 @@ margin: 10px 10px 10px 10px;
     background-color: #f6f6f6;
 	border-bottom: 1px solid #FFF;*/
 }
-/*RESULTAT RECHERCHE */
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -425,6 +517,68 @@ margin: 10px 10px 10px 10px;
 #myBtn:hover {
   background-color: #555; /* Add a dark-grey background on hover */
 }
-text-align:center;
+
+/*//////////////////////////////////////*/
+/*/////////////////////////////////////////*/
+
+#boxIMG
+{
+	max-width:100%;
+	max-height:100%;
+
+}
+
+#shadowing
+{
+	display: none;
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:15;
+	opacity:0.8;
+	/*filter: alpha(opacity=50);*/
+}
+
+#box 
+{
+	display: none;
+	position: fixed; /* Fixed/sticky position */
+	bottom: 10px; /* Place the button at the bottom of the page */
+left: 5%;
+	width: 90%;
+		/*max-width:600px;
+	max-height:400px;*/
+	padding: 0;
+	margin:0;
+
+	background-color: var(--boutonVert);
+	z-index:100;
+}
+
+#boxcontent
+{
+	left:0;
+	right:0;
+	bottom:0;
+	margin:0;
+	padding: 8px;
+	overflow: auto;
+	width:100%;
+	height:100%;
+	text-align: center;
+}
+
+#boxtitle
+{
+	left:0%;
+	width:auto;
+	
+	padding:0;
+	margin:0;
+	color:white;
+	text-align:center;
 }
  

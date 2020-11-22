@@ -73,18 +73,14 @@
 			
 	<a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes" class="close">&times;</a>
 
-	<div id="shadowing"></div>
-	<div id="box">
-		<div id="boxcontent"  onclick="closebox()">  </div> 
-		<div id="boxtitle">Nom de l'image</div>
-	</div>
+
 	
-	<div class="copyright">
+	
 <?php
 	//echo PaginatorCMD($tabCMDLabo, 1, $numeroCMD, 2, 2 + $NbCMDAffiche, 1, 1);
 	echo $maCMDHtml;
 ?>		
-	</div>
+
 	
 	<div class="affichageNBPage">
 	    <p></p>
