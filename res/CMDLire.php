@@ -241,9 +241,10 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 			$NomProduit = str_replace("%", "<br>", $NomProduit);
 			$curseur++;
 			$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
+			$resultat .= '<h4>'.$NomProduit.'</h4><br>'  ;
 			while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '<') && ($identifiant != '')) { 
 				//$resultat = '<span class="produit">'; //Debut du produit
-				$resultat .= '<h4>'.$NomProduit.'</h4><br>'  ;
+				
 				// tant qu'on est sur le meme Produit
 					//echo 'tabFICHIERLabo[curseur]  : ' . $tabFICHIERLabo[$curseur];
 					$resultat .= AffichagePlanche($tabFICHIERLabo, $curseur);
@@ -314,7 +315,7 @@ function LienJPG($filename){
 		$LienBig = $Lien;
 	}
 	//$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img  id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';
-	$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';	
+	$ImageLien = '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($filename) . '"></a>';	
 
 	return $ImageLien;
 }

@@ -40,10 +40,11 @@ h3 {
 }
 
 h4 { /*Police texte produit */
-	display: inline-block;/* */
+	display: inline-block; /**/
     color: var(--FondLigneTabGrisSombre);
     letter-spacing: 2px;
 	padding-top: 0px;
+	margin-bottom: -30px;
 	
 	font-size: 11px;
 	font-family: "Courier New", Times, serif;
@@ -67,13 +68,6 @@ p {/*Police Détails Fichier commande et commun  */
 /*         CMD-VIEW           */
 /******************************/
 
-/*div.ecole {
-    border: 1px solid gray;
-	background-color: white; 
-    margin-left: 50%;
-	text-align: center;
-    border-radius: 10px 10px 0px 0px;
-}*/
 
 .ecole {
     text-align: center;
@@ -81,13 +75,11 @@ p {/*Police Détails Fichier commande et commun  */
 	
 	
 	padding: 10px;
-	/*padding: 5px;
-	margin-top: 1px;
-	margin-bottom: 14px;*/
+
 	position: relative;/**/
 	
-	color: var(--FondLigneTabGrisSombre);
-	background-color: var(--FondsurvolLigneTab);
+	background-color: var(--FondEnteteTableau);
+	color: var(--FondLigneTabGrisClair);
 	
 	
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.24); 
@@ -125,76 +117,48 @@ p {/*Police Détails Fichier commande et commun  */
   float: right;
 }
 
-div.commande {
-    /*border: 1px solid gray;
-    width: auto;*/
-	width: auto; /*97%;
-	display: inline-block;*/
-	/*float: left;
-	text-align: center;*/
+.commande {
+	width: auto; /*97%;*/
+
 	margin: 10px;
-	/*padding: 110px;
-	padding-top: 2px;
-	
-	margin-top: 1px;
-	margin-bottom: 14px;*/
+
 	position: relative;/**/
 	background-color: white;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	transition: max-height 0.2s ease-out;
 }
 
-.Contenucommande {background-color: pink;
-	/*width: auto;
-	height: auto;
-	float: left;
-	position: relative;*/
+.Contenucommande {background-color: white;
 	
 }
 
-.produit {background-color: Aqua;
-    /*border: 1px solid gray;
-    width: auto;*/
+.produit {background-color: white;
+
 	width: auto; /*97%;*/
 	display: inline-block;
-	/*float: left;*/
+
 	text-align: center;
 	margin: 10px;
-	/*padding: 110px;
-	padding-top: 2px;
-	
-	margin-top: 1px;
-	margin-bottom: 14px;*/
+
 	position: relative;/**/
 	
-	
-	
-	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	animation: shake 0.2s;
-	animation-iteration-count: 1;
-	-webkit-animation-name: chute;  Safari 4.0 - 8.0 */
-    /*-webkit-animation-duration: 3s;  Safari 4.0 - 8.0 
-	animation-name: chute;
-	animation-duration: 3s;
-	animation-delay: 0s;*/	
 }
 
-.planche {background-color: Yellow;
+.planche {background-color: white;
 	display: inline-block;	 
-	/*float: left;
-	margin: 10px; A Revoir margin: 10px 10px 10px 10px;
-*/
-margin: 10px 10px 10px 10px;
+
+	margin: 10px 10px 10px 10px;
 	
-	
+}
+
+#myImgPlanche {
+	cursor: pointer;
+
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	animation: shake 0.2s;
-	animation-iteration-count: 1;		
-	cursor: pointer;
-		
+	animation-iteration-count: 1;	
 }
-
-.planche :hover {opacity: 0.7;}
+#myImgPlanche:hover {opacity: 0.7;}
 
 
 .mention {/* les mentions  */
