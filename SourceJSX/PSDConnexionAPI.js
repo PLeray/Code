@@ -22,7 +22,6 @@
 var g_IsDebug = 0;
 
 function APIConnexionJS() {
-	//var isDebug = 0;
 	if (g_IsDebug){
 		this.isSocket = false;
 		this.Service = '/res/PSDSocket.php';

@@ -2,7 +2,6 @@
 //#include PSDCode.js
 #include PSDConnexionAPI.js
 
-//var g_IsDebug = true;
 var sepNumLigne = '§';
 var sepRetourLigne = 'RCSL';
 //var g_IsFratrie = false;
@@ -227,7 +226,7 @@ function CommandesLabo(tableaudeLabo, FichierLab) {
 		CodeTrouve = CodeTrouve.substr(0,CodeTrouve.indexOf(sepNumLigne)); 
 		//alert( 'isRecord = (b64_md5('+ CodeCherche + ') :' + hex_md5(CodeCherche) + ' =' + CodeTrouve);		//this.FichierLab = 'xx';
 		return (hex_md5(CodeCherche) == CodeTrouve); // false
-		
+		//return true; // A supprimer !!
 	};
 }
 
@@ -235,6 +234,7 @@ function CommandesLabo(tableaudeLabo, FichierLab) {
 function LogResultAPI(resultAPI) {
 	var fileName = g_SelectFichierLab.path + '/logAPI.txt'; // + '1' : Etat les planches de la commande sont créees
 	var file = new File(fileName);
+	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
 		file.writeln(resultAPI);
 	file.close();

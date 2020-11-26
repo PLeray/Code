@@ -1,12 +1,12 @@
 <?php
-/*include 'ProduitsWEB.php';*/
+/*include 'CataloguePdtWEB.php';*/
 
 $ProduitsNONLABO = array(
 '15x39cm_CADRE-PANO',
 '10x15cm_TAPIS-SOURIS'
 );
 
-$ProduitsWEB = array();
+$CataloguePdtWEB = array();
 
 
 $Ecole_EnCOURS = '';
@@ -21,16 +21,16 @@ $TabResumeFormat = array();
 function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 {
 	$TabCSV = array();
-	//$ProduitsWEB = csv_to_array('res/CatalogueProduits.csv', ';');
-	//$GLOBALS['ProduitsWEB'] = csv_to_array('res/CatalogueProduits.csv', ';');
-	$GLOBALS['ProduitsWEB'] = csv_to_array('../CatalogueProduits.csv', ';'); // New 22-10
-	//var_dump( $GLOBALS['ProduitsWEB']) ;
+	//$CataloguePdtWEB = csv_to_array('res/CatalogueProduits.csv', ';');
+	//$GLOBALS['CataloguePdtWEB'] = csv_to_array('res/CatalogueProduits.csv', ';');
+	$GLOBALS['CataloguePdtWEB'] = csv_to_array('../CatalogueProduits.csv', ';'); // New 22-10
+	//var_dump( $GLOBALS['CataloguePdtWEB']) ;
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');
 	$isCMDUnique = is_numeric(substr($target_file ,-11,-5));
 	$PrefixeTirage = '';
 	// A Sup
-	//var_dump( $TabCSV[1]) ;
+	//var_dump( $TabCSV[0]) ;
 	// A Sup
 	
 	if ($isCMDUnique){
@@ -39,11 +39,11 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		$PrefixeTirage = '(CMD-' . $NumCMD . ') ';
 	}
 	else{
-		if ($TabCSV[1]["Type"] == 'groupee'){
-			$target_file = date("Y-m-d") . '-L2-WEB-' . SUPRAccents($TabCSV[1]["Nom de l'ecole"]) . '-' . $TabCSV[1]["Ville ecole"] . '.lab0';	
+		if ($TabCSV[0]["Type"] == 'groupee'){
+			$target_file = date("Y-m-d") . '-L2-WEB-' . SUPRAccents($TabCSV[0]["Nom de l'ecole"]) . '-' . $TabCSV[0]["Ville ecole"] . '.lab0';	
 			$PrefixeTirage = 'L2-';			
 		}else { 
-			if ($TabCSV[1]["Type"] == 'isolee'){
+			if ($TabCSV[0]["Type"] == 'isolee'){
 				$target_file = date("Y-m-d") . '-WEB-Commandes Isolees'. '.lab0';
 				$PrefixeTirage = '(ISOLEES) ';		
 			}
@@ -65,23 +65,8 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		array_multisort($NomProjet, SORT_ASC, $NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV);
 		$NbLignes=count($TabCSV);
 		
-		
-		/*$TabCSVKeys = array_keys($TabCSV);	
-		for($i = 0; $i < count($TabCSVKeys); $i++){ 
-			if ($TabCSVKeys[$i] == 'Nom de la photo'){
-				$DebutColCommande = $i;
-			}
-			if ($TabCSVKeys[$i] == 'Nom'){
-				$FinColCommande = count($TabCSVKeys) - $i;
-			}
-		}
-		echo  'Debut ' .  $DebutColCommande . ' et Fin '. $FinColCommande . '<br><br>';*/
-		
 		//Prefixe rep Tirage
-		
-		
-		
-		
+
 
 		for($i = 0; $i < $NbLignes; $i++)
 		{ 
@@ -201,17 +186,17 @@ function EcrireProduitPhoto($NomPhoto, $ProduitPhoto)
     $valRetour = '';
 	//echo utf8_decode(strtolower($ProduitPhoto)) . '<br>';
 	//echo $ProduitPhoto . '<br>';
-	//var_dump( $GLOBALS['ProduitsWEB']) ;
-	//$leCodeProduit = $GLOBALS['ProduitsWEB'][strtolower($ProduitPhoto)];
-	//$leCodeProduit = $GLOBALS['ProduitsWEB'][$ProduitPhoto];
-	//echo ' sqfqsfdqsf  ' . $GLOBALS['ProduitsWEB'][0]['Description']. ' sqfqsfdqsf <br>';
+	//var_dump( $GLOBALS['CataloguePdtWEB'][1]) ;
+	//$leCodeProduit = $GLOBALS['CataloguePdtWEB'][strtolower($ProduitPhoto)];
+	//$leCodeProduit = $GLOBALS['CataloguePdtWEB'][$ProduitPhoto];
+	//echo ' sqfqsfdqsf  ' . $GLOBALS['CataloguePdtWEB'][0]['Description']. ' sqfqsfdqsf <br>';
 	$leCodeProduit ='';
 	
 
-	for($i = 0; $i < count($GLOBALS['ProduitsWEB']) ; $i++){
-		//echo $GLOBALS['ProduitsWEB'][$i]['Description'] . '<br>';
-		if ($GLOBALS['ProduitsWEB'][$i]['Description'] == $ProduitPhoto){
-			$leCodeProduit = $GLOBALS['ProduitsWEB'][$i]['Code'];
+	for($i = 0; $i < count($GLOBALS['CataloguePdtWEB']) ; $i++){
+		//echo $GLOBALS['CataloguePdtWEB'][$i]['Description'] . '<br>';
+		if ($GLOBALS['CataloguePdtWEB'][$i]['Description'] == $ProduitPhoto){
+			$leCodeProduit = $GLOBALS['CataloguePdtWEB'][$i]['Code'];
 			break; 
 		}
 	} 	
@@ -247,14 +232,15 @@ function ConvertPDT($ProduitPhoto)
 
 function csv_to_array($filename='', $delimiter=';')
 {
-    if(!file_exists($filename) || !is_readable($filename))
+    //echo ('$filename ' . $filename);
+	if(!file_exists($filename) || !is_readable($filename))
         return FALSE;
 
     $header = NULL;
     $data = array();
     if (($handle = fopen($filename, 'r')) !== FALSE)
     {
-        while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+        while (($row = fgetcsv($handle, 0, $delimiter)) !== FALSE)
         {
             if(!$header)
                 $header = $row;

@@ -44,7 +44,7 @@ function GenererLeFichierNOM() {
 	PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 	g_IsGenerationEnCours =true;
 	g_IsGenerationEnPause = false;	
-	buttonConfig.enabled = false;
+	//buttonConfig.enabled = false;
 	Raffraichir();
 
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
@@ -61,7 +61,7 @@ function GenererLeFichierNOM() {
 	SetBoutonGenerer();
 	Raffraichir();
 	Select_Generer.enabled = true;	
-	buttonConfig.enabled = true;
+	//buttonConfig.enabled = true;
 }
 
 function OuvrirSelectFichierLab0(fileName) {
@@ -174,7 +174,7 @@ function OuvrirFichierLabo() {
 					//UI
 					//nbFichierAGenerer.text = 'Repertoire TIRAGE :     (Nombre de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')';
 					Select_Generer.enabled =  (g_SelectFichierLab) ? true : false ;
-					buttonConfig.enabled = true;
+					//buttonConfig.enabled = true;
 					progressBar.maxvalue = g_CommandeLabo.NbPlanchesACreer();		
 					valRetour = true;					
 				}
@@ -421,7 +421,7 @@ function GenererFichiersLABO() {
 	catch(err) {
 		MsgERREUR("ERREUR GenererFichiersLABO()", "Fichier en cours : " + g_CommandePDTEncours + "\n" + ErreurInfoMSG(err));
 		Select_Generer.enabled = true;
-		buttonConfig.enabled = true;
+		//buttonConfig.enabled = true;
 	}
 }
 
@@ -671,6 +671,7 @@ function LoadConfig() {
 function SaveConfig(checkOrdre, typeConfigWeb, isPhotosGroupes, isPhotosIndiv, isPhotosFratrie) {
 	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
+	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
 		file.writeln("// Planche inversé ?");		
 		file.writeln(checkOrdre);	

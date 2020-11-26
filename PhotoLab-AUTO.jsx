@@ -3,7 +3,7 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 2.7;
+var g_NumVersion = 2.9;
 
 var g_NomVersion = 'PhotoLab PLUGIN v3.3';
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";

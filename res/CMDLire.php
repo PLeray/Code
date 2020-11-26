@@ -20,9 +20,11 @@ class CCommande {
     var $Ville;
     
     function __construct($str){
-        $this->CmdClient = utf8_encode($str);
+        //NEW UTF-8 $this->CmdClient = utf8_encode($str);
+        $this->CmdClient = $str;
 		//$morceau = explode(".", $this->CmdClient);
-        $morceau = explode("_", utf8_encode(str_replace("#", "", $str)));
+        //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("#", "", $str)));
+        $morceau = explode("_", str_replace("#", "", $str));
 					//echo $str . "   ...  ";
 		$this->Numero = $morceau[0];
         $TailleInfo = count($morceau);
@@ -47,7 +49,8 @@ class CEcole {
     var $Details;
 
     function __construct($str){
-        $morceau = explode("_", utf8_encode(str_replace("@", "", $str)));
+        //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("@", "", $str)));
+        $morceau = explode("_", str_replace("@", "", $str));
 		$this->DateTirage = $morceau[0];
         $this->Nom = $morceau[1];
         $this->Details = $morceau[2];
@@ -74,7 +77,8 @@ class CPlanche {
 		//echo '<br>' . $this->FichierPlanche ;
 		if (substr($str,0,1) == 'P'){
 			$this->FichierPlanche = $str;		
-			$morceau = explode(".", utf8_encode($this->FichierPlanche));		
+			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
+			$morceau = explode(".", $this->FichierPlanche);		
 			$this->IndexOrdre = $morceau[0];
 			$this->FichierSource = $morceau[1]. '.jpg';
 			$this->Type = $morceau[2];
@@ -137,12 +141,14 @@ function FormatNumCmd($strCMD){
 
 function VersionFichierLab($tabFICHIERLabo){
 	$Info = $tabFICHIERLabo[0];
-	return utf8_encode($Info);
+	//NEW UTF-8 return utf8_encode($Info);
+	return $Info;
 }
 
 function EtatFichierLab($tabFICHIERLabo){
     $Info = $tabFICHIERLabo[1];
-	return utf8_encode($Info);
+	//NEW UTF-8 return utf8_encode($Info);
+	return $Info;
 }
 
 function AfficheEtatFichierLab($Etat){
@@ -237,7 +243,8 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 		if ($identifiant == "<") {
 			//$resultat = '<div class="produit">'; //Debut du produit
 			$resultat = '<span class="produit">'; //Debut du produit
-			$NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
+			//NEW UTF-8 $NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
+			$NomProduit = str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur]));
 			$NomProduit = str_replace("%", "<br>", $NomProduit);
 			$curseur++;
 			$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
@@ -403,7 +410,8 @@ function PaginatorCMD($tabCMDLabo, $nb_results_p_page, $numero_CMD_courante, $nb
 
     $resultat .= '</div>'  ;  
     // On retourne le resultat
-    return utf8_encode($resultat);
+    //NEW UTF-8 return utf8_encode($resultat);
+    return $resultat;
 }
 
 function LienLocal($Commande){

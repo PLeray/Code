@@ -10,6 +10,7 @@ AfficheListeSOURCE();*/
 var g_LesSources = [];
 
 function LireFichierSource() {	
+	g_LesSources = [];	
 	var file = new File(g_FichierSource);
 	if (file.exists){	
 		file.open("r"); // open file with write access
@@ -48,7 +49,8 @@ function TRIERSource() {
 
 function MAJFichierSource() {	
 	//var test ='';
-	file = new File(g_FichierSource);
+	var file = new File(g_FichierSource);
+	file.encoding='UTF-8';
 	file.open("w");	
         file.writeln('Code;NomProjet;Annee;Rep Scripts PS;Repertoire'); // On Ecrit les entetes du csv	
 		for (var n = 0; n < g_LesSources.length; n++) {
@@ -103,7 +105,8 @@ function objSourceCSV(uneLigne) {
 	
 	this.LigneCSV = function(){return this.CodeEcole + ';'	+ this.NomProjet + ';' + this.Annee  + ';' + this.RepScriptPS + ';' + this.Repertoire;};
 	this.isValide = function(){
-		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(this.Repertoire).exists);
+		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(this.Repertoire).exists);		
+		//return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(encodeURI(this.Repertoire)).exists);
 		//alert("Folder(this.Repertoire).exists  : " + Folder(this.Repertoire).exists);	
 	};
 
@@ -341,11 +344,17 @@ function AfficheEditionSOURCE(uneSource) {
 			btnOK.text = "OK"; 
 		
 		btnOK.onClick = function () {	
-			uneSource.CodeEcole = encodeURI(editCodeEcole.text);
+			/*uneSource.CodeEcole = encodeURI(editCodeEcole.text);
 			uneSource.NomProjet = encodeURI(editNomProjet.text);
 			uneSource.Annee = dropdownAnnee.selection.text;
 			uneSource.RepScriptPS = encodeURI(editRepScriptPS.text);
-			uneSource.Repertoire = encodeURI(staticRepertoire.text);
+			uneSource.Repertoire = encodeURI(staticRepertoire.text);*/
+			
+			uneSource.CodeEcole = editCodeEcole.text;
+			uneSource.NomProjet = editNomProjet.text;
+			uneSource.Annee = dropdownAnnee.selection.text;
+			uneSource.RepScriptPS = editRepScriptPS.text;
+			uneSource.Repertoire = staticRepertoire.text;			
 			if (uneSource.isValide()){
 				//MAJFichierSource();
 				isMAJ = 1; // MAJ Source
@@ -526,3 +535,26 @@ function AfficheClassesAvantArboWeb(uneSource){
 	}
 }
 
+/*
+	//var chaine = "À côté d'un verre vide, il y a toujours un mec plein.";
+	//alert( chaine.sansAccent() );
+String.prototype.sansAccent = function(){
+    var accent = [
+        /[\300-\306]/g, /[\340-\346]/g, // A, a
+        /[\310-\313]/g, /[\350-\353]/g, // E, e
+        /[\314-\317]/g, /[\354-\357]/g, // I, i
+        /[\322-\330]/g, /[\362-\370]/g, // O, o
+        /[\331-\334]/g, /[\371-\374]/g, // U, u
+        /[\321]/g, /[\361]/g, // N, n
+        /[\307]/g, /[\347]/g, // C, c
+    ];
+    var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
+     
+    var str = this;
+    for(var i = 0; i < accent.length; i++){
+        str = str.replace(accent[i], noaccent[i]);
+    }
+     
+    return str;
+}
+*/

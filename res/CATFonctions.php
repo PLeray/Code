@@ -11,11 +11,12 @@ class CINFOfichierLab {
     var $NomEcole;
     var $DateTirage;
 
-    function __construct($myfileName){
-		$tabFICHIERLabo = LireFichierLab($GLOBALS['repCMDLABO'] . $myfileName);
-		$this->Fichier = $myfileName;
-		$this->EtatFichier = substr(strrchr($myfileName, '.'),4);
-		$this->FichierERREUR = substr($myfileName, 0, -5) . '.Erreur';
+    function __construct($myfileName){ // Le chemin complet !
+		$tabFICHIERLabo = LireFichierLab($myfileName);
+		$this->Fichier = basename($myfileName);
+		$this->EtatFichier = substr(strrchr($this->Fichier, '.'),4);
+		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.Erreur';
+		$this->AffichageCMD = substr($this->Fichier, 11, -5);
 
 		for($i = 0; $i < count($tabFICHIERLabo); $i++){
 			$identifiant = substr($tabFICHIERLabo[$i],0,1);
@@ -24,7 +25,8 @@ class CINFOfichierLab {
 				//echo $this->NbPlanches;
 			}else {
 				if ($identifiant == '{')  {
-					$this->SyntheseCMD = utf8_encode(substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1));
+			//NEW UtF8//$this->SyntheseCMD = utf8_encode(substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1));
+					$this->SyntheseCMD = substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1);
 					$this->SyntheseCMD = str_replace("%", "<br>", $this->SyntheseCMD);
 					$this->SyntheseCMD = str_replace("{", "<br>", $this->SyntheseCMD) . "<br>";
 
@@ -34,7 +36,8 @@ class CINFOfichierLab {
 					$this->Compilateur = strstr(strrchr($tabFICHIERLabo[$i], '%'), 1, -1);
 				}		
 				if ($identifiant == '@')  {
-					$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
+			//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
+					$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
 					$this->DateTirage = $morceau[0];
 					$this->NomEcole = $morceau[1];			
 				}	
@@ -101,7 +104,8 @@ function LienIMGSuprFichierLab($fichier, $Etat) {
 	else{
 		if (is_numeric($Etat)){
 			if ($Etat < 3){
-				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 								
+				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 
+				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . $fichier .  '"><img src="img/poubelle.png"></a>'; 								
 			}
 		}
 	}
@@ -211,7 +215,7 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 	rsort($tabFichierLabo);
 	for($i = 0; $i < count($tabFichierLabo); $i++){
 		// Un objet pour récupérer les infos Fichier !!! 
-		$mesInfosFichier = new CINFOfichierLab($tabFichierLabo[$i]); 
+		$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 
 		$nb_fichier++;
 		
 		//$fichier = $mesInfosFichier->Fichier;
@@ -232,7 +236,7 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 		$affiche_Tableau .=
 		'<tr>
 			<td>' . $mesInfosFichier->DateTirage .'</td>
-			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->NomEcole . '</a>
+			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageCMD . '</a>
 				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>
 			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '"><img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>	
 			<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbPlanches . '</a>
@@ -454,7 +458,8 @@ function LienImageEtatWEB($Etat){
 
 function LienEtatLab($fichier, $Etat) {
 	if (strrchr($fichier, '.') != ".lab0"){
-		return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);			
+		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
+		return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
 	} else {
 		return 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}

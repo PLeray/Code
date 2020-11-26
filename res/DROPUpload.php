@@ -90,11 +90,16 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
 				$retourMSG .= '<h3>Démarrer sur PC le plug-in PhotoLab pour Photoshop<br>(PhotoLab-AUTO.jsxbin).</h3>';			
 				
-				//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));					
-				$CMDAvancement ='';
+				//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
+			
+				
+				$mesInfosFichier = new CINFOfichierLab($target_file); 
+				//$CMDAvancement ='';
 				$CMDhttpLocal ='';
-				$Compilateur = '';				
-				$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
+				//$Compilateur = '';				
+				$NBPlanches = $mesInfosFichier->NbPlanches;
+
+				//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 				//echo "Apres move_uploaded_file";
 				$CMDhttpLocal = '&CMDdate=' . substr($target_file_seul, 0, 10);	
 				$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;

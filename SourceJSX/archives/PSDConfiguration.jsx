@@ -498,6 +498,7 @@ function DLGConfiguration(){
 	buttonValider.onClick = function () {		
 		var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
 		var file = new File(fileName);
+		file.encoding='UTF-8';
 		file.open("w"); // open file with write access
 			file.writeln("// editCodeClient");		
 			file.writeln(encodeURIComponent(editCodeClient.text));

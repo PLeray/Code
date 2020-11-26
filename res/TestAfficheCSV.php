@@ -2,7 +2,7 @@
 <?php
 include 'ConvertCSV.php';
 
-
+$repCommandesLABO = '../../CMDLABO';
 
 
 $TabCSV = array();
@@ -16,7 +16,7 @@ $TabResumeFormat = array();
 
 //$TTEST = '';
 //echo ConvertirCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
-$fichierCSV = 'Production Commande groupée.csv';
+$fichierCSV = '../../2020-11-24 groupée Maternelle Salentine 2020-2021.csv';
 $fichierLAB = 'TEST.lab';
 
 echo ConvertirCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);

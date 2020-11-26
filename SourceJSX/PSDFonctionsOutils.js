@@ -51,6 +51,7 @@ function isDroitCompiler(fileName) {
 	
 		if (leCompilateur == ''){
 			file = new File(fileName);
+			file.encoding='UTF-8';
 			file.open("w");					
 				leCompilateur = g_CeCalculateur;
 				file.writeln('[Version : 2.0]%' + g_CeCalculateur + '%');
@@ -78,8 +79,9 @@ function isCMDEnregistree(fileName) {
 			leCompilateur = leCompilateur.substr(15,-1);
 		file.close();
 	
-		if (leCompilateur == ''){
+		if (leCompilateur == ''){			
 			file = new File(fileName);
+			file.encoding='UTF-8';
 			file.open("w");					
 				leCompilateur = g_CeCalculateur;
 				file.writeln('[Version : 2.0]%' + g_CeCalculateur + '%');
@@ -121,6 +123,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	fileName = g_SelectFichierLab.path + '/' + fileName + numEtatCompil; // + '1' : Etat les planches de la commande sont EN COURS (16-11)
 	
 	var file = new File(fileName);
+	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
 		for (var n = 0; n < g_TabLigneOriginale.length; n++) {			
 			switch(n) {
@@ -156,6 +159,7 @@ function SauverEtatFichier(fileName, encoursFichier, totalFichier) {
 	var fileName = fileName.substr(0,fileName.length-1); // lab0 >> lab1
 	fileName = g_SelectFichierLab.path + '/' + fileName + '1'; // + '1' : Etat les planches de la commande sont créees
 	var file = new File(fileName);
+	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
 		file.readln();
 		file.writeln(encoursFichier + ' / ' + totalFichier);
@@ -171,6 +175,7 @@ function EcrireBilan(fileName) {
 		var fileName = fileName.substr(0, fileName.length-4); 
 		fileName = g_SelectFichierLab.path + '/' + fileName + 'Erreur'; 
 		var file = new File(fileName);
+		file.encoding='UTF-8';
 		file.open("w"); // open file with write access
 			for (var n = 0; n < g_BilanGeneration.length; n++) {
 				file.writeln(g_BilanGeneration[n]);
@@ -1030,61 +1035,66 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire ){
 	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire;
 	//alert('g_RepTIRAGES_DateEcole + "/" + repertoire : ' + g_RepTIRAGES_DateEcole + "/" + repertoire);
 	try {
-		//ON FAIT LA COPIE NORMALE !!
-		if(	(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEB)) || (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBVariante)) ||  (isFichierIdentite(nomFichierPhoto) && (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBFiche)))  ){		
-			var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
-			var reussiteTraitement = (laPhoto != null);
-			reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche);
-			if (reussiteTraitement){
-				// Pour avoir des planches homogenes dans le viewer de commandes					
-				var myDocument = app.activeDocument; 
-				//La sauvegarde ...	
-				//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + nomFichierPhoto);
-				SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
-				
-				// traitement de la variante =>N&B, Quattro, autres ?
-				//var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);
-				var copiefichierVariante = TypeTraitement(unfichier, repertoire);					
-				//alert ('copiefichierVariante ' + copiefichierVariante);
-				if (copiefichierVariante != 'KO') {
-					if (copiefichierVariante == 'WEB-QUATTRO'){
-						//alert ('NextQuattro(nomFichierPhoto) ' + NextQuattro(nomFichierPhoto));
-						laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-						
-						laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
-						reussiteTraitement = (laPhoto != null);								
-					}
-					if (reussiteTraitement){	
-						myDocument = app.activeDocument; 	
-						//////////////// TRANSFORMATIONS //////////////////////
-						//alert ('g_RepSCRIPTSPhotoshop ' + g_RepSCRIPTSPhotoshop);
-						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(copiefichierVariante);
-						//alert ('copiefichierVariante ' + copiefichierVariante);
-						//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlanche);
-						SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBVariante);
-						
-						//WEB-PRESENTATION-FICHE	
-						// if 1 ou 6
-						if (isFichierIdentite(nomFichierPhoto) && (copiefichierVariante == 'WEB-QUATTRO'))
-						{
-							laPhoto.close(SaveOptions.DONOTSAVECHANGES);							
+		var copiefichierOriginal = TypeTraitement(unfichier, repertoire, false);
+		//ON FAIT LA COPIE NORMALE !! (Ou pas si 0 - 5 sur Quattro !)	
+		if (copiefichierOriginal != 'KO') {
+			if(	(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEB)) || (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBVariante)) ||  (isFichierIdentite(nomFichierPhoto) && (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBFiche)))  ){		
+				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+				var reussiteTraitement = (laPhoto != null);
+				reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche);
+				if (reussiteTraitement){
+					// Pour avoir des planches homogenes dans le viewer de commandes					
+					var myDocument = app.activeDocument; 
+					//La sauvegarde ...	
+					//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + nomFichierPhoto);
+					SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
+					
+					// traitement de la variante =>N&B, Quattro, autres ?
+					//var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);
+					var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);					
+					//alert ('copiefichierVariante ' + copiefichierVariante);
+					if (copiefichierVariante != 'KO') {
+						if (copiefichierVariante == 'WEB-QUATTRO'){
+							//alert ('NextQuattro(nomFichierPhoto) ' + NextQuattro(nomFichierPhoto));
+							laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+							
 							laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
-							reussiteTraitement = (laPhoto != null);
-							if (reussiteTraitement){	
-								myDocument = app.activeDocument; 	
-								//////////////// TRANSFORMATIONS //////////////////////
-								reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
-								SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBFiche);
-							}															
+							reussiteTraitement = (laPhoto != null);								
 						}
-					}	
+						if (reussiteTraitement){	
+							myDocument = app.activeDocument; 	
+							//////////////// TRANSFORMATIONS //////////////////////
+							//alert ('g_RepSCRIPTSPhotoshop ' + g_RepSCRIPTSPhotoshop);
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(copiefichierVariante);
+							//alert ('copiefichierVariante ' + copiefichierVariante);
+							//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlanche);
+							SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBVariante);
+							
+							//WEB-PRESENTATION-FICHE	
+							// if 1 ou 6
+							if (isFichierIdentite(nomFichierPhoto) && (copiefichierVariante == 'WEB-QUATTRO'))
+							{
+								laPhoto.close(SaveOptions.DONOTSAVECHANGES);							
+								laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
+								reussiteTraitement = (laPhoto != null);
+								if (reussiteTraitement){	
+									myDocument = app.activeDocument; 	
+									//////////////// TRANSFORMATIONS //////////////////////
+									reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
+									SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBFiche);
+								}															
+							}
+						}	
+					}
+					laPhoto.close(SaveOptions.DONOTSAVECHANGES);
 				}
-				laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-			}
-			else {
-				laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-			}			
-		}					
+				else {
+					laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+				}			
+			}					
+
+		}
+		
 	}
 	catch(err) {
 		g_Erreur = "Commande  : " + g_CommandePDTEncours + " ERREUR CreerFichiersPresentationWEB pour : " + nomFichierPhoto;
@@ -1095,25 +1105,26 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire ){
 	return valRetour;	
 }
 
-function TypeTraitement(unFichier, unRepertoire){
+function TypeTraitement(unFichier, unRepertoire, isVariante){
 	var retourval = g_CONFIGtypeConfigWeb;
 	var numFichierIndiv = 0;
 	
 	if (g_CONFIGtypeConfigWeb == 'Rien') {retourval = 'KO';}
 	else{
-		if ((unFichier.length >= g_MinimuNomClasse) && !g_CONFIGisPhotosGroupes) { 
+		if ((unFichier.length >= g_MinimuNomClasse) && !g_CONFIGisPhotosGroupes && isVariante) { 
 		// Pas sur Groupe
 				retourval = 'KO';
 		}
-		if ((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie) { // Pas sur les Fratries ?
+		if ((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie && isVariante) { // Pas sur les Fratries ?
 				retourval = 'KO';
 		}
 		else{
-			if ((unFichier.length <= g_MinimuNomClasse) && (g_CONFIGtypeConfigWeb != 'Rien')) { // Pas sur Groupe
+			//if ((unFichier.length <= g_MinimuNomClasse) && (g_CONFIGtypeConfigWeb != 'Rien')) { // Pas sur Groupe
+			if ((unFichier.length <= g_MinimuNomClasse) && (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO')) { // Pas sur Groupe
 				numFichierIndiv = parseFloat(unFichier.slice(0,-4));	
 				if (numFichierIndiv != NaN){				
 					if (((numFichierIndiv % 5) == 0) && !((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie)){
-						retourval = 'KO';
+						retourval = 'KO'; // on ne fait pas les 0 et 5 car ce sont des Quattrod !
 					}					
 				}				
 			}
