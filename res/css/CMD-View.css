@@ -354,19 +354,26 @@ p {/*Police Détails Fichier commande et commun  */
 
 .dropdown-content a:hover {
 	background: var(--FondLigneTabGrisFonce);
-	color: white;
+	color: red;
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;	
 }
 .dropdown-content a.active {
-	color: black;
+	color: blue;
 	background: rgba(200, 200, 200, 0.55);
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;
 }
-.dropdown-content a:hover {
-	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
+.dropdown-content a.active:hover {
+	background: var(--FondLigneTabGrisFonce);
+	color: green;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;	
 }
+
+/*.dropdown-content a:hover {
+	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
+}*/
 
 .show {display:block;}
 

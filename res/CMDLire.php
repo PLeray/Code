@@ -221,7 +221,7 @@ function AffichageCMD($tabFICHIERLabo, $numCMD, &$curEcole, $NbCMDAffiche){
 					}
 					$resultat .= '<div class="commande"  >';				
 					$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$curCMD->Numero . '\');" > Commande ' . $curCMD->FormatNumCmd() . ' ' . $curCMD->NumFacture . ' (' . $curCMD->Prenom . ' ' . $curCMD->Nom .')</button>';				
-						$resultat .= '<div id="'. $curCMD->Numero .'" class="Contenucommande"  >';
+						$resultat .= '<div id="'. $curCMD->Numero .'" class="Contenucommande">';
 						while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '')) { // tant qu'on est sur la meme commande
 							$resultat .= AffichageProduit($tabFICHIERLabo, $curseur);
 							$identifiant = substr($tabFICHIERLabo[$curseur],0,1); 						
@@ -454,11 +454,16 @@ function LienAffichePlusMoins($signe,$Commande){
 	if ($signe == '-') {
 		if ($GLOBALS['NbCMDAffiche']>1) {
 			$NbCMD=$GLOBALS['NbCMDAffiche'] - 1;
+			if ($GLOBALS['NbCMDAffiche']>=10000) { $NbCMD=$GLOBALS['DefautNbCMDAffiche'];};
 		}
 	} 
 	if ($signe == '+') {
 		$NbCMD=$GLOBALS['NbCMDAffiche'] + 1;
-	}  
+		if ($GLOBALS['NbCMDAffiche']>=10000) { $NbCMD=$GLOBALS['DefautNbCMDAffiche'];};
+	} 
+	if ($signe == 'Toutes') {
+		$NbCMD=10000;
+	} 	
 	//
 	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . $NbCMD;
 	$Environnement = $Environnement . $Commande;

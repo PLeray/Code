@@ -11,7 +11,8 @@
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");	}
 
-	$NbCMDAffiche = 17;
+	$DefautNbCMDAffiche = 15;
+	$NbCMDAffiche = $DefautNbCMDAffiche;
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
 ?>
 
@@ -85,7 +86,9 @@
 	<div class="affichageNBPage">
 	    <p></p>
 		<p> .</p>
-		<p> Nombre de commandes affichées :</p><p> <a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'& numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><big><B> <?php echo $NbCMDAffiche ?> </B></big><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'& numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a></p>
+		<p> Nombre de commandes affichées :</p><p> <a href="<?php echo LienAffichePlusMoins('Toutes','&fichierLAB='.urlencode($myfileName).'&numeroCMD=1' );?>" class="moinsplus">Toutes</a><big><B>
+		
+		<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><big><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B></big><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a></p>
 	</div> 
 
 	<p class="mention">	<?php echo VersionPhotoLab();?> </p>
