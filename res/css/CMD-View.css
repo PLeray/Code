@@ -308,43 +308,64 @@ p {/*Police Détails Fichier commande et commun  */
     /*outline: 3px solid var(--FondLigneTabGrisFonce);
     background-color: #f6f6f6;
 	border-bottom: 1px solid #FFF;*/
+	border: red;
 }
 /*RESULTAT RECHERCHE */
 .dropdown {
     position: relative;
     display: inline-block;
 	background: rgba(245, 245, 245, 0.85);
+	
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-	margin-top: -2px;
-    /*background-color: #f9f9f9;*/
+	margin-left: 20%;
+
+
+    /*background-color: #f9f9f9;
 	background: rgba(245, 245, 245, 0.85);
-    width: 100%;
-    left: 0;
-	border-top: 1px solid var(--FondLigneTabGrisFonce);
+    left: 0;	
+	text-align: center;	
+	margin-top: -2px;	
+	
+	*/
+	
+	
+	background: var(--FondBDialog);
+    width: 60%;
+
+
+	border: 1px solid var(--FondLigneTabGrisFonce);
     box-shadow: 10px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+
 }
 
 .dropdown-content a {
-	padding: 2px 12px 2px 22px;
+   /*	padding: 2px 12px 2px 22px;
 	margin: 10px -5px 10px -5px;
-    color: grey;
+    color: grey;	
+*/	
+
 	text-align: center;
 
     text-decoration: none;
     display: inline;
-   /*	
-	background-color: var(--FondLigneTabGrisClair);  //   
-	border: 10px 1px 1px 1px solid ;
+	
+ 
+
 	border-color: var(--FondLigneTabGrisFonce);
 	text-align: center;
-	padding: 7px 7px 7px 7px;
+
+    color: var(--FondLigneTabGrisFonce);
+   /*		
+  	background-color: var(--FondLigneTabGrisClair);  //   
+   
+   padding: 7px 7px 7px 7px;
 	margin: 5px;
-    color: gray;
+	border: 10px 1px 1px 1px solid ;	
 */
 
 	font-family: "Courier New", Times, serif;	
@@ -353,22 +374,27 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 .dropdown-content a:hover {
+	
+	color: var(--boutonRouge);
+	/*
 	background: var(--FondLigneTabGrisFonce);
-	color: red;
 	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;	
+	border-bottom: 1px solid gray;	*/
 }
 .dropdown-content a.active {
-	color: blue;
+	color: var(--FondLigneTabGrisSombre);
+	
+	/*var(--boutonVert);
 	background: rgba(200, 200, 200, 0.55);
 	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid gray;	*/
 }
 .dropdown-content a.active:hover {
-	background: var(--FondLigneTabGrisFonce);
-	color: green;
+	
+	color: var(--boutonRouge);
+	/*background: var(--FondLigneTabGrisFonce);
 	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;	
+	border-bottom: 1px solid gray;	*/
 }
 
 /*.dropdown-content a:hover {
@@ -396,6 +422,5 @@ p {/*Police Détails Fichier commande et commun  */
 #myBtn:hover {
   background-color: #555; /* Add a dark-grey background on hover */
 }
-text-align:center;
-}
+
  

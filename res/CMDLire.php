@@ -241,11 +241,13 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 	if ($curseur < count($tabFICHIERLabo)){
 		$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 		if ($identifiant == "<") {
-			//$resultat = '<div class="produit">'; //Debut du produit
-			$resultat = '<span class="produit">'; //Debut du produit
-			//NEW UTF-8 $NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
 			$NomProduit = str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur]));
-			$NomProduit = str_replace("%", "<br>", $NomProduit);
+			$NomProduit = str_replace("%", "<br>", $NomProduit);			
+			
+			//$resultat = '<div class="produit">'; //Debut du produit
+			$resultat = '<span id="'. $NomProduit .'" class="produit">'; //Debut du produit
+			//NEW UTF-8 $NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
+
 			$curseur++;
 			$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 			$resultat .= '<h4>'.$NomProduit.'</h4><br>'  ;
@@ -275,7 +277,7 @@ function AffichageProduit($tabFICHIERLabo, &$curseur){
 function AffichagePlanche($tabFICHIERLabo, &$curseur){
 	$resultat = '';    
 	if ($curseur < count($tabFICHIERLabo)){
-        $resultat .= '<span class="planche">';
+        $resultat .= '<span id="'. urldecode($tabFICHIERLabo[$curseur]) . '" class="planche">';
 		$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
 		if (($identifiant != '@') && ($identifiant != '#') && ($identifiant != '<') && ($identifiant != '')) {
 			//$resultat .= '<img src="' . LienJPG($tabFICHIERLabo[$curseur]) . '" title="'. urldecode($tabFICHIERLabo[$curseur]) . '">';// . '">&nbsp;';

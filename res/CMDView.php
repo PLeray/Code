@@ -57,7 +57,7 @@
 
 	<div class="recherche">	
 		<p><STRONG><?php echo count($tabCMDLabo) . ' commandes au total';?></STRONG></p>
-		<input type="text" placeholder="Recherche commandes..." id="mySearch" onclick="myFunction()" onkeyup="filterFunction()">
+		<input type="text" placeholder="Recherche commandes..." id="mySearch" onclick="myFunction()" onkeyup="filterFunction()" title="indiquez des termes d'une commande/n ou son numéro">
 	</div>
 	<div id="myDropdown" class="dropdown-content" onmouseout="myFunction()"	>
 	

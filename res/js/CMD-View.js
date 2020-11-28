@@ -42,34 +42,17 @@ function VisuCMD(elementId) {
 	//alert('Cookie cmd : ' + elementId + ' val : ' + getCookie(elementId) );
 } 
 
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-function filterFunction() {
-    var input, filter, ul, li, a, i;
-    input = document.getElementById("mySearch");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("myDropdown");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
-	document.getElementById("myDropdown").classList.toggle("show");
-}
-
-function InitCommandes() {
+function InitCommandes(referme = true) {
     var cmd, i, etat;	
 	cmd = document.getElementsByClassName('Contenucommande');
     for (i = 0; i < cmd.length; i++) {
-		//alert('Cookie cmd : ' + cmd[i].id + ' val : ' + getCookie(cmd[i].id) );
-		etat = 'block';
-		if (getCookie(cmd[i].id)=='cache'){	etat = 'none';}
-		cmd[i].style.display = etat;
+		if (referme){
+			etat = 'block';
+			if (getCookie(cmd[i].id)=='cache'){	etat = 'none';}
+			cmd[i].style.display = etat;						
+		}else{
+			cmd[i].style.display = 'block';			
+		}
     }	
 }
 
@@ -95,4 +78,103 @@ function getCookie(cname) {
   return "";
 }
 
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+/*
+function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("mySearch");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("myDropdown");
+    a = div.getElementsByTagName("a");
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+	document.getElementById("myDropdown").classList.toggle("show");
+}*/
 
+function filterFunction() {
+    var input, filter, cmd, i, e, listDrop  ;
+	var tabCMD = [];
+	var synthTabCMD = [];	
+    input = document.getElementById("mySearch");
+    filter = input.value.toUpperCase();
+	var elemRech = input.value.toUpperCase().split(' ');
+	for (e = 0; e < elemRech.length; e++) {
+		////////////////////////////////////////////////:
+		/* pour les num de commandes */
+		cmd = document.getElementsByClassName("Contenucommande");
+		for (i = 0; i < cmd.length; i++) {
+			if (cmd[i].id.toUpperCase().indexOf(elemRech[e]) > -1) {	
+				tabCMD.push(cmd[i].id.toUpperCase()); // ajoute num commande ds Tableau
+			}
+		}		
+		////////////////////////////////////////////////:
+		/* pour les Produits */
+		cmd = document.getElementsByClassName("produit");
+		//a = div.getElementsByTagName("a");
+		for (i = 0; i < cmd.length; i++) {			
+			if (cmd[i].id.toUpperCase().indexOf(elemRech[e]) > -1) {			
+				tabCMD.push(cmd[i].parentNode.id.toUpperCase()); // ajoute num commande ds Tableau
+			}		
+		}	
+		////////////////////////////////////////////////:
+		/* pour les nom Planche derriere photo */
+		cmd = document.getElementsByClassName("planche");
+		for (i = 0; i < cmd.length; i++) {
+			if (cmd[i].id.toUpperCase().indexOf(elemRech[e]) > -1) {	
+				tabCMD.push(cmd[i].parentNode.parentNode.id.toUpperCase()); // ajoute num commande ds Tableau
+			}
+		}	
+
+		
+		////////////////////////////////////////////////:
+		// On recupere les elements uniques des commandes trouvées
+		//console.log("tabCMD '" + elemRech[e] + "' : " + tabCMD);
+		if(e == 0){
+			synthTabCMD = [...new Set(tabCMD)];
+			//console.log("synthTabCMD0 '" + elemRech[e] + "' : " + synthTabCMD);
+		}
+		else{
+			synthTabCMD = intersect(synthTabCMD, tabCMD)
+			//console.log("synthTabCMDn '" + elemRech[e] + "' : " + synthTabCMD);
+		}
+		tabCMD = [];
+		
+	}
+	
+	// Affichage des commandes affichées dans la Dropdown à Jour 
+	listDrop = document.getElementById("myDropdown").getElementsByTagName("a");//dropdown-content
+    for (i = 0; i < listDrop.length; i++) {	
+        if (synthTabCMD.indexOf(listDrop[i].innerHTML.trim().toUpperCase()) > -1) { 		
+            listDrop[i].style.display = "";
+        } else {
+            listDrop[i].style.display = "none";
+        }
+    }	
+	// Affichage des commandes affichées dans la page à Jour 
+	listDrop = document.getElementById("myDropdown").getElementsByTagName("a");//dropdown-content
+	cmd = document.getElementsByClassName("Contenucommande");
+	
+    for (i = 0; i < cmd.length; i++) {		
+        if (synthTabCMD.indexOf(cmd[i].id.toUpperCase()) > -1) { 	
+			//console.log("cmd[i].id.toUpperCase() : " + cmd[i].id.toUpperCase());		
+            cmd[i].parentNode.style.display = ""; // .parentNode effacer toute la commande, même le titre
+        } else {
+            cmd[i].parentNode.style.display = "none";
+        }
+    }	
+	//console.log("filter !=  : " + (filter != ''));	
+	document.getElementById("myDropdown").classList.toggle("show");
+	InitCommandes(filter == '');
+}
+
+function intersect(a, b) {
+  var setB = new Set(b);
+  return [...new Set(a)].filter(x => setB.has(x));
+}
