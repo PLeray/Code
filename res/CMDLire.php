@@ -9,6 +9,162 @@ $DateISOLEE = '2020-09-31';
     var $Numero;
 }
 */
+
+class CGroupeCmdes {
+    var $ListePromoteurs;
+    var $ListeCommandes;
+    var $nomFichierCmdes;	
+	var $tabFICHIERLabo;
+	var $tabCMDLabo;  
+	var $DateISOLEE;
+	
+    function __construct($myfileName){
+		$this->tabFICHIERLabo = $myfileName;
+		$myfile = fopen($myfileName, "r") or die('Unable to open file : ' .$myfileName);
+		$this->tabFICHIERLabo = array();
+		// Output one line until end-of-file
+		while(!feof($myfile)) {
+			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
+		}
+		fclose($myfile);	
+		//$GLOBALS['DateISOLEE'] = substr($myfileName, strripos($myfileName, '/') + 1,10);
+		$this->DateISOLEE = substr($myfileName, strripos($myfileName, '/') + 1,10);		
+		//$GLOBALS['tabFICHIERLabo'] = $this->tabFICHIERLabo;
+
+		$this->tabCMDLabo = array();
+		if ($this->tabFICHIERLabo){
+			for($i = 0; $i < count($this->tabFICHIERLabo); $i++){
+				$identifiant = substr($this->tabFICHIERLabo[$i],0,1);
+				//Si Commande pas vide , on ajoute la commande au tableau!
+				if (($identifiant == '#') 
+					&& (substr($this->tabFICHIERLabo[$i+1],0,1)!='#') 
+					&& (substr($this->tabFICHIERLabo[$i+1],0,1)!='@') 
+					&& (substr($this->tabFICHIERLabo[$i+1],0,1)!='')
+				   ){
+					$curCMD = new CCommande($this->tabFICHIERLabo[$i]);
+					array_push($this->tabCMDLabo,$curCMD);
+				}
+			}
+		}
+		//$GLOBALS['tabCMDLabo'] = $this->tabCMDLabo;     
+    } 
+	function Affiche($NbCMDAffiche){
+		$numCMD = 0;
+		$curEcole = new CEcole("___");
+		//echo  $numCMD . " nb : " . $NbCMDAffiche;
+		//$curCMD = $GLOBALS['tabCMDLabo'][$numCMD];
+		$curCMD = $this->tabCMDLabo[$numCMD];
+		$curseur = 2;
+		$resultat = '';
+		$CodeAfficheEcole = $curEcole->Details;
+		$isAfficheEcole = true;
+		if ($this->tabFICHIERLabo){
+			for($ligne = 2; $ligne < count($this->tabFICHIERLabo); $ligne++){
+				$identifiant = substr($this->tabFICHIERLabo[$ligne],0,1);
+				//Si Commande pas vide , on ajoute la commande au tableau!
+				if ($identifiant == '@'){
+					$curEcole = new CEcole($this->tabFICHIERLabo[$ligne]);
+					if ($isAfficheEcole) {
+						$resultat .= $curEcole->Affiche();
+						$CodeAfficheEcole = $curEcole->Details;
+						$isAfficheEcole = false;						
+						
+					}
+				}				
+				if ($identifiant == '#'){ // Pierre Probleme Doublon	
+					$laCMD = new CCommande($this->tabFICHIERLabo[$ligne]);
+					//Ici verifier que la ligne suivante est bien un produit
+					//$curseur = $ligne;
+					if ($CodeAfficheEcole != $curEcole->Details){
+						$isAfficheEcole = true;
+					}	
+					$resultat .= $laCMD->Affiche();	
+				}
+
+				if ($identifiant == '<'){ // Pierre Probleme Doublon	
+					$laCMD = new CCommande($this->tabFICHIERLabo[$ligne]);
+					//Ici verifier que la ligne suivante est bien un produit
+					//$curseur = $ligne;
+					if ($CodeAfficheEcole != $curEcole->Details){
+						$isAfficheEcole = true;
+					}	
+					$resultat .= $laCMD->Affiche();	
+				}
+
+					$identifiant = substr($this->tabFICHIERLabo[$ligne],0,1);						
+									
+					$resultat .= '<div class="commande"  >';				
+					$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$curCMD->Numero . '\');" > Commande ' . $curCMD->FormatNumCmd() . ' ' . $curCMD->NumFacture . ' (' . $curCMD->Prenom . ' ' . $curCMD->Nom .')</button>';				
+						$resultat .= '<div id="'. $curCMD->Numero .'" class="Contenucommande">';
+						while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '')) { // tant qu'on est sur la meme commande
+							$resultat .= AffichageProduit($this->tabFICHIERLabo, $ligne);
+							$identifiant = substr($this->tabFICHIERLabo[$ligne],0,1); 						
+						}
+						$resultat .= '</div>';
+					$resultat .= '</div>';
+
+
+
+
+
+
+
+
+
+
+						
+			
+
+				
+			}
+			/*
+			for($curseur = 2; $curseur < count($this->tabFICHIERLabo); $curseur++){
+		
+				for($numPage = 0; $numPage < (intdiv(count($this->tabCMDLabo), $NbCMDAffiche) + 1); $ligne++){	
+				}
+				
+				
+				$curseur++;
+				if ($curseur < count($this->tabFICHIERLabo)){
+					$identifiant = substr($this->tabFICHIERLabo[$curseur],0,1);						
+									
+					if ($isAfficheEcole) {
+						$resultat .= '<div class="ecole">';	
+						//$resultat .= ' <h1>' .$curEcole->Nom . '</h1>';
+						$resultat .= $curEcole->Nom;
+						$CodeAfficheEcole = $curEcole->Details;
+						$isAfficheEcole = false;
+						$resultat .= '</div>';
+					}
+					$resultat .= '<div class="commande"  >';				
+					$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$curCMD->Numero . '\');" > Commande ' . $curCMD->FormatNumCmd() . ' ' . $curCMD->NumFacture . ' (' . $curCMD->Prenom . ' ' . $curCMD->Nom .')</button>';				
+						$resultat .= '<div id="'. $curCMD->Numero .'" class="Contenucommande">';
+						while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '')) { // tant qu'on est sur la meme commande
+							$resultat .= AffichageProduit($this->tabFICHIERLabo, $curseur);
+							$identifiant = substr($this->tabFICHIERLabo[$curseur],0,1); 						
+						}
+						$resultat .= '</div>';
+					$resultat .= '</div>';
+				}
+			
+			
+			
+			}
+*/
+
+
+
+			
+			
+		}
+		return $resultat;
+	}	
+	
+	
+	
+	
+}
+
 class CCommande {
     var $Numero;
     var $CmdClient;
@@ -41,6 +197,21 @@ class CCommande {
         $numCMD = sprintf ("%04s\n",  $numCMD);
         return $numCMD;
     }    
+    function Affiche(){
+		$resultat = '';
+		$resultat .= '<div class="commande"  >';				
+		$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande ' . $this->FormatNumCmd() . ' ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom .')</button>';		/*		
+			$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
+			while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '')) { // tant qu'on est sur la meme commande
+				//$resultat .= AffichageProduit($this->tabFICHIERLabo, $ligne);
+				$identifiant = substr($this->tabFICHIERLabo[$ligne],0,1); 						
+			}
+			$resultat .= '</div>';
+			
+			*/
+		$resultat .= '</div>';
+		return $resultat;
+    }    
 }
 
 class CEcole {
@@ -63,6 +234,13 @@ class CEcole {
 			return $this->DateTirage . '-' .$this->Nom ;	
 		}	
     }    
+    function Affiche(){
+		$resultat = '';
+		$resultat .= '<div class="ecole">';	
+		$resultat .= $this->Nom ;  
+		$resultat .= '</div>';	
+		return $resultat;
+    } 	
 }
 
 class CPlanche {
@@ -171,6 +349,74 @@ function AfficheEtatFichierLab($Etat){
 }
 
 function AffichageCMD($tabFICHIERLabo, $numCMD, &$curEcole, $NbCMDAffiche){
+	//echo  $numCMD . " nb : " . $NbCMDAffiche;
+	$curCMD = $GLOBALS['tabCMDLabo'][$numCMD];
+	$curseur = 2;
+	$resultat = '';
+	$CodeAfficheEcole = $curEcole->Details;
+	$isAfficheEcole = true;
+	for($nbCmd = 0; $nbCmd < $NbCMDAffiche; $nbCmd++){				
+		if (count($GLOBALS['tabCMDLabo']) > $numCMD + $nbCmd){
+			$curCMD = $GLOBALS['tabCMDLabo'][$numCMD + $nbCmd];	
+			if ($tabFICHIERLabo){
+				for($i = 2; $i < count($tabFICHIERLabo); $i++){
+					$identifiant = substr($tabFICHIERLabo[$i],0,1);
+					//Si Commande pas vide , on ajoute la commande au tableau!
+					if ($identifiant == '@'){
+						$curEcole = new CEcole($tabFICHIERLabo[$i]);
+						//echo 'CodeAfficheEcole : ' . $CodeAfficheEcole . '    curEcole->Details  ' . $curEcole->Details . '<br>';
+					}
+					//if ($identifiant == '#') { 					
+					if ($identifiant == '#'){ // Pierre Probleme Doublon	
+						$laCMD = new CCommande($tabFICHIERLabo[$i]);
+						if ($laCMD->Numero == $curCMD->Numero){
+							//Ici verifier que la ligne suivante est bien un produit
+							$identifiantSuivant = substr($tabFICHIERLabo[$i + 1],0,1);
+							//if ($identifiantSuivant == "<"){
+				            $curseur = $i;
+
+						if ($CodeAfficheEcole != $curEcole->Details){
+							$isAfficheEcole = true;
+							//$CodeAfficheEcole = $curEcole->Details;
+							}	
+                            break;
+                            return $i;						
+							//}						
+						}
+					}
+				}
+				$curseur++;
+				if ($curseur < count($tabFICHIERLabo)){
+					$identifiant = substr($tabFICHIERLabo[$curseur],0,1);						
+									
+					if ($isAfficheEcole) {
+						$resultat .= '<div class="ecole">';	
+						//$resultat .= ' <h1>' .$curEcole->Nom . '</h1>';
+						$resultat .= $curEcole->Nom;
+						$CodeAfficheEcole = $curEcole->Details;
+						$isAfficheEcole = false;
+						$resultat .= '</div>';
+					}
+					$resultat .= '<div class="commande"  >';				
+					$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$curCMD->Numero . '\');" > Commande ' . $curCMD->FormatNumCmd() . ' ' . $curCMD->NumFacture . ' (' . $curCMD->Prenom . ' ' . $curCMD->Nom .')</button>';				
+						$resultat .= '<div id="'. $curCMD->Numero .'" class="Contenucommande">';
+						while(($identifiant != '@') && ($identifiant != '#') && ($identifiant != '')) { // tant qu'on est sur la meme commande
+							$resultat .= AffichageProduit($tabFICHIERLabo, $curseur);
+							$identifiant = substr($tabFICHIERLabo[$curseur],0,1); 						
+						}
+						$resultat .= '</div>';
+					$resultat .= '</div>';
+				}
+			}	
+		} 
+	}
+	return $resultat;
+}
+
+/*
+
+*/
+function AffichageNewCMD($tabFICHIERLabo, $numCMD, &$curEcole, $NbCMDAffiche){
 	//echo  $numCMD . " nb : " . $NbCMDAffiche;
 	$curCMD = $GLOBALS['tabCMDLabo'][$numCMD];
 	$curseur = 2;

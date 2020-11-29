@@ -1,0 +1,38 @@
+.zonePagesCMD {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	background-color: green;
+	margin: 20px 0;
+}
+
+.item {
+	width: 162px;
+	height: 100px;
+	padding: 10px;
+	margin: 10px;
+
+}
+
+.pageCMD {
+
+
+}
+
+.page_navigation { 
+	width: 100%; 
+	text-align: center;
+}
+
+.page_navigation ul { 
+padding: 0;
+}
+
+.page_navigation li {
+display: inline;
+ padding: 5px; 
+}
+
+.page_navigation li.active_page {
+	background-color: red;
+}

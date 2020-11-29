@@ -11,7 +11,7 @@
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");	}
 
-	$DefautNbCMDAffiche = 3;//15;
+	$DefautNbCMDAffiche = 15;
 	$NbCMDAffiche = $DefautNbCMDAffiche;
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
 ?>
@@ -33,7 +33,6 @@
 	$tabFICHIERLabo = LireFichierLab($repertoireCMD.$myfileName);
 
 	$tabCMDLabo = InitTabCMDLabo($tabFICHIERLabo);
-	
 	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
 	
 	//$curEcole = '';
@@ -41,6 +40,7 @@
 
 	$maCMDHtml = AffichageCMD($tabFICHIERLabo, $numeroCMD - 1, $curEcole, $NbCMDAffiche);
 	
+	$maNewCMDHtml = AffichageNewCMD($tabFICHIERLabo, $numeroCMD - 1, $curEcole, $NbCMDAffiche);
 	
 	$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 
@@ -72,7 +72,27 @@
 	<div id="myDropdown" class="dropdown-content" onmouseout="myFunction()"	>
 
 	</div>
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+	//echo PaginatorCMD($tabCMDLabo, 1, $numeroCMD, 2, 2 + $NbCMDAffiche, 1, 1);
+	echo $maNewCMDHtml;
+
+?>		
 	
 	
 	
