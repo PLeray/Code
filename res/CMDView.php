@@ -69,9 +69,7 @@
 		<p><STRONG><?php echo count($tabCMDLabo) . ' commandes au total';?></STRONG></p>
 		<input type="text" placeholder="Recherche commandes..." id="mySearch" onclick="myFunction()" onkeyup="filterFunction()" title="indiquez des termes d'une commande/n ou son numéro">
 	</div>
-	<div id="myDropdown" class="dropdown-content" onmouseout="myFunction()"	>
 
-	</div>
 	
 	
 	
@@ -81,7 +79,9 @@
 	echo LienMEGA($tabCMDLabo, $numeroCMD);
 	//<a href="#about">About</a>
 ?>
+	<div id="myDropdown" class="dropdown-content" onmouseout="myFunction()"	>
 
+	</div>
 
 <?php 
 	echo PaginatorCMD($tabCMDLabo, 1, $numeroCMD, 2, 2 + $NbCMDAffiche);//, 1, 1);
@@ -93,5 +93,4 @@
 
 	<p class="mention">	<?php echo VersionPhotoLab();?> </p>
 </body>
-<script src="js/purePajinate.min.js"></script>
 </html>
