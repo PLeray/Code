@@ -1,33 +1,116 @@
-	
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+/*
+	//console.log("document.onreadystatechange  : Avant" );	
 	document.onreadystatechange = function() {
+		//console.log("document.onreadystatechange  : OK" );	
+		if (document.readyState === "complete") {
+			//var laZonePages = affichePagination(true);
+			
+		}
+	}
+*/
+var rech = document.getElementById("zoneRechercheCMD");
+rech.style.display = 'none';
+initPagination();
+
+
+
+function initPagination() {
+	//console.log("document.onreadystatechange  : Avant" );	
+	document.onreadystatechange = function() {
+		//console.log("document.onreadystatechange  : OK" );	
 		if (document.readyState === "complete") {
 			var laZonePages = new purePajinate({ 
 				containerSelector: '.zonePagesCMD .items', 
-				itemSelector: '.zonePagesCMD .items > div', 
+				itemSelector: '.zonePagesCMD .items .pageCMD', 
 				navigationSelector: '.zonePagesCMD .page_navigation',
-				wrapAround: true,
+				wrapAround: false,
+				navLabelPrev: '<',
+				navLabelNext: '>',				
 				pageLinksToDisplay: 50,
 				itemsPerPage: 1,
 				startPage: 0
 			});
 		}
 	};
+}	
+
+function affichePagination(isAffiche=true) {
+ 	var pagin;
+ 	if (isAffiche){
+		//document.getElementById("modifier_class").className = "class2";
+		
+		pagin = new purePajinate({
+				containerSelector: '.zonePagesCMD .items', 
+				itemSelector: '.zonePagesCMD .items .pageCMD', 
+				navigationSelector: '.zonePagesCMD .page_navigation',
+				wrapAround: false,
+				navLabelPrev: '<',
+				navLabelNext: '>',				
+				pageLinksToDisplay: 50,
+				//showPrevNext: true,
+				itemsPerPage: 1,
+				startPage: 0
+		});
+	}else{
+		pagin = new purePajinate({
+				containerSelector: '.zonePagesCMD .items', 
+				itemSelector: '.zonePagesCMD .items .laCMDTotale', 
+				navigationSelector: '.zonePagesCMD .page_navigation',
+				wrapAround: false,
+				navLabelPrev: '<',
+				navLabelNext: '>',				
+				pageLinksToDisplay: 0,
+				//showPrevNext: false,
+				itemsPerPage: 1,
+				startPage: 0
+		});		
+		pagin.gotopage(0);
+	}
+	//pagin.init(isAffiche);
 	
+
+	return pagin;
+	
+}
+function AfficheRechercheCMD(isAffiche) {
+
+	if (isAffiche){
+	
+		var rech = document.getElementById("zoneRechercheCMD");
+		rech.style.display = '';
+		var list = document.getElementById("zoneListePageCMD");
+		list.style.display = 'none';			
+		
+	}
+	else{
+		var rech = document.getElementById("zoneRechercheCMD");
+		rech.style.display = 'none';
+		var list = document.getElementById("zoneListePageCMD");
+		list.style.display = 'block';			
+	}
+	/*	
+	
+    var cmd, i;	
+	cmd = document.getElementsByClassName('pageCMD');
+    for (i = 0; i < cmd.length; i++) {
+		cmd[i].style.display = 'block';	
+    }	
+	
+*/	
+	
+}
 	
 /***********************************************************************************/
 /********************************/
 window.onload = function (){ 
 //alert('Onload :!!');
-
-
-InitCommandes();
-
-
-
+	InitCommandes();
 };
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function() {scrollFunction()};
 
+/*
 // New defil page
 function openPage(pageName,elmnt,color) {
   var i, tabcontent, tablinks;
@@ -45,13 +128,13 @@ function openPage(pageName,elmnt,color) {
 
 // Get the element with id="defaultOpen" and click on it
 
-
+*/
 
 function scrollFunction() {
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    document.getElementById("myBtn").style.display = "block";
+    document.getElementById("btnRemonter").style.display = "block";
   } else {
-    document.getElementById("myBtn").style.display = "none";
+    document.getElementById("btnRemonter").style.display = "none";
   }
 }
 
@@ -63,7 +146,13 @@ function topFunction() {
 
 
 function VisuCMD(elementId) {
+	//var cmd = document.getElementById(elementId);
+	//var ele = cmd.children.getElementsByClassName('Contenucommande');
+	
+	//var cmd = document.getElementsByClassName('Contenucommande');
+
 	var ele = document.getElementById(elementId);
+	
 	if(ele.style.display == "none") {
 		ele.style.display = "block";
 		setCookie(elementId, 'affiche', 30);			
@@ -135,7 +224,7 @@ function filterFunction() {
     var input, filter, cmd, i, e, listDrop  ;
 	var tabCMD = [];
 	var synthTabCMD = [];	
-    input = document.getElementById("mySearch");
+    input = document.getElementById("zoneRecherche");
     filter = input.value.toUpperCase();
 	var elemRech = input.value.toUpperCase().split(' ');
 	for (e = 0; e < elemRech.length; e++) {
@@ -165,10 +254,8 @@ function filterFunction() {
 			}
 		}	
 
-		
 		////////////////////////////////////////////////:
 		// On recupere les elements uniques des commandes trouvées
-		//console.log("tabCMD '" + elemRech[e] + "' : " + tabCMD);
 		if(e == 0){
 			synthTabCMD = [...new Set(tabCMD)];
 			//console.log("synthTabCMD0 '" + elemRech[e] + "' : " + synthTabCMD);
@@ -182,10 +269,12 @@ function filterFunction() {
 	}
 	
 	// Affichage des commandes affichées dans la Dropdown à Jour 
-	//listDrop = document.getElementById("myDropdown").getElementsByTagName("a");//dropdown-content
-	listDrop = document.getElementById("myMenu").getElementsByTagName("li");//dropdown-content	
+
+	listDrop = document.getElementById("listeRechercheCMD").getElementsByTagName("li");
     for (i = 0; i < listDrop.length; i++) {	
 		menu = listDrop[i].getElementsByTagName("a")[0];
+		console.log("menu : " + menu.innerHTML.trim());	
+		console.log("synthTabCMD : " + synthTabCMD);	
         if (synthTabCMD.indexOf(menu.innerHTML.trim().toUpperCase()) > -1) { 		
             listDrop[i].style.display = "";
         } else {
@@ -215,4 +304,32 @@ function intersect(a, b) {
   return [...new Set(a)].filter(x => setB.has(x));
 }
 
+function openNav() {
 
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("main").style.marginRight = "250px";
+AfficheRechercheCMD(true);	
+  //affichePagination(false);	
+/*	
+		new purePajinate({
+			itemSelector: '.zonePagesCMD .items .pageCMD2'		
+		});	
+
+		*/ 
+  //document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+function closeNav() {  
+
+	document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("main").style.marginRight = "0";
+AfficheRechercheCMD(false);
+	//affichePagination(true);
+/*			
+		new purePajinate({
+			itemSelector: '.zonePagesCMD .items .pageCMD'		
+		});	
+	*/ 	
+  //document.body.style.backgroundColor = "white";
+}

@@ -474,7 +474,7 @@ function LienFichierLab($fichier) {
 			$LienFichier = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 			break;
 		default:
-			$LienFichier = "CMDView.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
+			$LienFichier = "CMDViewNEW.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
 			break;		
 	}
   

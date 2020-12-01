@@ -54,6 +54,14 @@ h4 { /*Police texte produit */
 	
 }
 
+h5 {/*Police Side bar num cmde  */
+    letter-spacing: 1px;
+	line-height: 0;
+	font-size: 10px;
+	color: white;
+	/*color: var(--boutonVert);*/
+}
+
 p {/*Police Détails Fichier commande et commun  */
     letter-spacing: 1px;
 	line-height: 0;
@@ -61,8 +69,6 @@ p {/*Police Détails Fichier commande et commun  */
 	color: var(--FondLigneTabGrisSombre);
 	/*color: var(--boutonVert);*/
 }
-
-
 
 /******************************/
 /*         CMD-VIEW           */
@@ -72,7 +78,7 @@ p {/*Police Détails Fichier commande et commun  */
 .ecole {
     text-align: center;
 	font-size: 20px;
-	
+	width: 100%;
 	
 	padding: 10px;
 
@@ -118,9 +124,10 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 .commande {
-	width: auto; /*97%;*/
-
-	margin: 10px;
+	 /*width: auto;97%;*/
+display: block;
+  width: 100%;
+	margin-top: 10px;
 
 	position: relative;/**/
 	background-color: white;
@@ -163,9 +170,9 @@ p {/*Police Détails Fichier commande et commun  */
 /* ////////////////////////   BOUTON + ET - ///////////////////// */
 .affichageNBPage {
     position: absolute;
-    Right: 150px;
+    left: 200px;
 
-    top: 25px;
+    top: 15px;
     text-align: center;
 }
 
@@ -173,15 +180,15 @@ p {/*Police Détails Fichier commande et commun  */
     font-size: 14px;
     font-weight: bold;
     background-color: var(--boutonRouge);
-	    padding: 12px 16px;
+	    padding: 0px 16px;
     color: white;
 	    text-decoration: none;
     display: inline-block;
-	border-radius: 25px;
+	border-radius: 15px;
 }
 
 .moinsplus:hover {
-    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
 /* The Close Button (x) */
@@ -190,7 +197,7 @@ p {/*Police Détails Fichier commande et commun  */
     right: 20px;
     top: -15px;
     color: #000;
-    font-size: 100px;
+    font-size: 80px;
     font-weight: bold;
 	text-decoration: none;
 }
@@ -200,6 +207,26 @@ p {/*Police Détails Fichier commande et commun  */
     color: var(--boutonRouge);
     cursor: pointer;
 }
+
+/* The Close Button (x) */
+#loupe {
+    position: absolute;
+    right: 20px;
+    top: 55px;
+    color: #000;
+    font-size: 100px;
+    font-weight: bold;
+	text-decoration: none;
+    cursor: pointer;
+}
+
+#loupe:hover,
+#loupe:focus {
+    color: var(--boutonRouge);
+    cursor: pointer;
+	    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
 /*/////////////////////////////////////////////////////////*/
 .logo {
   position: absolute;
@@ -220,69 +247,10 @@ p {/*Police Détails Fichier commande et commun  */
 	font-family: "Courier New", Times, serif;
     letter-spacing: 3px;	
 }
-/*
-.recherche {
-	padding: 1px;
-	padding-Top: 28px;
-	text-align: center;
-}*/
 
-.affichageCommande {
-  position: absolute;
 
-  Top: 100px;
-}
-/* Create a column layout with Flexbox */
-.row {
-  display: flex;
-}
 
-/* Left column (menu) */
-.left {
-
-  flex: 150px;
-  padding: 15px 0;
-}
-
-.left h2 {
-  padding-left: 8px;
-}
-
-/* Right column (page content) */
-.right {
-
-  flex: 100%;
-  padding: 15px;
-}
-
-/* Style the search box */
-#mySearch {
-  width: 100%;
-  font-size: 18px;
-  padding: 11px;
-  border: 1px solid #ddd;
-}
-
-/* Style the navigation menu inside the left column */
-#myMenu {
-	font-size: 10px;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-#myMenu li a {
-  padding: 12px;
-  text-decoration: none;
-  color: black;
-  display: block
-}
-
-#myMenu li a:hover {
-  background-color: #eee;
-}
-
-#myBtn {
+#btnRemonter {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
   bottom: 20px; /* Place the button at the bottom of the page */
@@ -298,19 +266,25 @@ p {/*Police Détails Fichier commande et commun  */
   font-size: 18px; /* Increase font size */
 }
 
-#myBtn:hover {
+#btnRemonter:hover {
   background-color: #555; /* Add a dark-grey background on hover */
 }
 
 
 
+#zoneRechercheCMD{
+  top:500px;
+}
+
+/*DEBUT PAGINATOR*/
+
 .zonePagesCMD {
 	/*display: flex;
 	flex-direction: column;*/
-	
+width: 100%;	
 	align-items: center;
 	
-	background-color: green;
+	background-color: white;
 	margin: 20px 0;
 }
 
@@ -327,21 +301,190 @@ width: 100%;
 
 }
 
+.laCMDTotale {
+width: 100%;
+
+}
+
+
 .page_navigation { 
 	width: 100%; 
 	text-align: center;
 }
 
 .page_navigation ul { 
-padding: 0;
+
+
+vertical-align: middle;
+
+
 }
 
 .page_navigation li {
 display: inline;
- padding: 5px; 
+
+ padding: 12px;  /**/
+ 
+ width: 40px;
+  height: 40px;
+ 
+   background-color: #4CAF50;
+
+margin:5px;
+
+
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+	
+ border-radius: 50px;
+}
+
+.page_navigation li a{
+  text-align: center;
+color: white;
+  text-decoration: none;
+vertical-align: middle;
+
+}
+.page_navigation li:hover{
+background-color: red;
+cursor: pointer;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
 .page_navigation li.active_page {
-	background-color: red;
+	color: blue;	
+	background-color: aqua;
+
 }
 
+.page_navigation li.previous_link {
+background-color: red;
+}
+.page_navigation li.next_link{
+background-color: red;
+
+}
+
+/*FIN PAGINATOR*/
+
+/*  DEBUT BAR DROITE */
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+
+
+border-style: solid;
+  border-color: coral;
+
+  
+  background-color: var(--FondLigneTabGrisClair);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+
+.sidenav .closebtn:hover,
+.sidenav .closebtn:focus {
+    color: var(--boutonRouge);
+}
+
+
+
+/* The Close Button (x) */
+#loupe {
+    position: absolute;
+    right: 140px;
+    top: 55px;
+    color: var(--FondLigneTabGrisFonce);
+    font-size: 10px;
+    font-weight: bold;
+	text-decoration: none;
+    cursor: pointer;
+}
+
+#loupe:hover,
+#loupe:focus {
+    color: var(--boutonRouge);
+}
+
+
+/* Style the search box */
+#zoneRecherche {
+  width: 100%;
+
+  font-size: 18px;
+  padding: 11px;
+  
+}
+
+#zoneRecherche:hover,
+#zoneRecherche:focus {
+color: var(--boutonRouge);
+
+}
+
+/* Style the navigation menu inside the left column */
+#listeRechercheCMD {
+	font-size: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+#listeRechercheCMD li a {
+	font-size: 10px;
+  padding: 10px;
+  text-decoration: none;
+  color: var(--FondLigneTabGrisSombre);
+  display: block
+}
+
+#listeRechercheCMD li a:hover {
+  background-color: var(--FondLigneTabGrisFonce);
+}
+
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+  z-index: 19;
+  transition: 0.5s;
+}
+
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+/*  FIN  BAR DROITE */

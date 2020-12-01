@@ -60,13 +60,13 @@ class CGroupeCmdes {
 		}
 		return $resultat;
 	}	
-	function Affiche(){
+	function Affiche($isPage){
 		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
 			$EcoleEnCours = $this->colEColes[$i];
-			$resultat .= $this->colEColes[$i]->Affiche();			
+			$resultat .= $this->colEColes[$i]->Affiche($isPage);			
 		}
 		return $resultat;
 	}	
@@ -97,21 +97,24 @@ class CEcole {
 	function AjoutCMD($uneCMD){
 		array_push($this->colCMD,$uneCMD);
     } 	
-    function Affiche(){
+    function Affiche($isPage){
 		$resultat = '';
 
 		for($i = 0; $i < count($this->colCMD); $i++){
-			if ((($i+1) % $GLOBALS['NbCMDAffiche']) == 1) {// On ouvre la page
+			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1)&& $isPage) {// On ouvre la page
 				$resultat .= '<div class="pageCMD">';
 					$resultat .= '<div class="ecole">';	
 					$resultat .= $this->Nom ;  
 					$resultat .= '</div>';						
 			}
 			$resultat .= $this->colCMD[$i]->Affiche();	
-			if ((($i+1) % $GLOBALS['NbCMDAffiche']) == 0) { // On ferme la page
+			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 0)&& $isPage) { // On ferme la page
 				$resultat .= '</div>';						
 			}			
 		}
+		if (((($i+1) % $GLOBALS['NbCMDAffiche']) != 0)&& $isPage) { // On ferme la page
+			$resultat .= '</div>';						
+		}					
 		return $resultat;
 	}	
 }
