@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	setlocale(LC_TIME, 'french');
 	include 'APIConnexion.php';
 	include 'CMDLireNEW.php';
 
@@ -39,7 +40,7 @@
 	
 	//$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 
-	$etatFichierLab = AfficheEtatFichierLab(substr(strrchr($myfileName, '.'),4));
+	$etatFichierLab = AfficheEtatFichierLab($myfileName);
 ?>
 </head>
 <body>
@@ -47,21 +48,22 @@
 	<div class="logo"><a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes"><img src="img/retourPhotoLabCMD.png" alt="Image de fichier"></a>
 	</div>
 	<div class="titreFichier">	
-		<?php echo substr($myfileName,0,10) .
-		'    ' . pathinfo(utf8_encode(substr($myfileName,11)))['filename'] . '  :  ' .$etatFichierLab ;?>
+		<?php 
+			echo  '<p>' . $etatFichierLab . '</p>';
+			echo pathinfo(utf8_encode($myfileName))['filename']; ?>
 		<?php //echo urldecode(utf8_encode($myfileName)) .
 		//'    ' . $etatFichierLab ;?>
 	</div>
 	
 	<div class="affichageNBPage">
 	
-		<p> </p>
+		
 		
 		<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a>
 		<p> Nombre de commandes affichées :</p><p> 
 	</div> 
+<!-- 	
 	<a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes" class="close">&times;</a>
-<!-- 
 	
 	<div class="recherche">	
 		<p><STRONG><?php echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?></STRONG></p>
@@ -90,15 +92,12 @@
 	</div>	<!-- -->
 	<div id="zoneListePageCMD">
 		<div class="zonePagesCMD">
+		<br>
 			<div class="page_navigation"></div>		
 			<div class="items">		
 				<?php 	echo $monGroupeCmdes->Affiche(true); ?>	
 			 	
 			</div>
-			<div class="laCMDTotale">		
-			</div>
-			<!--<div class="laCMDTotale">		
-			</div>		-->	
 		</div>
 	</div>
 

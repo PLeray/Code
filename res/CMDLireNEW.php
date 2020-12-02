@@ -56,17 +56,17 @@ class CGroupeCmdes {
 		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->tabCMDLabo); $i++){
-			$resultat .= '<li><a href="#'.$this->tabCMDLabo[$i]->Numero.'">'.$this->tabCMDLabo[$i]->Numero.'</a></li>';
+			$resultat .= '<li><a href="#C-'.$this->tabCMDLabo[$i]->Numero.'">'.$this->tabCMDLabo[$i]->Numero.'</a></li>';
 		}
 		return $resultat;
 	}	
-	function Affiche($isPage){
+	function Affiche($isParPage){
 		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
 			$EcoleEnCours = $this->colEColes[$i];
-			$resultat .= $this->colEColes[$i]->Affiche($isPage);			
+			$resultat .= $this->colEColes[$i]->Affiche($isParPage);			
 		}
 		return $resultat;
 	}	
@@ -97,22 +97,22 @@ class CEcole {
 	function AjoutCMD($uneCMD){
 		array_push($this->colCMD,$uneCMD);
     } 	
-    function Affiche($isPage){
+    function Affiche($isParPage){
 		$resultat = '';
 
 		for($i = 0; $i < count($this->colCMD); $i++){
-			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1)&& $isPage) {// On ouvre la page
+			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1)&& $isParPage) {// On ouvre la page
 				$resultat .= '<div class="pageCMD">';
 					$resultat .= '<div class="ecole">';	
 					$resultat .= $this->Nom ;  
 					$resultat .= '</div>';						
 			}
-			$resultat .= $this->colCMD[$i]->Affiche();	
-			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 0)&& $isPage) { // On ferme la page
+			$resultat .= $this->colCMD[$i]->Affiche($isParPage);	
+			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 0)&& $isParPage) { // On ferme la page
 				$resultat .= '</div>';						
 			}			
 		}
-		if (((($i+1) % $GLOBALS['NbCMDAffiche']) != 0)&& $isPage) { // On ferme la page
+		if (((($i+1) % $GLOBALS['NbCMDAffiche']) != 0)&& $isParPage) { // On ferme la page
 			$resultat .= '</div>';						
 		}					
 		return $resultat;
@@ -144,8 +144,9 @@ class CCommande {
         if ($TailleInfo > 2){$this->Prenom = $morceau[2];}  
         if ($TailleInfo > 3){$this->Nom = $morceau[3];}  
         if ($TailleInfo > 4){$this->Adresse = $morceau[4];}  
-        if ($TailleInfo > 5){$this->CodePostal = $morceau[5];}  
-        if ($TailleInfo > 6){$this->Ville = $morceau[6];}   
+		if ($TailleInfo > 5){$this->Adresse = $this->Adresse . ' ' . $morceau[5];}  
+        if ($TailleInfo > 6){$this->CodePostal = $morceau[6];}  
+        if ($TailleInfo > 7){$this->Ville = $morceau[7];}   
 		$this->colPDT = array();		
     } 
     function FormatNumCmd(){
@@ -156,19 +157,36 @@ class CCommande {
 	function AjoutPDT($unPDT){
 		array_push($this->colPDT,$unPDT);
     } 	
-    function Affiche(){
+    function Affiche($isParPage){
 		$resultat = '';
+		if ($isParPage){
 		$resultat .= '<div class="commande"  >';				
-			$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande ' . $this->FormatNumCmd() . ' ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom .')</button>';
+			$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande ' . $this->FormatNumCmd() . ' ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 			//Le contenu ...
 			$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
+			
 			for($i = 0; $i < count($this->colPDT); $i++){
 				$resultat .= $this->colPDT[$i]->Affiche();			
 			}
 			$resultat .= '</div>';
 		$resultat .= '</div>';
-		return $resultat;
-	}	
+		}   
+		else{		
+			$resultat .= '<div id="C-'. $this->Numero .'" class="commande"  >';			
+				$resultat .= '<button  class="TitrecommandeRecherche"> Commande ' . $this->FormatNumCmd() . ' ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
+				//Le contenu ...
+				$resultat .= '<div class="Contenucommande">';
+				for($i = 0; $i < count($this->colPDT); $i++){
+					$resultat .= $this->colPDT[$i]->Affiche();			
+				}
+				$resultat .= '</div>';
+			$resultat .= '</div>';
+		
+			
+		}
+		return $resultat;				
+	}
+
 }
 
 class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
@@ -267,22 +285,28 @@ function EtatFichierLab($tabFICHIERLabo){
 	return $Info;
 }
 
-function AfficheEtatFichierLab($Etat){
+function AfficheEtatFichierLab($myfileName){
+	$Etat = substr(strrchr($myfileName, '.'),4);
 	$retourMSG ='';
     switch ($Etat) {
 	case "1":
-		$retourMSG = "Les planches sont crées.";
+		$retourMSG = "Les planches de cette commande sont en création.";
 		break;		
 	case "2":
-		$retourMSG = "Les planches sont envoyées labo";
+		$retourMSG = "Les planches de cette commande sont prêtes pour envoi au labo";
 		break;
-	case "3":
-		$retourMSG = "Les planches sont tirées au labo";
+	case "3":  //. substr($myfileName,0,10)    strftime(" in French %A and",); $date = strftime("%d %B %Y", strtotime($date1));
+		//$retourMSG = "Les planches ont été envoyé au labo le " .date('l d B',strtotime(substr($myfileName,0,10)) ).    "."; 
+		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " .strftime("%A %d %B", strtotime(substr($myfileName,0,10)) ).    "."; 
 		break;		
 	case "4":
-		$retourMSG = "Les planches sont Cartonnées";
-		break;	
+		$retourMSG = "Les planches de cette commande sont en cours d'empaquetage.";
+		break;
+	default :	
+		$retourMSG = "Les commandes sont expédiées.";
+		break;
 	}
+
 	return $retourMSG;
 }
 

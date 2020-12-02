@@ -1,21 +1,9 @@
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
-/*
-	//console.log("document.onreadystatechange  : Avant" );	
-	document.onreadystatechange = function() {
-		//console.log("document.onreadystatechange  : OK" );	
-		if (document.readyState === "complete") {
-			//var laZonePages = affichePagination(true);
-			
-		}
-	}
-*/
 var rech = document.getElementById("zoneRechercheCMD");
 rech.style.display = 'none';
 initPagination();
-
-
 
 function initPagination() {
 	//console.log("document.onreadystatechange  : Avant" );	
@@ -37,44 +25,6 @@ function initPagination() {
 	};
 }	
 
-function affichePagination(isAffiche=true) {
- 	var pagin;
- 	if (isAffiche){
-		//document.getElementById("modifier_class").className = "class2";
-		
-		pagin = new purePajinate({
-				containerSelector: '.zonePagesCMD .items', 
-				itemSelector: '.zonePagesCMD .items .pageCMD', 
-				navigationSelector: '.zonePagesCMD .page_navigation',
-				wrapAround: false,
-				navLabelPrev: '<',
-				navLabelNext: '>',				
-				pageLinksToDisplay: 50,
-				//showPrevNext: true,
-				itemsPerPage: 1,
-				startPage: 0
-		});
-	}else{
-		pagin = new purePajinate({
-				containerSelector: '.zonePagesCMD .items', 
-				itemSelector: '.zonePagesCMD .items .laCMDTotale', 
-				navigationSelector: '.zonePagesCMD .page_navigation',
-				wrapAround: false,
-				navLabelPrev: '<',
-				navLabelNext: '>',				
-				pageLinksToDisplay: 0,
-				//showPrevNext: false,
-				itemsPerPage: 1,
-				startPage: 0
-		});		
-		pagin.gotopage(0);
-	}
-	//pagin.init(isAffiche);
-	
-
-	return pagin;
-	
-}
 function AfficheRechercheCMD(isAffiche) {
 
 	if (isAffiche){

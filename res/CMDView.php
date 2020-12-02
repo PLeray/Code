@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	//setlocale(LC_TIME, 'french');
 	include 'APIConnexion.php';
 	include 'CMDLire.php';
 

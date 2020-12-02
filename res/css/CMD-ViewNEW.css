@@ -91,7 +91,21 @@ p {/*Police Détails Fichier commande et commun  */
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.24); 
 }
 
+.TitrecommandeRecherche {
 
+  padding: 10px 10px 10px 10px;
+  width: 100%;
+  border: none;
+  outline: none;
+    color: var(--FondLigneTabGrisSombre);
+
+	text-align: left;
+    letter-spacing: 2px;
+	font-size: 15x;
+
+	font-family: "Courier New", Times, serif;
+	border-bottom: 1px solid var(--FondLigneTabGrisSombre); 
+}
 .Titrecommande {
   content: '\2212';
   cursor: pointer;
@@ -170,9 +184,9 @@ display: block;
 /* ////////////////////////   BOUTON + ET - ///////////////////// */
 .affichageNBPage {
     position: absolute;
-    left: 200px;
+    right: 20px;
 
-    top: 15px;
+    top: 12px;
     text-align: center;
 }
 
@@ -191,7 +205,7 @@ display: block;
     box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
-/* The Close Button (x) */
+/* The Close Button (x) 
 .close {
     position: absolute;
     right: 20px;
@@ -206,7 +220,7 @@ display: block;
 .close:focus {
     color: var(--boutonRouge);
     cursor: pointer;
-}
+}*/
 
 /* The Close Button (x) */
 #loupe {
@@ -239,10 +253,10 @@ display: block;
 .titreFichier {
 	position: absolute;
 	padding: 1px;
-	text-align: left;
-	left: 230px;
-	Top: -1px;
-	
+	text-align: center;
+	/*left: 230px;
+	Top: -1px;*/
+	width: 100%;
     color: var(--texteGris);
 	font-family: "Courier New", Times, serif;
     letter-spacing: 3px;	
@@ -271,11 +285,11 @@ display: block;
 }
 
 
-
+/*
 #zoneRechercheCMD{
-  top:500px;
+  top:700px;
 }
-
+*/
 /*DEBUT PAGINATOR*/
 
 .zonePagesCMD {
@@ -285,15 +299,17 @@ width: 100%;
 	align-items: center;
 	
 	background-color: white;
-	margin: 20px 0;
+
 }
 
 .item {
+
+	/*
 	width: 162px;
 	height: 100px;
 	padding: 10px;
 	margin: 10px;
-
+*/
 }
 
 .pageCMD {
@@ -301,13 +317,8 @@ width: 100%;
 
 }
 
-.laCMDTotale {
-width: 100%;
-
-}
-
-
 .page_navigation { 
+
 	width: 100%; 
 	text-align: center;
 }
@@ -321,36 +332,32 @@ vertical-align: middle;
 }
 
 .page_navigation li {
-display: inline;
-
- padding: 12px;  /**/
- 
+display: inline-block;
+ background: black;
+ border-radius: 50%;
+ height: 40px;
  width: 40px;
-  height: 40px;
+ margin: 7px;
+ background: radial-gradient(circle at 15px 15px, white, var(--FondLigneTabGrisSombre));
  
-   background-color: #4CAF50;
-
-margin:5px;
-
-
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-	
- border-radius: 50px;
+  font-size: 14px;
+ padding: 10px;
 }
 
 .page_navigation li a{
-  text-align: center;
-color: white;
-  text-decoration: none;
-vertical-align: middle;
-
+	text-align: center;
+	/**/
+	font-weight: bolder;
+	color: var(--FondLigneTabGrisSombre);
+	text-decoration: none;
+	vertical-align: middle;
 }
+
 .page_navigation li:hover{
 background-color: red;
 cursor: pointer;
-    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+    //box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+	 background: radial-gradient(circle at 15px 15px, white, var(--boutonVert));
 }
 
 .page_navigation li.active_page {
@@ -380,8 +387,8 @@ background-color: red;
   right: 0;
 
 
-border-style: solid;
-  border-color: coral;
+
+  border-left: 1px solid var(--FondLigneTabGrisFonce); 
 
   
   background-color: var(--FondLigneTabGrisClair);
