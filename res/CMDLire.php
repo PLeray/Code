@@ -25,7 +25,8 @@ class CGroupeCmdes {
 			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
 		}
 		fclose($myfile);	
-		$this->DateISOLEE = substr($myfileName, strripos($myfileName, '/') + 1,10);		
+		$this->DateISOLEE = substr($myfileName, strripos($myfileName, '/') + 1,10);	
+
 		$this->colEColes = array();
 		$this->tabCMDLabo = array();
 		if ($this->tabFICHIERLabo){

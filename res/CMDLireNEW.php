@@ -21,6 +21,10 @@ class CGroupeCmdes {
 		$myfile = fopen($myfileName, "r") or die('Unable to open file : ' .$myfileName);
 		$this->tabFICHIERLabo = array();
 		// Output one line until end-of-file
+		
+		//$GLOBALS['DateISOLEE'] = substr($myfileName, strripos($myfileName, '/') + 1,10);
+		
+		
 		while(!feof($myfile)) {
 			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
 		}
@@ -33,7 +37,7 @@ class CGroupeCmdes {
 				$identifiant = substr($this->tabFICHIERLabo[$i],0,1);
 				//Si Commande pas vide , on ajoute la commande au tableau!
 				if ($identifiant == '@') {
-					$curEcole = new CEcole($this->tabFICHIERLabo[$i]);
+					$curEcole = new CEcole($this->tabFICHIERLabo[$i], $this->DateISOLEE);
 					array_push($this->colEColes,$curEcole);			
 				}
 				if ($identifiant == '#') {
@@ -77,18 +81,21 @@ class CEcole {
     var $Nom;
     var $Details;
 	var $colCMD;
+	var $DateISOLEE;
 
-    function __construct($str){
+    function __construct($str, $dateIsole){
         //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("@", "", $str)));
         $morceau = explode("_", str_replace("@", "", $str));
 		$this->DateTirage = $morceau[0];
         $this->Nom = $morceau[1];
         $this->Details = $morceau[2];
 		$this->colCMD = array();
+		$this->DateISOLEE = $dateIsole;
     }
     function RepTirage(){
 		if (stripos($this->Nom, '(ISOLEES)') !== false) { // C'est des ISOLEES
-			return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
+			//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
+			return $this->DateISOLEE . '-CMD-ISOLEES' ;
 		}	
 		else{
 			return $this->DateTirage . '-' .$this->Nom ;	
@@ -99,7 +106,7 @@ class CEcole {
     } 	
     function Affiche($isParPage){
 		$resultat = '';
-
+		
 		for($i = 0; $i < count($this->colCMD); $i++){
 			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1)&& $isParPage) {// On ouvre la page
 				$resultat .= '<div class="pageCMD">';
@@ -161,7 +168,7 @@ class CCommande {
 		$resultat = '';
 		if ($isParPage){
 		$resultat .= '<div class="commande"  >';				
-			$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande ' . $this->FormatNumCmd() . ' ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
+			$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande <span class="grosNumCMD">' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 			//Le contenu ...
 			$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
 			
@@ -207,7 +214,7 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
     function Affiche(){
 		$resultat = '';
 		$resultat .= '<span id="'. $this->Classe. ' ' . $this->Nom .'" class="produit">'; //Debut du produit
-		$resultat .= '<h1>'.$this->Classe.'</h1><br>'  ;
+		$resultat .= '<h5>'.$this->Classe.'</h5>'  ;
 		$resultat .= '<h4>'. $this->Nom.'</h4><br>'  ;
 		for($i = 0; $i < count($this->colPlanche); $i++){
 			$resultat .= $this->colPlanche[$i]->Affiche();			
@@ -249,7 +256,7 @@ class CPlanche {
 			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;				
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
-			$resultat .= '<p>'. $this->FichierSource .'</p>';
+			$resultat .= '<p>'. $this->FichierPlanche .'</p>';
 		$resultat .= '</span> ';
 		return $resultat;
 	}	

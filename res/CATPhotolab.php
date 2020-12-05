@@ -38,7 +38,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 if (isset($_GET['OpenRep'])) { // OUVRIR REP !
 	$leRep = str_replace("/","\\",$repTIRAGES. $_GET['OpenRep']);
 	if ($GLOBALS['isDebug']){
-		echo 'le rep  a ouvrir : explorer /select,"'.$leRep.'"' ;
+		echo 'le rep  à ouvrir : explorer /select,"'.$leRep.'"' ;
 	}
 	execInBackground('explorer /select,"'.$leRep.'"');
 } 

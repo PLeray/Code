@@ -36,17 +36,26 @@
 	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
 	
 
-	$EcoleEnCours = new CEcole("___");
+	$EcoleEnCours = new CEcole("___",'2020-07-07');
 	
 	//$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 
 	$etatFichierLab = AfficheEtatFichierLab($myfileName);
 ?>
+
 </head>
 <body>
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
-	<div class="logo"><a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes"><img src="img/retourPhotoLabCMD.png" alt="Image de fichier"></a>
+	
+<div id="Entete">	
+	<div class="logo"><a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes"><img src="img/Logo-mini.png" alt="Image de fichier"></a>
 	</div>
+	
+	<div class="affichageNBPage">
+		<p> Nombre de commandes par page</p>	
+			<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a>
+	</div> 	
+	
 	<div class="titreFichier">	
 		<?php 
 			echo  '<p>' . $etatFichierLab . '</p>';
@@ -55,59 +64,47 @@
 		//'    ' . $etatFichierLab ;?>
 	</div>
 	
-	<div class="affichageNBPage">
-	
-		
-		
-		<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a>
-		<p> Nombre de commandes affichées :</p><p> 
-	</div> 
-<!-- 	
-	<a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes" class="close">&times;</a>
-	
-	<div class="recherche">	
-		<p><STRONG><?php echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?></STRONG></p>
-		<input type="text" placeholder="Recherche commandes..." id="mySearch" onclick="myFunction2()" onkeyup="filterFunction()" title="indiquez des termes d'une commande/n ou son numéro">
-	</div>   
--->	
 
+	<span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p><?php echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?></p><img src="img/search-more.png"></span>	
+</div>
 
+  <div id="main">
 
 	<div id="mySidenav" class="sidenav">
 	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	  <p> <STRONG>Recherche de commandes par critère</STRONG></p>
+	  <p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, un numéro de commande, ...</p>
+	  <p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
+	  <p>> tapez juste 'P0006'</p>
 	  
-	<h3><?php echo count($monGroupeCmdes->tabCMDLabo);?> Commandes</h3>
-		<input type="text" id="zoneRecherche" onkeyup="filterFunction()" placeholder="Rechercher .." title="Type in a category">  
+
+	<h3>il y a <?php echo count($monGroupeCmdes->tabCMDLabo);?> Commandes</h3>
+		<input type="text" id="zoneRecherche" onkeyup="filterFunction()" placeholder="Rechercher .." title="Taper le début d'un critère...">  
 	  
 		<ul id="listeRechercheCMD">
 			<?php echo $monGroupeCmdes->AfficheMenuCMD();?>	
 		</ul>
 	</div>
-
-<div id="main">
-  <span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p>Rechercher...<img src="img/searchicon.png"></p></span>
+  
 	<div id="zoneRechercheCMD">	
-	<br><br><br><br><br>
+	<br><br>
 		<?php 	echo $monGroupeCmdes->Affiche(false); ?>	
 	</div>	<!-- -->
-	<div id="zoneListePageCMD">
+	<div id="zoneListePageCMD"></div>
+		<br><br>
 		<div class="zonePagesCMD">
-		<br>
 			<div class="page_navigation"></div>		
-			<div class="items">		
+			<div class="items">					
 				<?php 	echo $monGroupeCmdes->Affiche(true); ?>	
 			 	
 			</div>
 		</div>
+
+  </div>
+
+	<div class="footer">
+	  <p class="mention">	<?php echo VersionPhotoLab();?> </p>
 	</div>
-
-</div>	
-	
-	<!-- 			-->	
-	<p class="mention">	<?php echo VersionPhotoLab();?> </p>
-	
-	
-
 
 </body>
 

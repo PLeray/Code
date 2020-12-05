@@ -7,6 +7,7 @@ class CINFOfichierLab {
 	var $PourcentageAvancement = 0;
 	var $SyntheseCMD;
 	var $Compilateur;
+	//var $isOuvrable;
     var $NbPlanches = 0;
     var $NomEcole;
     var $DateTirage;
@@ -34,6 +35,7 @@ class CINFOfichierLab {
 				}
 				if ($identifiant == '[')  {
 					$this->Compilateur = strstr(strrchr($tabFICHIERLabo[$i], '%'), 1, -1);
+					//$this->isOuvrable = $this->Compilateur;
 				}		
 				if ($identifiant == '@')  {
 			//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
@@ -217,21 +219,6 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 		// Un objet pour récupérer les infos Fichier !!! 
 		$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 
 		$nb_fichier++;
-		
-		//$fichier = $mesInfosFichier->Fichier;
-		//$Extension = substr(strrchr($fichier, '.'),4);
-
-		//$DateFichierLAb = strftime('%A %d %B %Y', strtotime(substr($fichier,0,10)));
-		//$NonFichierEcole = utf8_encode(pathinfo(substr($fichier,11))['filename']);
-		//$NonFichierEcole = pathinfo(substr($fichier,11))['filename'];
-
-		//$ResumeCMD = "init ZZ";
-		//$EtatCMD = 0;
-		//$Compilateur = "init ZZ";
-		//$NBPlanche = INFOsurFichierLab($GLOBALS['repCMDLABO'] . $fichier, $EtatCMD, $ResumeCMD, $Compilateur);
-		//$ResumeCMD = RESUMEFichierLab($ResumeCMD);
-
-		//$ResumeCMD = $mesInfosFichier->SyntheseCMD;
 
 		$affiche_Tableau .=
 		'<tr>
@@ -490,65 +477,6 @@ function LienOuvrirRepTIRAGE($repertoire) {
 	}
 	return $LienFichier;
 }
-
-/* //////////////  New du 12 Juin 2019 /////////////////////  */
-
-
-/*
-function INFOsurFichierLab($myfileName, &$Pourcentage, &$ResumeCMD, &$Compilateur){
-	$tabFICHIERLabo = LireFichierLab($myfileName);
-	//echo count($tabFICHIERLabo);
-	$nbPlanches=0;
-	for($i = 0; $i < count($tabFICHIERLabo); $i++){
-		$identifiant = substr($tabFICHIERLabo[$i],0,1);
-		if (($identifiant != '[') && ($identifiant != '{') && ($identifiant != '#') && ($identifiant != '@') && ($identifiant != '<') && ($identifiant != '')) {
-			$nbPlanches = $nbPlanches + 1 ;
-		}else {
-			if ($identifiant == '{')  {
-				$ResumeCMD = RESUMEFichierLab($tabFICHIERLabo[$i]) ;
-
-				$Pourcentage = 100 * floatval(str_replace(",", ".", substr(stristr($tabFICHIERLabo[$i], '%%', true), 9)));
-			}
-			if ($identifiant == '[')  {
-				$Compilateur = strstr(strrchr($tabFICHIERLabo[$i], '%'), 1, -1);
-			}			
-		}
-		
-	 }
-	return $nbPlanches;
-}
-
-function RESUMEFichierLab($ResumeCMD){
-
-	$ResumeCMD = utf8_encode(substr(stristr($ResumeCMD, '%%'),1,-1)); // New 26-08
-	
-	$ResumeCMD = str_replace("%", "<br>", $ResumeCMD);
-	$ResumeCMD = str_replace("{", "<br>", $ResumeCMD);
-	return $ResumeCMD . "<br>";
-}
-
-
-
-
-
-function Avancement($Etat, $EtatCMD){
-	switch ($Etat) {
-	case "0":
-		$RetourEtat = 0;
-		break;		
-	case "1":
-		$RetourEtat = floatval($EtatCMD);
-		break;			
-	default:
-		$RetourEtat = 100;
-		break;		
-	}
-	//echo 'Avancement($Extension, $EtatCMD)$Etat: ' . $Etat . '  EtatCMD : ' . $EtatCMD . '  $RetourEtat: ' . $RetourEtat;
-	return $RetourEtat;  	
-}
-*/
-
-/* //////////////  FIN New du 12 Juin 2019 /////////////////////  */
 
 function LireFichierLab($myfileName){
  	$tabFICHIERLabo = array();
