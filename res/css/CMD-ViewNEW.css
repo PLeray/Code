@@ -348,7 +348,7 @@ display: inline-block;
  height: 40px;/*Taille diametre des boutons rond*/	
  width: 40px;
  margin: 7px;
- background: radial-gradient(circle at 15px 15px, white, var(--FondLigneTabGrisFonce));
+ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
  
   font-size: 14px;	
  padding: 10px; /*Position chiffre  diametre des boutons rond*/	
@@ -364,25 +364,37 @@ display: inline-block;
 }
 
 .page_navigation li:hover{
-background-color: red;
+
 cursor: pointer;
 
 	 background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
 }
 
 .page_navigation li.active_page {
-
+	border: 5px solid var(--FondLigneTabGrisFonce);
+	height: 50px;/*Taille diametre des boutons rond*/	
+	width: 50px;
+	margin: 2px;
 	background: radial-gradient(circle at 0px 5px, white, var(--boutonRouge));
+	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 
 }
 
 .page_navigation li.previous_link {
 	 margin: 20px;
-background: radial-gradient(circle at 0px -5px, white, green);
+ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
 }
 .page_navigation li.next_link{
 		 margin: 20px;
-background: radial-gradient(circle at 0px -5px, white, var(--boutonVert));
+ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
+
+}
+
+.page_navigation li.previous_link:hover {
+background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
+}
+.page_navigation li.next_link:hover{
+background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
 
 }
 
@@ -393,7 +405,7 @@ background: radial-gradient(circle at 0px -5px, white, var(--boutonVert));
 .sidenav {
   width: 0;
   position: fixed;
-  /*   z-index: 1;*/
+  /**/   z-index: 1;
   top: 0;
   right: 0;
 
@@ -403,7 +415,7 @@ background: radial-gradient(circle at 0px -5px, white, var(--boutonVert));
   transition: 0.5s;  
   /*   overflow: hidden; */
 
-  padding-top: 35px;
+  padding-top: 5px;
 }
 
 .sidenav a {
@@ -420,10 +432,14 @@ background: radial-gradient(circle at 0px -5px, white, var(--boutonVert));
 }
 
 .sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
+
+  /*   position: absolute; 
+  top: -10px;
+  right: 15px;*/
   font-size: 36px;
+  margin-left: 190px;
+  
+  
 
 }
 
@@ -483,8 +499,10 @@ color: var(--boutonRouge);
 }
 
 #Entete {
-  padding: 27px;  /* Défini la hauteur du Header !!*/
+  padding: 27px;  /* Défini la hauteur du Header !!z-index: 1;*/
   text-align: center;
+  
+  background-color: white;
 }
 
 #main {

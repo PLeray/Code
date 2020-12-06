@@ -106,10 +106,11 @@ class CEcole {
     } 	
     function Affiche($isParPage){
 		$resultat = '';
-		
+		$numPage = 0;
 		for($i = 0; $i < count($this->colCMD); $i++){
-			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1)&& $isParPage) {// On ouvre la page
-				$resultat .= '<div class="pageCMD">';
+			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1) && $isParPage) {// On ouvre la page
+				$numPage ++;
+				$resultat .= '<div id="P-'. $numPage .'" class="pageCMD">';
 					$resultat .= '<div class="ecole">';	
 					$resultat .= $this->Nom ;  
 					$resultat .= '</div>';						

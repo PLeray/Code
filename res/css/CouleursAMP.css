@@ -12,4 +12,8 @@
   --FondBDialog: #fefefe;
 	
   --texteGris: #444;
+  
+    --btnPageDebut: red;
+    --btnPageEntame: Orange;
+    --btnPageFini: green;  
 }
