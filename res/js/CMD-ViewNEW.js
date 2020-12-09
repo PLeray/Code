@@ -5,6 +5,11 @@ var rech = document.getElementById("zoneRechercheCMD");
 rech.style.display = 'none';
 initPagination();
 
+function chargement(){
+   document.getElementById('chargement').style.display='none';
+   document.getElementById('site').style.visibility='visible';
+}
+
 function initPagination() {
 	//console.log("document.onreadystatechange  : Avant" );	
 	document.onreadystatechange = function() {
@@ -46,6 +51,7 @@ function AfficheRechercheCMD(isAffiche) {
 window.onload = function (){ 
 //alert('Onload :!!');
 	InitCommandes();
+	chargement();
 };
 
 /*

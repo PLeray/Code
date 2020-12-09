@@ -456,7 +456,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					var myDocument = app.activeDocument; 
 					if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {
 						if (myDocument.width > myDocument.height) { 
-							alert('rotateCanvas' ); 						
+							//alert('rotateCanvas' ); 						
 							isFratrie = true;
 							myDocument.rotateCanvas(90)  
 						}  

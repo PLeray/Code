@@ -181,7 +181,7 @@ class CCommande {
 		}   
 		else{		
 			$resultat .= '<div id="C-'. $this->Numero .'" class="commande"  >';			
-				$resultat .= '<button  class="TitrecommandeRecherche"> Commande ' . $this->FormatNumCmd() . ' ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
+				$resultat .= '<button  class="TitrecommandeRecherche"> Commande <span class="grosNumCMD"> ' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 				//Le contenu ...
 				$resultat .= '<div class="Contenucommande">';
 				for($i = 0; $i < count($this->colPDT); $i++){
@@ -205,8 +205,10 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		$str = str_replace("<", "", str_replace(">", "", $str));
 		//echo "jhgjhg :  " . $str;
 		$morceau = explode("%", $str);		
-		$this->Classe = $morceau[0];
-		$this->Nom = $morceau[1];
+		$TailleInfo = count($morceau);
+
+        $this->Classe = $morceau[0]; 
+		if ($TailleInfo > 1){$this->Nom = $morceau[1];} 
 		$this->colPlanche = array();
     }   
 	function AjoutPlanche($unePlanche){
