@@ -62,7 +62,8 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		//$NumCommande = array_column($TabCSV, "Num de commande");
 		//array_multisort($NumCommande, SORT_ASC, $TabCSV);
 		// Ancien Tri : array_multisort($NomProjet, SORT_ASC, $NumCommande, SORT_ASC, $TabCSV);
-		array_multisort($NomProjet, SORT_ASC, $NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV);
+		//array_multisort($NomProjet, SORT_ASC, $NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV);
+		array_multisort($NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV); // Tri par num commande puis classe
 		$NbLignes=count($TabCSV);
 		
 		//Prefixe rep Tirage

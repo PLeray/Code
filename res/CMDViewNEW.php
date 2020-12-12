@@ -45,24 +45,30 @@
 
 </head>
 
-<body onload="chargement()">
+<body onload="EffacerChargement()">
  <!-- 
 <div id="chargement" style="width:150px;height:50px;position:absolute;top:0;left:0;color:red;font-weight:bold;font-size:14px;background:white;">
    Chargement ...
 </div>-->
-<div id="chargement"> 
+<div id="MSGChargement" onclick="EffacerChargement()"> 
 	<div class="cs-loader">
+	
 	  <div class="cs-loader-inner">
+	  <H5>Chargement de la commande <?php echo $myfileName;?></H5>
+	  <br>
 		<label>●</label>
 		<label>●</label>
 		<label>●</label>
 		<label>●</label>
 		<label>●</label>
 		<label>●</label>
+		<br>
+		<br>
+		<H5>Cliquez pour voir :  <?php echo $myfileName;?></H5>
 	  </div>
 	</div>
 </div> 
-<div id="site" style="visibility:hidden;">
+<div id="site"">
    <!-- Tout le site ici -->
 
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
@@ -92,7 +98,7 @@
 		<div id="mySidenav" class="sidenav">
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		  <p> <STRONG>Recherche de commandes par critère</STRONG></p>
-		  <p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, un numéro de commande, ...</p>
+		  <p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...</p>
 		  <p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
 		  <p>> tapez juste 'P0006'</p>
 		  
@@ -107,14 +113,14 @@
 	  
 		<div id="zoneRechercheCMD">	
 		<br><br>
-			<?php 	echo $monGroupeCmdes->Affiche(false); ?>	
+			<?php 	echo $monGroupeCmdes->Affiche(0); ?>	
 		</div>	<!-- -->
 		<div id="zoneListePageCMD">
 			<br><br>
 			<div class="zonePagesCMD">
 				<div class="page_navigation"></div>		
 				<div class="items">					
-					<?php 	echo $monGroupeCmdes->Affiche(true); ?>	
+					<?php 	echo $monGroupeCmdes->Affiche($NbCMDAffiche); ?>	
 					
 				</div>
 			</div>

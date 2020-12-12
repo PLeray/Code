@@ -64,16 +64,59 @@ class CGroupeCmdes {
 		}
 		return $resultat;
 	}	
-	function Affiche($isParPage){
+	function Affiche($numP){
+		$gestionPage = new CPage($numP);
+
 		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
 			$EcoleEnCours = $this->colEColes[$i];
-			$resultat .= $this->colEColes[$i]->Affiche($isParPage);			
+			$resultat .= $this->colEColes[$i]->Affiche($gestionPage);			
 		}
+		$gestionPage->AfficheFinPage(true);
 		return $resultat;
 	}	
+}
+
+
+class CPage {
+    var $compteurCMD;
+    var $NbCMDAffiche;
+    var $numeroPage;
+    var $isPageOuverte;
+	var $isPage;
+	
+    function __construct($NbCMDAffiche){
+		$this->compteurCMD = 0;
+		$this->NbCMDAffiche = $NbCMDAffiche;		
+		$this->isPageOuverte = false;	
+		$this->isPage = ($NbCMDAffiche > 0);
+		$this->numeroPage = 0; //($this->isPage?1:0);	// On met le numero de page a 1 si on initialise l'objet page avec un nb de page	
+    } 
+    function AfficheDebutPage($unNomEcole){
+		$resultat = '';
+		if ($this->isPage && !$this->isPageOuverte){
+			if (($this->compteurCMD % $this->NbCMDAffiche) == 0){	
+				$this->numeroPage++;
+				// On ouvre la page			
+				$resultat .= '<div id="P-'. $this->numeroPage .'" class="pageCMD">'; // On l'ouvre ! 	
+				$this->isPageOuverte = true;				
+			}		
+		}
+		return $resultat;
+	}
+    function AfficheFinPage($isForce = false){
+		$resultat = '';
+		if($this->isPage && $this->isPageOuverte){
+			if ($isForce || ($this->compteurCMD % $this->NbCMDAffiche) == 0){			
+				$resultat .= '</div>';	// On la referme ! 
+				$this->isPageOuverte = false;		
+			}			
+		}
+		return $resultat;
+	}
+
 }
 
 class CEcole {
@@ -104,28 +147,26 @@ class CEcole {
 	function AjoutCMD($uneCMD){
 		array_push($this->colCMD,$uneCMD);
     } 	
-    function Affiche($isParPage){
+    function Affiche(&$gestionPage){
+		//$isParPage = ($numeroPage>0);
 		$resultat = '';
 		$numPage = 0;
+		
+		$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
+		/**/$resultat .= '<div class="ecole">';	
+		$resultat .= $this->Nom ;  
+		$resultat .= '</div>';	
+		
 		for($i = 0; $i < count($this->colCMD); $i++){
-			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 1) && $isParPage) {// On ouvre la page
-				$numPage ++;
-				$resultat .= '<div id="P-'. $numPage .'" class="pageCMD">';
-					$resultat .= '<div class="ecole">';	
-					$resultat .= $this->Nom ;  
-					$resultat .= '</div>';						
-			}
-			$resultat .= $this->colCMD[$i]->Affiche($isParPage);	
-			if (((($i+1) % $GLOBALS['NbCMDAffiche']) == 0)&& $isParPage) { // On ferme la page
-				$resultat .= '</div>';						
-			}			
-		}
-		if (((($i+1) % $GLOBALS['NbCMDAffiche']) != 0)&& $isParPage) { // On ferme la page
-			$resultat .= '</div>';						
-		}					
+			$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
+
+			$resultat .= $this->colCMD[$i]->Affiche($gestionPage);	
+			$resultat .= $gestionPage->AfficheFinPage();
+		}			
 		return $resultat;
 	}	
 }
+
 
 class CCommande {
     var $Numero;
@@ -164,22 +205,36 @@ class CCommande {
     }    
 	function AjoutPDT($unPDT){
 		array_push($this->colPDT,$unPDT);
-    } 	
-    function Affiche($isParPage){
+    }     
+	//function Affiche(&$isParPage){	
+    function Affiche(&$gestionPage){
 		$resultat = '';
-		if ($isParPage){
-		$resultat .= '<div class="commande"  >';				
-			$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande <span class="grosNumCMD">' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
-			//Le contenu ...
-			$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
-			
-			for($i = 0; $i < count($this->colPDT); $i++){
-				$resultat .= $this->colPDT[$i]->Affiche();			
-			}
+		$nbPlanche = 0;
+		if ($gestionPage->isPage){ // Pour le cartonnage
+			$resultat .= '<div class="commande"  >';				
+				$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande <span class="grosNumCMD">' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
+				//Le contenu ...
+				$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
+				
+				for($i = 0; $i < count($this->colPDT); $i++){
+					$resultat .= $this->colPDT[$i]->Affiche();
+					$nbPlanche = $nbPlanche + count($this->colPDT[$i]->colPlanche);
+				}
+				// Afffichage Facture nb de planche
+				$resultat .= '<div class="ResumeCMD">'; //Debut du produit
+				$resultat .= '<h5>'.'La commande comprend : '.'</h5><br>'  ;
+				$resultat .= '<span class="nbPanches">'. $nbPlanche .'<br>'  ;
+				$resultat .= '<h4>'. 'Planches' .'</h4></span>';
+				$resultat .= '<span class="nbPanches">+</span>'  ;
+				$resultat .= '<span class="nbPanches"><img class="maFacture" src="img/Bonco.png"  title="Bon de commande / Facture"></span>';	
+				//$resultat .= '<p>'. 'Facture' .'</p>';
+				$resultat .= '</div>';				
+				
+				$resultat .= '</div>';
 			$resultat .= '</div>';
-		$resultat .= '</div>';
+			$gestionPage->compteurCMD++;
 		}   
-		else{		
+		else{		 // Pour la recherche
 			$resultat .= '<div id="C-'. $this->Numero .'" class="commande"  >';			
 				$resultat .= '<button  class="TitrecommandeRecherche"> Commande <span class="grosNumCMD"> ' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 				//Le contenu ...

@@ -6,11 +6,14 @@ body {
 
 }
 
+
+/******************************/
+/*       
 * {
   box-sizing: border-box;
 }
-/******************************/
-/*       STYLE DE BASE        */
+
+STYLE DE BASE        */
 /******************************/
 
 
@@ -68,7 +71,19 @@ h5 {/*Police Nom de Classe  */
 	margin-bottom: 0px;
 }
 
-p {/*Police Détails Fichier commande et commun  */
+h6 {/*Police Nombre de planche  */
+display: inline-block; 
+	/*line-height: 297px;
+	line-height: 0;
+	*/
+	margin: 0px;
+	font-size: 144px;
+	color: var(--boutonRouge);
+	margin: 0px;
+	padding-bottom: 30px;
+}
+
+p {/*Police DÃ©tails Fichier commande et commun  */
     letter-spacing: 1px;
 
 	font-size: 11px;
@@ -100,15 +115,15 @@ p {/*Police Détails Fichier commande et commun  */
 /* ////////////////////////   BOUTON + ET - ///////////////////// */
 .affichageNBPage {
  /*    
-   right: 20px;
+	right: 20px;
 
 	z-index: 1; 
 	*/
 	position: absolute;
-    top: -5px;
+	top: -5px;
 	text-align: center;
 	  margin: 0 auto;
-  width: 100%;
+	width: 100%;
 	
 }
 
@@ -191,33 +206,35 @@ text-align: right;
 }
 
 .TitrecommandeRecherche {
-
-  padding: 5px 5px 5px 5px;
-  width: 100%;
-  border: none;
-  outline: none;
-    color: var(--FondLigneTabGrisSombre);
+	padding: 5px 5px 5px 5px;
+	width: 100%;
+	border: none;
+	outline: none;
+	color: var(--FondLigneTabGrisSombre);
 
 	text-align: left;
-    letter-spacing: 2px;
+	letter-spacing: 2px;
 	font-size: 18x;
 
 	font-family: "Courier New", Times, serif;
 	border-bottom: 1px solid var(--FondLigneTabGrisSombre); 
 }
 .Titrecommande {
-  content: '\2212';
-  cursor: pointer;
-  /*margin-left: -10px;
-  padding: 10px 10px 10px 10px;*/
-  padding: 5px 5px 5px 5px;
-  width: 100%;
-  border: none;
-  outline: none;
-    color: var(--FondLigneTabGrisSombre);
+	content: '\2212';
+	cursor: pointer;
+	/*margin-left: -10px;
+	padding: 10px 10px 10px 10px;
+
+	border: none;  
+	*/
+	padding: 5px 5px 5px 5px;
+	width: 100%;
+
+	outline: none;
+	color: var(--FondLigneTabGrisSombre);
 
 	text-align: left;
-    letter-spacing: 2px;
+	letter-spacing: 2px;
 	font-size: 18px;
 
 	font-family: "Courier New", Times, serif;
@@ -243,9 +260,10 @@ text-align: right;
 
 .commande {
 	 /*width: auto;97%;*/
-display: block;
-  width: 100%;
+	display: block;
+	width: 100%;
 	margin-top: 10px;
+	margin-bottom: 10px;
 
 	/*position: relative;*/
 	background-color: white;
@@ -280,11 +298,96 @@ display: block;
 	cursor: pointer;
 
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	animation: shake 0.2s;
-	animation-iteration-count: 1;	
+	/*animation: shake 0.2s;
+	animation-iteration-count: 1;	*/
 }
 #myImgPlanche:hover {opacity: 0.7;}
 
+/*#maFacture {
+	cursor: pointer;
+
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	animation: shake 0.2s;
+	animation-iteration-count: 1;	
+}
+*/
+
+.ResumeCMD {
+/*background-color: white;
+
+	width: auto; 
+	display: inline-block;
+
+	text-align: center;
+	vertical-align: middle;
+
+	
+	margin-top: -130px;
+padding-left: 10px;
+padding-right: 10px;	
+	*/
+	
+
+padding: 10px;
+
+	width: auto; 
+	display: inline-block;
+
+	text-align: center;
+	vertical-align: top;
+	/*	margin: 10px;
+
+border: 1px solid var(--FondLigneTabGrisSombre);*/
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
+}
+.maFacture {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  animation-iteration-count: 3;
+	/*  margin-top: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  */
+}
+.maFacture:hover {opacity: 0.7;
+
+
+}
+.nbPanches {
+	display: inline-block; 
+	/*padding-top: -140px;margin-top: 100px;margin: 0px;
+	line-height: 0;
+	*/
+	 
+	line-height: 20px;
+
+	font-size: 144px;
+	color: var(--boutonVert);
+	
+
+	
+vertical-align: middle;
+}
+
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
 
 
 /**/
@@ -346,6 +449,7 @@ width: 100%;
 }
 
 .page_navigation li {
+box-sizing: border-box;
 display: inline-block;	
  background: black;
  border-radius: 50%;
@@ -485,7 +589,7 @@ color: var(--boutonRouge);
 
 /* Style the navigation menu inside the left column */
 #listeRechercheCMD {
-top: 500px;
+top: 70px;
   /*;
   background-color: var(--FondLigneTabGrisClair);
   font-size: 20px;*/
@@ -521,7 +625,7 @@ top: 500px;
 }
 
 #Entete {
-  padding: 27px;  /* Défini la hauteur du Header !!z-index: 1;*/
+  padding: 27px;  /* DÃ©fini la hauteur du Header !!z-index: 1;*/
   text-align: center;
   
   background-color: white;
@@ -561,12 +665,18 @@ top: 500px;
 /*  FIN  BAR DROITE */
 
 /*  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER */
+#MSGChargement {
+
+
+}
 .cs-loader {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 10;
 }
 
 .cs-loader-inner {
@@ -580,7 +690,7 @@ top: 500px;
 }
 
 .cs-loader-inner label {
-  font-size: 20px;
+  font-size: 60px;
   opacity: 0;
   display:inline-block;
 }

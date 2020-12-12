@@ -72,6 +72,16 @@ function RecupSourceDepuisCode(leCode) {
 	return laSource;	
 }
 
+function SuprimerSourceDepuisCode(leCode) {
+	for (var n = 0; n < g_LesSources.length; n++) {
+		if (g_LesSources[n].CodeEcole == leCode){	
+		//alert('g_LesSources[n].CodeEcole ' + g_LesSources[n].CodeEcole);
+            g_LesSources.splice(n, 1);
+			break;            
+		}
+	}	
+}
+
 function TrouverRepSOURCEdansBibliotheque(leCode) {
 	var repSource = '';
 	LireFichierSource();
@@ -231,19 +241,19 @@ function AfficheEditionSOURCE(uneSource) {
 	//alert('uneSourceisNEW : ' + isNEW);
 	var isMAJ = 0; // Rien
 	// DIALOG
-	var dlgEditPOURCE = new Window("dialog"); 
-        //dlgEditPOURCE.frameLocation = [ -4, -4 ];
-        dlgEditPOURCE.graphics.backgroundColor = dlgEditPOURCE.graphics.newBrush (dlgEditPOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-        dlgEditPOURCE.graphics.foregroundColor = dlgEditPOURCE.graphics.newPen(dlgEditPOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+	var dlgEditSOURCE = new Window("dialog"); 
+        //dlgEditSOURCE.frameLocation = [ -4, -4 ];
+        dlgEditSOURCE.graphics.backgroundColor = dlgEditSOURCE.graphics.newBrush (dlgEditSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+        dlgEditSOURCE.graphics.foregroundColor = dlgEditSOURCE.graphics.newPen(dlgEditSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
         
-		dlgEditPOURCE.text = "Edition d'une source PhotoLab"; 
-		dlgEditPOURCE.orientation = "column"; 
-		dlgEditPOURCE.alignChildren = ["left","top"]; 
-		dlgEditPOURCE.spacing = 10; 
-		dlgEditPOURCE.margins = 16; 
+		dlgEditSOURCE.text = "Edition d'une source PhotoLab"; 
+		dlgEditSOURCE.orientation = "column"; 
+		dlgEditSOURCE.alignChildren = ["left","top"]; 
+		dlgEditSOURCE.spacing = 10; 
+		dlgEditSOURCE.margins = 16; 
 
 	// GROUP1
-	var group1 = dlgEditPOURCE.add("group", undefined, {name: "group1"}); 
+	var group1 = dlgEditSOURCE.add("group", undefined, {name: "group1"}); 
 		group1.orientation = "row"; 
 		group1.alignChildren = ["left","center"]; 
 		group1.spacing = 10; 
@@ -255,9 +265,11 @@ function AfficheEditionSOURCE(uneSource) {
 		var editNomProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 
 			editNomProjet.text = decodeURI(uneSource.NomProjet); 		
 			editNomProjet.preferredSize.width = 300; 
+			
+		var btnSuprProjet = group1.add ('button', undefined, 'Suprimer ce Projet', {name: 'btnSuprProjet'});			
 
 	// GROUP2
-	var group2 = dlgEditPOURCE.add("group", undefined, {name: "group2"}); 
+	var group2 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
 		group2.orientation = "row"; 
 		group2.alignChildren = ["left","center"]; 
 		group2.spacing = 10; 
@@ -277,7 +289,7 @@ function AfficheEditionSOURCE(uneSource) {
 			editCodeEcole.preferredSize.width = 120; 
 			
 	// GROUP3
-	var group3 = dlgEditPOURCE.add("group", undefined, {name: "group2"}); 
+	var group3 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
 		group3.orientation = "row"; 
 		group3.alignChildren = ["left","center"]; 
 		group3.spacing = 10; 
@@ -291,12 +303,12 @@ function AfficheEditionSOURCE(uneSource) {
 			editRepScriptPS.text = decodeURI(uneSource.RepScriptPS); 
 			editRepScriptPS.preferredSize.width = 150; 			
 	
-	var staticRepertoire = dlgEditPOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
+	var staticRepertoire = dlgEditSOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
 	//staticRepertoire.graphics.font = ScriptUI.newFont ('', '', 10);
     staticRepertoire.text = decodeURI(uneSource.Repertoire);
     staticRepertoire.preferredSize.width = 500;
 		
-	var btnRepertoire = dlgEditPOURCE.add("button", undefined, undefined, {name: "btnRepertoire"}); 
+	var btnRepertoire = dlgEditSOURCE.add("button", undefined, undefined, {name: "btnRepertoire"}); 
 	btnRepertoire.text = "Sélection du repertoire Source"; 
 	btnRepertoire.helpTip = "Sélection du repertoire contenant les photos Source";
 	
@@ -312,7 +324,7 @@ function AfficheEditionSOURCE(uneSource) {
 		}
 	}
 	
-	var btnArboWeb = dlgEditPOURCE.add("button", undefined, undefined, {name: "btnArboWeb"}); 
+	var btnArboWeb = dlgEditSOURCE.add("button", undefined, undefined, {name: "btnArboWeb"}); 
 	btnArboWeb.text = "Création des fichiers WEB";
 	btnArboWeb.helpTip = "Création du repertoire structuré pour transférer sur l'interface Lumys"; 
 	
@@ -320,13 +332,13 @@ function AfficheEditionSOURCE(uneSource) {
 		if (uneSource.isValide()){
 			if(AfficheClassesAvantArboWeb(uneSource)){
 				isMAJ = 3; // MAJ Source + Arrbo WEB
-				dlgEditPOURCE.close();
+				dlgEditSOURCE.close();
 			}								
 		}else{alert('Tout les champs doivent être remplis !');}	
 	}	
 
 	// GROUP4
-	var group4 = dlgEditPOURCE.add("group", undefined, {name: "group4"}); 
+	var group4 = dlgEditSOURCE.add("group", undefined, {name: "group4"}); 
 		group4.orientation = "row"; 
 		group4.alignChildren = ["right","center"]; 
 		group4.spacing = 10; 
@@ -337,19 +349,13 @@ function AfficheEditionSOURCE(uneSource) {
 			btnAnnuler.text = "Annuler"; 
 			
 		btnAnnuler.onClick = function () {	
-			dlgEditPOURCE.close();
+			dlgEditSOURCE.close();
 		}	
 
 		var btnOK = group4.add("button", undefined, undefined, {name: "btnOK"}); 
 			btnOK.text = "OK"; 
 		
 		btnOK.onClick = function () {	
-			/*uneSource.CodeEcole = encodeURI(editCodeEcole.text);
-			uneSource.NomProjet = encodeURI(editNomProjet.text);
-			uneSource.Annee = dropdownAnnee.selection.text;
-			uneSource.RepScriptPS = encodeURI(editRepScriptPS.text);
-			uneSource.Repertoire = encodeURI(staticRepertoire.text);*/
-			
 			uneSource.CodeEcole = editCodeEcole.text;
 			uneSource.NomProjet = editNomProjet.text;
 			uneSource.Annee = dropdownAnnee.selection.text;
@@ -358,11 +364,15 @@ function AfficheEditionSOURCE(uneSource) {
 			if (uneSource.isValide()){
 				//MAJFichierSource();
 				isMAJ = 1; // MAJ Source
-				dlgEditPOURCE.close();								
+				dlgEditSOURCE.close();								
 			}else{alert('Tout les champs doivent être remplis !');}
 		}		
-
-	dlgEditPOURCE.show();
+		btnSuprProjet.onClick = function () {	
+			SuprimerSourceDepuisCode(uneSource.CodeEcole);
+			isMAJ = 1; // MAJ Source
+			dlgEditSOURCE.close();	
+		}	
+	dlgEditSOURCE.show();
 	return isMAJ;
 }
 

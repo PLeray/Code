@@ -5,8 +5,8 @@ var rech = document.getElementById("zoneRechercheCMD");
 rech.style.display = 'none';
 initPagination();
 
-function chargement(){
-   document.getElementById('chargement').style.display='none';
+function EffacerChargement(){
+   document.getElementById('MSGChargement').style.display='none';
    document.getElementById('site').style.visibility='visible';
 }
 
@@ -22,7 +22,7 @@ function initPagination() {
 				wrapAround: false,
 				navLabelPrev: '<',
 				navLabelNext: '>',				
-				pageLinksToDisplay: 50,
+				pageLinksToDisplay: 20,
 				itemsPerPage: 1,
 				startPage: 0
 			});
@@ -51,7 +51,7 @@ function AfficheRechercheCMD(isAffiche) {
 window.onload = function (){ 
 //alert('Onload :!!');
 	InitCommandes();
-	chargement();
+	EffacerChargement();
 };
 
 /*
