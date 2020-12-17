@@ -216,19 +216,19 @@ class CCommande {
 				//Le contenu ...
 				$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
 				
-				for($i = 0; $i < count($this->colPDT); $i++){
-					$resultat .= $this->colPDT[$i]->Affiche();
-					$nbPlanche = $nbPlanche + count($this->colPDT[$i]->colPlanche);
-				}
-				// Afffichage Facture nb de planche
-				$resultat .= '<div class="ResumeCMD">'; //Debut du produit
-				$resultat .= '<h5>'.'La commande comprend : '.'</h5><br>'  ;
-				$resultat .= '<span class="nbPanches">'. $nbPlanche .'<br>'  ;
-				$resultat .= '<h4>'. 'Planches' .'</h4></span>';
-				$resultat .= '<span class="nbPanches">+</span>'  ;
-				$resultat .= '<span class="nbPanches"><img class="maFacture" src="img/Bonco.png"  title="Bon de commande / Facture"></span>';	
-				//$resultat .= '<p>'. 'Facture' .'</p>';
-				$resultat .= '</div>';				
+					for($i = 0; $i < count($this->colPDT); $i++){
+						$resultat .= $this->colPDT[$i]->Affiche();
+						$nbPlanche = $nbPlanche + count($this->colPDT[$i]->colPlanche);
+					}
+					// Afffichage Facture nb de planche
+					$resultat .= '<div class="ResumeCMD">'; //Debut du produit
+						$resultat .= '<h5>'.'La commande comprend : '.'</h5><br>'  ;
+						$resultat .= '<span class="nbPanches">'. $nbPlanche .'<br>'  ;
+						$resultat .= '<h6>'. 'Planches' .'</h6></span>';
+						$resultat .= '<span class="nbPanches">+</span>'  ;
+						$resultat .= '<span class="nbPanches"><img class="maFacture" src="img/Bonco.png"  title="Bon de commande / Facture"></span>';	
+					//$resultat .= '<p>'. 'Facture' .'</p>';
+					$resultat .= '</div>';				
 				
 				$resultat .= '</div>';
 			$resultat .= '</div>';

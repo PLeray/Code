@@ -72,15 +72,17 @@ h5 {/*Police Nom de Classe  */
 }
 
 h6 {/*Police Nombre de planche  */
-display: inline-block; 
-	/*line-height: 297px;
-	line-height: 0;
-	*/
-	margin: 0px;
-	font-size: 144px;
-	color: var(--boutonRouge);
-	margin: 0px;
-	padding-bottom: 30px;
+	display: inline-block; 
+    color: var(--boutonVert);
+    /*letter-spacing: 2px;*/
+	padding-top: 0px;
+	margin-bottom: -30px;
+	font-weight: bold;
+	font-size: 15px;
+	font-family: "Courier New", Times, serif;
+	text-align: center;
+	
+	/*max-width: 180px;*/
 }
 
 p {/*Police Détails Fichier commande et commun  */
@@ -224,9 +226,9 @@ text-align: right;
 	cursor: pointer;
 	/*margin-left: -10px;
 	padding: 10px 10px 10px 10px;
-
+*/
 	border: none;  
-	*/
+	
 	padding: 5px 5px 5px 5px;
 	width: 100%;
 
@@ -238,17 +240,8 @@ text-align: right;
 	font-size: 18px;
 
 	font-family: "Courier New", Times, serif;
-	border-bottom: 1px solid var(--FondLigneTabGrisSombre);;  
-}
-.grosNumCMD {
-  font-weight: bold;
-  color: black;
-  font-size: 35x;
-}
-.active, .Titrecommande:hover {
-  /*background-color: var(--FondLigneTabGrisClair);*/
-  color: var(--boutonRouge);
-  font-weight: bold;
+	 /*  */
+	 border-bottom: 1px solid var(--FondLigneTabGrisSombre);
 }
 
 .Titrecommande:after {
@@ -256,6 +249,17 @@ text-align: right;
   content: '-/+';
   
   float: right;
+}
+
+.grosNumCMD {
+  font-weight: bold;
+  color: black;
+  font-size: 30x;
+}
+.active, .Titrecommande:hover {
+  /*background-color: var(--FondLigneTabGrisClair);*/
+  color: var(--boutonRouge);
+  font-weight: bold;
 }
 
 .commande {
@@ -313,20 +317,7 @@ text-align: right;
 */
 
 .ResumeCMD {
-/*background-color: white;
-
-	width: auto; 
-	display: inline-block;
-
-	text-align: center;
-	vertical-align: middle;
-
-	
-	margin-top: -130px;
-padding-left: 10px;
-padding-right: 10px;	
-	*/
-	
+margin: 10px 10px 10px 10px;
 
 padding: 10px;
 
@@ -341,14 +332,15 @@ border: 1px solid var(--FondLigneTabGrisSombre);*/
 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
 }
 .maFacture {
-  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
   animation-iteration-count: 3;
-	/*  margin-top: 20px;
+  /*	  margin-top: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  */
+ 
+ */
 }
 .maFacture:hover {opacity: 0.7;
 
@@ -439,6 +431,9 @@ width: 100%;
   position: sticky;
   position: -webkit-sticky;
   top: 0;
+  
+  z-index: 1;
+  
 	
 }
 
