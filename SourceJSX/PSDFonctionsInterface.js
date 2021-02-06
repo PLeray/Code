@@ -13,7 +13,7 @@ function InitCommande() {
 	//txtFichier.text = leFichierCMD;
 	
 	//PHOTOLAB.text = g_NomVersion + 
-	fichierEnCours.text = '         traitement de : ' + g_NomFichierEnCours;
+	fichierEnCours.text = 'Traitement de : ' + g_NomFichierEnCours;
 	
 	g_SelectFichierLab = 0;
 	g_BilanGeneration.length = 0; // = [];
@@ -24,7 +24,28 @@ function InitCommande() {
 
 function Auto() { 
 	Raffraichir(); 
-	
+	//alert('AUTO');
+	var nbFichierATraiter = ChercherFichierLab();
+	g_IsPhotoLabON = true;
+	g_IsTravail = true;
+	InitCommande();
+	while (g_IsPhotoLabON && g_IsTravail){ 
+		// TANT QU'IL Y A DES FICHIERS '0' > initialiser tableau de fichier a traiter
+		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
+			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
+			alert('AUTO : ' + g_TabListeCompilationFichier[i]  + ' n° ' + i);
+
+			GenererLeFichierNOM(); //g_NomFichierEnCours
+
+		} 		
+		nbFichierATraiter = ChercherFichierLab('SansLesErreurs');
+		g_IsTravail = (nbFichierATraiter > 0);						
+	} 	
+}
+
+function AutoOLD() { 
+	Raffraichir(); 
+	//alert('AUTO');
 	var nbFichierATraiter = ChercherFichierLab();
 	g_IsPhotoLabON = true;
 	g_IsTravail = true;
@@ -33,7 +54,9 @@ function Auto() {
 		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
 			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
 			InitCommande();
-			GenererLeFichierNOM(); //du tableau
+			fichierEnCours.text = 'Traitement de : ' + g_NomFichierEnCours;
+			GenererLeFichierNOM(); //g_NomFichierEnCours
+
 		} 		
 		nbFichierATraiter = ChercherFichierLab('SansLesErreurs');
 		g_IsTravail = (nbFichierATraiter > 0);						
@@ -48,11 +71,13 @@ function GenererLeFichierNOM() {
 	Raffraichir();
 
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
-		InitTableauFichier();
+	
+		InitInfoFichier();
 		if (g_IsPlancheSiteWEB){
 			GenererFichiersWEB();
 		}
 		else {
+		
 			GenererFichiersLABO();
 		}	
 	}
@@ -63,6 +88,26 @@ function GenererLeFichierNOM() {
 	Select_Generer.enabled = true;	
 	//buttonConfig.enabled = true;
 }
+
+function GestionBoutonGenerer() { 
+	
+	g_IsGenerationEnPause = !g_IsGenerationEnPause;	
+	SetBoutonGenerer();
+	if (!g_IsGenerationEnCours){ //  On n'est pas en cours de generation !!!
+		GenererLeFichierNOM();
+		g_IsGenerationEnPause = false;	
+	}		
+}
+
+function SetBoutonGenerer(){
+	/*if (!g_IsTravail){
+		Select_Generer.image = (g_IsGenerationEnPause?ScriptUI.newImage (imgGenerer.a, imgGenerer.b, imgGenerer.c, imgGenerer.d): ScriptUI.newImage (imgPause.a, imgPause.b, imgPause.c, imgPause.d));		
+	}else{
+		Select_Generer.image = (g_IsGenerationEnPause?ScriptUI.newImage (imgGenerer.a, imgGenerer.b, imgGenerer.c, imgGenerer.d): ScriptUI.newImage (imgPause.a, imgPause.b, imgPause.c, imgPause.d));					
+	}*/
+	Select_Generer.image = (g_IsGenerationEnPause?ScriptUI.newImage (imgGenerer.a, imgGenerer.b, imgGenerer.c, imgGenerer.d): ScriptUI.newImage (imgPause.a, imgPause.b, imgPause.c, imgPause.d));		
+}
+
 
 function OuvrirSelectFichierLab0(fileName) {
 	var valRetour = false;
@@ -220,7 +265,7 @@ function MAJinfoEcole(uneEcole) {
 
 		if (isRepertoireExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
-				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
+				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
 			} else {					
 				//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
 				if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
@@ -286,7 +331,7 @@ function MAJinfoEcoleOLD(uneEcole) {
 		//alert('MAJinfoEcole g_RepSOURCE !!!!!!!!!!!!!!!!!!! : ' + g_RepSOURCE);
 		if (isRepertoireExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
-				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
+				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
 			} else {					
 				//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
 				if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
@@ -324,14 +369,7 @@ function MAJinfoEcoleOLD(uneEcole) {
 	return valRetour;
 }
 */
-function GestionBoutonGenerer() { 
-	g_IsGenerationEnPause = !g_IsGenerationEnPause;	
-	SetBoutonGenerer();
-	if (!g_IsGenerationEnCours){ //  On n'est pas en cours de generation !!!
-		GenererLeFichierNOM();
-		g_IsGenerationEnPause = false;	
-	}		
-}
+
 /*
 function GenererFichiers() { 
 	//alert("GenererFichiers");
@@ -416,7 +454,6 @@ function GenererFichiersLABO() {
 			BilanFinTraitement(chronoDebut, nbErreur);		
 			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),(nbErreur?1:2));
 		}
-
 	}
 	catch(err) {
 		MsgERREUR("ERREUR GenererFichiersLABO()", "Fichier en cours : " + g_CommandePDTEncours + "\n" + ErreurInfoMSG(err));
@@ -552,13 +589,11 @@ function GenererFichiersWEB() {
 	}
 }
 
-function SetBoutonGenerer(){
-	Select_Generer.image = (g_IsGenerationEnPause?ScriptUI.newImage (imgGenerer.a, imgGenerer.b, imgGenerer.c, imgGenerer.d): ScriptUI.newImage (imgPause.a, imgPause.b, imgPause.c, imgPause.d));				
-}
 
-function InitTableauFichier() { 
+function InitInfoFichier() { 
 	try {
 		txtTraitement.text = "0 / " + String (g_CommandeLabo.NbPlanchesACreer());
+		fichierEnCours.text = 'Traitement de : ' + g_NomFichierEnCours;
 		/*while (UIListeMessage.items.length > 0){
 			UIListeMessage.remove(0);
 		}*/

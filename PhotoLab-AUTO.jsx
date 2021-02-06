@@ -81,6 +81,8 @@ var g_IsGenerationEnCours = false;
 var g_IsGenerationEnPause = true;
 UIindex = 4; //Pour un, deux, trois, GO!
 
+app.preferences.height = 100;
+
 LoadConfig();
 
 RecupNomOrdi();
@@ -153,15 +155,42 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	Zone13Option.orientation = "column"; 
 
 		// Zone131Action 
+
 		var Zone131Action= Zone13Option.add ("group");
 		Zone131Action.orientation = "row";
-
+		
 		var buttonScanCMD = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
 		buttonScanCMD.alignment = "left";
 		buttonScanCMD.helpTip = "Scanner et traiter le repertoire des commandes ..."; 
 		buttonScanCMD.onClick = function () {	
 			Auto(); 
-		}
+		}/**/
+		
+//var names = ["Annabel", "Bertie", "Caroline", "Debbie", "Erica"];
+
+ChercherFichierLab();
+
+var group = Zone131Action.add ("group {alignChildren: 'left', orientation: ’stack'}");
+if (File.fs !== "Windows") {
+	var list = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
+	var e = group.add ("edittext");
+} else {
+	var e = group.add ("edittext");
+	var list = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
+}
+g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 
+e.text = g_NomFichierEnCours;
+e.active = true;
+list.preferredSize.width = 240;
+e.preferredSize.width = 220; e.preferredSize.height = 20;
+
+
+list.onChange = function () {
+g_NomFichierEnCours = list.selection.text;
+e.text = g_NomFichierEnCours;
+e.active = true;
+}		
+		
 		/*  §§§§§§§§§§§§§§§§§§§§ SUPRIMER SOURCE DERRIERE
 		var buttonSourceWeb = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Créer arborecence web");
 		buttonSourceWeb.alignment = "left";
@@ -193,10 +222,12 @@ var Zone1Entete = PHOTOLAB.add ("group");
 
 	var Select_Generer = Zone14Boutton.add ("iconbutton", undefined, ScriptUI.newImage (imgGenerer.a, imgGenerer.b, imgGenerer.c, imgGenerer.d), {style: "toolbutton"});  // Ne fonctionne pas
 
-	Select_Generer.enabled = false;
+	Select_Generer.enabled = true;
 	Select_Generer.onClick = function () {
-		//GenererFichiersLabo();
-		 GestionBoutonGenerer();
+		g_IsPhotoLabON = true;
+			GenererLeFichierNOM(); //g_NomFichierEnCours
+		//Auto();
+		 //GestionBoutonGenerer();
 	}
 
 

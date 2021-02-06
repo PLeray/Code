@@ -119,7 +119,6 @@ function objSourceCSV(uneLigne) {
 		//return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(encodeURI(this.Repertoire)).exists);
 		//alert("Folder(this.Repertoire).exists  : " + Folder(this.Repertoire).exists);	
 	};
-
 }
 
 function AfficheListeSOURCE() {
@@ -252,68 +251,24 @@ function AfficheEditionSOURCE(uneSource) {
 		dlgEditSOURCE.spacing = 10; 
 		dlgEditSOURCE.margins = 16; 
 
-	// GROUP1
-	var group1 = dlgEditSOURCE.add("group", undefined, {name: "group1"}); 
-		group1.orientation = "row"; 
-		group1.alignChildren = ["left","center"]; 
-		group1.spacing = 10; 
-		group1.margins = 0; 
 
-		var statictext1 = group1.add("statictext", undefined, undefined, {name: "statictext1"}); 
-			statictext1.text = "Nom Projet :"; 
-
-		var editNomProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 
-			editNomProjet.text = decodeURI(uneSource.NomProjet); 		
-			editNomProjet.preferredSize.width = 300; 
-			
-		var btnSuprProjet = group1.add ('button', undefined, 'Suprimer ce Projet', {name: 'btnSuprProjet'});			
-
-	// GROUP2
-	var group2 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
-		group2.orientation = "row"; 
-		group2.alignChildren = ["left","center"]; 
-		group2.spacing = 10; 
-		group2.margins = 0; 
-
-		var dropdownAnnee_array = ["2019-2020", "2020-2021","2021-2022","2022-2023", "2023-2024","2024-2025"]; 
-		var dropdownAnnee = group2.add("dropdownlist", undefined, undefined, {name: "dropdownAnnee", items: dropdownAnnee_array}); 
-		dropdownAnnee.selection = 1; 
-		for (var i = 0; i < dropdownAnnee.items.length; i++) {if (dropdownAnnee.items[i].text == uneSource.Annee ){dropdownAnnee.selection = i;}}
-
-		var statictext2 = group2.add("statictext", undefined, undefined, {name: "statictext2"}); 
-			statictext2.text = "Code Projet :"; 
-
-		var editCodeEcole = group2.add('edittext {properties: {name: "editCodeEcole"}}'); 
-			//editCodeEcole.text = leCode; 
-			editCodeEcole.text = decodeURI(uneSource.CodeEcole); 
-			editCodeEcole.preferredSize.width = 120; 
-			
-	// GROUP3
-	var group3 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
-		group3.orientation = "row"; 
-		group3.alignChildren = ["left","center"]; 
-		group3.spacing = 10; 
-		group3.margins = 0; 
+	// group5 '1- Dossier des SOURCES du projet :'	
+	var group5 = dlgEditSOURCE.add("group", undefined, {name: "group5"}); 
+		group5.orientation = "row"; 
+		group5.alignChildren = ["left","center"]; 
+		group5.spacing = 10; 
+		group5.margins = 0; 
 		
-		var statictext3 = group3.add("statictext", undefined, undefined, {name: "statictext3"}); 
-			statictext3.text = "Nom du dossier de Sripts (Actions) dans Photoshop à utiliser :"; 
 
-		var editRepScriptPS = group3.add('edittext {properties: {name: "editRepScriptPS"}}'); 
-			//editCodeEcole.text = leCode; 
-			editRepScriptPS.text = decodeURI(uneSource.RepScriptPS); 
-			editRepScriptPS.preferredSize.width = 150; 			
-	
-	var staticRepertoire = dlgEditSOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
-	//staticRepertoire.graphics.font = ScriptUI.newFont ('', '', 10);
-    staticRepertoire.text = decodeURI(uneSource.Repertoire);
-    staticRepertoire.preferredSize.width = 500;
-		
-	var btnRepertoire = dlgEditSOURCE.add("button", undefined, undefined, {name: "btnRepertoire"}); 
-	btnRepertoire.text = "Sélection du repertoire Source"; 
-	btnRepertoire.helpTip = "Sélection du repertoire contenant les photos Source";
+		var statictext3 = group5.add("statictext", undefined, '1- Dossier des SOURCES du projet :', {name: "statictext3"}); 			
+
+	var btnRepertoire = group5.add("button", undefined, undefined, {name: "btnRepertoire"}); 
+	btnRepertoire.text = "Sélectionner dossier"; 
+	btnRepertoire.helpTip = "Sélection du dossier contenant les photos 'Source'";
 	
 	btnRepertoire.onClick = function () {	
-		var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text);
+		var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text, g_Rep_PHOTOLAB + "/SOURCES/");	
+		//var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text);
 		//alert('leRepSOURCE : ' + leRepSOURCE);
 		if(leRepSOURCE){
 			var leChemin = leRepSOURCE.path + '/' + leRepSOURCE.name;
@@ -321,8 +276,103 @@ function AfficheEditionSOURCE(uneSource) {
 			//alert('leChemin : ' + leChemin);
 			uneSource.Repertoire = leChemin;
 			staticRepertoire.text = decodeURI(uneSource.Repertoire);
+			editNomProjet.text = decodeURI(leRepSOURCE.name);
 		}
 	}
+	var staticRepertoire = dlgEditSOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
+	//staticRepertoire.graphics.font = ScriptUI.newFont ('', '', 10);
+    staticRepertoire.text = decodeURI(uneSource.Repertoire);
+    staticRepertoire.preferredSize.width = 600;		
+	
+	staticRepertoire.graphics.foregroundColor = staticRepertoire.graphics.newPen (staticRepertoire.graphics.PenType.SOLID_COLOR, [0, 1,
+	0], 1);
+	staticRepertoire.graphics.backgroundColor = staticRepertoire.graphics.newBrush (staticRepertoire.graphics.BrushType.SOLID_COLOR,
+	[0.35, 0.35, 0.35]);
+	
+	
+	// GROUP1 '2- Nom Projet :'
+	var group1 = dlgEditSOURCE.add("group", undefined, {name: "group1"}); 
+		group1.orientation = "row"; 
+		group1.alignChildren = ["left","center"]; 
+		group1.spacing = 10; 
+		group1.margins = 0; 
+
+		var statictext1 = group1.add("statictext", undefined, '2- Nom projet :', {name: "statictext1"}); 
+
+		var editNomProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 
+			editNomProjet.text = decodeURI(uneSource.NomProjet); 		
+			editNomProjet.preferredSize.width = 500; 
+			
+			
+
+	// GROUP2 3- Années scolaire :
+	var group2 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
+		group2.orientation = "row"; 
+		group2.alignChildren = ["left","center"]; 
+		group2.spacing = 10; 
+		group2.margins = 0; 
+		
+		var staticAnnee = group2.add("statictext", undefined, '3- Années scolaire :', {name: "staticAnnee"}); 
+
+		var dropdownAnnee_array = ["2019-2020", "2020-2021","2021-2022","2022-2023", "2023-2024","2024-2025"]; 
+		var dropdownAnnee = group2.add("dropdownlist", undefined, undefined, {name: "dropdownAnnee", items: dropdownAnnee_array}); 
+		dropdownAnnee.selection = 1; // Annee par defaut 2020-2021
+		for (var i = 0; i < dropdownAnnee.items.length; i++) {if (dropdownAnnee.items[i].text == uneSource.Annee ){dropdownAnnee.selection = i;}}
+		
+		
+		
+	// GROUP3 4- Code Ecole :
+	var group3 = dlgEditSOURCE.add("group", undefined, {name: "group3"}); 
+		group3.orientation = "row"; 
+		group3.alignChildren = ["left","center"]; 
+		group3.spacing = 10; 
+		group3.margins = 0; 		
+
+		var staticCodeEcole = group3.add("statictext", undefined, '4- Code école :', {name: "staticCodeEcole"}); 
+			//staticCodeEcole.text = "Code Projet :"; 
+
+		var editCodeEcole = group3.add('edittext {properties: {name: "editCodeEcole"}}'); 
+			//editCodeEcole.text = leCode; 
+			editCodeEcole.text = decodeURI(uneSource.CodeEcole); 
+			editCodeEcole.preferredSize.width = 120; 
+			
+	// group4 5- Dossier de Sripts / Actions :'
+	var group4 = dlgEditSOURCE.add("group", undefined, {name: "group4"}); 
+		group4.orientation = "row"; 
+		group4.alignChildren = ["left","center"]; 
+		group4.spacing = 10; 
+		group4.margins = 0; 
+		
+		var statictext3 = group4.add("statictext", undefined, '5- Dossier de Sripts / Actions :', {name: "statictext3"}); 
+			//statictext3.text = "Nom du dossier de Sripts (Actions) dans Photoshop à utiliser :"; 
+
+		/*
+		var editRepScriptPS = group4.add('edittext {properties: {name: "editRepScriptPS"}}'); 
+			//editCodeEcole.text = leCode; 
+			editRepScriptPS.text = decodeURI(uneSource.RepScriptPS); 
+			editRepScriptPS.preferredSize.width = 150; 		
+		*/
+		GlobalVariables();
+		var dropdownRepScript_array = [];
+		
+		
+		var dropdownRepScriptPS = group4.add("dropdownlist", undefined, undefined, {name: "dropdownRepScriptPS", items: dropdownRepScript_array}); 
+		//dropdownRepScriptPS.selection = 1; 
+
+		dropdownRepScript_array = GetActionSetInfo();
+
+		if ( dropdownRepScript_array.length > 0 ) {
+			for (var i = 0; i < dropdownRepScript_array.length; i++) {
+				dropdownRepScriptPS.add( "item", dropdownRepScript_array[i].name );
+				//dropdownRepScriptPS.items[i].selected = true;
+				if (dropdownRepScriptPS.items[i].text == uneSource.RepScriptPS ){dropdownRepScriptPS.selection = i;}
+			}        
+		} else {
+			dropdownRepScriptPS.enabled = false;
+		}
+		
+		var statictext31 = group4.add("statictext", undefined, ' (à utiliser pour ce projet photo.)', {name: "statictext3"});
+
 	
 	var btnArboWeb = dlgEditSOURCE.add("button", undefined, undefined, {name: "btnArboWeb"}); 
 	btnArboWeb.text = "Création des fichiers WEB";
@@ -345,21 +395,29 @@ function AfficheEditionSOURCE(uneSource) {
 		group4.margins = [0,20,0,0]; 
 		group4.alignment = ["right","top"]; 
 
-		var btnAnnuler = group4.add("button", undefined, undefined, {name: "btnAnnuler"}); 
-			btnAnnuler.text = "Annuler"; 
+		var btnAnnuler = group4.add("button", undefined, 'Annuler', {name: "btnAnnuler"}); 
+			//btnAnnuler.text = "Annuler"; 
 			
 		btnAnnuler.onClick = function () {	
 			dlgEditSOURCE.close();
 		}	
-
-		var btnOK = group4.add("button", undefined, undefined, {name: "btnOK"}); 
-			btnOK.text = "OK"; 
+		
+		var btnSuprProjet = group4.add ('button', undefined, 'Suprimer ce Projet', {name: 'btnSuprProjet'});		
+		btnSuprProjet.onClick = function () {	
+			SuprimerSourceDepuisCode(uneSource.CodeEcole);
+			isMAJ = 1; // MAJ Source
+			dlgEditSOURCE.close();	
+		}	
+		
+		var btnOK = group4.add("button", undefined, 'Enregistrer le Projet', {name: "btnOK"}); 
+			//btnOK.text = "Enregistrer le Projet"; 
 		
 		btnOK.onClick = function () {	
 			uneSource.CodeEcole = editCodeEcole.text;
 			uneSource.NomProjet = editNomProjet.text;
 			uneSource.Annee = dropdownAnnee.selection.text;
-			uneSource.RepScriptPS = editRepScriptPS.text;
+			//uneSource.RepScriptPS = editRepScriptPS.text;
+			uneSource.RepScriptPS = dropdownRepScriptPS.selection.text;
 			uneSource.Repertoire = staticRepertoire.text;			
 			if (uneSource.isValide()){
 				//MAJFichierSource();
@@ -367,11 +425,7 @@ function AfficheEditionSOURCE(uneSource) {
 				dlgEditSOURCE.close();								
 			}else{alert('Tout les champs doivent être remplis !');}
 		}		
-		btnSuprProjet.onClick = function () {	
-			SuprimerSourceDepuisCode(uneSource.CodeEcole);
-			isMAJ = 1; // MAJ Source
-			dlgEditSOURCE.close();	
-		}	
+
 	dlgEditSOURCE.show();
 	return isMAJ;
 }
@@ -495,7 +549,7 @@ function AfficheClassesAvantArboWeb(uneSource){
 		
 		
 	buttonGenerererArboWEB.onClick = function () {	
-			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'SOURCESWEB/LUMYS-' +  uneSource.NomProjet;
+			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
 			valRetour = true;
 			var typeConfig = '';
 			if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
@@ -545,26 +599,98 @@ function AfficheClassesAvantArboWeb(uneSource){
 	}
 }
 
-/*
-	//var chaine = "À côté d'un verre vide, il y a toujours un mec plein.";
-	//alert( chaine.sansAccent() );
-String.prototype.sansAccent = function(){
-    var accent = [
-        /[\300-\306]/g, /[\340-\346]/g, // A, a
-        /[\310-\313]/g, /[\350-\353]/g, // E, e
-        /[\314-\317]/g, /[\354-\357]/g, // I, i
-        /[\322-\330]/g, /[\362-\370]/g, // O, o
-        /[\331-\334]/g, /[\371-\374]/g, // U, u
-        /[\321]/g, /[\361]/g, // N, n
-        /[\307]/g, /[\347]/g, // C, c
-    ];
-    var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
-     
-    var str = this;
-    for(var i = 0; i < accent.length; i++){
-        str = str.replace(accent[i], noaccent[i]);
-    }
-     
-    return str;
+
+
+/////////////////////////////////////////////////////////////////////
+// Function: GlobalVariables
+// Usage: global action items that are reused
+// Input: <none>
+// Return: <none>
+/////////////////////////////////////////////////////////////////////
+function GlobalVariables() {
+    gClassActionSet = charIDToTypeID( 'ASet' );
+    gClassAction = charIDToTypeID( 'Actn' );
+    gKeyName = charIDToTypeID( 'Nm  ' );
+    gKeyNumberOfChildren = charIDToTypeID( 'NmbC' );
 }
-*/
+/////////////////////////////////////////////////////////////////////
+// Function: GetActionSetInfo
+// Usage: walk all the items in the action palette and record the action set
+//        names and all the action children
+// Input: <none>
+// Return: the array of all the ActionData
+// Note: This will throw an error during a normal execution. There is a bug
+// in Photoshop that makes it impossible to get an acurate count of the number
+// of action sets.
+/////////////////////////////////////////////////////////////////////
+function GetActionSetInfo() {
+    var actionSetInfo = new Array();
+    var setCounter = 1;
+      while ( true ) {
+        var ref = new ActionReference();
+        ref.putIndex( gClassActionSet, setCounter );
+        var desc = undefined;
+        try { desc = executeActionGet( ref ); }
+        catch( e ) { break; }
+        var actionData = new ActionData();
+        if ( desc.hasKey( gKeyName ) ) {
+            actionData.name = desc.getString( gKeyName );
+        }
+        var numberChildren = 0;
+        if ( desc.hasKey( gKeyNumberOfChildren ) ) {
+            numberChildren = desc.getInteger( gKeyNumberOfChildren );
+        }
+        if ( numberChildren ) {
+            actionData.children = GetActionInfo( setCounter, numberChildren );
+            actionSetInfo.push( actionData );
+        }
+        setCounter++;
+    }
+    return actionSetInfo;
+}
+/////////////////////////////////////////////////////////////////////
+// Function: GetActionInfo
+// Usage: used when walking through all the actions in the action set
+// Input: action set index, number of actions in this action set
+// Return: true or false, true if file or folder is to be displayed
+/////////////////////////////////////////////////////////////////////
+function GetActionInfo( setIndex, numChildren ) {
+    var actionInfo = new Array();
+    for ( var i = 1; i <= numChildren; i++ ) {
+        var ref = new ActionReference();
+        ref.putIndex( gClassAction, i );
+        ref.putIndex( gClassActionSet, setIndex );
+        var desc = undefined;
+        desc = executeActionGet( ref );
+        var actionData = new ActionData();
+        if ( desc.hasKey( gKeyName ) ) {
+            actionData.name = desc.getString( gKeyName );
+        }
+        var numberChildren = 0;
+        if ( desc.hasKey( gKeyNumberOfChildren ) ) {
+            numberChildren = desc.getInteger( gKeyNumberOfChildren );
+        }
+        actionInfo.push( actionData );
+    }
+    return actionInfo;
+}
+/////////////////////////////////////////////////////////////////////
+// Function: ActionData
+// Usage: this could be an action set or an action
+// Input: <none>
+// Return: a new Object of ActionData
+/////////////////////////////////////////////////////////////////////
+function ActionData() {
+    this.name = "";
+    this.children = undefined;
+    this.toString = function () {
+        var strTemp = this.name;
+        if ( undefined != this.children ) {
+            for ( var i = 0; i < this.children.length; i++ ) {
+                strTemp += " " + this.children[i].toString();
+            }
+        }
+        return strTemp;
+    }
+}
+//////////
