@@ -99,17 +99,12 @@
 
 	  <div id="main">
 		<div id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>		
-			<div id="myRecommandes" class="infoRecommandes">
-				Mes recommandes<br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a> | Enregistrer
-			</div>
-
-			<p> <STRONG>Recherche de commandes par critère</STRONG></p>
-			<p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...</p>
-			<p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
-			<p>> tapez juste 'P0006'</p>
-			
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <p> <STRONG>Recherche de commandes par critère</STRONG></p>
+		  <p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...</p>
+		  <p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
+		  <p>> tapez juste 'P0006'</p>
+		  
 
 		<h3>il y a <?php echo count($monGroupeCmdes->tabCMDLabo);?> Commandes</h3>
 			<input type="text" id="zoneRecherche" onkeyup="filterFunction()" placeholder="Rechercher .." title="Taper le début d'un critère...">  
@@ -143,21 +138,14 @@
  
 </div>
 
-		<div class="Recommandes">
-		  <p class="mention">	RecommandesRecommandesRecommandesRecommandesRecommandesRecommandesRecommandes </p>
-		</div>
+<div class="Recommandes">
+  <p class="mention">	RecommandesRecommandesRecommandesRecommandesRecommandesRecommandesRecommandes </p>
+</div>
 
 
 <script type="text/javascript" src="js/CMD-ViewNEW.js"></script>
 <!-- <script src="js/purePajinate.js"></script>
 -->	
 <script src="js/purePajinate.min.js"></script>
-
-<script>
-
-AfficheRechercheCMD(true);
-initPagination();
-</script>
-
 </body>
 </html>

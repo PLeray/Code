@@ -1,6 +1,5 @@
 <?php
-
-class CINFOfichierLab {
+class CINFOfichierArbo {
 	var $Fichier;	
 	var $FichierERREUR;	
 	var $EtatFichier;  // 0, 1 , 2 , 3
@@ -9,15 +8,19 @@ class CINFOfichierLab {
 	var $Compilateur;
 	//var $isOuvrable;
     var $NbPlanches = 0;
+    var $NbCommandes = 0;
     var $NomEcole;
     var $DateTirage;
 
     function __construct($myfileName){ // Le chemin complet !
+	
 		$tabFICHIERLabo = LireFichierLab($myfileName);
 		$this->Fichier = basename($myfileName);
-		$this->EtatFichier = substr(strrchr($this->Fichier, '.'),4);
+		$this->EtatFichier = substr($this->Fichier, -1,1);
 		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.Erreur';
-		$this->AffichageCMD = substr($this->Fichier, 11, -5);
+		$this->AffichageNomCMD = substr($this->Fichier, 16, -5);
+		
+		$this->DateTirage = substr($this->Fichier, 5, 10);
 
 		for($i = 0; $i < count($tabFICHIERLabo); $i++){
 			$identifiant = substr($tabFICHIERLabo[$i],0,1);
@@ -42,7 +45,93 @@ class CINFOfichierLab {
 					$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
 					$this->DateTirage = $morceau[0];
 					$this->NomEcole = $morceau[1];			
-				}	
+				}
+				if ($identifiant == '#')  {
+					$this->NbCommandes = $this->NbCommandes + 1 ;		
+				}				
+			}		
+		}
+	}
+    function RepTirage(){
+		$leRepTirage = '';
+		if ($this->EtatFichier){
+			if (stripos($this->NomEcole, '(ISOLEES)') !== false) { // C'est des ISOLEES
+				$leRepTirage = substr($this->Fichier, strripos($this->Fichier, '/'),10) . '-CMD-ISOLEES' ;
+			}	
+			else{
+				$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;	
+			}	
+		}
+		return $leRepTirage;
+    } 
+	
+    function LienFichierERREUR(){
+		return $GLOBALS['repCMDLABO'] . $this->FichierERREUR;
+    }	
+	function Avancement(){
+		switch ($this->EtatFichier) {
+		case "0":
+			$RetourEtat = 0;
+			break;		
+		case "1":
+			$RetourEtat = floatval($this->PourcentageAvancement);
+			break;			
+		default:
+			$RetourEtat = 100;
+			break;		
+		}
+		//echo 'Avancement($Extension, $this->PourcentageAvancement)$this->EtatFichier: ' . $this->EtatFichier . '  this->PourcentageAvancement : ' . $this->PourcentageAvancement . '  $RetourEtat: ' . $RetourEtat;
+		return $RetourEtat;  	
+	}	
+}
+
+class CINFOfichierLab {
+	var $Fichier;	
+	var $FichierERREUR;	
+	var $EtatFichier;  // 0, 1 , 2 , 3
+	var $PourcentageAvancement = 0;
+	var $SyntheseCMD;
+	var $Compilateur;
+	//var $isOuvrable;
+    var $NbPlanches = 0;
+    var $NbCommandes = 0;
+    var $NomEcole;
+    var $DateTirage;
+
+    function __construct($myfileName){ // Le chemin complet !
+		$tabFICHIERLabo = LireFichierLab($myfileName);
+		$this->Fichier = basename($myfileName);
+		$this->EtatFichier = substr(strrchr($this->Fichier, '.'),4);
+		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.Erreur';
+		$this->AffichageNomCMD = substr($this->Fichier, 11, -5);
+
+		for($i = 0; $i < count($tabFICHIERLabo); $i++){
+			$identifiant = substr($tabFICHIERLabo[$i],0,1);
+			if (($identifiant != '[') && ($identifiant != '{') && ($identifiant != '#') && ($identifiant != '@') && ($identifiant != '<') && ($identifiant != '')) {
+				$this->NbPlanches = $this->NbPlanches + 1 ;
+				//echo $this->NbPlanches;
+			}else {
+				if ($identifiant == '{')  {
+			//NEW UtF8//$this->SyntheseCMD = utf8_encode(substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1));
+					$this->SyntheseCMD = substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1);
+					$this->SyntheseCMD = str_replace("%", "<br>", $this->SyntheseCMD);
+					$this->SyntheseCMD = str_replace("{", "<br>", $this->SyntheseCMD) . "<br>";
+
+					$this->PourcentageAvancement = 100 * floatval(str_replace(",", ".", substr(stristr($tabFICHIERLabo[$i], '%%', true), 9)));
+				}
+				if ($identifiant == '[')  {
+					$this->Compilateur = strstr(strrchr($tabFICHIERLabo[$i], '%'), 1, -1);
+					//$this->isOuvrable = $this->Compilateur;
+				}		
+				if ($identifiant == '@')  {
+			//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
+					$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
+					$this->DateTirage = $morceau[0];
+					$this->NomEcole = $morceau[1];			
+				}
+				if ($identifiant == '#')  {
+					$this->NbCommandes = $this->NbCommandes + 1 ;		
+				}				
 			}		
 		}
 	}
@@ -174,6 +263,30 @@ function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 	fclose($file);	
 }
 
+function BDDARBOwebfile($NewFichier, $BDDRECCode){
+
+	if ($GLOBALS['isDebug']){
+		echo "<br> STOP !<br> ";
+		echo '<br><br>' . $NewFichier;
+	}
+	$line ='';
+	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
+	
+	// New
+	/*Ouvre le fichier et retourne un tableau contenant une ligne par élément
+	$lines = file($strURL_RECFileLab);
+	if ($GLOBALS['isDebug']){		
+		foreach ($lines as $lineNumber => $lineContent){//On parcourt le tableau $lines et on affiche le contenu de chaque ligne précédée de son numéro
+			echo $lineNumber .' : ' . $lineContent .'<br>';
+		}	
+	}*/
+
+	//
+	$file = fopen($strURL_NewFichier, 'w');
+		$premiereligne = '[Version : 2.0' . $BDDRECCode . "\n";
+		fputs($file, $premiereligne);
+	fclose($file);	
+}
 function RECFileLab($strRECFileLab){
 	if ($GLOBALS['isDebug']){
 		echo "<br> STOP<br> ";
@@ -223,12 +336,13 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 		$affiche_Tableau .=
 		'<tr>
 			<td>' . $mesInfosFichier->DateTirage .'</td>
-			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageCMD . '</a>
+			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
 				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>
 			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '"><img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>	
+			<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbCommandes . '</a>
+				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>
 			<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbPlanches . '</a>
-				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>';
-		
+				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>';		
 		if($mesInfosFichier->EtatFichier < 2){
 			$affiche_Tableau .=	'
 			<td colspan=4>';
@@ -258,7 +372,9 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,5) . '"  title="'. TitleEtat(5) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "5") . '</a></td>'	
 			;				
 		}
-		$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
+		if ($isEnCours){
+			$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
+		}
 	}
 	$affiche_Tableau .=	'</tr>';
 	return $affiche_Tableau;
@@ -273,44 +389,68 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 	rsort($tabFichierLabo);
 	
 	for($i = 0; $i < count($tabFichierLabo); $i++){
-		// Un objet pour récupérer les infos Fichier !!! 
-		$mesInfosFichier = new CINFOfichierLab($tabFichierLabo[$i]); 		
-		$nb_fichier++;		
+			$nb_fichier++;	
+		$NomFichier = $tabFichierLabo[$i];	
+	
 		
-		$affiche_Tableau .=
-		'<tr>
-			<td>' . $mesInfosFichier->DateTirage .'</td>				
-			<td align="left">' . $mesInfosFichier->NomEcole . '</a></td>	
-			<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>		
-			<td>' . $mesInfosFichier->NbPlanches . '</a></td>';
+/*		if(substr($NomFichier, -1, 1) == '0' ){
+			echo '<br> NomFichier = ' . $NomFichier ;	
+			$affiche_Tableau .=
+			'<tr>
+				<td>' . 'xcv' .'</td>				
+				<td align="left">' . $NomFichier . '</a></td>	
+				<td>'.'xcv'.'</a></td>		
+				<td>' . 'xcv'. '</a></td>';				
+			
+		}
+		else {
+			*/
+			// Un objet pour récupérer les infos Fichier !!! 
+			$mesInfosFichier = new CINFOfichierArbo($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 		
+	
+			
+			$affiche_Tableau .=
+			'<tr>
+				<td>' . $mesInfosFichier->DateTirage .'</td>				
+				<td align="left">' . $mesInfosFichier->AffichageNomCMD . '</a></td>	
+				<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>		
+				<td>' . $mesInfosFichier->NbPlanches . '</a></td>';
+				
 
-		if($mesInfosFichier->EtatFichier < 2){
-			$affiche_Tableau .=	'
-			<td colspan=2>';
-			if (file_exists($mesInfosFichier->LienFichierERREUR())){
-				$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '." title="Afficher les erreurs">
-					<img src="img/ERREUR.png" alt="ERREUR">
-					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
-					' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
-					</div>			';					
-			}
-			$affiche_Tableau .=	'
-			<div class="boiteProgressBar">
-			<div class="progressBar" style="width:'.$mesInfosFichier->Avancement().'%;" >';
-			$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '> '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
-			$affiche_Tableau .=	'</div>
-				</div>';	
-		}else {
-			$affiche_Tableau .=	'
-			<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '" title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a>
-				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>					
-			<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . '" title="'. TitleEtat(3) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a>
-				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>'	
-			;				
-		}		
-		$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
-	}
+				
+
+			if($mesInfosFichier->EtatFichier < 2){
+				$affiche_Tableau .=	'
+				<td colspan=2>';
+				if (file_exists($mesInfosFichier->LienFichierERREUR())){
+					$affiche_Tableau .=	'			
+					<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '." title="Afficher les erreurs">
+						<img src="img/ERREUR.png" alt="ERREUR">
+						<font size="3" color="red">ATTENTION : Erreurs !</font></a>
+						' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
+						</div>			';					
+				}
+				$affiche_Tableau .=	'
+				<div class="boiteProgressBar">
+				<div class="progressBar" style="width:'.$mesInfosFichier->Avancement().'%;" >';
+				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '> '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
+				$affiche_Tableau .=	'</div>
+					</div>';	
+			}else {
+				$affiche_Tableau .=	'
+				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '" title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a>
+					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>					
+				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . '" title="'. TitleEtat(3) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a>
+					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>'	
+				;				
+			}		
+			$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
+		//}
+			
+			
+		}
+		
+		
 	$affiche_Tableau .=	'</tr>';
 	return $affiche_Tableau;
 }

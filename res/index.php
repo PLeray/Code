@@ -42,7 +42,8 @@ if ($codeMembre == '' || $codeMembre == '0'){
 		<h1>Phot<img src="img/Logo-Ultra-mini.png" width="20">Lab <?php echo $GLOBALS['VERSION'] ?></h1>
 		</div>
 		<br><br>
-
+		
+		<a href="<?php echo 'CATSources.php' . ArgumentURL(); ?>"><img src="img/PhotoLabSOURCE.png" alt="Catalogue de sources"></a>  
 		<a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>"><img src="img/PhotoLabCMD.png" alt="Commandes en cours"></a>  
 		<a href="<?php echo 'CATHistorique.php' . ArgumentURL(); ?>"><img src="img/PhotoLabHISTO.png" alt="Historique des commandes"></a>
 		<a href="<?php echo $maConnexionAPI->Adresse(); ?>"><img src="img/PhotoLabFACT.png" alt="Commandes Enregistrées"></a>	

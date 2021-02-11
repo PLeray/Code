@@ -71,6 +71,7 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 
 		<th onclick="sortTable(1)"><H3>Fichiers de commandes laboratoire</H3></th>
 		<th  style="width:110px;" ><H3>Etat</H3></th>
+		<th  style="width:100px;" ><H3>Nb de Commandes</H3></th>			
 		<th  style="width:90px;" ><H3>Nb de Planches</H3></th>
 		<th  style="width:90px;" ><H3>Planches crées</H3></th>
 		<th  style="width:90px;" ><H3>Envoyées labo</H3></th>

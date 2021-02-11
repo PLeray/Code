@@ -304,7 +304,7 @@ class CPlanche {
     }   	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span id="'. urldecode($this->FichierPlanche) . '" class="planche">';
+		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="Planche">';
 			global $repertoireTirages;
 			global $repertoireMiniatures;
 			global $EcoleEnCours;
@@ -313,7 +313,11 @@ class CPlanche {
 			$Lien = $repertoireMiniatures . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;
 			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;				
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
-			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
+			
+			//$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
+			$resultat .= '<img id="ImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">';	
+			//$resultat .= '<div class="overlay">My Name is John</div>';
+			
 			$resultat .= '<p>'. $this->FichierPlanche .'</p>';
 		$resultat .= '</span> ';
 		return $resultat;

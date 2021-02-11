@@ -168,9 +168,9 @@ function SauverEtatFichier(fileName, encoursFichier, totalFichier) {
 	return true;
 }
 */
-function EcrireBilan(fileName) {
+function EcrireErreursBilan(fileName) {
 	var nbErreur = g_BilanGeneration.length;
-	//alert('EcrireBilan(fileName)' + fileName);
+	//alert('EcrireErreursBilan(fileName)' + fileName);
 	if (nbErreur > 0){
 		var fileName = fileName.substr(0, fileName.length-4); 
 		fileName = g_SelectFichierLab.path + '/' + fileName + 'Erreur'; 
@@ -404,7 +404,7 @@ function AjoutBilanGeneration(msg){
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush(PHOTOLAB.graphics.BrushType.SOLID_COLOR, [1, 0.2, 0.2]);	
 	}
 	g_BilanGeneration.push(msg);
-	//EcrireBilan(decodeURI(g_SelectFichierLab.name));
+	//EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
 	//SuiteERREURGenerer();	
 }
 
@@ -983,7 +983,7 @@ function ExtensionTeinte(uneTeinte){
 	return extTeinte;
 }
 /////////////// NEW JUILLET 2020 ///////////////////////////////////////
-function InitialisationSourcePourLewEB(leRepSOURCE, theFiles) {
+function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 	try {
 		if (!theFiles) {var theFiles = []};
 		var leContenuRep = leRepSOURCE.getFiles();
@@ -1024,7 +1024,7 @@ function InitialisationSourcePourLewEB(leRepSOURCE, theFiles) {
 	}	
 }
 
-function CreerFichiersPresentationWEB(unfichier, extension, repertoire ){
+function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire ){
 	var nomFichierPhoto = unfichier;
 	//var unNomdePlanche = unfichier.slice(0,-4) + extension + '.jpg';
 	var unNomdePlancheWEB = unfichier.slice(0,-4) + '-WEB.jpg';
@@ -1097,7 +1097,7 @@ function CreerFichiersPresentationWEB(unfichier, extension, repertoire ){
 		
 	}
 	catch(err) {
-		g_Erreur = "Commande  : " + g_CommandePDTEncours + " ERREUR CreerFichiersPresentationWEB pour : " + nomFichierPhoto;
+		g_Erreur = "Commande  : " + g_CommandePDTEncours + " ERREUR CreerUnFichiersPresentationWEB pour : " + nomFichierPhoto;
 		laPhoto.close(SaveOptions.DONOTSAVECHANGES);
 		return "KO";
 	}

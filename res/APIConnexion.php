@@ -1,5 +1,5 @@
 <?php
-$VERSION = '2020';
+$VERSION = '2021';
 
 $repCMDLABO = "../../CMDLABO/";
 $repMINIATURES = "../../CMDLABO/MINIATURES/";

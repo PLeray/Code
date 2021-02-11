@@ -48,6 +48,9 @@ if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier l
 		}
 	BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 } 
+elseif (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
+    BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode']);
+}
 elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
     //echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 }
@@ -81,6 +84,7 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true);
 		<th style="width:127px;" onclick="sortTable(0)"><H3>Date</H3></th>
 		<th  onclick="sortTable(1)"><H3>Commandes de planches pour laboratoire</H3></th>
 		<th style="width:110px;"><H3>Etat</H3></th>
+		<th  style="width:100px;" ><H3>Nb de Commandes</H3></th>	
 		<th  style="width:100px;" ><H3>Nb de Planches</H3></th>	
 		<th  style="width:90px;" ><H3>Planches crées</H3></th>
 		<th  style="width:90px;" ><H3>Envoyées au labo</H3></th>

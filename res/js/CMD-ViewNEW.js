@@ -1,9 +1,11 @@
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
-var rech = document.getElementById("zoneRechercheCMD");
+/*var rech = document.getElementById("zoneRechercheCMD");
 rech.style.display = 'none';
-initPagination();
+AfficheRechercheCMD(false);*/
+
+//initPagination();
 
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
@@ -32,6 +34,14 @@ function initPagination() {
 
 function AfficheRechercheCMD(isAffiche) {
 	if (isAffiche){
+		
+		
+  document.getElementById("mySidenav").style.width = "250px";
+  //document.getElementById("mySidenav").style.z-index = 2;  
+  document.getElementById("main").style.marginRight = "250px";
+  document.getElementById("Entete").style.marginRight = "250px";		
+		
+		
 		var rech = document.getElementById("zoneRechercheCMD");
 		rech.style.display = '';
 		var list = document.getElementById("zoneListePageCMD");
@@ -39,6 +49,14 @@ function AfficheRechercheCMD(isAffiche) {
 		
 	}
 	else{
+    document.getElementById("zoneRecherche").value ='';
+	RechercheMulti(' ');
+	document.getElementById("mySidenav").style.width = "0";
+	  //document.getElementById("mySidenav").style.z-index = -2;  
+	document.getElementById("main").style.marginRight = "0";
+	document.getElementById("Entete").style.marginRight = "0";		
+		
+		
 		var rech = document.getElementById("zoneRechercheCMD");
 		rech.style.display = 'none';
 		var list = document.getElementById("zoneListePageCMD");
@@ -99,6 +117,7 @@ function VisuCMD(elementId) {
 		ele.style.display = "none";
 		setCookie(elementId, 'cache', 30);
 	}
+	//setCookie('name', 'inform...', 30);
 	MAJPage();	
 } 
 
@@ -178,11 +197,11 @@ function getCookie(cname) {
 	return "";
 }
 
-function myFunction2() {
+/*function myFunction2() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
-/*
+
 function filterFunction() {
     var input, filter, ul, li, a, i;
     input = document.getElementById("mySearch");
@@ -321,10 +340,7 @@ function ColorRecherche(unTexte, UneRech) {
 
 function openNav() {
 
-  document.getElementById("mySidenav").style.width = "250px";
-  //document.getElementById("mySidenav").style.z-index = 2;  
-  document.getElementById("main").style.marginRight = "250px";
-  document.getElementById("Entete").style.marginRight = "250px";
+
 
 AfficheRechercheCMD(true);	
 
@@ -332,17 +348,32 @@ AfficheRechercheCMD(true);
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {  
-    document.getElementById("zoneRecherche").value ='';
-	RechercheMulti(' ');
-	document.getElementById("mySidenav").style.width = "0";
-	  //document.getElementById("mySidenav").style.z-index = -2;  
-	document.getElementById("main").style.marginRight = "0";
-	document.getElementById("Entete").style.marginRight = "0";
+
 
 AfficheRechercheCMD(false);
 InitCommandes();
 
 }
+
+function SelectionPhoto(x) {
+  x.classList.toggle("PlancheSELECTIONNER");
+}
+			
+function VoirPhotoSelection(x) {
+	var mesPlanches = document.getElementsByClassName("Planche");
+	//console.log(' Nombre Page : ' + BoutonPage.length );	
+	for (i = 0; i < mesPlanches.length; i++) {
+	  if (mesPlanches[i].style.display === "none") {
+		mesPlanches[i].style.display = "inline-block";
+	  } else {
+		mesPlanches[i].style.display = "none";
+	  }
+	}	
+}		
+
+
+			
+			
 /*
 function coloriserString(text, debut, fin, color) {
 	return text.substring(0, debut) 

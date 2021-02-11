@@ -530,9 +530,7 @@ function AfficheClassesAvantArboWeb(uneSource){
 		checkPhotosFratrie.text = "Fratries"; 	
 		checkPhotosFratrie.value = g_CONFIGisPhotosFratrie;
 	
-	
 
-	
 	
 	
 	// GROUPEINFO4
@@ -570,8 +568,9 @@ function AfficheClassesAvantArboWeb(uneSource){
 		g_RepSOURCE  = uneSource.Repertoire;
 
 		g_TabListeNomsClasses = [];
-		//alert('Avant initialisation');
+		
 		InitialisationSourcePourLewEB(Folder(g_RepSOURCE), []);
+		//alert('Avant initialisation');
 		var nbclasses = 0;	
 		var isfratrie = false;
 		var refClasse = '';
