@@ -35,9 +35,18 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 </div>
 
 <?php
+
+$lesRecommandes = '';
+if (isset($_POST['lesRecommandes']) ){
+	$lesRecommandes = $_POST['lesRecommandes'];
+	if ($isDebug){
+		echo ' ----------------- VOILA LES RECOMMANDES SELECTIONNEES  ------------- : ' . $lesRecommandes;
+	}	
+}
+
 if (isset($_GET['OpenRep'])) { // OUVRIR REP !
 	$leRep = str_replace("/","\\",$repTIRAGES. $_GET['OpenRep']);
-	if ($GLOBALS['isDebug']){
+	if ($isDebug){
 		echo 'le rep  à ouvrir : explorer /select,"'.$leRep.'"' ;
 	}
 	execInBackground('explorer /select,"'.$leRep.'"');

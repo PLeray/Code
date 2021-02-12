@@ -299,6 +299,9 @@ text-align: right;
 }
 
 .PlancheSELECTIONNER {
+	display: inline-block;	 
+
+	margin: 10px 10px 10px 10px;	
 	border: 0.5rem dashed var(--boutonVert);
 }
 
@@ -643,7 +646,7 @@ top: 70px;
   background-color: white;
 }
 
-.Recommandes {
+	/*.Recommandes {
 	position: absolute;
 	top: 5px;
 	text-align: center;
@@ -652,7 +655,7 @@ top: 70px;
   
   background-color: red;
 }
-
+	*/
 
 #main {
 	/* overflow-y: scroll;

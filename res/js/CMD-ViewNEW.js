@@ -356,12 +356,26 @@ InitCommandes();
 }
 
 function SelectionPhoto(x) {
-  x.classList.toggle("PlancheSELECTIONNER");
+  //x.classList.toggle("PlancheSELECTIONNER");
+  // document.getElementById('myButton').className = "Planche";
+  
+  
+	if(x.classList.contains("Planche") ){
+		x.classList.replace("Planche", "PlancheSELECTIONNER");
+		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
+
+	}else {
+		x.classList.replace("PlancheSELECTIONNER", "Planche");
+		x.setAttribute('title',  x.getAttribute('id'));
+	}  
+
+  
+  mesRecommandes();
 }
 			
 function VoirPhotoSelection(x) {
 	var mesPlanches = document.getElementsByClassName("Planche");
-	//console.log(' Nombre Page : ' + BoutonPage.length );	
+
 	for (i = 0; i < mesPlanches.length; i++) {
 	  if (mesPlanches[i].style.display === "none") {
 		mesPlanches[i].style.display = "inline-block";
@@ -371,7 +385,17 @@ function VoirPhotoSelection(x) {
 	}	
 }		
 
+function mesRecommandes() {
+	var mesReco ='';
+	var mesPlanches = document.getElementsByClassName("PlancheSELECTIONNER");
+	//console.log(' Nombre Page : ' + BoutonPage.length );	
+	for (i = 0; i < mesPlanches.length; i++) {
+	  mesReco = mesReco + '%' + mesPlanches[i].getAttribute('id');
+	  //mesPlanches[i].setAttribute('title',  'Planche en cours de recommande  ' + mesPlanches[i].getAttribute('id'));
+	}		
 
+	document.getElementById('lesRecommandes').value =  mesReco;
+}	
 			
 			
 /*

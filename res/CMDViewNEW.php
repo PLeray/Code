@@ -10,11 +10,12 @@
 	if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 	$isDebug = false;
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
-	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");	}
+	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
+	
 	
 
 
-
+	
 	$DefautNbCMDAffiche = 15;
 	$NbCMDAffiche = $DefautNbCMDAffiche;
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
@@ -102,7 +103,17 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>		
 			<div id="myRecommandes" class="infoRecommandes">
 				Mes recommandes<br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a> | Enregistrer
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>
+	
+<!-- DEBUT FORMULAIRE RECO
+<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="Mon meilleur dsfdsf billet" /> 	-->				
+<form name="FormEnvoieRecos" method="post" action="<?php echo RetourEcranFichier($myfileName); ?>" enctype="multipart/form-data">	
+	<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 	
+	<button type="submit">Enregistrer ces recommandes</button>
+</form> 	
+<!-- FIN FORMULAIRE RECO-->					
+				
+				
 			</div>
 
 			<p> <STRONG>Recherche de commandes par critère</STRONG></p>
@@ -143,9 +154,6 @@
  
 </div>
 
-		<div class="Recommandes">
-		  <p class="mention">	RecommandesRecommandesRecommandesRecommandesRecommandesRecommandesRecommandes </p>
-		</div>
 
 
 <script type="text/javascript" src="js/CMD-ViewNEW.js"></script>
