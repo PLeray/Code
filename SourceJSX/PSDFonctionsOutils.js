@@ -636,9 +636,13 @@ function NomPlancheLabo(unProduit, fichierName){
 	//alert('NomPlancheLabo');
 	var leNomFichier = fichierName.substr(0,fichierName.length-4);
 	//alert('NomPlancheLabo2');
-	leNomFichier = (unProduit.isFichierGroupe())? leNomFichier.substring(4) : leNomFichier;
+	
+	// 15/02 NEW MAINTENIR NOM COMPLET POUR GROUPE
+	//leNomFichier = (unProduit.isFichierGroupe())? leNomFichier.substring(4) : leNomFichier;
+	// 15/02 NEW MAINTENIR NOM COMPLET POUR GROUPE
+	
 	var leNomPlanche = (unProduit.Teinte)? '.' + unProduit.Teinte : '';
-	leNomPlanche = OrdreTirageIndex(unProduit) + "." + leNomFichier + "." + unProduit.Type + "." + unProduit.Taille + leNomPlanche + ".JPG";  
+	leNomPlanche = OrdreTirageIndex(unProduit) + "." + leNomFichier + "." + unProduit.Type + "." + unProduit.Taille + leNomPlanche + ".jpg";  
 	//alert('AVANT g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
 	g_TabLigneOriginale[unProduit.indexOriginal] = leNomPlanche;
 	//alert('APRES g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
@@ -651,7 +655,7 @@ function NomPlancheSiteWEB(unProduit, fichierName){
 	//alert('NomPlancheLabo2');
 	//leNomFichier = (unProduit.isFichierGroupe())? leNomFichier.substring(4) : leNomFichier;
 	//var leNomPlanche = (unProduit.Teinte)? '.' + unProduit.Teinte : '';
-	var leNomPlanche = leNomFichier + ExtensionTeinte(unProduit.Teinte) + ".JPG";  
+	var leNomPlanche = leNomFichier + ExtensionTeinte(unProduit.Teinte) + ".jpg";  
 	//alert('AVANT g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
 	g_TabLigneOriginale[unProduit.indexOriginal] = leNomPlanche;
 	//alert('APRES g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);

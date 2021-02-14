@@ -40,8 +40,9 @@ $lesRecommandes = '';
 if (isset($_POST['lesRecommandes']) ){
 	$lesRecommandes = $_POST['lesRecommandes'];
 	if ($isDebug){
-		echo ' ----------------- VOILA LES RECOMMANDES SELECTIONNEES  ------------- : ' . $lesRecommandes;
+		echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $_POST['leFichierOriginal']  . ' : ' . $lesRecommandes;
 	}	
+	MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
 }
 
 if (isset($_GET['OpenRep'])) { // OUVRIR REP !

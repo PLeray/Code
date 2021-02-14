@@ -1,4 +1,6 @@
 <?php
+include 'CMDClassesDefinition.php';
+
 class CINFOfichierArbo {
 	var $Fichier;	
 	var $FichierERREUR;	
@@ -642,4 +644,77 @@ function execInBackground($cmd) {
         exec($cmd . " > /dev/null &");  
     }
 }
+
+// POUR LES RECOMMANDES !
+function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
+   $NewFichier = $GLOBALS['repCMDLABO'] . "RECOMMANDE-ENCOURS.lab1" ;
+	if (!file_exists($NewFichier)){
+		$file = fopen($NewFichier, 'w');
+			fputs($file, '[Version : 2.0]');
+			fputs($file, '{Etat : Recommandes de tirages dejà effectués}');
+		fclose($file); 
+	}
+
+	$isRecommande = false;
+	
+	$TabCMDReco = explode("%", $strTabCMDReco);
+	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$FichierOriginal);
+	$resultat = $monGroupeCmdes->Ecrire($TabCMDReco, $isRecommande);
+
+   //Ajouter commande au fichier de reco 
+   
+	$file = fopen($NewFichier, 'w');
+		//fputs($file, $resultat);	
+		file_put_contents($file, $resultat, FILE_APPEND);
+	fclose($file);   
+   
+}
+
+function EnvoieLABORecommandes($FichierOriginal) {
+   // changer nom
+   // changer repertoire    
+      // Activer lien vers repertoire
+
+}
+
+function BDDRECFileLab33($FichierOriginal, $strTabCMDReco) {
+	
+	
+$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$FichierOriginal);	
+	
+
+	
+
+	if ($GLOBALS['isDebug']){
+		echo "<br> STOP !<br> ";
+	}
+	$line ='';
+	$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . utf8_decode($strRECFileLab) . "0";	
+	
+	// New
+	/*Ouvre le fichier et retourne un tableau contenant une ligne par élément*/
+	$lines = file($strURL_RECFileLab);
+	if ($GLOBALS['isDebug']){		
+		foreach ($lines as $lineNumber => $lineContent){/*On parcourt le tableau $lines et on affiche le contenu de chaque ligne précédée de son numéro*/
+			echo $lineNumber .' : ' . $lineContent .'<br>';
+		}	
+	}
+	$NewFichier = $strURL_RECFileLab;// . "_rec" ;
+	//echo '<br><br>' . $NewFichier;
+	$file = fopen($NewFichier, 'w');
+		for($i = 0; $i < count($lines); $i++){
+			if(!$i){
+				$premiereligne = '[Version : 2.0' . $BDDRECCode . "\n";
+				fputs($file, $premiereligne);
+			}
+			else{
+				fputs($file, $lines[$i]);	
+			}
+		}
+	fclose($file);	
+}
+
+
+
+
 ?>

@@ -84,11 +84,12 @@
 		<div class="affichageNBPage">
 			<p> Nombre de commandes par page</p>	
 				<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a>
+				<?php echo  '<p>' . $etatFichierLab . '</p>';?>
 		</div> 	
 		
 		<div class="titreFichier">	
 			<?php 
-				echo  '<p>' . $etatFichierLab . '</p>';
+				
 				echo pathinfo(utf8_encode($myfileName))['filename']; ?>
 			<?php //echo urldecode(utf8_encode($myfileName)) .
 			//'    ' . $etatFichierLab ;?>
@@ -108,7 +109,8 @@
 <!-- DEBUT FORMULAIRE RECO
 <input type="hidden" name="lesRecommandes" id="lesRecommandes" value="Mon meilleur dsfdsf billet" /> 	-->				
 <form name="FormEnvoieRecos" method="post" action="<?php echo RetourEcranFichier($myfileName); ?>" enctype="multipart/form-data">	
-	<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 	
+	<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
+	<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="<?php echo $myfileName ?>" /> 		
 	<button type="submit">Enregistrer ces recommandes</button>
 </form> 	
 <!-- FIN FORMULAIRE RECO-->					
