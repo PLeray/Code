@@ -135,7 +135,7 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV){
 				<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>		
 	<td align="left" class="titreCommande" ><div class="tooltip">' . $TabCSV[$i]["NomProjet"] .'
 				<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>			
-	<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($TabCSV[$i]["Repertoire"] ) . '" >' . NBfichiersDOSSIER($TabCSV[$i]["NomProjet"]) . '</a>';		
+	<td><div class="tooltip"><a href="' . LienOuvrirDossierOS($TabCSV[$i]["Repertoire"] ) . '" >' . NBfichiersDOSSIER($TabCSV[$i]["NomProjet"]) . '</a>';		
 			
 		$isArbo	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($TabCSV[$i]["NomProjet"]) . '2');
 		

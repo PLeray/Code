@@ -332,8 +332,11 @@ function intersect(a, b) {
 
 function ColorRecherche(unTexte, UneRech) {
 	if(UneRech!=''){
-		var regex = new RegExp(UneRech,'g');
-		unTexte = unTexte.replace(regex,'<mark>'+UneRech+'</mark>' );		
+		var regex = new RegExp(UneRech,'i');
+		textedeRemplacement = unTexte.substr(unTexte.toUpperCase().indexOf(UneRech), UneRech.length);
+		unTexte = unTexte.replace(regex,'<mark>'+ textedeRemplacement +'</mark>' );	
+		
+		//unTexte = unTexte.replace(regex,'<mark>'+ UneRech +'</mark>' );	
 	}
 	return unTexte;
 }
@@ -356,25 +359,20 @@ InitCommandes();
 }
 
 function SelectionPhoto(x) {
-  //x.classList.toggle("PlancheSELECTIONNER");
-  // document.getElementById('myButton').className = "Planche";
-  
-  
-	if(x.classList.contains("Planche") ){
-		x.classList.replace("Planche", "PlancheSELECTIONNER");
+	if(x.classList.contains("planche") ){
+		x.classList.replace("planche", "plancheSELECTIONNER");
 		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
 
 	}else {
-		x.classList.replace("PlancheSELECTIONNER", "Planche");
+		x.classList.replace("plancheSELECTIONNER", "planche");
 		x.setAttribute('title',  x.getAttribute('id'));
 	}  
 
-  
   mesRecommandes();
 }
 			
 function VoirPhotoSelection(x) {
-	var mesPlanches = document.getElementsByClassName("Planche");
+	var mesPlanches = document.getElementsByClassName("planche");
 
 	for (i = 0; i < mesPlanches.length; i++) {
 	  if (mesPlanches[i].style.display === "none") {
@@ -387,7 +385,7 @@ function VoirPhotoSelection(x) {
 
 function mesRecommandes() {
 	var mesReco ='';
-	var mesPlanches = document.getElementsByClassName("PlancheSELECTIONNER");
+	var mesPlanches = document.getElementsByClassName("plancheSELECTIONNER");
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
 	  mesReco = mesReco + '%' + mesPlanches[i].getAttribute('id');

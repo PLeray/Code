@@ -341,9 +341,9 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
 				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>
 			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '"><img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>	
-			<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbCommandes . '</a>
+			<td><div class="tooltip"><a href="' . LienOuvrirDossierOS($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbCommandes . '</a>
 				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>
-			<td><div class="tooltip"><a href="' . LienOuvrirRepTIRAGE($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbPlanches . '</a>
+			<td><div class="tooltip"><a href="' . LienOuvrirDossierOS($mesInfosFichier->RepTirage()) . '" >' . $mesInfosFichier->NbPlanches . '</a>
 				<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div></td>';		
 		if($mesInfosFichier->EtatFichier < 2){
 			$affiche_Tableau .=	'
@@ -611,7 +611,7 @@ function LienFichierLab($fichier) {
 	return $LienFichier;
 }
 
-function LienOuvrirRepTIRAGE($repertoire) {
+function LienOuvrirDossierOS($repertoire) {
 	$LienFichier = '#';
 	if ($repertoire != ''){
 		$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
@@ -650,8 +650,8 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
    $NewFichier = $GLOBALS['repCMDLABO'] . "RECOMMANDE-ENCOURS.lab1" ;
 	if (!file_exists($NewFichier)){
 		$file = fopen($NewFichier, 'w');
-			fputs($file, '[Version : 2.0]');
-			fputs($file, '{Etat : Recommandes de tirages dejà effectués}');
+			fputs($file, '[Version : 2.0]'.PHP_EOL );
+			fputs($file, '{Etat : 1 : Non enregistre %%Recommandes de tirages dejà effectués}'.PHP_EOL );
 		fclose($file); 
 	}
 
@@ -662,12 +662,13 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 	$resultat = $monGroupeCmdes->Ecrire($TabCMDReco, $isRecommande);
 
    //Ajouter commande au fichier de reco 
-   
+   file_put_contents($NewFichier, $resultat, FILE_APPEND | LOCK_EX);
+	/*
 	$file = fopen($NewFichier, 'w');
 		//fputs($file, $resultat);	
-		file_put_contents($file, $resultat, FILE_APPEND);
+		
 	fclose($file);   
-   
+   */
 }
 
 function EnvoieLABORecommandes($FichierOriginal) {

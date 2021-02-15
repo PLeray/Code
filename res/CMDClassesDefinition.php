@@ -360,7 +360,7 @@ class CPlanche {
     }   	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="Planche" title="'. urldecode($this->FichierPlanche) . '">';
+		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
 			global $repertoireTirages;
 			global $repertoireMiniatures;
 			global $EcoleEnCours;
@@ -372,7 +372,7 @@ class CPlanche {
 			
 			//$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
 			$resultat .= '<img id="ImgPlanche" src="' . $Lien . '">';	
-			//$resultat .= '<div class="overlay">My Name is John</div>';
+
 			
 			$resultat .= '<p>'. $this->FichierPlanche .'</p>';
 		$resultat .= '</span> ';
