@@ -45,6 +45,11 @@
 	//$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 
 	$etatFichierLab = AfficheEtatFichierLab($myfileName);
+	
+	
+$isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !== false);
+	
+	
 ?>
 
 </head>
@@ -101,22 +106,22 @@
 
 	  <div id="main">
 		<div id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>		
+		<?php 
+			if (!$isRECOmmandes){
+				echo '
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 			<div id="myRecommandes" class="infoRecommandes">
 				Mes recommandes<br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>
-	
-<!-- DEBUT FORMULAIRE RECO
-<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="Mon meilleur dsfdsf billet" /> 	-->				
-<form name="FormEnvoieRecos" method="post" action="<?php echo RetourEcranFichier($myfileName); ?>" enctype="multipart/form-data">	
-	<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
-	<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="<?php echo $myfileName ?>" /> 		
-	<button type="submit">Enregistrer ces recommandes</button>
-</form> 	
-<!-- FIN FORMULAIRE RECO-->					
-				
-				
-			</div>
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>	
+				<form name="FormEnvoieRecos" method="post" action="'. RetourEcranFichier($myfileName).' >" enctype="multipart/form-data">	
+					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
+					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
+					<button type="submit">Enregistrer ces recommandes</button>
+				</form> 	
+			</div>';
+			}
+		?>	
+
 
 			<p> <STRONG>Recherche de commandes par critère</STRONG></p>
 			<p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...</p>
@@ -165,7 +170,7 @@
 
 <script>
 
-AfficheRechercheCMD(true);
+AfficheRechercheCMD(<?php echo $isRECOmmandes;?>);
 initPagination();
 </script>
 

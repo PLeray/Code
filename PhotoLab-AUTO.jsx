@@ -3,7 +3,7 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 2.9;
+var g_NumVersion = 3.0;
 
 var g_NomVersion = 'PhotoLab PLUGIN v3.3';
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
@@ -159,13 +159,6 @@ var Zone1Entete = PHOTOLAB.add ("group");
 		var Zone131Action= Zone13Option.add ("group");
 		Zone131Action.orientation = "row";
 		
-		var buttonScanCMD = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
-		buttonScanCMD.alignment = "left";
-		buttonScanCMD.helpTip = "Scanner et traiter le repertoire des commandes ..."; 
-		buttonScanCMD.onClick = function () {	
-			Auto(); 
-		}/**/
-		
 //var names = ["Annabel", "Bertie", "Caroline", "Debbie", "Erica"];
 
 ChercherFichierLab();
@@ -173,23 +166,35 @@ ChercherFichierLab();
 var group = Zone131Action.add ("group {alignChildren: 'left', orientation: ’stack'}");
 if (File.fs !== "Windows") {
 	var list = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
-	var e = group.add ("edittext");
+	//var e = group.add ("edittext");
 } else {
-	var e = group.add ("edittext");
+	//var e = group.add ("edittext");
 	var list = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
 }
+list.graphics.foregroundColor = list.graphics.newPen(list.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+list.selection = 0;
 g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 
-e.text = g_NomFichierEnCours;
-e.active = true;
+//e.text = g_NomFichierEnCours;
+//e.active = true;
 list.preferredSize.width = 240;
-e.preferredSize.width = 220; e.preferredSize.height = 20;
+//e.preferredSize.width = 220; e.preferredSize.height = 20;
 
 
 list.onChange = function () {
 g_NomFichierEnCours = list.selection.text;
-e.text = g_NomFichierEnCours;
-e.active = true;
-}		
+//e.text = g_NomFichierEnCours;
+//e.active = true;
+}	
+
+
+		
+		var buttonScanCMD = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
+		buttonScanCMD.alignment = "left";
+		buttonScanCMD.helpTip = "Scanner et traiter le repertoire des commandes ..."; 
+		buttonScanCMD.onClick = function () {	
+			Auto(); 
+		}/**/
+
 		
 		/*  §§§§§§§§§§§§§§§§§§§§ SUPRIMER SOURCE DERRIERE
 		var buttonSourceWeb = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Créer arborecence web");
@@ -225,11 +230,10 @@ e.active = true;
 	Select_Generer.enabled = true;
 	Select_Generer.onClick = function () {
 		g_IsPhotoLabON = true;
-			GenererLeFichierNOM(); //g_NomFichierEnCours
+		 GestionBoutonGenerer();
+		 //GenererLeFichierNOM(); //g_NomFichierEnCours
 		//Auto();
-		 //GestionBoutonGenerer();
 	}
-
 
 // PROGRESS BAR
 var Zone2Progression = PHOTOLAB.add ("group");

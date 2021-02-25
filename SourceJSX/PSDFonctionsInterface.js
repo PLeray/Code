@@ -44,7 +44,7 @@ function Auto() {
 		g_IsTravail = (nbFichierATraiter > 0);						
 	} 	
 }
-
+/*
 function AutoOLD() { 
 	Raffraichir(); 
 	//alert('AUTO');
@@ -65,19 +65,23 @@ function AutoOLD() {
 		g_IsTravail = (nbFichierATraiter > 0);						
 	} 	
 }
+*/
 
 function GenererLeFichierNOM() { 
+	//alert('TESTZ10  GenererLeFichierNOM !!!' + g_SelectFichierLab);
 	PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-	g_IsGenerationEnCours =true;
+	g_IsGenerationEnCours = true;
 	g_IsGenerationEnPause = false;	
 	//buttonConfig.enabled = false;
+	//alert('TESTZ11  GenererLeFichierNOM !!!' + g_SelectFichierLab);
 	Raffraichir();
-
+	//alert('TESTZ11bb  GenererLeFichierNOM !!!' + g_SelectFichierLab);
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
-			alert('InitInfoFichier !!!');
+		//alert('TESTZ20  OuvrirSelectFichierLab0 !!!' + g_SelectFichierLab);
 		InitInfoFichier();
 		
 		if (g_IsPlancheSiteWEB){
+			alert('TESTZ21  GenererFichiersWEB !!!' + g_SelectFichierLab);
 			GenererFichiersWEB();
 		}
 		else {
@@ -94,13 +98,14 @@ function GenererLeFichierNOM() {
 }
 
 function GestionBoutonGenerer() { 
-	
 	g_IsGenerationEnPause = !g_IsGenerationEnPause;	
+	
 	SetBoutonGenerer();
 	if (!g_IsGenerationEnCours){ //  On n'est pas en cours de generation !!!
 		GenererLeFichierNOM();
 		g_IsGenerationEnPause = false;	
-	}		
+	}	
+alert('TESTZ30  g_IsGenerationEnPause !!!' + g_IsGenerationEnPause);	
 }
 
 function SetBoutonGenerer(){
@@ -115,17 +120,20 @@ function SetBoutonGenerer(){
 
 function OuvrirSelectFichierLab0(fileName) {
 	var valRetour = false;
+	//alert('TESTZ12  g_IsPhotoLabON : ' + g_IsPhotoLabON);
 	if (g_IsPhotoLabON){
+		//alert('TESTZ12aaaa  fileName : ' + fileName);
 		g_IsPlancheSiteWEB = (fileName.slice(-5) == ".web0") ? true : false ; 
-		//alert('OuvrirSeleFichierLab0 : ' + fileName);
+		//alert('TESTZ12bbbb  OuvrirSeleFichierLab0 : ' + fileName);
 		var fileNamePath = g_Rep_PHOTOLAB + 'CMDLABO/' + fileName;
 		if (isDroitCompiler(fileNamePath.substr(0,fileNamePath.length-1) + '1')){
-			//alert('isDroitCompiler ok pour : ' + fileNamePath);
+			//alert('TESTZ12 : isDroitCompiler ok pour : ' + fileNamePath);
 			g_SelectFichierLab = new File(fileNamePath);
 			valRetour = OuvrirFichierLabo();
 		}		
 	}
 	return valRetour;
+	alert('TESTZ13  OuvrirSelectFichierLab0 !!!' + valRetour);
 }
 
 function ChercherFichierLab(avecErreur) {
@@ -210,16 +218,21 @@ function SelectionnerFichierLabo() {
 function OuvrirFichierLabo() { 
 	var valRetour = false;
 	try { 
-		alert('OuvrirFichierLabo test : ' + g_SelectFichierLab);	
+		//alert('TestZ1 OuvrirFichierLabo test : ' + g_SelectFichierLab);	
 		if(g_SelectFichierLab && TestAPI()){
 			//Select_InfoAPI.enabled = true;
-			MsgINFO('Fichier Labo a compiler : ' + g_SelectFichierLab);
-			g_CommandeLabo = new CommandesLabo(OuvrirFichierToTableauDeLigne(g_SelectFichierLab), g_NomFichierEnCours);		alert('g_CommandeLabo test : ' + g_CommandeLabo);		
+			MsgLOGInfo('Fichier Labo a compiler : ' + g_SelectFichierLab);
+			g_CommandeLabo = new CommandesLabo(OuvrirFichierToTableauDeLigne(g_SelectFichierLab), g_NomFichierEnCours);
+			//alert('TESTZ2 g_CommandeLabo test : ' + g_CommandeLabo.FichierLab);		
 			if (g_CommandeLabo.isRecord()){
+				//alert('TESTZ3  est  enregistré');
 				if (g_CommandeLabo.isValide()){
+					//alert('TESTZ5  est  isValide');
 					g_CommandeLabo.InitListePlanches();
+					alert('TESTZ6  InitListePlanches Nb Planches : ' + g_CommandeLabo.NbPlanchesACreer());
 					//UI
-					var premiereEcole = new Ecole (g_CommandeLabo.Ecole);				 
+					var premiereEcole = new Ecole (g_CommandeLabo.Ecole);	
+					//alert('TESTZ7  InitListePlanches');					
 					//UI
 					//nbFichierAGenerer.text = 'Repertoire TIRAGE :     (Nombre de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')';
 					Select_Generer.enabled =  (g_SelectFichierLab) ? true : false ;
@@ -228,6 +241,7 @@ function OuvrirFichierLabo() {
 					valRetour = true;					
 				}
 			}else{
+				//alert('TESTZ4 commande est pas enregistré');
 				//Gestion erreur pas de code a faire !!
 				msg = "PROBLEME : Le fichier de commande n'est pas enregistré";
 				AjoutBilanGeneration(msg);
@@ -262,7 +276,7 @@ function MAJinfoEcole(uneEcole) {
 		msg = "     SOLUTION PROBABLE : Créer ou ajouter le repertoire de photo avec le code : " + uneEcole.CodeRefEcole + " dans la bibliotheque de PhotoLAb !";
 		AjoutBilanGeneration(msg);			
 		AjoutBilanGeneration('');
-		MsgERREUR('Erreur de dossier /SOURCE !', msg);
+		MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
 		g_Erreur = msg;
 	}
 	else {
@@ -285,8 +299,8 @@ function MAJinfoEcole(uneEcole) {
 			nbFichiers = 0;
 			nbFichiers = NbJPGArborescence(Folder(g_RepSOURCE),nbFichiers) ;
 
-			MsgINFO('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
-			MsgINFO('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));
+			MsgLOGInfo('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
+			MsgLOGInfo('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));
 			//alert('InitGroupesClasseIndive : ' + uneEcole.Commentaire);
 			g_GroupeIndiv.length = 0;
 			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
@@ -298,7 +312,7 @@ function MAJinfoEcole(uneEcole) {
 			msg = "     SOLUTION PROBABLE : Modifier ou ajouter le code (" + uneEcole.CodeRefEcole + ") dans le nom du repertoire de l'école " + g_CommandeECOLEEncours;
 			AjoutBilanGeneration(msg);			
 			AjoutBilanGeneration('');
-			MsgERREUR('Erreur de dossier /SOURCE !', msg);
+			MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
 			g_Erreur = msg;			
 			
 			valRetour = false;		
@@ -319,8 +333,8 @@ function GenererFichiersLABO() {
 		//var cmdReste = nbLigneFichier;		
 		for (var m = 0; m < nbLigneFichier; m++) {
 			
-			// ATTEN tion ici on n'utilise plus le tableau d eligne avec seulement ecole et planche
-			// Mais tou ...
+			// ATTEN tion ici on n utilise plus le tableau de ligne avec seulement ecole et planche
+			// Mais tout ...
             var ligne = g_CommandeLabo.TableauLignes[m];
 			if (!isEntete(ligne) && !isLigneEtat(ligne))
 			{			
@@ -346,16 +360,17 @@ function GenererFichiersLABO() {
 						}else{
 							var plancheCree = unProduit.Type;
 							g_TabLigneOriginale[unProduit.indexOriginal] = plancheCree;
-							MsgERREUR(plancheCree,'Produit Labo non defini : ' + g_CommandePDTEncours);
+							MsgLOGInfo(plancheCree,'Produit Labo non defini : ' + g_CommandePDTEncours);
 						}
 						//UI
-						MAJTableauGeneration(plancheCree,unProduit);
+						//NEW SUPR
+						//MAJTableauGeneration(plancheCree,unProduit);
 						Raffraichir(); 			
 					}                   
 				}
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
-				// Attention*
-
+				// Attention
+				
 				SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
 				EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
 				//alert('SauverFichierFromTableauDeLigne ' +  plancheCree);			
@@ -370,12 +385,13 @@ function GenererFichiersLABO() {
 		}
 	}
 	catch(err) {
-		MsgERREUR("ERREUR GenererFichiersLABO()", "Fichier en cours : " + g_CommandePDTEncours + "\n" + ErreurInfoMSG(err));
+		MsgLOGInfo("ERREUR GenererFichiersLABO()", "Fichier en cours : " + g_CommandePDTEncours + "\n" + ErreurInfoMSG(err));
 		Select_Generer.enabled = true;
 		//buttonConfig.enabled = true;
 	}
 }
 
+/*
 function MAJTableauGeneration(plancheCree,unProduit)
 {
 	var reussite = (plancheCree.substr(0,1) == 'P')?"Fait ! ":"Echec !";	
@@ -387,6 +403,7 @@ function MAJTableauGeneration(plancheCree,unProduit)
 	
 	UIindex++;
 }
+*/
 
 function isInterruptionTraitement() { 
 
@@ -404,12 +421,13 @@ function isInterruptionTraitement() {
 			
 			EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
 			
-			MsgINFO("Création annulée !");
+			MsgLOGInfo("Création annulée !");
 			g_IsPhotoLabON = false;		
 			return true;
 		} 
 		else {
-			MsgINFO("La création va repartir !");
+			MsgLOGInfo("La création va repartir !");
+			
 			return false;
 		}
 		g_IsGenerationEnPause = false;
@@ -429,11 +447,11 @@ function BilanFinTraitement(chronoDebut, nbErreur) {
 	//NOUVEAU
 	var VitesseMoy = nbSecondes / g_CommandeLabo.NbPlanchesACreer();
 	var bilan = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."
-	MsgERREUR(bilan, VitesseMoy + " secondes par planche");
+	MsgLOGInfo(bilan, VitesseMoy + " secondes par planche");
 	txtTraitement.text = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."; 
 	/////////////////////////////////////////////////
 	if (nbErreur > 0){
-		MsgERREUR("!!! ATTENTION !!!", "Il y a " + nbErreur + " planche(s) qui n'ont pas été crée(s) !!! Voir le détail dans le fichier.erreur...");
+		MsgLOGInfo("!!! ATTENTION !!!", "Il y a " + nbErreur + " planche(s) qui n'ont pas été crée(s) !!! Voir le détail dans le fichier.erreur...");
 		g_BilanGeneration.push("!!! ATTENTION !!! Il y a " + nbErreur + " planche(s) qui n'ont pas été crée(s) !!! ");
 	}
 	
@@ -450,7 +468,7 @@ function InitInfoFichier() {
 		/*while (UIListeMessage.items.length > 0){
 			UIListeMessage.remove(0);
 		}*/
-		//MsgINFO('InitTableauFichier()');
+		//MsgLOGInfo('InitTableauFichier()');
 		//UIListeMessage.add ("item", "-");
 		//UIListeMessage.add ("item", "-");	
 		
@@ -459,7 +477,7 @@ function InitInfoFichier() {
 			var unProduit = new Produit (g_CommandeLabo.ListePlanches[m]);
 			//UIListeMessage.add ("item", FormatSTR("Commande : " + unProduit.Code, 55,' ',false)+ "  " + FormatSTR("a faire... ", 60,' ',false));
 			UIListeMessage.add ("item", "Commande : " + unProduit.Code + " a faire... ");			
-			//MsgINFO(FormatSTR(unProduit.Code, 55,' ',false))
+			//MsgLOGInfo(FormatSTR(unProduit.Code, 55,' ',false))
 		}
 		*/
 	}
@@ -467,17 +485,18 @@ function InitInfoFichier() {
 		var msg = "Init de TableauFichier :  \n \n";
 		//Commentaires.push (msg);
 		//alert( msg + "\n\n" + err.message);
-		MsgERREUR('Init de TableauFichier',msg + "\n\n" + err.message);
+		MsgLOGInfo('Init de TableauFichier',msg + "\n\n" + err.message);
 	}	
 }
 
 
-
+/*
 function MsgERREUR(Titre,Message){
-	MsgINFO(Titre, Message, 'ERREUR', false, 'NL');
+	MsgLOGInfo(Titre, Message, 'ERREUR', false, 'NL');
 }
 
-function MsgINFO(Titre, Message, PetiteColonne, isCoche, isNew){
+
+function MsgLOGInfo(Titre, Message, PetiteColonne, isCoche, isNew){
 	var isNew = isNew || 'NL';
 	var Message = Message || '';
 	var PetiteColonne = PetiteColonne || '...!';
@@ -486,10 +505,34 @@ function MsgINFO(Titre, Message, PetiteColonne, isCoche, isNew){
 	//alert(Message, Titre, true);
 	MAJTableauLOG(Titre, Message, PetiteColonne, isCoche, isNew);
 }
+*/
+function MsgLOGInfo(Message, Titre){
+var Titre = Titre || 'Log';
+
+//QUE FAIT ON DE L'ERREUR enregistrer dans fichier de log
+	//alert(Message, Titre, true);
+	
+	EcrireLOGInfo(Titre + ' : ' + Message);
+	
+	
+	
+
+}
+
+function EcrireLOGInfo(resultAPI) {
+	var fileName = g_Rep_PHOTOLAB + '/LOGInfo.txt'; // 
+	var file = new File(fileName);
+	file.encoding='UTF-8';
+	file.open("w"); // open file with write access
+		file.writeln(resultAPI);
+	file.close();
+	//return true;
+}
 
 
+/*
 function MAJTableauLOG(Col1, Col2, Col3, isCoche, isNew){
-/*	
+	
 	var isNew = isNew || 'NL';
 	//alert('isNew : ' + isNew + 'UIindex : ' + UIindex);
 	if (isNew =='NL') {UIListeMessage.add ("item", Col1);}
@@ -500,9 +543,9 @@ function MAJTableauLOG(Col1, Col2, Col3, isCoche, isNew){
 		UIListeMessage.revealItem(UIListeMessage.items.length-1);
 		UIListeMessage.revealItem(UIindex-20);
 	}	
-*/	
+	
 }
-
+*/
 function ArborescenceWEB(){
 	//laDate = Date.now();
 	//laDate.getDate();
@@ -555,7 +598,9 @@ function GenererFichiersWEB() {
 			fichierEnCours.text = 'Création arborescence web pour : ' + decodeURIComponent(fichier);
 
 			//UI
-			MAJTableauGeneration(plancheCree,unProduit);
+			
+			//NEW SUPR
+			//MAJTableauGeneration(plancheCree,unProduit);
 
 			Raffraichir(); // A voir ?		
 
@@ -576,11 +621,11 @@ function GenererFichiersWEB() {
 		}
 	}
 	catch(err) {
-		MsgERREUR("ERREUR GenererFichiersWEB()", "Fichier en cours : " + unProduit.FichierPhoto + "\n" + ErreurInfoMSG(err));
+		MsgLOGInfo("ERREUR GenererFichiersWEB()", "Fichier en cours : " + unProduit.FichierPhoto + "\n" + ErreurInfoMSG(err));
 		Select_Generer.enabled = true;
 	}
 }
-
+/*
 function GenererFichiersWEB_OLD() { //////////////////////////////////////////////
 	try {
 		var isEcoleOK = false;
@@ -639,11 +684,11 @@ function GenererFichiersWEB_OLD() { ////////////////////////////////////////////
 		}
 	}
 	catch(err) {
-		MsgERREUR("ERREUR GenererFichiersWEB()", "Fichier en cours : " + unProduit.FichierPhoto + "\n" + ErreurInfoMSG(err));
+		MsgLOGInfo("ERREUR GenererFichiersWEB()", "Fichier en cours : " + unProduit.FichierPhoto + "\n" + ErreurInfoMSG(err));
 		Select_Generer.enabled = true;
 	}
 }
-
+*/
 //////////////////////////////////////
 
 

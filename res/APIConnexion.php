@@ -48,4 +48,13 @@ function ArgumentURL(){
 	return '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
 }
 
+function LienOuvrirDossierOS($repertoire) {
+	$LienFichier = '#';
+	if ($repertoire != ''){
+		$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+		$LienFichier = "CATPhotolab.php". $Environnement . "&OpenRep=" . urlencode($repertoire);		
+	}
+	return $LienFichier;
+}
+
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 $DateISOLEE = '2020-09-31';
+$FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES) EN COURS";
 
 class CGroupeCmdes {
     var $ListePromoteurs;
@@ -10,7 +11,6 @@ class CGroupeCmdes {
 	var $tabCMDLabo;  
 	var $DateISOLEE;
 	var $colEColes;
-
 	
     function __construct($myfileName){
 		$this->tabFICHIERLabo = $myfileName;
@@ -19,8 +19,7 @@ class CGroupeCmdes {
 		// Output one line until end-of-file
 		
 		//$GLOBALS['DateISOLEE'] = substr($myfileName, strripos($myfileName, '/') + 1,10);
-		
-		
+				
 		while(!feof($myfile)) {
 			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
 		}
@@ -153,6 +152,9 @@ class CEcole {
 			//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
 			return $this->DateISOLEE . '-CMD-ISOLEES' ;
 		}	
+		elseif (stripos($this->Nom, '(RECOMMANDES)') !== false) { // C'est des RECOs
+			return $GLOBALS['FichierDossierRECOMMANDE'] ;
+		}		
 		else{
 			return $this->DateTirage . '-' .$this->Nom ;	
 		}	
@@ -179,7 +181,7 @@ class CEcole {
 		return $resultat;
 	}	
 	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='@'. $this->DateTirage . '_' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->Details .'@'.PHP_EOL; 
+		$resultat ='@'. $this->DateTirage . '_(RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->Details .'@'.PHP_EOL; 
 		//@2020-12-03_(ISOLEES) Elementaire La Chateigneraie-HAUTE GOULAINE_ECOLE-1017_Ecole web !@ 
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$isEcris = false;
@@ -347,7 +349,7 @@ class CPlanche {
 	var $Teinte;
 	//var $Extension;
     function __construct($str){
-		//echo '<br>' . $this->FichierPlanche ;
+		echo '<br>' . $this->FichierPlanche ;
 		if (substr($str,0,1) == 'P'){
 			$this->FichierPlanche = $str;		
 			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
@@ -384,6 +386,24 @@ class CPlanche {
 			$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
 			$resultat = $this->FichierPlanche . PHP_EOL;
 			//fputs($Fichier, $lines[$i]);
+			//(RECOMMANDES) EN COURS
+			global $repertoireTirages;
+			global $repertoireMiniatures;
+			global $EcoleEnCours;
+			
+			
+			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
+			$Lien = $repertoireMiniatures . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
+			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
+			
+			$DossierRECOenCours = CreationDossier($repertoireTirages . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierTailleRECOenCours = CreationDossier($DossierRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');
+			$DossierMiniatureRECOenCours = CreationDossier($repertoireMiniatures . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierMiniatureTailleRECOenCours = CreationDossier($DossierMiniatureRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');				
+			
+			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
+			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
+			//RecopierPlanche($LienBig,$LienBig.".jpg");
 		}
 		/*
 		$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
@@ -395,6 +415,21 @@ class CPlanche {
 		}	*/
 		return $resultat;				
 	}		
+}
+
+function RecopierPlanche($LienOrigine,$LienDestination){
+
+	$valReturn = copy($LienOrigine,$LienDestination);
+
+	if($GLOBALS['isDebug']){
+		if ($valReturn){
+			Echo '<br>Le fichier '.$LienOrigine.' a été copié<br> dans le répertoire '.$LienDestination;
+		}
+		else{
+			echo "<br>Erreur La copy n'est pas faite !";				
+		} 	
+		return $valReturn;
+	}
 }
 
 ?>

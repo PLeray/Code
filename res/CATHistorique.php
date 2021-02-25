@@ -35,7 +35,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 </div>
 
 <?php
-
+	$g_IsLocalMachine = IsLocalMachine();
 if (isset($_GET['RECFileLab'])) { // Transformation de l'état d'un fichier lab 
 	if ($GLOBALS['isDebug']){echo 'le fichier a transformer : ' .$_GET['RECFileLab'] . ' en : ' .$_GET['RECFileLab']. '0';}
 	RECFileLab($_GET['RECFileLab']);
@@ -56,7 +56,7 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 <BR>
 <div class="recherche">	
 	<a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a>
-	<h1>Historique des commandes (nombre : <?php echo $nb_fichier; ?>)</h1>
+	<h1>Historique des groupes de commandes (nombre : <?php echo $nb_fichier; ?>)</h1>
 	<!-- RECHERCHE -->
 	<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tapez les premières lettres, pour rechercher une commande..." title="Tapez les premières lettres...">
 </div>
@@ -66,13 +66,11 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 	<table class="Tableau" id="myTableLAB">-->
 	<table id="commandes">
 	  <tr class="header">
-  
+		<th  style="width:110px;" ><H3>Etat</H3></th>  
 		<th style="width:127px;" onclick="sortTable(0)"><H3>Date</H3></th>
 
-		<th onclick="sortTable(1)"><H3>Fichiers de commandes laboratoire</H3></th>
-		<th  style="width:110px;" ><H3>Etat</H3></th>
-		<th  style="width:100px;" ><H3>Nb de Commandes</H3></th>			
-		<th  style="width:90px;" ><H3>Nb de Planches</H3></th>
+		<th onclick="sortTable(1)"><H3>Groupes de commandes de planches</H3></th>
+		<th  style="width:100px;" ><H3>Commandes<br><br>Planches</H3></th>	
 		<th  style="width:90px;" ><H3>Planches crées</H3></th>
 		<th  style="width:90px;" ><H3>Envoyées labo</H3></th>
 		<th  style="width:90px;" ><H3>Cartonnage en cours</H3></th>

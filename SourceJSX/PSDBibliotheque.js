@@ -125,7 +125,7 @@ function AfficheListeSOURCE() {
 	var valRetour = 0; // Rien
 	if (LireFichierSource()){ // il y a au moins une source
 		//var dlgListeSOURCE = new Window ('palette {text: "Bibliotheque des sources photos PhotoLab", alignChildren: "fill"}');
-    var dlgListeSOURCE = new Window ('dialog',"Bibliotheque des sources photos PhotoLab");
+    var dlgListeSOURCE = new Window ('dialog',"Bibliotheque des sources de photos pour PhotoLab");
         dlgListeSOURCE.alignChildren = ["left","top"]; 
                 //dlgListeSOURCE.frameLocation = [ -4, -4 ];
         dlgListeSOURCE.graphics.backgroundColor = dlgListeSOURCE.graphics.newBrush (dlgListeSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
@@ -245,7 +245,7 @@ function AfficheEditionSOURCE(uneSource) {
         dlgEditSOURCE.graphics.backgroundColor = dlgEditSOURCE.graphics.newBrush (dlgEditSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
         dlgEditSOURCE.graphics.foregroundColor = dlgEditSOURCE.graphics.newPen(dlgEditSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
         
-		dlgEditSOURCE.text = "Edition d'une source PhotoLab"; 
+		dlgEditSOURCE.text = "Edition d'une source de photos pour PhotoLab"; 
 		dlgEditSOURCE.orientation = "column"; 
 		dlgEditSOURCE.alignChildren = ["left","top"]; 
 		dlgEditSOURCE.spacing = 10; 

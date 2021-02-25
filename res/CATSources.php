@@ -7,7 +7,7 @@ $isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 include 'APIConnexion.php';
-include 'CATFonctions.php';
+//include 'CATFonctions.php';
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 
@@ -139,7 +139,7 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV){
 			
 		$isArbo	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($TabCSV[$i]["NomProjet"]) . '2');
 		
-		$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"],$isArbo) . '"  title="Faire un ensemble de fichier pour presentation web">' . LienImageOKKO($isArbo) . '</a></td>';	
+		$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"],$isArbo) . '"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($isArbo) . '</a></td>';	
 
 
 			
@@ -187,5 +187,12 @@ function SUPRAccents($str, $charset='utf-8' ) {
     $str = preg_replace( '#&[^;]+;#', '', $str );    
     return $str;
 }
+
+function LienImageArbo($isOK){
+	$Lien = ($isOK?'src="img/OK.png" alt="Oui"':'src="img/KO.png" alt="Non"'). ' class="OKKOIMG"';
+	//return $Lien;
+	return '<img ' . $Lien . '>';
+} 
+
 
 ?>

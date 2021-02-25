@@ -33,14 +33,13 @@ function initPagination() {
 }	
 
 function AfficheRechercheCMD(isAffiche) {
+	isRECOmmandes = isAffiche;
 	if (isAffiche){
 		
-		
-  document.getElementById("mySidenav").style.width = "250px";
-  //document.getElementById("mySidenav").style.z-index = 2;  
-  document.getElementById("main").style.marginRight = "250px";
-  document.getElementById("Entete").style.marginRight = "250px";		
-		
+		document.getElementById("mySidenav").style.width = "250px";
+		//document.getElementById("mySidenav").style.z-index = 2;  
+		document.getElementById("main").style.marginRight = "250px";
+		document.getElementById("Entete").style.marginRight = "250px";			
 		
 		var rech = document.getElementById("zoneRechercheCMD");
 		rech.style.display = '';
@@ -49,12 +48,12 @@ function AfficheRechercheCMD(isAffiche) {
 		
 	}
 	else{
-    document.getElementById("zoneRecherche").value ='';
-	RechercheMulti(' ');
-	document.getElementById("mySidenav").style.width = "0";
-	  //document.getElementById("mySidenav").style.z-index = -2;  
-	document.getElementById("main").style.marginRight = "0";
-	document.getElementById("Entete").style.marginRight = "0";		
+		document.getElementById("zoneRecherche").value ='';
+		RechercheMulti(' ');
+		document.getElementById("mySidenav").style.width = "0";
+		  //document.getElementById("mySidenav").style.z-index = -2;  
+		document.getElementById("main").style.marginRight = "0";
+		document.getElementById("Entete").style.marginRight = "0";		
 		
 		
 		var rech = document.getElementById("zoneRechercheCMD");
@@ -243,6 +242,7 @@ function RechercheMulti(strElementsRech) {
 			
 				tabCMD.push(cmd[i].id.toUpperCase()); // ajoute num commande ds Tableau
 			}
+			else {cmd[i].getElementsByTagName("button")[0].removeAttribute("mark"); }
 		}	
 		/*		
 		cmd = document.getElementsByClassName("TitrecommandeRecherche");
@@ -359,16 +359,14 @@ InitCommandes();
 }
 
 function SelectionPhoto(x) {
-	if(x.classList.contains("planche") ){
+	if(x.classList.contains("planche") && isRECOmmandes){
 		x.classList.replace("planche", "plancheSELECTIONNER");
-		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
-
+		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));					
 	}else {
 		x.classList.replace("plancheSELECTIONNER", "planche");
 		x.setAttribute('title',  x.getAttribute('id'));
 	}  
-
-  mesRecommandes();
+	mesRecommandes();
 }
 			
 function VoirPhotoSelection(x) {

@@ -93,8 +93,13 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		$NbPlanches = $NbLignes;
 		$affiche_Tableau = '[Version :1.0]' . '<br>'
 							. '{Etat : -1 : Non enregistre %%'
-							. EcrireBilanCMD($NbPlanches, count(array_unique($TabCSV[$i]["Num de facture"]))) . '<br>' 
+							. EcrireBilanCMD(count(array_unique(array_column($TabCSV, 'Num de commande')))) . '<br>' 
 							. $affiche_Tableau;
+							
+						
+							
+							
+							
 							
 		//$affiche_Tableau = str_replace('<br>', '\n', $affiche_Tableau);
 		
@@ -117,16 +122,16 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 	return $affiche_Tableau ;  
 }
 
-function EcrireBilanCMD($NbPlanches, $NbCommandes)
+function EcrireBilanCMD( $NbCommandes)
 {
-	$unBilan = 'La commande comprend :%';
+	$unBilan = 'Le groupe de commandes comprend ' . $NbCommandes . ' commandes.%';
 	$unTab = array_count_values($GLOBALS['TabResumeProduit']);
 	
 	foreach ($unTab as $key => $row) {
 		$unBilan .= '- ' .$key . ': ' . $unTab[$key] . '%';
 	}
 	$unTab = array_count_values($GLOBALS['TabResumeFormat']);
-	$unBilan .= '%%%Il y a ' . $NbPlanches . ' fichiers a creer au laboratoire.%';
+	//$unBilan .= '%%%Pour un total de ' . $NbCommandes . ' commandes individuelles%';
 	$unBilan .= '%%%Il y a ' . count($GLOBALS['TabResumeProduit']) . ' fichiers a creer au laboratoire.%';
 	foreach ($unTab as $key => $row) {
 		$unBilan .= '- Format ' .$key . ': ' . $unTab[$key] . '%';

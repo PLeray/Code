@@ -160,58 +160,7 @@ img {
 .BoutonVoirenCours:focus, .BoutonVoirhistorique:focus {
 	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
 }
-/*
-#dropArea {
-  position: absolute;
-  display: inline-block;
-  Right: 92px;
-  Top: 3px;
-  z-index:4;
-	text-align: center; 
-    background-color: var(--FondLigneTabGrisClair);
-    border: 3px dashed var(--boutonVert);
-    min-height: 200px;
-    
-    width: 700px;
-	
-	line-height: 20px;
-	margin: 5px;
 
-	border-radius: 20px;	
-	
-	font-size: 14px;
-	padding: 50px;
-	
-	color: var(--boutonRouge); 
-    letter-spacing: 3px;
-
-	font-family: "Courier New", Times, serif;	
-}
-#dropArea.hover {
-    background-color: var(--boutonRouge);
-}
-#dropArea.uploading {
-    background: #FF9D01;
-}
-
-#dropArea.relache {
-    background: var(--FondLigneTabGrisClair);
-}
-
-#dropAreaRESULT
-{
-
-}
-
-#result
- {
-	padding: 10px;
-	font-size: 12px;
-	color: #FFF;
-}
-
-
-*/
 
 /*Commandes*/
 #commandes {
@@ -313,4 +262,21 @@ img {
 	white-space : nowrap;
 	position: relative;
 	background-image: linear-gradient(to right, var(--FondLigneTabGrisFonce) 0%, var(--boutonVert) 30%);
+}
+
+.containerCMDPLanche {
+  position: relative;
+  text-align: left;
+
+}
+.txtCMDPLanche {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translate(0%, -50%);
+  
+}
+
+.mini {
+  font-size: 10px;
 }

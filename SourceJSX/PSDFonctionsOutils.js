@@ -27,7 +27,7 @@ function OuvrirFichierToTableauDeLigne(file) {
 		}
 		else {
 			//alert (retourAPI, "APIphotolab Erreur !", true)
-			MsgERREUR("APIphotolab Erreur !", retourAPI);
+			MsgLOGInfo("APIphotolab Erreur !", retourAPI);
 			
 			tabPlanchesLabo.length = 0; // = [];
 		}
@@ -121,7 +121,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	//Fchier etat/ lab1 ou lab2 ou web1 web2
 	var fileName = fileName.substr(0,fileName.length-1); // lab0 >> lab1
 	fileName = g_SelectFichierLab.path + '/' + fileName + numEtatCompil; // + '1' : Etat les planches de la commande sont EN COURS (16-11)
-	
+	alert('TESTY01  SauverFichierFromTableauDeLigne ' +  fileName);
 	var file = new File(fileName);
 	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
@@ -149,7 +149,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	//if (numEtatCompil != 1) {alert (TableauTOStr(g_TabLigneOriginale));}
 	//alert('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB\n');
 	
-	MsgINFO('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB');
+	MsgINFO('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire  Web PHOTOLAB');
 
 	//return nbErreur;
 	return true;
@@ -179,7 +179,7 @@ function EcrireErreursBilan(fileName) {
 		file.open("w"); // open file with write access
 			for (var n = 0; n < g_BilanGeneration.length; n++) {
 				file.writeln(g_BilanGeneration[n]);
-				MsgERREUR("ERREUR " + (n + 1), g_BilanGeneration[n]);
+				MsgLOGInfo("ERREUR " + (n + 1), g_BilanGeneration[n]);
 			}		
 		file.close();
 	}
@@ -686,7 +686,7 @@ function VerifNomRep(unNomdeRepertoire){
 	var regex = new RegExp('^[a-zA-Z0-9]+([\.|-]{1}[a-z0-9]+)*[\.]{1}[a-z0-9]{2,6}$', 'i'); 
 	if (regex.test (unNomdeRepertoire)) {
         //alert ('Nom de dossier incorrect');
-		MsgERREUR('Erreur','Nom de dossier incorrect');
+		MsgLOGInfo('Erreur','Nom de dossier incorrect');
         return false;
 	 }
 	 else {
@@ -707,7 +707,7 @@ function CreerRepertoire(unNomdeRepertoire){
 	}
 	catch(err) {
 		//alert ("Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message, "ERREUR : CreerRepertoire()", true);
-		MsgERREUR("ERREUR : CreerRepertoire()", "Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message);
+		MsgLOGInfo("ERREUR : CreerRepertoire()", "Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message);
 		return false;
 	}
 }
@@ -835,7 +835,7 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 	}
 	catch(err) {
 		//alert ("Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message, "ERREUR : CreerRepertoire()", true);
-		MsgERREUR("Commande  : " + g_CommandePDTEncours + " ERREUR : InitGroupesClasseIndiv()", ErreurInfoMSG(err));
+		MsgLOGInfo("Commande  : " + g_CommandePDTEncours + " ERREUR : InitGroupesClasseIndiv()", ErreurInfoMSG(err));
 		return '';
 	}		
 }
@@ -1023,7 +1023,7 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 		return theFiles;
 	}
 	catch(err) {
-		MsgERREUR("Commande  : " + g_CommandePDTEncours + " ERREUR : CreationSOURCEWEB()", ErreurInfoMSG(err));
+		MsgLOGInfo("Commande  : " + g_CommandePDTEncours + " ERREUR : CreationSOURCEWEB()", ErreurInfoMSG(err));
 		return '';
 	}	
 }
