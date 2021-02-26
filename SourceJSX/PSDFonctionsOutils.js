@@ -121,11 +121,12 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	//Fchier etat/ lab1 ou lab2 ou web1 web2
 	var fileName = fileName.substr(0,fileName.length-1); // lab0 >> lab1
 	fileName = g_SelectFichierLab.path + '/' + fileName + numEtatCompil; // + '1' : Etat les planches de la commande sont EN COURS (16-11)
-	alert('TESTY01  SauverFichierFromTableauDeLigne ' +  fileName);
+	//alert('TESTY01  SauverFichierFromTableauDeLigne ' +  fileName);
 	var file = new File(fileName);
 	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
-		for (var n = 0; n < g_TabLigneOriginale.length; n++) {			
+		for (var n = 0; n < g_TabLigneOriginale.length; n++) {	
+	
 			switch(n) {
 			case 0:
 			//alert('case 0 :');
@@ -142,6 +143,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 				}
 				break;
 			default:
+				
 				file.writeln(g_TabLigneOriginale[n]);
 			} 
 		}		
@@ -149,7 +151,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	//if (numEtatCompil != 1) {alert (TableauTOStr(g_TabLigneOriginale));}
 	//alert('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB\n');
 	
-	MsgINFO('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire  Web PHOTOLAB');
+	MsgLOGInfo('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire  Web PHOTOLAB');
 
 	//return nbErreur;
 	return true;
@@ -428,7 +430,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 		try {
 			//alert('CreerUnProduitPourLeLaboratoire \n Code de unProduit ' + unProduit.Code);
 
-			//alert('DEBUT CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
+			//alert('TESTZ50 DEBUT CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
 			if (unProduit.Code){
 				if (unProduit.FichierPhoto.length && unProduit.isNeedGroupeClasse()){//Ouvrir la bonne photo ? Groupe
 					//alert('sdsdsdsdur : ' + nomFichierPhoto ); //////////////////////////////////////////////

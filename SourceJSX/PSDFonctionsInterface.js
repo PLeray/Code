@@ -26,7 +26,7 @@ function Auto() {
 	Raffraichir(); 
 	//alert('AUTO');
 	var nbFichierATraiter = ChercherFichierLab();
-	g_IsPhotoLabON = true;
+	//g_IsPhotoLabON = true;
 	g_IsTravail = true;
 	InitCommande();
 	
@@ -102,10 +102,14 @@ function GestionBoutonGenerer() {
 	
 	SetBoutonGenerer();
 	if (!g_IsGenerationEnCours){ //  On n'est pas en cours de generation !!!
+		//alert('TESTZ29  g_IsGenerationEnPause : ' + g_IsGenerationEnPause);	
+	
 		GenererLeFichierNOM();
 		g_IsGenerationEnPause = false;	
+		Auto();
+
 	}	
-alert('TESTZ30  g_IsGenerationEnPause !!!' + g_IsGenerationEnPause);	
+//alert('TESTZ30  g_IsGenerationEnPause !!! : ' + g_IsGenerationEnPause);	
 }
 
 function SetBoutonGenerer(){
@@ -229,7 +233,7 @@ function OuvrirFichierLabo() {
 				if (g_CommandeLabo.isValide()){
 					//alert('TESTZ5  est  isValide');
 					g_CommandeLabo.InitListePlanches();
-					alert('TESTZ6  InitListePlanches Nb Planches : ' + g_CommandeLabo.NbPlanchesACreer());
+					//alert('TESTZ6  InitListePlanches Nb Planches : ' + g_SelectFichierLab + '    ' + g_CommandeLabo.NbPlanchesACreer());
 					//UI
 					var premiereEcole = new Ecole (g_CommandeLabo.Ecole);	
 					//alert('TESTZ7  InitListePlanches');					
@@ -267,6 +271,7 @@ function MAJinfoEcole(uneEcole) {
 
 	g_RepSOURCE = TrouverRepSOURCEdansBibliotheque(uneEcole.CodeRefEcole);
 	g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole.CodeRefEcole);
+	//alert("TEST Z60 ");	
     if (g_RepSOURCE ==''){
 		msg = "Ecole en cours : " + g_CommandeECOLEEncours
 		AjoutBilanGeneration(msg);
@@ -278,6 +283,7 @@ function MAJinfoEcole(uneEcole) {
 		AjoutBilanGeneration('');
 		MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
 		g_Erreur = msg;
+		//alert("TEST Z61 ");	
 	}
 	else {
 
@@ -317,6 +323,7 @@ function MAJinfoEcole(uneEcole) {
 			
 			valRetour = false;		
 		}
+		//alert("TEST Z63 ");
 	}
 	return valRetour;
 }
@@ -330,26 +337,29 @@ function GenererFichiersLABO() {
 
 		var chronoDebut = new Date().getTime();
         var nbLigneFichier = g_CommandeLabo.NbLignes();
-		//var cmdReste = nbLigneFichier;		
+		//var cmdReste = nbLigneFichier;	
+//alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);		
 		for (var m = 0; m < nbLigneFichier; m++) {
 			
 			// ATTEN tion ici on n utilise plus le tableau de ligne avec seulement ecole et planche
 			// Mais tout ...
+			//
             var ligne = g_CommandeLabo.TableauLignes[m];
+			//alert("TEST Z39 : " + ligne);
 			if (!isEntete(ligne) && !isLigneEtat(ligne))
-			{			
+			{		
 				if (isEcole(ligne)){// Mise à jour des SOURCES !!
-					//alert("isEcole : " + ligne);
+					
 					g_CommandeECOLEEncours = ligne;	
 					var uneEcole = new Ecole(g_CommandeECOLEEncours);  
+					//	
 					isEcoleOK = MAJinfoEcole(uneEcole);		
+					
 				}  
 				else {
 					//UI
-					progressBar.value = m + 1;
-					g_CommandeAVANCEMENT = Number( m  / g_CommandeLabo.NbPlanchesACreer());
-					g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
-					txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier);										
+					
+										
 					if (isEcoleOK && ligne && CreerRepertoire(g_RepTIRAGES_DateEcole)){                
 					
 						g_CommandePDTEncours = ligne.substr(0,ligne.length-2);
@@ -370,14 +380,20 @@ function GenererFichiersLABO() {
 				}
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
 				// Attention
-				
+				//alert("TEST Z44 ");
 				SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
+				//alert("TEST Z45 ");
 				EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
+				//alert("TEST Z46 ");
 				//alert('SauverFichierFromTableauDeLigne ' +  plancheCree);			
 			}
+			progressBar.value = m + 1;
+			g_CommandeAVANCEMENT = Number( ( m + 1)  / (nbLigneFichier - 1) ); //g_CommandeLabo.NbPlanchesACreer()
+			g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
+			txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier);			
 		}
 		/////// Retour sur le temps Passé   //////////////
-        if (!g_IsGenerationEnPause){ 
+        if (!g_IsGenerationEnPause && g_IsPhotoLabON){ 
 			var nbErreur = EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
 			//alert('nbErreur ' +  nbErreur + ' g_SelectFichierLab.name : ' +  g_SelectFichierLab.name);	
 			BilanFinTraitement(chronoDebut, nbErreur);		
@@ -406,7 +422,7 @@ function MAJTableauGeneration(plancheCree,unProduit)
 */
 
 function isInterruptionTraitement() { 
-
+	var isStop = false;
 	if (g_IsGenerationEnPause){		//alert('g_IsGenerationEnPause ' + g_IsGenerationEnPause);	
 		SetBoutonGenerer();
 		var leMessage = 'Voulez vous stopper la creation des planches ? ';
@@ -423,17 +439,18 @@ function isInterruptionTraitement() {
 			
 			MsgLOGInfo("Création annulée !");
 			g_IsPhotoLabON = false;		
-			return true;
+			isStop =  true;
 		} 
 		else {
 			MsgLOGInfo("La création va repartir !");
 			
-			return false;
+			isStop =  false;
 		}
 		g_IsGenerationEnPause = false;
 		//Select_Generer.text = (g_IsGenerationEnPause?'>':'||');
 		SetBoutonGenerer();
 	}	
+	return isStop;
 }
 
 function BilanFinTraitement(chronoDebut, nbErreur) { 

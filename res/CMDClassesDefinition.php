@@ -349,7 +349,6 @@ class CPlanche {
 	var $Teinte;
 	//var $Extension;
     function __construct($str){
-		echo '<br>' . $this->FichierPlanche ;
 		if (substr($str,0,1) == 'P'){
 			$this->FichierPlanche = $str;		
 			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));

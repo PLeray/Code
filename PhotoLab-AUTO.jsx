@@ -186,14 +186,14 @@ g_NomFichierEnCours = list.selection.text;
 //e.active = true;
 }	
 
-
+/*
 		
 		var buttonScanCMD = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
 		buttonScanCMD.alignment = "left";
 		buttonScanCMD.helpTip = "Scanner et traiter le repertoire des commandes ..."; 
 		buttonScanCMD.onClick = function () {	
 			Auto(); 
-		}/**/
+		}*/
 
 		
 		/*  §§§§§§§§§§§§§§§§§§§§ SUPRIMER SOURCE DERRIERE
