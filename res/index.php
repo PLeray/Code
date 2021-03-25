@@ -37,17 +37,29 @@ if ($codeMembre == '' || $codeMembre == '0'){
 		<img src="res/img/Logo.png" alt="Image de fichier">
 	</div> -->
 <body>
+
+<div class="logo">
+	<img src="img/Logo.png" alt="Image de fichier">
+</div>
+
+
 	<center>
 		<div class="recherche">	
 		<h1>Phot<img src="img/Logo-Ultra-mini.png" width="20">Lab <?php echo $GLOBALS['VERSION'] ?></h1>
 		</div>
-		<br><br>
+
+		<?php 		
+echo '
+<div id="mySidenav" class="sidenav">
+  <a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ...">S</a>
+  <a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de traitement ...">C</a>
+  <a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ...">H</a>
+  <a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ...">A</a>
+</div>
+'	
+?>
 		
-		<a href="<?php echo 'CATSources.php' . ArgumentURL(); ?>"><img src="img/PhotoLabSOURCE.png" alt="Catalogue de sources"></a>  
-		<a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>"><img src="img/PhotoLabCMD.png" alt="Commandes en cours"></a>  
-		<a href="<?php echo 'CATHistorique.php' . ArgumentURL(); ?>"><img src="img/PhotoLabHISTO.png" alt="Historique des commandes"></a>
-		<a href="<?php echo $maConnexionAPI->Adresse(); ?>"><img src="img/PhotoLabFACT.png" alt="Commandes Enregistrées"></a>	
-		<br><br><br><br>
+<br><br>
 		<?php 
 		if ($codeMembre != '' && $codeMembre != '0'){
 			echo '<div id="dropArea"><br>Glisser déposer un fichier commandes dans cette zone.<br>

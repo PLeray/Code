@@ -1,5 +1,6 @@
 ﻿////////////////////////////// LES FONCTIONS INTERFACE //////////////////////////////////////////////
 #include PSDFonctionsOutils.js
+
 var g_CommandePDTEncours = '';
 var g_CommandeECOLEEncours = ''; 
 var g_CommandeAVANCEMENT = ''; 
@@ -75,13 +76,13 @@ function GenererLeFichierNOM() {
 	//buttonConfig.enabled = false;
 	//alert('TESTZ11  GenererLeFichierNOM !!!' + g_SelectFichierLab);
 	Raffraichir();
-	//alert('TESTZ11bb  GenererLeFichierNOM !!!' + g_SelectFichierLab);
+	//alert('TESTZ11bb  GenererLeFichierNOM !!!' + g_NomFichierEnCours);
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
-		//alert('TESTZ20  OuvrirSelectFichierLab0 !!!' + g_SelectFichierLab);
+		//alert('TESTZ20  OuvrirSelectFichierLab0 !!!' + g_NomFichierEnCours);
 		InitInfoFichier();
 		
 		if (g_IsPlancheSiteWEB){
-			alert('TESTZ21  GenererFichiersWEB !!!' + g_SelectFichierLab);
+			//alert('TESTZ21  GenererFichiersWEB !!!' + g_SelectFichierLab);
 			GenererFichiersWEB();
 		}
 		else {
@@ -233,16 +234,22 @@ function OuvrirFichierLabo() {
 				if (g_CommandeLabo.isValide()){
 					//alert('TESTZ5  est  isValide');
 					g_CommandeLabo.InitListePlanches();
-					//alert('TESTZ6  InitListePlanches Nb Planches : ' + g_SelectFichierLab + '    ' + g_CommandeLabo.NbPlanchesACreer());
+					//alert('TESTZ6  g_CommandeLabo.Ecole : "' + (g_CommandeLabo.Ecole?'Ecole':'KO') + '"  nb planche : ' + g_CommandeLabo.NbPlanchesACreer());
 					//UI
-					var premiereEcole = new Ecole (g_CommandeLabo.Ecole);	
+
+					
+					// PLANTE POUR FICHIER WEB >> supression car inutile ???? 22/03
+					//var premiereEcole = new Ecole (g_CommandeLabo.Ecole);	
+					
+					
 					//alert('TESTZ7  InitListePlanches');					
 					//UI
 					//nbFichierAGenerer.text = 'Repertoire TIRAGE :     (Nombre de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')';
 					Select_Generer.enabled =  (g_SelectFichierLab) ? true : false ;
 					//buttonConfig.enabled = true;
 					progressBar.maxvalue = g_CommandeLabo.NbPlanchesACreer();		
-					valRetour = true;					
+					valRetour = true;		
+					//alert('TESTZ8bb  valRetour ' + valRetour);					
 				}
 			}else{
 				//alert('TESTZ4 commande est pas enregistré');
@@ -328,7 +335,6 @@ function MAJinfoEcole(uneEcole) {
 	return valRetour;
 }
 
-
 function GenererFichiersLABO() { 
 	try {
 		var isEcoleOK = false;
@@ -338,10 +344,10 @@ function GenererFichiersLABO() {
 		var chronoDebut = new Date().getTime();
         var nbLigneFichier = g_CommandeLabo.NbLignes();
 		//var cmdReste = nbLigneFichier;	
-//alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);		
+        //alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);		
 		for (var m = 0; m < nbLigneFichier; m++) {
 			
-			// ATTEN tion ici on n utilise plus le tableau de ligne avec seulement ecole et planche
+			// ATTENtion ici on n utilise plus le tableau de ligne avec seulement ecole et planche
 			// Mais tout ...
 			//
             var ligne = g_CommandeLabo.TableauLignes[m];
@@ -576,7 +582,7 @@ function ArborescenceWEB(){
 	progressBar.maxvalue = size;
 	//alert('progressBar.maxvalue : ' + progressBar.maxvalue);
 	//progressBar.value = 15;
-	//alert('progressBar.value : ' + progressBar.value);
+	alert('ZX00333  progressBar.value : ' + progressBar.value);
 	Raffraichir();
 	for(var fichier in g_GroupeIndiv){
 		i = i + 1;
@@ -601,12 +607,44 @@ function GenererFichiersWEB() {
 		
 		chronoDebut = new Date().getTime();
 		
+		
+		//alert("ZX000 : RecupSourceDepuisCode");			
+		// A finaliser en parametre
+		var SRCEcole = new Ecole (g_CommandeLabo.Ecole);	
+		//alert("ZX00AA : RecupSourceDepuisCode : " + SRCEcole.CodeRefEcole);	
+		var cdecole = SRCEcole.CodeRefEcole;
+		
+		LireFichierSource();
+		var uneSource = new objSourceCSV(); 
+		uneSource = RecupSourceDepuisCode(cdecole);
+		
+		//alert("ZX00BB : RecupSourceDepuisCode : " + uneSource.CodeEcole);	
+
+		//alert("ZX00CCC : RecupSourceDepuisCode: " + uneSource.Repertoire);
+		//LoadConfig();	// deja chargé au demarrage Parametre de la compil Web quatros , frat ...
+		
+		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
+
+		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
+		
+		
+		g_RepSOURCE  = uneSource.Repertoire;
+
+
+		g_TabListeNomsClasses = [];
+		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);	
+
+		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
+		//alert("ZX00FFF : InitialisationSourcePourLewEB ok");
+		
 		var size = 0;
 		var i = 0;
 		for(var fichier in g_GroupeIndiv){
 			size++;
 		}	
-		progressBar.maxvalue = size;		
+		progressBar.maxvalue = size;	
+		//alert("ZX001 : nb de fichier : " + size );	
+	
 
 		for(var fichier in g_GroupeIndiv){
 			i = i + 1;
@@ -621,7 +659,7 @@ function GenererFichiersWEB() {
 
 			Raffraichir(); // A voir ?		
 
-			//alert("fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
+			//alert("ZX01 : fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
 			CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
 
 			if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	

@@ -23,16 +23,20 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<script type="text/javascript" src="js/CATFonctions.js"></script>
-	<!-- <script type="text/javascript" src="res/APIConnexion.js"></script>	 -->
+	<link rel="stylesheet" type="text/css" href="css/Menu.css">
 </head>
 
 <body>
+<?php AfficheMenuPage('',$maConnexionAPI); ?>
+<div class="logo">
+	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
+</div>
 <!-- 
 <p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
--->
+
 <div class="logo">
-<a href="<?php echo 'index.php' . ArgumentURL(); ?>"><img src="img/LogoHistorique.png" alt="Image de fichier"></a>
-</div>
+<a href="<?php //echo 'index.php' . ArgumentURL(); ?>"><img src="img/LogoHistorique.png" alt="Image de fichier"></a>
+</div>-->
 
 <?php
 	$g_IsLocalMachine = IsLocalMachine();
@@ -53,15 +57,16 @@ $nb_fichier = 0;
 $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 
 ?>
-<BR>
+
 <div class="recherche">	
-	<a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a>
-	<h1>Historique des groupes de commandes (nombre : <?php echo $nb_fichier; ?>)</h1>
+	<!-- <a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a> -->
+
 	<!-- RECHERCHE -->
 	<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tapez les premières lettres, pour rechercher une commande..." title="Tapez les premières lettres...">
 </div>
-<BR>
+<BR><BR><BR>
 <div class="zoneTable" >
+	<h1>Historique des groupes de commandes (nombre : <?php echo $nb_fichier; ?>)</h1>
 <!-- ////////// FIN de l'HTML Standard ////////// 
 	<table class="Tableau" id="myTableLAB">-->
 	<table id="commandes">

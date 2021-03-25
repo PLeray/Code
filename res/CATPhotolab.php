@@ -21,12 +21,11 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
-	<!-- <script type="text/javascript" src="res/js/CATFonctions.js"></script>
-	<script type="text/javascript" src="res/APIConnexion.js"></script>	 -->
-	
+	<link rel="stylesheet" type="text/css" href="css/Menu.css">
 </head>
 
 <body>
+<?php AfficheMenuPage('',$maConnexionAPI); ?>
 <!-- 
 <p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
 -->
@@ -71,7 +70,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 		BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 	} 
 	elseif (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
-		BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode']);
+		BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode'], $_GET['CodeEcole']);
 	}
 	elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
 		//echo API_GetCMDLAB(($_GET['apiCMDLAB']));
@@ -89,18 +88,19 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 ?>
 
 
-<BR><BR><BR>
-<div class="recherche">	
-<a href="<?php echo 'CATHistorique.php' . ArgumentURL(); ?>" style="width:auto" 
+
+<!-- <div class="recherche">	
+<a href="<?php //echo 'CATHistorique.php' . ArgumentURL(); ?>" style="width:auto" 
 	class="BoutonVoirhistorique" title="Rechercher dans l'historique des commandes">Groupes de commandes expédiées...
 	<img src="img/LogoHistorique.png" style="width: 50px;" ></a>
 </div>
-
+-->
+<div class="zoneTable" >
 <h1>Groupes de commandes en cours de préparation : <?php echo $nb_fichier; ?></H1>    
 
 
 
-<div class="zoneTable" >
+
 <!-- ////////// FIN de l'HTML Standard ////////// 
 	<table class="Tableau" id="myTableLAB">-->
 	<table id="commandes">
@@ -118,7 +118,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 	  </tr>  
 	<?php echo $affiche_Tableau; ?>
 	</table>
-</div>
+
 	<BR>
 	<?php // WEB
 	$nb_fichier = 0;
@@ -126,7 +126,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 	?>
 <!-- ////////// FIN de l'HTML Standard 	////////// -->
 
-<div class="zoneTable" >
+
 	<h1>Ensemble de fichiers pour présentation web : <?php echo $nb_fichier; ?></H1>
 	<!--<table class="Tableau" id="myTableWEB">-->
 	<table id="commandes">

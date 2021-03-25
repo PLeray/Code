@@ -20,9 +20,11 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
+	<link rel="stylesheet" type="text/css" href="css/Menu.css">
 </head>
 
 <body>
+<?php AfficheMenuPage('',$maConnexionAPI); ?>
 
 <div class="logo">
 	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
@@ -58,11 +60,7 @@ $nb_fichier = 0;
 $affiche_Tableau = AfficheTableauSOURCES($nb_fichier, "../Sources.csv");
 
 ?>
-
-
-<BR><BR><BR><BR><BR><BR>
-
-
+<div class="zoneTable" >
 <h1>Sources écoles référencées : <?php echo $nb_fichier; ?></H1>    
 	<!--<table class="Tableau" id="myTableWEB">-->
 	<table id="commandes">
@@ -121,7 +119,7 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV){
 	foreach ($TabCSV as $key => $row) {
 				$NomProjet[$key] = $row['NomProjet'];
 	}
-	array_multisort($NomProjet, SORT_ASC, $TabCSV); // Tri par nom de projet
+	array_multisort($NomProjet, SORT_DESC, $TabCSV); // Tri par nom de projet
 	$NbLignes=count($TabCSV);
 	$nb_fichier = $NbLignes;
 	for($i = 0; $i < $NbLignes; $i++)
@@ -139,7 +137,7 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV){
 			
 		$isArbo	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($TabCSV[$i]["NomProjet"]) . '2');
 		
-		$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"],$isArbo) . '"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($isArbo) . '</a></td>';	
+		$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"], $TabCSV[$i]["Code"], $isArbo).'"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($isArbo) . '</a></td>';	
 
 
 			
@@ -158,7 +156,7 @@ function NBfichiersDOSSIER($Dossier) {
 	$NbFicher = 55;
 	return $NbFicher;
 }
-function LienEtatArbo($fichier , $isDone ) {
+function LienEtatArbo($fichier , $CodeEcole, $isDone ) {
 	$fichierARBO = NomfichierARBO($fichier);
 	$retourMSG = '#';
 	if(! $isDone){
@@ -172,6 +170,7 @@ function LienEtatArbo($fichier , $isDone ) {
 		//echo "Apres move_uploaded_file";
 		$CMDhttpLocal = '&CMDdate=' . substr($fichierARBO, 5, 10);	
 		$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
+		$CMDhttpLocal .= '&CodeEcole=' . $CodeEcole;	
 		$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));	
 		
 		$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);				
@@ -189,7 +188,7 @@ function SUPRAccents($str, $charset='utf-8' ) {
 }
 
 function LienImageArbo($isOK){
-	$Lien = ($isOK?'src="img/OK.png" alt="Oui"':'src="img/KO.png" alt="Non"'). ' class="OKKOIMG"';
+	$Lien = ($isOK?'src="img/ArboOK.png" alt="Oui"':'src="img/ArboKO.png" alt="Non"'). ' class="OKKOIMG"';
 	//return $Lien;
 	return '<img ' . $Lien . '>';
 } 

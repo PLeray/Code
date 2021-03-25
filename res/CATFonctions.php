@@ -290,7 +290,7 @@ function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 	fclose($file);	
 }
 
-function BDDARBOwebfile($NewFichier, $BDDRECCode){
+function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole){
 
 	if ($GLOBALS['isDebug']){
 		echo "<br> STOP !<br> ";
@@ -310,8 +310,12 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode){
 
 	//
 	$file = fopen($strURL_NewFichier, 'w');
-		$premiereligne = '[Version : 2.0' . $BDDRECCode . "\n";
-		fputs($file, $premiereligne);
+		$ligne = '[Version : 2.0' . $BDDRECCode . "\n";
+		fputs($file, $ligne);
+		$ligne = '{Etat 1 :0%%En Cours....}' . "\n";
+		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
+		$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";
+		fputs($file, $ligne);	 //@2021-02-26_L2-Ecole TEST-MAROU_ACC7_Ecole web !@ 
 	fclose($file);	
 }
 function RECFileLab($strRECFileLab){
@@ -719,8 +723,8 @@ function CreationDossier($nomDossier) {
 function IsLocalMachine() {
 	$isLocal = false;
 
-  echo 'L adresse IP de l utilisateur est : '.$_SERVER['REMOTE_ADDR'];
-  echo '<br>L adresse IP du serveur est : '.$_SERVER['SERVER_ADDR'];
+  //echo 'L adresse IP de l utilisateur est : '.$_SERVER['REMOTE_ADDR'];
+  //echo '<br>L adresse IP du serveur est : '.$_SERVER['SERVER_ADDR'];
 
 	return ($_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']) ;
 }

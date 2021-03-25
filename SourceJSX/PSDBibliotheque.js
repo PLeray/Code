@@ -569,7 +569,7 @@ function AfficheClassesAvantArboWeb(uneSource){
 
 		g_TabListeNomsClasses = [];
 		
-		InitialisationSourcePourLewEB(Folder(g_RepSOURCE), []);
+		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
 		//alert('Avant initialisation');
 		var nbclasses = 0;	
 		var isfratrie = false;

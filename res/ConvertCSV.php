@@ -63,11 +63,12 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		//array_multisort($NumCommande, SORT_ASC, $TabCSV);
 		// Ancien Tri : array_multisort($NomProjet, SORT_ASC, $NumCommande, SORT_ASC, $TabCSV);
 		//array_multisort($NomProjet, SORT_ASC, $NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV);
-		array_multisort($NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV); // Tri par num commande puis classe
+		
+		// On garde le tri de LUMYS / par classe ou commandes
+		//array_multisort($NumCommande, SORT_ASC, $NomClasse, SORT_ASC, $TabCSV); // Tri par num commande puis classe
 		$NbLignes=count($TabCSV);
 		
 		//Prefixe rep Tirage
-
 
 		for($i = 0; $i < $NbLignes; $i++)
 		{ 

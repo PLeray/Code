@@ -60,6 +60,7 @@ p {/*Police détails Fichier commande et commun  */
 div.recherche {
 	padding: 1px;
 	text-align: center;
+	margin-top: -50px;
 }
 
 /******************************/
@@ -89,7 +90,7 @@ div.recherche {
     margin-right: auto;
 	position: relative;
 	width: 95%;
-	margin-top: 10px;
+	margin-top: -50px;
 
 
   /*border: 1px solid var(--boutonRouge);*/

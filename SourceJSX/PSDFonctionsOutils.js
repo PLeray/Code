@@ -32,8 +32,7 @@ function OuvrirFichierToTableauDeLigne(file) {
 			tabPlanchesLabo.length = 0; // = [];
 		}
 	}
-	//alert(TableauTOStr(tabPlanchesLabo));
-	//return g_TabLigneOriginale;
+
 	return tabPlanchesLabo;
 }
 
@@ -129,7 +128,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	
 			switch(n) {
 			case 0:
-			//alert('case 0 :');
+
 				file.writeln('[Version : 2.0]%' + g_CeCalculateur + '%');
 				break;
 			case 1:
@@ -148,12 +147,10 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 			} 
 		}		
 	file.close();
-	//if (numEtatCompil != 1) {alert (TableauTOStr(g_TabLigneOriginale));}
-	//alert('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire GO-PHOTOLAB\n');
+
 	
 	MsgLOGInfo('PLANCHES PRETES !   Les commandes sont visionables dans le gestionnaire  Web PHOTOLAB');
 
-	//return nbErreur;
 	return true;
 }
 /*
@@ -635,32 +632,26 @@ function FormatSTR(chaine, length, motif, gauche) {
 }
 
 function NomPlancheLabo(unProduit, fichierName){
-	//alert('NomPlancheLabo');
+
 	var leNomFichier = fichierName.substr(0,fichierName.length-4);
-	//alert('NomPlancheLabo2');
-	
-	// 15/02 NEW MAINTENIR NOM COMPLET POUR GROUPE
-	//leNomFichier = (unProduit.isFichierGroupe())? leNomFichier.substring(4) : leNomFichier;
-	// 15/02 NEW MAINTENIR NOM COMPLET POUR GROUPE
+
 	
 	var leNomPlanche = (unProduit.Teinte)? '.' + unProduit.Teinte : '';
 	leNomPlanche = OrdreTirageIndex(unProduit) + "." + leNomFichier + "." + unProduit.Type + "." + unProduit.Taille + leNomPlanche + ".jpg";  
-	//alert('AVANT g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
+
 	g_TabLigneOriginale[unProduit.indexOriginal] = leNomPlanche;
-	//alert('APRES g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
+
 	return leNomPlanche;
 }
 
 function NomPlancheSiteWEB(unProduit, fichierName){
-	//alert('NomPlancheLabo');
+
 	var leNomFichier = fichierName.substr(0,fichierName.length-4);
-	//alert('NomPlancheLabo2');
-	//leNomFichier = (unProduit.isFichierGroupe())? leNomFichier.substring(4) : leNomFichier;
-	//var leNomPlanche = (unProduit.Teinte)? '.' + unProduit.Teinte : '';
+
 	var leNomPlanche = leNomFichier + ExtensionTeinte(unProduit.Teinte) + ".jpg";  
-	//alert('AVANT g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
+
 	g_TabLigneOriginale[unProduit.indexOriginal] = leNomPlanche;
-	//alert('APRES g_TabLigneOriginale[' + unProduit.indexOriginal + '] : ' + g_TabLigneOriginale[unProduit.indexOriginal]);
+
 	return leNomPlanche;
 }
 
@@ -990,6 +981,7 @@ function ExtensionTeinte(uneTeinte){
 }
 /////////////// NEW JUILLET 2020 ///////////////////////////////////////
 function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
+	//alert("ZRY00AAA " + leRepSOURCE);/**/
 	try {
 		if (!theFiles) {var theFiles = []};
 		var leContenuRep = leRepSOURCE.getFiles();
@@ -998,6 +990,9 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 		var strNUMEROClasse = '';
 		var StrLesGroupesClasse = '';
 		leContenuRep.sort();
+		
+
+		
 		for (var n = 0; n < leContenuRep.length; n++){
 			var theObject = leContenuRep[n];
 			if (theObject.constructor.name == "Folder") {

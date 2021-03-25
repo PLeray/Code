@@ -18,7 +18,7 @@ var g_CodeClient = '';
 
 
 
-var g_LargeurUI = 650;
+var g_LargeurUI = 550;
 var g_HauteurDetailsUI = 1080;
 var g_HauteurRechercheUI = 240;
 
@@ -116,7 +116,8 @@ PHOTOLAB.graphics.foregroundColor = PHOTOLAB.graphics.newPen(PHOTOLAB.graphics.P
 
 // Zone1Entete 
 var Zone1Entete = PHOTOLAB.add ("group");
-
+	// Zone12Logo 
+	var Zone12Logo = Zone1Entete.add ("image", undefined, File(g_RepIMG+'ImgPhotoLabPS.png'));
 
 	// Zone11Config 
 	var Zone11Config = Zone1Entete.add ("group");
@@ -146,8 +147,7 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	
 	
 
-	// Zone12Logo 
-	var Zone12Logo = Zone1Entete.add ("image", undefined, File(g_RepIMG+'ImgPhotoLabPS.png'));
+
 	
 	// Zone13Option 
 	var Zone13Option= Zone1Entete.add ("group");
@@ -165,23 +165,28 @@ ChercherFichierLab();
 
 var group = Zone131Action.add ("group {alignChildren: 'left', orientation: ’stack'}");
 if (File.fs !== "Windows") {
-	var list = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
+	var dpDown = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
 	//var e = group.add ("edittext");
 } else {
 	//var e = group.add ("edittext");
-	var list = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
+	var dpDown = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
 }
-list.graphics.foregroundColor = list.graphics.newPen(list.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
-list.selection = 0;
+dpDown.graphics.foregroundColor = dpDown.graphics.newPen(dpDown.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+
+
+
+
+
+dpDown.selection = 0;
 g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 
 //e.text = g_NomFichierEnCours;
 //e.active = true;
-list.preferredSize.width = 240;
+dpDown.preferredSize.width = 340;
 //e.preferredSize.width = 220; e.preferredSize.height = 20;
 
 
-list.onChange = function () {
-g_NomFichierEnCours = list.selection.text;
+dpDown.onChange = function () {
+g_NomFichierEnCours = dpDown.selection.text;
 //e.text = g_NomFichierEnCours;
 //e.active = true;
 }	
