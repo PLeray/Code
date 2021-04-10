@@ -88,7 +88,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 										. $TabCSV[$i]["Ville"]);  
 										
 			if ($TabCSV[$i]['Nom de la photo'] != '[Pochettes]') {
-				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], 9, -6), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);		
+				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], 9, -7), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);		
 			}	
 		}
 		$NbPlanches = $NbLignes;

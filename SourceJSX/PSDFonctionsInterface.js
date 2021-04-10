@@ -569,11 +569,12 @@ function MAJTableauLOG(Col1, Col2, Col3, isCoche, isNew){
 	
 }
 */
-function ArborescenceWEB(){
+
+/*function ArborescenceWEB(){
 	//laDate = Date.now();
 	//laDate.getDate();
 	
-	/**/
+
 	var size = 0;
 	var i = 0;
 	for(var fichier in g_GroupeIndiv){
@@ -598,6 +599,8 @@ function ArborescenceWEB(){
 	fichierEnCours.text = 'Création arborescence web terminée !';
 
 }
+
+*/
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 function GenererFichiersWEB() { 
@@ -606,10 +609,8 @@ function GenererFichiersWEB() {
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 		
 		chronoDebut = new Date().getTime();
-		
-		
+				
 		//alert("ZX000 : RecupSourceDepuisCode");			
-		// A finaliser en parametre
 		var SRCEcole = new Ecole (g_CommandeLabo.Ecole);	
 		//alert("ZX00AA : RecupSourceDepuisCode : " + SRCEcole.CodeRefEcole);	
 		var cdecole = SRCEcole.CodeRefEcole;
@@ -618,25 +619,14 @@ function GenererFichiersWEB() {
 		var uneSource = new objSourceCSV(); 
 		uneSource = RecupSourceDepuisCode(cdecole);
 		
-		//alert("ZX00BB : RecupSourceDepuisCode : " + uneSource.CodeEcole);	
-
-		//alert("ZX00CCC : RecupSourceDepuisCode: " + uneSource.Repertoire);
-		//LoadConfig();	// deja chargé au demarrage Parametre de la compil Web quatros , frat ...
-		
 		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
-
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
-		
-		
 		g_RepSOURCE  = uneSource.Repertoire;
-
-
 		g_TabListeNomsClasses = [];
 		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);	
 
 		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
 		//alert("ZX00FFF : InitialisationSourcePourLewEB ok");
-		
 		var size = 0;
 		var i = 0;
 		for(var fichier in g_GroupeIndiv){
@@ -644,8 +634,6 @@ function GenererFichiersWEB() {
 		}	
 		progressBar.maxvalue = size;	
 		//alert("ZX001 : nb de fichier : " + size );	
-	
-
 		for(var fichier in g_GroupeIndiv){
 			i = i + 1;
 			progressBar.value = i ;
@@ -653,10 +641,6 @@ function GenererFichiersWEB() {
 			fichierEnCours.text = 'Création arborescence web pour : ' + decodeURIComponent(fichier);
 
 			//UI
-			
-			//NEW SUPR
-			//MAJTableauGeneration(plancheCree,unProduit);
-
 			Raffraichir(); // A voir ?		
 
 			//alert("ZX01 : fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);

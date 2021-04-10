@@ -548,6 +548,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 	return valRetour;
 }
 
+/*
 function CreerUnProduitPourLeSiteWEB(unProduit){
 	var nomFichierPhoto = unProduit.FichierPhoto;
 	var unNomdePlanche = NomPlancheLabo(unProduit, nomFichierPhoto);
@@ -608,7 +609,7 @@ function CreerUnProduitPourLeSiteWEB(unProduit){
 	}
 	return valRetour;	
 }
-
+*/
 function OrdreTirageIndex(unProduit){
 ////////// A CHANGER POUR ORDRE DE TIRAGE INVERSE ///////////
 	var Index = 0;
@@ -1025,7 +1026,194 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 	}	
 }
 
-function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire ){
+function CreerQUATTROPresentationWEB(unfichier, extension, repertoire){
+		var nomFichierPhoto = unfichier;
+		var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
+		
+		var unNomdePlancheAWEB = unfichier.slice(0,-4) + '-PA-WEB.jpg';
+		var unNomdePlancheAWEBQuattro = unfichier.slice(0,-4) + '-PA-WEB' + extension + '.jpg'; // nb ou Quattro
+
+		var unNomdePlancheBWEB = unfichier.slice(0,-4) + '-PB-WEB.jpg';
+		var unNomdePlancheBWEBQuattro = unfichier.slice(0,-4) + '-PB-WEB' + extension + '.jpg'; // nb ou Quattro
+		
+		var unNomdePlancheCWEB = unfichier.slice(0,-4) + '-PC-WEB.jpg';
+		var unNomdePlancheCWEBQuattro = unfichier.slice(0,-4) + '-PC-WEB' + extension + '.jpg'; // nb ou Quattro	
+		
+		var unNomdePlancheDWEB = unfichier.slice(0,-4) + '-PD-WEB.jpg';
+		var unNomdePlancheDWEBQuattro = unfichier.slice(0,-4) + '-PD-WEB' + extension + '.jpg'; // nb ou Quattro		
+
+		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire + "/";
+
+		if(	
+			(!isFichierExiste(unPathPlanche + unNomdePlancheWEBFiche)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheAWEB)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheAWEBQuattro)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheBWEB)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheBWEBQuattro)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheCWEB)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheCWEBQuattro)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheDWEB)) || 
+			(!isFichierExiste(unPathPlanche + unNomdePlancheDWEBQuattro))
+			){
+				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+				var reussiteTraitement = (laPhoto != null);
+				reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche.slice(0,-1));
+				if (reussiteTraitement){
+					// Pour avoir des planches homogenes dans le viewer de commandes					
+					var myDocument = app.activeDocument; 				
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Instantane');
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
+					//1
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheWEBFiche);	
+					
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');		
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-QUATTRO');
+					//2
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheAWEBQuattro);
+					//3
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheBWEBQuattro);
+					//4
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheCWEBQuattro);
+					//5
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheDWEBQuattro);	
+					
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-A');
+					//6
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheAWEB);		
+
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-B');
+					//7
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheBWEB);	
+
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-C');
+					//8
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheCWEB);	
+
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-D');
+					//9
+					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheDWEB);	
+					laPhoto.close(SaveOptions.DONOTSAVECHANGES);					
+				}
+
+			}				
+		
+
+		return unfichier;	
+}
+
+function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire){
+	var isTransformQUATTRO = false;
+
+	if (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO'){
+		isTransformQUATTRO = isTransformQUATTRO || ((repertoire.indexOf('Fratrie') < 0) && (unfichier.length < g_MinimuNomClasse) && g_CONFIGisPhotosIndiv);	
+		//alert('isTransformQUATTRO ' + isTransformQUATTRO );		
+		isTransformQUATTRO = isTransformQUATTRO || ((repertoire.indexOf('Fratrie') > -1) && g_CONFIGisPhotosFratrie);
+		//alert('isTransformQUATTRO ' + isTransformQUATTRO );
+		isTransformQUATTRO = isTransformQUATTRO || ((unfichier.length >= g_MinimuNomClasse) && g_CONFIGisPhotosGroupes);
+	}
+	
+	/*	alert('isTransformQUATTRO ' + isTransformQUATTRO 
+	+ ' isLesGroupe ' 	+ g_CONFIGisPhotosGroupes 
+	+ ' isLesfratrie ' 	+ g_CONFIGisPhotosFratrie 
+	+ ' unFichier ' + unfichier 
+	+ ' g_CONFIGtypeConfigWeb ' + g_CONFIGtypeConfigWeb);*/
+	
+	if (isTransformQUATTRO){	
+		CreerQUATTROPresentationWEB(unfichier, extension, repertoire);
+	}
+	else{
+		var nomFichierPhoto = unfichier;
+		//var unNomdePlanche = unfichier.slice(0,-4) + extension + '.jpg';
+		var unNomdePlancheWEB = unfichier.slice(0,-4) + '-WEB.jpg';
+		var unNomdePlancheWEBVariante = unfichier.slice(0,-4) + '-WEB' + extension + '.jpg'; // nb ou Quattro
+		var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
+		//var valRetour = unNomdePlanche;
+		var valRetour = unNomdePlancheWEB;		
+		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire;
+		//alert('g_RepTIRAGES_DateEcole + "/" + repertoire : ' + g_RepTIRAGES_DateEcole + "/" + repertoire);
+		try {
+			var copiefichierOriginal = TypeTraitement(unfichier, repertoire, false);
+			//ON FAIT LA COPIE NORMALE !! (Ou pas si 0 - 5 sur Quattro !)	
+			if (copiefichierOriginal != 'KO') {
+				if(	(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEB)) || (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBVariante)) ||  (isFichierIdentite(nomFichierPhoto) && (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBFiche)))  ){		
+					var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+					var reussiteTraitement = (laPhoto != null);
+					reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche);
+					if (reussiteTraitement){
+						// Pour avoir des planches homogenes dans le viewer de commandes					
+						var myDocument = app.activeDocument; 
+						//La sauvegarde ...	
+						//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + nomFichierPhoto);
+						SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
+						
+						// traitement de la variante =>N&B, Quattro, autres ?
+						//var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);
+						var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);					
+						//alert ('copiefichierVariante ' + copiefichierVariante);
+						if (copiefichierVariante != 'KO') {
+							if (copiefichierVariante == 'WEB-QUATTRO'){
+								//alert ('NextQuattro(nomFichierPhoto) ' + NextQuattro(nomFichierPhoto));
+								laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+								
+								laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
+								reussiteTraitement = (laPhoto != null);								
+							}
+							if (reussiteTraitement){	
+								myDocument = app.activeDocument; 	
+								//////////////// TRANSFORMATIONS //////////////////////
+								//alert ('g_RepSCRIPTSPhotoshop ' + g_RepSCRIPTSPhotoshop);
+								reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(copiefichierVariante);
+								//alert ('copiefichierVariante ' + copiefichierVariante);
+								//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlanche);
+								SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBVariante);
+								
+								//WEB-PRESENTATION-FICHE	
+								// if 1 ou 6
+								if (isFichierIdentite(nomFichierPhoto) && (copiefichierVariante == 'WEB-QUATTRO'))
+								{
+									laPhoto.close(SaveOptions.DONOTSAVECHANGES);							
+									laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
+									reussiteTraitement = (laPhoto != null);
+									if (reussiteTraitement){	
+										myDocument = app.activeDocument; 	
+										//////////////// TRANSFORMATIONS //////////////////////
+										reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
+										SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBFiche);
+									}															
+								}
+							}	
+						}
+						laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+					}
+					else {
+						laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+					}			
+				}					
+
+			}
+			
+		}
+		catch(err) {
+			g_Erreur = "Commande  : " + g_CommandePDTEncours + " ERREUR CreerUnFichiersPresentationWEB pour : " + nomFichierPhoto;
+			laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+			return "KO";
+		}
+
+		return valRetour;			
+	}
+	
+	
+	
+	
+	
+}
+
+/* // x5 Fichier  chgt 10 Avril
+function CreerUnFichiersPresentationWEB_OLD(unfichier, extension, repertoire ){  
 	var nomFichierPhoto = unfichier;
 	//var unNomdePlanche = unfichier.slice(0,-4) + extension + '.jpg';
 	var unNomdePlancheWEB = unfichier.slice(0,-4) + '-WEB.jpg';
@@ -1104,7 +1292,7 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire ){
 	}
 
 	return valRetour;	
-}
+}*/
 
 function TypeTraitement(unFichier, unRepertoire, isVariante){
 	var retourval = g_CONFIGtypeConfigWeb;

@@ -16,7 +16,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-	<title id="GO-PHOTOLAB">PhotoLab : Sources enregistrées</title>
+	<title id="GO-PHOTOLAB">Sources enregistrées</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">

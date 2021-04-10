@@ -52,7 +52,7 @@ function MAJFichierSource() {
 	var file = new File(g_FichierSource);
 	file.encoding='UTF-8';
 	file.open("w");	
-        file.writeln('Code;NomProjet;Annee;Rep Scripts PS;Repertoire'); // On Ecrit les entetes du csv	
+        file.writeln('Code;NomProjet;Annee;Rep Scripts PS;Repertoire;OrdrePlancheInverse;typeConfigWeb;isPhotosGroupes;isPhotosIndiv;isPhotosFratrie'); // On Ecrit les entetes du csv	
 		for (var n = 0; n < g_LesSources.length; n++) {
 			//test = test + g_LesSources[n].LigneCSV();
 			file.writeln(g_LesSources[n].LigneCSV());
@@ -113,12 +113,38 @@ function objSourceCSV(uneLigne) {
 	this.RepScriptPS = this.TableauInfo[3] || "PHOTOLAB-Studio²";	
 	this.Repertoire = this.TableauInfo[4] || "";
 	
-	this.LigneCSV = function(){return this.CodeEcole + ';'	+ this.NomProjet + ';' + this.Annee  + ';' + this.RepScriptPS + ';' + this.Repertoire;};
+
+	this.OrdrePlancheInverse = this.TableauInfo[5] || "true";
+	this.typeConfigWeb = this.TableauInfo[6] || "WEB-QUATTRO";		
+	
+	this.isPhotosGroupes = ((this.TableauInfo[7] || "false") == 'true');	
+	this.isPhotosIndiv = ((this.TableauInfo[8] || "true") == 'true');	
+	this.isPhotosFratrie = ((this.TableauInfo[9] || "false") == 'true');	
+	
+
+	this.LigneCSV = function(){
+		return this.CodeEcole + ';' + this.NomProjet + ';' + 
+		this.Annee + ';' + this.RepScriptPS + ';' + 
+		this.Repertoire + ';'	+ this.OrdrePlancheInverse + ';' + 
+		this.typeConfigWeb + ';' + this.isPhotosGroupes + ';' + 
+		this.isPhotosIndiv  + ';' + this.isPhotosFratrie ;
+	};
+	/*	
+	this.LigneCSV = function(){
+		return 
+		this.CodeEcole + ';' + 
+		this.NomProjet + ';' + 
+		this.Annee  + ';' + 
+		this.RepScriptPS + ';' + 
+		this.Repertoire;
+	};	
+*/
+	
 	this.isValide = function(){
 		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(this.Repertoire).exists);		
-		//return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(encodeURI(this.Repertoire)).exists);
-		//alert("Folder(this.Repertoire).exists  : " + Folder(this.Repertoire).exists);	
 	};
+
+	
 }
 
 function AfficheListeSOURCE() {
@@ -145,6 +171,16 @@ function AfficheListeSOURCE() {
 
             var rechTxtProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 		
                 rechTxtProjet.preferredSize.width = 300; 	
+				
+				
+
+	var btnFermer = group1.add("button", undefined, 'Fermer', {name: "btnFermer"}); 
+	btnFermer.alignment = ["right","top"]; 	
+	btnFermer.onClick = function () {	
+		dlgListeSOURCE.close();
+	}				
+				
+				
                 
 		// GROUP2
 	var group2 = dlgListeSOURCE.add ("group");
@@ -234,8 +270,9 @@ function AfficheListeSOURCE() {
 	}
 }
 
-//function EditionSOURCE(leCode , lAnnee , leNomProjet , leRepertoire ) {
+
 function AfficheEditionSOURCE(uneSource) {
+	LoadConfig();	
 	//var isNEW = (uneSource == null);	
 	//alert('uneSourceisNEW : ' + isNEW);
 	var isMAJ = 0; // Rien
@@ -246,14 +283,57 @@ function AfficheEditionSOURCE(uneSource) {
         dlgEditSOURCE.graphics.foregroundColor = dlgEditSOURCE.graphics.newPen(dlgEditSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
         
 		dlgEditSOURCE.text = "Edition d'une source de photos pour PhotoLab"; 
-		dlgEditSOURCE.orientation = "column"; 
+		dlgEditSOURCE.orientation =  "row"; 
 		dlgEditSOURCE.alignChildren = ["left","top"]; 
 		dlgEditSOURCE.spacing = 10; 
 		dlgEditSOURCE.margins = 16; 
+		
+		
+// ColonneGauche
+// ======
+var ColonneGauche = dlgEditSOURCE.add("group", undefined, {name: "ColonneGauche"}); 
+    ColonneGauche.orientation = "column"; 
+    ColonneGauche.alignChildren = ["left","center"]; 
+    ColonneGauche.spacing = 10; 
+    ColonneGauche.margins = 0; 
+
+// ColonneDroite
+// ======
+var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"}); 
+    ColonneDroite.orientation = "column"; 
+    ColonneDroite.alignChildren = ["left","center"]; 
+    ColonneDroite.spacing = 10; 
+    ColonneDroite.margins = 0; 
+
+
+var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFermer"}); 
+	btnFermer.alignment = ["right","top"]; 	
+	btnFermer.onClick = function () {	
+		dlgEditSOURCE.close();
+	}		
+		
+
+	// GROUPEINFO2
+	// ===========
+	var GroupeInfo2 = ColonneDroite.add("group", undefined, {name: "GroupeInfo2"}); 
+		GroupeInfo2.orientation = "column"; 
+		GroupeInfo2.alignChildren = ["center","top"]; 
+		GroupeInfo2.spacing = 10; 
+		GroupeInfo2.margins = 0; 	
+	
+	var titrelistClasses = GroupeInfo2.add("statictext", undefined, undefined, {name: "dsfsdf", justify: "center"}); 
+	titrelistClasses.text = "Noms des classes trouvés :"; 
+	titrelistClasses.preferredSize.width = 300; 
+		
+	var listClasses = GroupeInfo2.add ("edittext", [0, 0, 300, 300], " ", {name: "Noms des classes :", multiline: true});
+	listClasses.text = "Aucune ..."; 
+
+
+
 
 
 	// group5 '1- Dossier des SOURCES du projet :'	
-	var group5 = dlgEditSOURCE.add("group", undefined, {name: "group5"}); 
+	var group5 = ColonneGauche.add("group", undefined, {name: "group5"}); 
 		group5.orientation = "row"; 
 		group5.alignChildren = ["left","center"]; 
 		group5.spacing = 10; 
@@ -279,7 +359,7 @@ function AfficheEditionSOURCE(uneSource) {
 			editNomProjet.text = decodeURI(leRepSOURCE.name);
 		}
 	}
-	var staticRepertoire = dlgEditSOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
+	var staticRepertoire = ColonneGauche.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
 	//staticRepertoire.graphics.font = ScriptUI.newFont ('', '', 10);
     staticRepertoire.text = decodeURI(uneSource.Repertoire);
     staticRepertoire.preferredSize.width = 600;		
@@ -291,7 +371,7 @@ function AfficheEditionSOURCE(uneSource) {
 	
 	
 	// GROUP1 '2- Nom Projet :'
-	var group1 = dlgEditSOURCE.add("group", undefined, {name: "group1"}); 
+	var group1 = ColonneGauche.add("group", undefined, {name: "group1"}); 
 		group1.orientation = "row"; 
 		group1.alignChildren = ["left","center"]; 
 		group1.spacing = 10; 
@@ -306,7 +386,7 @@ function AfficheEditionSOURCE(uneSource) {
 			
 
 	// GROUP2 3- Années scolaire :
-	var group2 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
+	var group2 = ColonneGauche.add("group", undefined, {name: "group2"}); 
 		group2.orientation = "row"; 
 		group2.alignChildren = ["left","center"]; 
 		group2.spacing = 10; 
@@ -322,7 +402,7 @@ function AfficheEditionSOURCE(uneSource) {
 		
 		
 	// GROUP3 4- Code Ecole :
-	var group3 = dlgEditSOURCE.add("group", undefined, {name: "group3"}); 
+	var group3 = ColonneGauche.add("group", undefined, {name: "group3"}); 
 		group3.orientation = "row"; 
 		group3.alignChildren = ["left","center"]; 
 		group3.spacing = 10; 
@@ -337,7 +417,7 @@ function AfficheEditionSOURCE(uneSource) {
 			editCodeEcole.preferredSize.width = 120; 
 			
 	// group4 5- Dossier de Sripts / Actions :'
-	var group4 = dlgEditSOURCE.add("group", undefined, {name: "group4"}); 
+	var group4 = ColonneGauche.add("group", undefined, {name: "group4"}); 
 		group4.orientation = "row"; 
 		group4.alignChildren = ["left","center"]; 
 		group4.spacing = 10; 
@@ -371,10 +451,15 @@ function AfficheEditionSOURCE(uneSource) {
 			dropdownRepScriptPS.enabled = false;
 		}
 		
-		var statictext31 = group4.add("statictext", undefined, ' (à utiliser pour ce projet photo.)', {name: "statictext3"});
+		var statictext31 = group4.add("statictext", undefined, ' (à utiliser pour ce projet.)', {name: "statictext3"});
 
 	
-	var btnArboWeb = dlgEditSOURCE.add("button", undefined, undefined, {name: "btnArboWeb"}); 
+	var divider1 = ColonneGauche.add("panel", undefined, undefined, {name: "divider1"}); 
+    divider1.alignment = "fill"; 
+	
+	
+	/*
+	var btnArboWeb = ColonneGauche.add("button", undefined, undefined, {name: "btnArboWeb"}); 
 	btnArboWeb.text = "Création des fichiers WEB";
 	btnArboWeb.helpTip = "Création du repertoire structuré pour transférer sur l'interface Lumys"; 
 	
@@ -386,9 +471,141 @@ function AfficheEditionSOURCE(uneSource) {
 			}								
 		}else{alert('Tout les champs doivent être remplis !');}	
 	}	
+	*/
+	
+	
+	var group5 = ColonneGauche.add("group", undefined, {name: "group5"}); 
+		group5.orientation = "row"; 
+		group5.alignChildren = ["left","center"]; 	
+	
+////CONFIGURATION /////
+
+	// PANEL1
+	// ======
+	var panel1 = group5.add("panel", undefined, undefined, {name: "panel1"}); 
+		panel1.text = "Configuration du dossier Source"; 
+		panel1.orientation = "column"; 
+		panel1.alignChildren = ["left","top"]; 
+		panel1.spacing = 10; 
+		panel1.margins = 10; 
+
+	var statictext1 = panel1.add("statictext", undefined, undefined, {name: "statictext1"}); 
+		statictext1.text = "Type :"; 
+
+	// GROUP1
+	// ======
+	var group1 = panel1.add("group", undefined, {name: "group1"}); 
+		group1.orientation = "row"; 
+		group1.alignChildren = ["left","center"]; 
+		group1.spacing = 10; 
+		group1.margins = 0; 
+		
+	var radioStandard = group1.add("radiobutton", undefined, undefined, {name: "radioStandard"}); 
+		radioStandard.text = "Standard"; 
+		radioStandard.value = (uneSource.typeConfigWeb == 'Rien');		
+
+	var radioNB = group1.add("radiobutton", undefined, undefined, {name: "radioNB"}); 
+		radioNB.text = "Noir et Blanc personnalisé"; 
+		radioNB.value = (uneSource.typeConfigWeb == 'NOIR-ET-BLANC');
+
+	var radioQuattro = group1.add("radiobutton", undefined, undefined, {name: "radioQuattro"}); 
+		radioQuattro.text = "Quattro"; 
+		radioQuattro.value = (uneSource.typeConfigWeb == 'WEB-QUATTRO');
+
+	// PANEL1
+	// ======
+	var divider1 = panel1.add("panel", undefined, undefined, {name: "divider1"}); 
+		divider1.alignment = "fill"; 
+		
+	var statictext2 = panel1.add("statictext", undefined, undefined, {name: "statictext2"}); 
+		statictext2.text = "Pour quelles photos :"; 
+
+	// GROUP2
+	// ======
+	var group2 = panel1.add("group", undefined, {name: "group2"}); 
+		group2.orientation = "row"; 
+		group2.alignChildren = ["left","center"]; 
+		group2.spacing = 10; 
+		group2.margins = 0; 
+
+	var checkPhotosGroupes = group2.add("checkbox", undefined, undefined, {name: "checkPhotosGroupes"}); 
+		checkPhotosGroupes.text = "Groupes"; 
+		checkPhotosGroupes.value = uneSource.isPhotosGroupes;
+
+	var checkPhotosIndiv = group2.add("checkbox", undefined, undefined, {name: "checkPhotosIndiv"}); 
+		checkPhotosIndiv.text = "Individuelles";
+		checkPhotosIndiv.value = uneSource.isPhotosIndiv;		
+
+	var checkPhotosFratrie = group2.add("checkbox", undefined, undefined, {name: "checkPhotosFratrie"}); 
+		checkPhotosFratrie.text = "Fratries"; 	
+		checkPhotosFratrie.value = uneSource.isPhotosFratrie;	
+	
+	
+	
+	
+	
+	var btnScanDossier = ColonneGauche.add("button", undefined, undefined, {name: "btnScanDossier"}); 
+	btnScanDossier.text = "Scanner dossier source";
+	btnScanDossier.helpTip = "Scanner le dossier source et verifier les nom de classes"; 
+	
+	btnScanDossier.onClick = function () {	
+		
+		var typeConfig = 'Rien';
+		if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
+		if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
+		//if (radioStandard.value){typeConfig='Rien';}
+		
+		// A supprimer ulterieureme,nt 
+		SaveConfig(g_OrdreInversePlanche, typeConfig, checkPhotosGroupes.value, checkPhotosIndiv.value, checkPhotosFratrie.value);
+		
+		uneSource.OrdrePlancheInverse = g_OrdreInversePlanche;
+		uneSource.typeConfigWeb = typeConfig;		
+		uneSource.isPhotosGroupes = checkPhotosGroupes.value;
+		uneSource.isPhotosIndiv = checkPhotosIndiv.value;
+		uneSource.isPhotosFratrie = checkPhotosFratrie.value;
+		
+
+	
+		//app.refresh(); // or, alternatively, waitForRedraw(); 
+		//dlgArboWEB.update(); // A voir sur MAC?
+		
+		g_RepSOURCE  = uneSource.Repertoire;
+
+		g_TabListeNomsClasses = [];
+		
+		titrelistClasses.text =  "Scan en cours patienter..."; 
+		
+		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
+		//alert('Avant initialisation');
+		var nbclasses = 0;	
+		var isfratrie = false;
+		var refClasse = '';
+		var nomClasse = '';
+		
+
+		for(var valeur in g_TabListeNomsClasses){
+			 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
+			 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
+			 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
+				 isfratrie = true;
+			}else{
+				nbclasses = nbclasses + 1;	
+			}
+
+		}	
+		listClasses.text = decodeURIComponent(nomClasse);
+		titrelistClasses.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
+	};
+	
+	
+	
+	
+	
+	
+	
 
 	// GROUP4
-	var group4 = dlgEditSOURCE.add("group", undefined, {name: "group4"}); 
+	var group4 = ColonneDroite.add("group", undefined, {name: "group4"}); 
 		group4.orientation = "row"; 
 		group4.alignChildren = ["right","center"]; 
 		group4.spacing = 10; 
@@ -402,14 +619,14 @@ function AfficheEditionSOURCE(uneSource) {
 			dlgEditSOURCE.close();
 		}	
 		
-		var btnSuprProjet = group4.add ('button', undefined, 'Suprimer ce Projet', {name: 'btnSuprProjet'});		
+		var btnSuprProjet = group4.add ('button', undefined, 'Suprimer Projet', {name: 'btnSuprProjet'});		
 		btnSuprProjet.onClick = function () {	
 			SuprimerSourceDepuisCode(uneSource.CodeEcole);
 			isMAJ = 1; // MAJ Source
 			dlgEditSOURCE.close();	
 		}	
 		
-		var btnOK = group4.add("button", undefined, 'Enregistrer le Projet', {name: "btnOK"}); 
+		var btnOK = group4.add("button", undefined, 'Enregistrer Projet', {name: "btnOK"}); 
 			//btnOK.text = "Enregistrer le Projet"; 
 		
 		btnOK.onClick = function () {	
@@ -419,6 +636,20 @@ function AfficheEditionSOURCE(uneSource) {
 			//uneSource.RepScriptPS = editRepScriptPS.text;
 			uneSource.RepScriptPS = dropdownRepScriptPS.selection.text;
 			uneSource.Repertoire = staticRepertoire.text;			
+
+		var typeConfig = 'Rien';
+		if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
+		if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
+		//if (radioStandard.value){typeConfig='Rien';}		
+			
+			uneSource.OrdrePlancheInverse = g_OrdreInversePlanche;
+			uneSource.typeConfigWeb = typeConfig;		
+			uneSource.isPhotosGroupes = checkPhotosGroupes.value;
+			uneSource.isPhotosIndiv = checkPhotosIndiv.value;
+			uneSource.isPhotosFratrie = checkPhotosFratrie.value;			
+			
+			
+			
 			if (uneSource.isValide()){
 				//MAJFichierSource();
 				isMAJ = 1; // MAJ Source
@@ -429,6 +660,8 @@ function AfficheEditionSOURCE(uneSource) {
 	dlgEditSOURCE.show();
 	return isMAJ;
 }
+
+/*
 
 //function AfficheClassesAvantArboWeb(NomProjet, leRertoireSource){
 function AfficheClassesAvantArboWeb(uneSource){
@@ -597,7 +830,372 @@ function AfficheClassesAvantArboWeb(uneSource){
 		return valRetour;	
 	}
 }
+*/
 
+/* ANCIEN AVANT 10 AVRIL 2021 
+
+//function EditionSOURCE(leCode , lAnnee , leNomProjet , leRepertoire ) {
+function AfficheEditionSOURCE(uneSource) {
+	//var isNEW = (uneSource == null);	
+	//alert('uneSourceisNEW : ' + isNEW);
+	var isMAJ = 0; // Rien
+	// DIALOG
+	var dlgEditSOURCE = new Window("dialog"); 
+        //dlgEditSOURCE.frameLocation = [ -4, -4 ];
+        dlgEditSOURCE.graphics.backgroundColor = dlgEditSOURCE.graphics.newBrush (dlgEditSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+        dlgEditSOURCE.graphics.foregroundColor = dlgEditSOURCE.graphics.newPen(dlgEditSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+        
+		dlgEditSOURCE.text = "Edition d'une source de photos pour PhotoLab"; 
+		dlgEditSOURCE.orientation = "column"; 
+		dlgEditSOURCE.alignChildren = ["left","top"]; 
+		dlgEditSOURCE.spacing = 10; 
+		dlgEditSOURCE.margins = 16; 
+
+
+	// group5 '1- Dossier des SOURCES du projet :'	
+	var group5 = dlgEditSOURCE.add("group", undefined, {name: "group5"}); 
+		group5.orientation = "row"; 
+		group5.alignChildren = ["left","center"]; 
+		group5.spacing = 10; 
+		group5.margins = 0; 
+		
+
+		var statictext3 = group5.add("statictext", undefined, '1- Dossier des SOURCES du projet :', {name: "statictext3"}); 			
+
+	var btnRepertoire = group5.add("button", undefined, undefined, {name: "btnRepertoire"}); 
+	btnRepertoire.text = "Sélectionner dossier"; 
+	btnRepertoire.helpTip = "Sélection du dossier contenant les photos 'Source'";
+	
+	btnRepertoire.onClick = function () {	
+		var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text, g_Rep_PHOTOLAB + "/SOURCES/");	
+		//var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text);
+		//alert('leRepSOURCE : ' + leRepSOURCE);
+		if(leRepSOURCE){
+			var leChemin = leRepSOURCE.path + '/' + leRepSOURCE.name;
+			//var leChemin = leRepSOURCE.fsName.toString();
+			//alert('leChemin : ' + leChemin);
+			uneSource.Repertoire = leChemin;
+			staticRepertoire.text = decodeURI(uneSource.Repertoire);
+			editNomProjet.text = decodeURI(leRepSOURCE.name);
+		}
+	}
+	var staticRepertoire = dlgEditSOURCE.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
+	//staticRepertoire.graphics.font = ScriptUI.newFont ('', '', 10);
+    staticRepertoire.text = decodeURI(uneSource.Repertoire);
+    staticRepertoire.preferredSize.width = 600;		
+	
+	staticRepertoire.graphics.foregroundColor = staticRepertoire.graphics.newPen (staticRepertoire.graphics.PenType.SOLID_COLOR, [0, 1,
+	0], 1);
+	staticRepertoire.graphics.backgroundColor = staticRepertoire.graphics.newBrush (staticRepertoire.graphics.BrushType.SOLID_COLOR,
+	[0.35, 0.35, 0.35]);
+	
+	
+	// GROUP1 '2- Nom Projet :'
+	var group1 = dlgEditSOURCE.add("group", undefined, {name: "group1"}); 
+		group1.orientation = "row"; 
+		group1.alignChildren = ["left","center"]; 
+		group1.spacing = 10; 
+		group1.margins = 0; 
+
+		var statictext1 = group1.add("statictext", undefined, '2- Nom projet :', {name: "statictext1"}); 
+
+		var editNomProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 
+			editNomProjet.text = decodeURI(uneSource.NomProjet); 		
+			editNomProjet.preferredSize.width = 500; 
+			
+			
+
+	// GROUP2 3- Années scolaire :
+	var group2 = dlgEditSOURCE.add("group", undefined, {name: "group2"}); 
+		group2.orientation = "row"; 
+		group2.alignChildren = ["left","center"]; 
+		group2.spacing = 10; 
+		group2.margins = 0; 
+		
+		var staticAnnee = group2.add("statictext", undefined, '3- Années scolaire :', {name: "staticAnnee"}); 
+
+		var dropdownAnnee_array = ["2019-2020", "2020-2021","2021-2022","2022-2023", "2023-2024","2024-2025"]; 
+		var dropdownAnnee = group2.add("dropdownlist", undefined, undefined, {name: "dropdownAnnee", items: dropdownAnnee_array}); 
+		dropdownAnnee.selection = 1; // Annee par defaut 2020-2021
+		for (var i = 0; i < dropdownAnnee.items.length; i++) {if (dropdownAnnee.items[i].text == uneSource.Annee ){dropdownAnnee.selection = i;}}
+		
+		
+		
+	// GROUP3 4- Code Ecole :
+	var group3 = dlgEditSOURCE.add("group", undefined, {name: "group3"}); 
+		group3.orientation = "row"; 
+		group3.alignChildren = ["left","center"]; 
+		group3.spacing = 10; 
+		group3.margins = 0; 		
+
+		var staticCodeEcole = group3.add("statictext", undefined, '4- Code école :', {name: "staticCodeEcole"}); 
+			//staticCodeEcole.text = "Code Projet :"; 
+
+		var editCodeEcole = group3.add('edittext {properties: {name: "editCodeEcole"}}'); 
+			//editCodeEcole.text = leCode; 
+			editCodeEcole.text = decodeURI(uneSource.CodeEcole); 
+			editCodeEcole.preferredSize.width = 120; 
+			
+	// group4 5- Dossier de Sripts / Actions :'
+	var group4 = dlgEditSOURCE.add("group", undefined, {name: "group4"}); 
+		group4.orientation = "row"; 
+		group4.alignChildren = ["left","center"]; 
+		group4.spacing = 10; 
+		group4.margins = 0; 
+		
+		var statictext3 = group4.add("statictext", undefined, '5- Dossier de Sripts / Actions :', {name: "statictext3"}); 
+			//statictext3.text = "Nom du dossier de Sripts (Actions) dans Photoshop à utiliser :"; 
+
+
+		GlobalVariables();
+		var dropdownRepScript_array = [];
+		
+		
+		var dropdownRepScriptPS = group4.add("dropdownlist", undefined, undefined, {name: "dropdownRepScriptPS", items: dropdownRepScript_array}); 
+		//dropdownRepScriptPS.selection = 1; 
+
+		dropdownRepScript_array = GetActionSetInfo();
+
+		if ( dropdownRepScript_array.length > 0 ) {
+			for (var i = 0; i < dropdownRepScript_array.length; i++) {
+				dropdownRepScriptPS.add( "item", dropdownRepScript_array[i].name );
+				//dropdownRepScriptPS.items[i].selected = true;
+				if (dropdownRepScriptPS.items[i].text == uneSource.RepScriptPS ){dropdownRepScriptPS.selection = i;}
+			}        
+		} else {
+			dropdownRepScriptPS.enabled = false;
+		}
+		
+		var statictext31 = group4.add("statictext", undefined, ' (à utiliser pour ce projet photo.)', {name: "statictext3"});
+
+	
+	var btnArboWeb = dlgEditSOURCE.add("button", undefined, undefined, {name: "btnArboWeb"}); 
+	btnArboWeb.text = "Création des fichiers WEB";
+	btnArboWeb.helpTip = "Création du repertoire structuré pour transférer sur l'interface Lumys"; 
+	
+	btnArboWeb.onClick = function () {	
+		if (uneSource.isValide()){
+			if(AfficheClassesAvantArboWeb(uneSource)){
+				isMAJ = 3; // MAJ Source + Arrbo WEB
+				dlgEditSOURCE.close();
+			}								
+		}else{alert('Tout les champs doivent être remplis !');}	
+	}	
+
+	// GROUP4
+	var group4 = dlgEditSOURCE.add("group", undefined, {name: "group4"}); 
+		group4.orientation = "row"; 
+		group4.alignChildren = ["right","center"]; 
+		group4.spacing = 10; 
+		group4.margins = [0,20,0,0]; 
+		group4.alignment = ["right","top"]; 
+
+		var btnAnnuler = group4.add("button", undefined, 'Annuler', {name: "btnAnnuler"}); 
+			//btnAnnuler.text = "Annuler"; 
+			
+		btnAnnuler.onClick = function () {	
+			dlgEditSOURCE.close();
+		}	
+		
+		var btnSuprProjet = group4.add ('button', undefined, 'Suprimer ce Projet', {name: 'btnSuprProjet'});		
+		btnSuprProjet.onClick = function () {	
+			SuprimerSourceDepuisCode(uneSource.CodeEcole);
+			isMAJ = 1; // MAJ Source
+			dlgEditSOURCE.close();	
+		}	
+		
+		var btnOK = group4.add("button", undefined, 'Enregistrer le Projet', {name: "btnOK"}); 
+			//btnOK.text = "Enregistrer le Projet"; 
+		
+		btnOK.onClick = function () {	
+			uneSource.CodeEcole = editCodeEcole.text;
+			uneSource.NomProjet = editNomProjet.text;
+			uneSource.Annee = dropdownAnnee.selection.text;
+			//uneSource.RepScriptPS = editRepScriptPS.text;
+			uneSource.RepScriptPS = dropdownRepScriptPS.selection.text;
+			uneSource.Repertoire = staticRepertoire.text;			
+			if (uneSource.isValide()){
+				//MAJFichierSource();
+				isMAJ = 1; // MAJ Source
+				dlgEditSOURCE.close();								
+			}else{alert('Tout les champs doivent être remplis !');}
+		}		
+
+	dlgEditSOURCE.show();
+	return isMAJ;
+}
+*/
+
+
+
+/* ANCIEN AVANT 10 AVRIL 2021
+function AfficheClassesAvantArboWeb(uneSource){
+	LoadConfig();	
+	var valRetour = false;
+	// DIALOG
+	// ======
+	var dlgArboWEB = new Window("dialog", 'WEB : ' + uneSource.NomProjet); 
+		//dlgArboWEB.text = "Validation des noms de classes"; 
+		dlgArboWEB.orientation = "column"; 
+		dlgArboWEB.alignChildren = ["center","top"]; 
+		dlgArboWEB.spacing = 10; 
+		dlgArboWEB.margins = 16; 
+		
+		//dlgArboWEB.frameLocation = [ 0, 20 ];
+		dlgArboWEB.graphics.backgroundColor = dlgArboWEB.graphics.newBrush (dlgArboWEB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+
+		dlgArboWEB.graphics.foregroundColor =dlgArboWEB.graphics.newPen (dlgArboWEB.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);			
+	
+	// GROUPEINFO2
+	// ===========
+	var GroupeInfo2 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo2"}); 
+		GroupeInfo2.orientation = "column"; 
+		GroupeInfo2.alignChildren = ["center","top"]; 
+		GroupeInfo2.spacing = 10; 
+		GroupeInfo2.margins = 0; 	
+	
+	var statictext3 = GroupeInfo2.add("statictext", undefined, undefined, {name: "dsfsdf", justify: "center"}); 
+	statictext3.text = "Noms des classes trouvés :"; 
+	statictext3.preferredSize.width = 300; 
+		
+	var listtext3 = GroupeInfo2.add ("edittext", [0, 0, 300, 400], " ", {name: "Noms des classes :", multiline: true});
+	listtext3.text = "Aucune ..."; 
+		
+////////A VOIR POSITION
+
+
+
+
+////CONFIGURATION /////
+
+	// PANEL1
+	// ======
+	var panel1 = dlgArboWEB.add("panel", undefined, undefined, {name: "panel1"}); 
+		panel1.text = "Configuration de la compilation Web"; 
+		panel1.orientation = "column"; 
+		panel1.alignChildren = ["left","top"]; 
+		panel1.spacing = 10; 
+		panel1.margins = 10; 
+
+	var statictext1 = panel1.add("statictext", undefined, undefined, {name: "statictext1"}); 
+		statictext1.text = "Type :"; 
+
+	// GROUP1
+	// ======
+	var group1 = panel1.add("group", undefined, {name: "group1"}); 
+		group1.orientation = "row"; 
+		group1.alignChildren = ["left","center"]; 
+		group1.spacing = 10; 
+		group1.margins = 0; 
+		
+	var radioStandard = group1.add("radiobutton", undefined, undefined, {name: "radioStandard"}); 
+		radioStandard.text = "Standard"; 
+		radioStandard.value = (g_CONFIGtypeConfigWeb == 'Rien');		
+
+	var radioNB = group1.add("radiobutton", undefined, undefined, {name: "radioNB"}); 
+		radioNB.text = "Noir et Blanc personnalisé"; 
+		radioNB.value = (g_CONFIGtypeConfigWeb == 'NOIR-ET-BLANC');
+
+	var radioQuattro = group1.add("radiobutton", undefined, undefined, {name: "radioQuattro"}); 
+		radioQuattro.text = "Quattro"; 
+		radioQuattro.value = (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO');
+
+	// PANEL1
+	// ======
+	var divider1 = panel1.add("panel", undefined, undefined, {name: "divider1"}); 
+		divider1.alignment = "fill"; 
+		
+	var statictext2 = panel1.add("statictext", undefined, undefined, {name: "statictext2"}); 
+		statictext2.text = "Pour quelles photos :"; 
+
+	// GROUP2
+	// ======
+	var group2 = panel1.add("group", undefined, {name: "group2"}); 
+		group2.orientation = "row"; 
+		group2.alignChildren = ["left","center"]; 
+		group2.spacing = 10; 
+		group2.margins = 0; 
+
+	var checkPhotosGroupes = group2.add("checkbox", undefined, undefined, {name: "checkPhotosGroupes"}); 
+		checkPhotosGroupes.text = "Groupes"; 
+		checkPhotosGroupes.value = g_CONFIGisPhotosGroupes;
+
+	var checkPhotosIndiv = group2.add("checkbox", undefined, undefined, {name: "checkPhotosIndiv"}); 
+		checkPhotosIndiv.text = "Individuelles";
+		checkPhotosIndiv.value = g_CONFIGisPhotosIndiv;		
+
+	var checkPhotosFratrie = group2.add("checkbox", undefined, undefined, {name: "checkPhotosFratrie"}); 
+		checkPhotosFratrie.text = "Fratries"; 	
+		checkPhotosFratrie.value = g_CONFIGisPhotosFratrie;
+	
+
+	
+	
+	// GROUPEINFO4
+	// ===========
+	var GroupeInfo4 = dlgArboWEB.add("group", undefined, {name: "GroupeInfo4"}); 
+		GroupeInfo4.orientation = "row"; 
+		GroupeInfo4.alignChildren = ["left","center"]; 
+		GroupeInfo4.spacing = 10; 
+		GroupeInfo4.margins = 0; 
+		GroupeInfo4.alignment = ["right","top"]; 	
+
+	var buttonGenerererArboWEB = GroupeInfo4.add("button", undefined, undefined, {name: "buttonGenerererArboWEB"}); 
+		buttonGenerererArboWEB.text = "Générer Arborescence WEB"; 
+		
+		
+	buttonGenerererArboWEB.onClick = function () {	
+			g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
+			valRetour = true;
+			var typeConfig = '';
+			if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
+			if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
+			if (radioStandard.value){typeConfig='Rien';}
+			
+			SaveConfig(g_OrdreInversePlanche, typeConfig, checkPhotosGroupes.value, checkPhotosIndiv.value, checkPhotosFratrie.value);
+			g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;
+			//return valRetour;	
+			
+			dlgArboWEB.close();	
+	}		
+	
+	dlgArboWEB.onActivate = function(){	
+		app.refresh(); // or, alternatively, waitForRedraw(); 
+		dlgArboWEB.update(); // A voir sur MAC?
+		
+		g_RepSOURCE  = uneSource.Repertoire;
+
+		g_TabListeNomsClasses = [];
+		
+		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
+		//alert('Avant initialisation');
+		var nbclasses = 0;	
+		var isfratrie = false;
+		var refClasse = '';
+		var nomClasse = '';
+		for(var valeur in g_TabListeNomsClasses){
+			 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
+			 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
+			 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
+				 isfratrie = true;
+			}else{
+				nbclasses = nbclasses + 1;	
+			}
+
+		}	
+		listtext3.text = decodeURIComponent(nomClasse);
+		statictext3.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
+	};
+	
+	
+
+	//dlgArboWEB.show();
+	
+	if (dlgArboWEB.show () != 2){			
+		return valRetour;	
+	}
+}
+*/
 
 
 /////////////////////////////////////////////////////////////////////

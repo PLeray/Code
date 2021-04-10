@@ -439,21 +439,17 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 			*/
 			// Un objet pour récupérer les infos Fichier !!! 
 			$mesInfosFichier = new CINFOfichierArbo($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 		
-	
-			
+				
 			$affiche_Tableau .=
 			'<tr>
 				<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>				
 				<td>' . $mesInfosFichier->DateTirage .'</td>	
 				<td align="left">' . $mesInfosFichier->AffichageNomCMD . '</a></td>		
 				<td>' . $mesInfosFichier->NbPlanches . '</a></td>';
-				
-
-				
 
 			if($mesInfosFichier->EtatFichier < 2){
 				$affiche_Tableau .=	'
-				<td colspan=2>';
+				<td colspan=3>';
 				if (file_exists($mesInfosFichier->LienFichierERREUR())){
 					$affiche_Tableau .=	'			
 					<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '." title="Afficher les erreurs">
@@ -473,7 +469,9 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '" title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a>
 					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>					
 				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . '" title="'. TitleEtat(3) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a>
-					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>'	
+					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>	
+				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,4) . '" title="'. TitleEtat(4) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "4") . '</a>
+					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>'						
 				;				
 			}		
 			$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
@@ -541,7 +539,7 @@ function TableauRepFichier($ExtFichier, $isEnCours){
 	if($dossier = opendir($GLOBALS['repCMDLABO'])){
 		while(false !== ($fichier = readdir($dossier))){
 			$Extension = strrchr($fichier, '.');
-			$EtatFinal = ($ExtFichier == '.lab'?5:3);
+			$EtatFinal = ($ExtFichier == '.lab'?5:4);
 			
 			if($fichier != '.' && $fichier != '..'  && substr($Extension,0,4) == $ExtFichier && strlen($Extension) > 4){
 				if ($isEnCours && substr(strrchr($fichier, '.'),4) < $EtatFinal){

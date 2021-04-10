@@ -1,16 +1,16 @@
 ﻿// Pierre S Mac Leray Jr
-#target photoshop-60.064
+//#target photoshop-60.064 // Pour cs6 direct
+#target photoshop
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 3.0;
+var g_NumVersion = 3.1;
 
-var g_NomVersion = 'PhotoLab PLUGIN v3.3';
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
 var g_FichierSource = g_Rep_PHOTOLAB + 'Code/Sources.csv';
 var isDebug = ($.fileName.substr(-4) == '.jsx'); //et non .jsxbin !
 
-var g_NomVersion = 'PhotoLab PLUGIN v' + g_NumVersion + (isDebug?' !!! BETA !!!':'');
+var g_NomVersion = 'PLUGIN-PhotoLab v' + g_NumVersion + (isDebug?' !!! BETA !!!':'');
 //alert('$.fileName.substr(-4)  : ' + $.fileName.substr(-4) + ' is debug : ' + isDebug);
 
 var g_CeCalculateur = '';
@@ -87,28 +87,23 @@ LoadConfig();
 
 RecupNomOrdi();
 
-//RECHERCHE REPERTOIRE SOURCE
-/*
-var g_UIWINRechercheSource = new Window ('palette');
-
-g_UIWINRechercheSource.frameLocation = [ -4,g_HauteurRechercheUI + 30 ];
-g_UIWINRechercheSource.graphics.backgroundColor = g_UIWINRechercheSource.graphics.newBrush (g_UIWINRechercheSource.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-//g_UIWINRechercheSource.add ("statictext", [0,0,800,20], "SCAN POUR TROUVER LES SOURCES DES IMAGES");
-g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,20], "SCAN POUR TROUVER LES SOURCES DES IMAGES");
-//g_UIWINRechercheSource.graphics.font = "Arial-Bold:18";
-
-var UIRepertoireSource = g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,50], "Recherche de Sources", {multiline: true});
-UIRepertoireSource.graphics.foregroundColor = UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);
-*/
-//RECHERCHE REPERTOIRE SOURCE
 
 //PHOTOLAB
 var PHOTOLAB = new Window ('palette', g_NomVersion + '     [' + g_CeCalculateur + ']', undefined); 
+
 //var PHOTOLAB = new Window ('dialog', 'PHOTOLAB PLUGIN '); 
 //PHOTOLAB.size.height = 150;
 PHOTOLAB.frameLocation = [ -4, -4 ];
 PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 PHOTOLAB.graphics.foregroundColor = PHOTOLAB.graphics.newPen(PHOTOLAB.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+
+
+	var Groupefermer = PHOTOLAB.add("group", undefined, {name: "Groupefermer"}); 
+	Groupefermer.alignment = ["right","top"]; 
+	var btnFermer = Groupefermer.add("button", undefined, 'Fermer', {name: "btnFermer"}); 	
+	btnFermer.onClick = function () {	
+		PHOTOLAB.close();
+	}	
 
 
 
@@ -131,7 +126,7 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	buttonBibliotheque.helpTip = "Bibliothèque des sources photo pour PhotoLab"; 
 	buttonBibliotheque.onClick = function () {
 		if (AfficheListeSOURCE() == 3){
-			ArborescenceWEB();
+			//ArborescenceWEB();
 		} 		 
 	}	
 	/*
@@ -187,35 +182,10 @@ dpDown.preferredSize.width = 340;
 
 dpDown.onChange = function () {
 g_NomFichierEnCours = dpDown.selection.text;
-//e.text = g_NomFichierEnCours;
-//e.active = true;
+
 }	
 
-/*
-		
-		var buttonScanCMD = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
-		buttonScanCMD.alignment = "left";
-		buttonScanCMD.helpTip = "Scanner et traiter le repertoire des commandes ..."; 
-		buttonScanCMD.onClick = function () {	
-			Auto(); 
-		}*/
 
-		
-		/*  §§§§§§§§§§§§§§§§§§§§ SUPRIMER SOURCE DERRIERE
-		var buttonSourceWeb = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Créer arborecence web");
-		buttonSourceWeb.alignment = "left";
-		buttonSourceWeb.helpTip = "Générer une arborescence structurée par classes des fichiers photos à uploader sur le site web Lumys"; 
-		buttonSourceWeb.onClick = function () {	
-			if (AfficheValidationNomClasse() == true){
-				ArborescenceWEB('I.WEB-QUATTRO');
-			} 
-			
-		}
-		/*
-	/*
-	var checkOrdre = Zone13Option.add ("checkbox", [0,0,g_LargeurUI/3,20], "Ordre des planches inversé"); 
-	checkOrdre.value = g_OrdreInversePlanche;
-	*/
 	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,25], '0/0', {multiline: true});
 	txtTraitement.graphics.font = ScriptUI.newFont ("Arial", 'BOLD', 14);
 	
@@ -237,7 +207,7 @@ g_NomFichierEnCours = dpDown.selection.text;
 		g_IsPhotoLabON = true;
 		 GestionBoutonGenerer();
 		 //GenererLeFichierNOM(); //g_NomFichierEnCours
-		//Auto();
+		Auto();
 	}
 
 // PROGRESS BAR

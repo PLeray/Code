@@ -17,7 +17,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 <html>
 <head>
 	<META HTTP-EQUIV="Refresh" CONTENT="<?php echo ($isDebug?'5':'10'); ?>; URL=<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>">
-	<title id="GO-PHOTOLAB">PhotoLab : commandes en cours</title>
+	<title id="GO-PHOTOLAB">Commandes en cours</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
@@ -136,8 +136,9 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 			
 		<th  onclick="sortTable(1)"><H3>Arborescence de fichiers pour présentation web</H3></th>	
 		<th style="width:100px;" onclick="sortTable(2)"><H3>Nb Fichiers</H3></th>					
-		<th  style="width:182px;" ><H3>Fichiers Web crées</H3></th>		
-		<th style="width:182px;" onclick="sortTable(2)"><H3>Déposés sur LUMYS</H3></th>
+		<th  style="width:122px;" ><H3>Fichiers Web crées</H3></th>		
+		<th style="width:122px;" onclick="sortTable(2)"><H3>Déposés sur LUMYS</H3></th>
+		<th style="width:122px;" onclick="sortTable(2)"><H3>Ventes en cours</H3></th>
 		<th  style="width:40px;" ><H3>X</H3></th>		
 	  </tr>  
 	<?php echo $affiche_Tableau; 

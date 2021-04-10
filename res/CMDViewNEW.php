@@ -24,7 +24,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-    <title id="GO-PHOTOLAB">PhotoLab : Préparation de commandes</title>
+    <title id="GO-PHOTOLAB"><?php echo substr($myfileName,0, -5) ?> : Préparation de commandes</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
     <link rel="stylesheet" type="text/css" href="css/CMD-ViewNEW.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>

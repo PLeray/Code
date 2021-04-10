@@ -61,10 +61,10 @@ function AfficheMenuPage($Page,$maConnexionAPI) {
 echo '
 <center>
 <div id="mySidenav" class="sidenav">
-  <a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ...">S</a>
-  <a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de traitement ...">C</a>
-  <a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ...">H</a>
-  <a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ...">A</a>
+  <a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>
+  <a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>
+  <a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>
+  <a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>
 </div>
 </center>
 '
