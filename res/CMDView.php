@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
 	setlocale(LC_TIME, 'french');
-	include 'APIConnexion.php';
-	include 'CMDLireNEW.php';
+	include_once 'APIConnexion.php';
+	include_once 'CMDLire.php';
 
 	$myfileName = (isset($_GET['fichierLAB'])) ? $_GET['fichierLAB'] :'';
 	
@@ -10,11 +10,12 @@
 	if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 	$isDebug = false;
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
-	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");	}
+	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
+	
 	
 
 
-
+	
 	$DefautNbCMDAffiche = 15;
 	$NbCMDAffiche = $DefautNbCMDAffiche;
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
@@ -23,9 +24,17 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-    <title id="GO-PHOTOLAB">PhotoLab : Préparation de commandes</title>
+
+<?php 
+if($isDebug){
+	header("Cache-Control: no-cache, must-revalidate");
+}
+
+
+?>
+    <title id="PHOTOLAB"><?php echo substr($myfileName,0, -5) ?> : Préparation de commandes</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-    <link rel="stylesheet" type="text/css" href="css/CMD-ViewNEW.css">
+    <link rel="stylesheet" type="text/css" href="css/CMD-View.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 
 	
@@ -44,6 +53,11 @@
 	//$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 
 	$etatFichierLab = AfficheEtatFichierLab($myfileName);
+	
+	
+$isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !== false);
+	
+	
 ?>
 
 </head>
@@ -83,11 +97,12 @@
 		<div class="affichageNBPage">
 			<p> Nombre de commandes par page</p>	
 				<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a>
+				<?php echo  '<p>' . $etatFichierLab . '</p>';?>
 		</div> 	
 		
 		<div class="titreFichier">	
 			<?php 
-				echo  '<p>' . $etatFichierLab . '</p>';
+				
 				echo pathinfo(utf8_encode($myfileName))['filename']; ?>
 			<?php //echo urldecode(utf8_encode($myfileName)) .
 			//'    ' . $etatFichierLab ;?>
@@ -99,12 +114,28 @@
 
 	  <div id="main">
 		<div id="mySidenav" class="sidenav">
-		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		  <p> <STRONG>Recherche de commandes par critère</STRONG></p>
-		  <p>Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...</p>
-		  <p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
-		  <p>> tapez juste 'P0006'</p>
-		  
+		<?php 
+			if (!$isRECOmmandes){
+				echo '
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<div id="myRecommandes" class="infoRecommandes">
+				Mes recommandes<br>
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>	
+				<form name="FormEnvoieRecos" method="post" action="'. RetourEcranFichier($myfileName).' >" enctype="multipart/form-data">	
+					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
+					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
+					<button type="submit">Enregistrer ces recommandes</button>
+				</form> 	
+			</div>';
+			}
+		?>	
+
+
+			<STRONG>Recherche de commandes par critère</STRONG>
+			Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...
+			<p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
+			<p>> tapez juste 'P0006'</p>
+			
 
 		<h3>il y a <?php echo count($monGroupeCmdes->tabCMDLabo);?> Commandes</h3>
 			<input type="text" id="zoneRecherche" onkeyup="filterFunction()" placeholder="Rechercher .." title="Taper le début d'un critère...">  
@@ -138,14 +169,18 @@
  
 </div>
 
-<div class="Recommandes">
-  <p class="mention">	RecommandesRecommandesRecommandesRecommandesRecommandesRecommandesRecommandes </p>
-</div>
 
 
-<script type="text/javascript" src="js/CMD-ViewNEW.js"></script>
+<script type="text/javascript" src="js/CMD-View.js"></script>
 <!-- <script src="js/purePajinate.js"></script>
 -->	
 <script src="js/purePajinate.min.js"></script>
+
+<script>
+
+AfficheRechercheCMD(<?php echo $isRECOmmandes;?>);
+initPagination();
+</script>
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 /**/
-include 'CMDClassesDefinition.php';
+include_once 'CMDClassesDefinition.php';
 	
 ini_set('display_errors','on');
 error_reporting(E_ALL);

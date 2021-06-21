@@ -8,17 +8,17 @@ if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
-include 'APIConnexion.php';
-include 'CATFonctions.php';
+include_once 'APIConnexion.php';
+include_once 'CATFonctions.php';
 
-$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATHistorique');
 
 ?>
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-	<title id="GO-PHOTOLAB">Historique des commandes</title>
+	<title id="PHOTOLAB">Historique des commandes</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>

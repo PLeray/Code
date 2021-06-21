@@ -529,7 +529,7 @@ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSomb
   width: 0;
     min-height: 100%;	
 	
-	
+	  color: white;
 	
   position: fixed;
   /**/   z-index: 1;
@@ -538,7 +538,7 @@ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSomb
 
   border-left: 1px solid var(--FondLigneTabGrisFonce); 
   
-  background-color: var(--FondLigneTabGrisClair);
+  background-color: var(--FondEnteteTableau);
   transition: 0.5s;  
   /*   overflow: hidden; */
 
@@ -568,7 +568,7 @@ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSomb
   font-size: 36px;
 margin-left: 210px; 
   
-    color: black;
+    color: white;
 
 }
 
@@ -586,6 +586,8 @@ margin-left: 210px;
   font-size: 18px;
   padding: 11px;
   margin-left: 5px;
+  
+
 }
 
 #zoneRecherche:hover,
@@ -626,7 +628,7 @@ top: 70px;
 	font-size: 10px;
 	
 	text-decoration: none;
-	color: var(--FondLigneTabGrisSombre);
+	color: white;
 	display: block;
 	  padding: 3px;
 	/*	

@@ -1,7 +1,7 @@
 <?php
 //include 'CConnexionLOCAL.php';
-include 'APIConnexion.php';
-include 'CATFonctions.php';
+include_once 'APIConnexion.php';
+include_once 'CATFonctions.php';
 //AMP ?
 $codeMembre = false;
 if (isset($_POST['codeMembre']) ){
@@ -23,7 +23,7 @@ if (isset($_GET['isDebug'])) { // Test connexion l'API
 	$isDebug = ($_GET['isDebug'] == 'Debug');
 }
 
-$maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
 $EnteteHTML = 
     '<!DOCTYPE html>

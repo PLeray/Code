@@ -1,5 +1,6 @@
 <?php
 /*include 'CataloguePdtWEB.php';*/
+include_once 'CMDClassesDefinition.php';
 
 $ProduitsNONLABO = array(
 '15x39cm_CADRE-PANO',
@@ -8,6 +9,7 @@ $ProduitsNONLABO = array(
 
 $CataloguePdtWEB = array();
 
+$ERREUR_EnCOURS = '';
 
 $Ecole_EnCOURS = '';
 $Client_EnCOURS = '';
@@ -21,9 +23,8 @@ $TabResumeFormat = array();
 function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 {
 	$TabCSV = array();
-	//$CataloguePdtWEB = csv_to_array('res/CatalogueProduits.csv', ';');
-	//$GLOBALS['CataloguePdtWEB'] = csv_to_array('res/CatalogueProduits.csv', ';');
-	$GLOBALS['CataloguePdtWEB'] = csv_to_array('../CatalogueProduits.csv', ';'); // New 22-10
+
+	$GLOBALS['CataloguePdtWEB'] = csv_to_array('../../GABARITS/CatalogueProduits.csv', ';'); // New 22-10
 	//var_dump( $GLOBALS['CataloguePdtWEB']) ;
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');
@@ -69,6 +70,21 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		$NbLignes=count($TabCSV);
 		
 		//Prefixe rep Tirage
+		//REpérer les colonne de commandes
+		$colNomDeLaPhoto = 0; // numero col Nom de la photo, la commande commence apres
+		$nbColonneCommnandes = 0; // numero col Nom de la photo
+		$i=0;
+		$isAvantColonneNom = true;
+		foreach($TabCSV[0] as $key => $value)
+		{
+			$i++;
+			if($key == 'Nom de la photo'){$colNomDeLaPhoto = $i;}// numero col Nom de la photo, la commande commence apres
+			if($key == 'Nom'){$isAvantColonneNom = false;}		
+			if($colNomDeLaPhoto && $isAvantColonneNom){$nbColonneCommnandes++;}					  
+			//echo $i. ' : ' . $key.'<br />';
+		}		
+		$nbColonneCommnandes--; //On ne prend pas le colonne Nom
+		//echo '<br /> $colNomDeLaPhoto ' . $colNomDeLaPhoto.'  $nbColonneCommnandes ' . $nbColonneCommnandes.'<br /><br /> ';	
 
 		for($i = 0; $i < $NbLignes; $i++)
 		{ 
@@ -88,7 +104,8 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 										. $TabCSV[$i]["Ville"]);  
 										
 			if ($TabCSV[$i]['Nom de la photo'] != '[Pochettes]') {
-				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], 9, -7), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);		
+				//$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], 9, -7), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);		
+				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], $colNomDeLaPhoto, $nbColonneCommnandes,true), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);				
 			}	
 		}
 		$NbPlanches = $NbLignes;
@@ -104,19 +121,28 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 							
 		//$affiche_Tableau = str_replace('<br>', '\n', $affiche_Tableau);
 		
-		# Chemin vers fichier texte
-		$target_file =  $GLOBALS['repCommandesLABO'] . $target_file ;
+		
+		if ($GLOBALS['ERREUR_EnCOURS'] != ''){
+			$affiche_Tableau = '';
+			echo 'Erreur !!! : ' . $GLOBALS['ERREUR_EnCOURS'];
+		}
+		else{ // Tout va bien !
+			# Chemin vers fichier texte
+			$target_file =  $GLOBALS['repCommandesLABO'] . $target_file ;
 
-		$txtFichier = str_replace("<br>", "\n", $affiche_Tableau);
-		$txtFichier = str_replace("&#60;", "<", $txtFichier);
-		$txtFichier = str_replace("&#62;", ">", $txtFichier);
+			$txtFichier = str_replace("<br>", "\n", $affiche_Tableau);
+			$txtFichier = str_replace("&#60;", "<", $txtFichier);
+			$txtFichier = str_replace("&#62;", ">", $txtFichier);
 
-		# Ouverture en mode écriture
-		$fileopen=(fopen("$target_file",'w'));
-		# Ecriture de "Début du fichier" dansle fichier texte 
-		fputs($fileopen,$txtFichier);
-		# On ferme le fichier proprement
-		fclose($fileopen);	
+			# Ouverture en mode écriture
+			$fileopen=(fopen("$target_file",'w'));
+			# Ecriture de "Début du fichier" dansle fichier texte 
+			fputs($fileopen,$txtFichier);
+			# On ferme le fichier proprement
+			fclose($fileopen);	
+			
+		}		
+
 	}
 	//'&#60;' . $Classe . ' ' . $key . '&#62;<br>';
 
@@ -125,23 +151,31 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 
 function EcrireBilanCMD( $NbCommandes)
 {
-	$unBilan = 'Le groupe de commandes comprend ' . $NbCommandes . ' commandes.%';
-	$unTab = array_count_values($GLOBALS['TabResumeProduit']);
-	
-	foreach ($unTab as $key => $row) {
-		$unBilan .= '- ' .$key . ': ' . $unTab[$key] . '%';
+	try {
+		$unBilan = 'Le groupe de commandes comprend ' . $NbCommandes . ' commandes.%';
+		$unTab = array_count_values($GLOBALS['TabResumeProduit']);
+		
+		foreach ($unTab as $key => $row) {
+			$unBilan .= '- ' .$key . ': ' . $unTab[$key] . '%';
+		}
+		//echo "erreur avant " . error_get_last();
+		$unTab = array_count_values($GLOBALS['TabResumeFormat']);
+		//echo "erreur apres " . error_get_last();
+		//var_dump($GLOBALS['TabResumeFormat']);
+		//$unBilan .= '%%%Pour un total de ' . $NbCommandes . ' commandes individuelles%';
+		$unBilan .= '%%%Il y a ' . count($GLOBALS['TabResumeProduit']) . ' fichiers a creer au laboratoire.%';
+		foreach ($unTab as $key => $row) {
+			$unBilan .= '- Format ' .$key . ': ' . $unTab[$key] . '%';
+		}	
+		$unBilan .= '}';
+		//var_dump($unBilan);
+		
+		return $unBilan;
+		//return $TabCSV;
+	} catch (ErrorException $e) {
+		$unBilan ='';
+		return $unBilan;
 	}
-	$unTab = array_count_values($GLOBALS['TabResumeFormat']);
-	//$unBilan .= '%%%Pour un total de ' . $NbCommandes . ' commandes individuelles%';
-	$unBilan .= '%%%Il y a ' . count($GLOBALS['TabResumeProduit']) . ' fichiers a creer au laboratoire.%';
-	foreach ($unTab as $key => $row) {
-		$unBilan .= '- Format ' .$key . ': ' . $unTab[$key] . '%';
-	}	
-	$unBilan .= '}';
-	//var_dump($unBilan);
-	
-	return $unBilan;
-	//return $TabCSV;
 }
 
 function EcrireEcole($Ecole, $PrefixeTirage)
@@ -199,7 +233,7 @@ function EcrireProduitPhoto($NomPhoto, $ProduitPhoto)
 	//$leCodeProduit = $GLOBALS['CataloguePdtWEB'][$ProduitPhoto];
 	//echo ' sqfqsfdqsf  ' . $GLOBALS['CataloguePdtWEB'][0]['Description']. ' sqfqsfdqsf <br>';
 	$leCodeProduit ='';
-	
+	$leCodeFormat ='';
 
 	for($i = 0; $i < count($GLOBALS['CataloguePdtWEB']) ; $i++){
 		//echo $GLOBALS['CataloguePdtWEB'][$i]['Description'] . '<br>';
@@ -217,14 +251,24 @@ function EcrireProduitPhoto($NomPhoto, $ProduitPhoto)
 		if (substr($NomPhoto, -7 )== '-WEB_nb'){$NomPhoto = substr($NomPhoto, 0, -7) . '_nb';}
 		
 		if (substr($NomPhoto ,-3 )== '_nb'){
-			$valRetour .= substr($NomPhoto ,0,-3 ) . '.JPG_' . $tabCodesProduit[$i] . '_NOIR-ET-BLANC<br>';
+			$valRetour .= substr($NomPhoto ,0,-3 ) . '.jpg_' . $tabCodesProduit[$i] . '_NOIR-ET-BLANC<br>';
 		}
 		else{
-			$valRetour .= str_pad($NomPhoto, 4, "0", STR_PAD_LEFT) . '.JPG_' . $tabCodesProduit[$i] . '<br>';			
+			$valRetour .= str_pad($NomPhoto, 4, "0", STR_PAD_LEFT) . '.jpg_' . $tabCodesProduit[$i] . '<br>';			
 		}
 		array_push($GLOBALS['TabResumeProduit'],$ProduitPhoto);
 		if (! in_array($tabCodesProduit[$i], $GLOBALS['ProduitsNONLABO'])){
-			array_push($GLOBALS['TabResumeFormat'], stristr($tabCodesProduit[$i] , '_', true));		
+			$leCodeFormat = stristr($tabCodesProduit[$i] , '_', true);
+			//array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);
+			if ($leCodeFormat != ''){
+				array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);	
+			}
+			else{
+				$GLOBALS['ERREUR_EnCOURS'] = 'Erreur Ecriture Produit Photo ! ajoutez : "' . $ProduitPhoto . '" dans CatalogueProduits.csv';
+				//echo ' PROBLEME  ' . $valRetour . ' PROBLEME  ' . $valRetour . '  PROBLEME  ' . $valRetour . '  PROBLEME ';
+			}
+			/**/
+				
 		}
 	} 
 
@@ -235,29 +279,6 @@ function ConvertPDT($ProduitPhoto)
 {
     $valRetour = '_A REVOIR_'. $ProduitPhoto;
 	return $valRetour;
-}
-
-
-function csv_to_array($filename='', $delimiter=';')
-{
-    //echo ('$filename ' . $filename);
-	if(!file_exists($filename) || !is_readable($filename))
-        return FALSE;
-
-    $header = NULL;
-    $data = array();
-    if (($handle = fopen($filename, 'r')) !== FALSE)
-    {
-        while (($row = fgetcsv($handle, 0, $delimiter)) !== FALSE)
-        {
-            if(!$header)
-                $header = $row;
-            else
-                $data[] = array_combine($header, $row);
-        }
-        fclose($handle);
-    }
-    return $data;
 }
 
 function SUPRAccents($str, $charset='utf-8' ) {

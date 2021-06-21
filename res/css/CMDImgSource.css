@@ -1,0 +1,210 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	/* overflow:hidden; */
+	overflow-y: scroll;
+	overflow-x:hidden;
+
+}
+
+
+/******************************/
+/*       
+* {
+  box-sizing: border-box;
+}
+
+STYLE DE BASE        */
+/******************************/
+
+
+h1 { /*Police texte Ecole */
+    text-align: center;
+	font-size: 14px;
+
+    color: var(--boutonVert);
+}
+
+h2 { /*Police texte Adresse */
+    color: gray;
+	text-align: left;
+    letter-spacing: 3px;
+	padding: 0px;
+	line-height: 0;
+	font-size: 12px;
+	padding: 10px;
+	margin: 10px;
+	font-family: "Courier New", Times, serif;
+	border-bottom: 1px solid var(--FondLigneTabGrisSombre);
+}
+
+h3 { 
+    letter-spacing: 3px;
+	padding: 0px;
+	
+	font-size: 12px;
+	font-family: "Courier New", Times, serif;
+	text-align: center;
+	
+	
+}
+
+h4 { /*Police texte produit */
+	display: inline-block; /**/
+    color: var(--FondLigneTabGrisSombre);
+    letter-spacing: 2px;
+	padding-top: 0px;
+	margin-bottom: -30px;
+	
+	font-size: 11px;
+	font-family: "Courier New", Times, serif;
+	text-align: center;
+	
+	/*max-width: 180px;*/
+	
+}
+
+h5 {/*Police Nom de Classe  */
+    letter-spacing: 1px;
+	line-height: 0;
+	font-size: 12px;
+	color: var(--boutonRouge);
+	margin-bottom: 0px;
+}
+
+h6 {/*Police Nombre de planche  */
+	display: inline-block; 
+    color: var(--boutonRouge);
+    /*letter-spacing: 2px;*/
+	padding-top: 0px;
+	margin-bottom: -30px;
+	font-weight: bold;
+	font-size: 15px;
+	font-family: "Courier New", Times, serif;
+	text-align: center;
+	
+	/*max-width: 180px;*/
+}
+
+
+
+/*//////////ENTETE /////////////////////////////////////////*/
+.logo {
+  position: absolute;
+  left: 8px;
+  Top: 0px;
+
+  z-index: 1; 
+}
+
+.titreFichier {
+	position: absolute;
+	padding: 1px;
+	text-align: center;
+	/*left: 230px;*/
+	Top: 80px;
+	width: 100%;
+    color: var(--texteGris);
+	font-family: "Courier New", Times, serif;
+    letter-spacing: 3px;	
+}
+
+
+.moinsplus {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: var(--boutonRouge);
+	    padding: 0px 16px;
+    color: white;
+	    text-decoration: none;
+    display: inline-block;
+	border-radius: 15px;
+}
+
+.moinsplus:hover {
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
+
+
+
+/******************************/
+/*         CMD-VIEW           */
+/******************************/
+
+
+.ecole {
+    text-align: center;
+	font-size: 20px;
+	width: -10px;
+	
+	padding: 10px;
+
+	/*position: relative;*/
+	
+	background-color: var(--FondEnteteTableau);
+	color: var(--FondLigneTabGrisClair);
+	
+	
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.24); 
+}
+
+
+
+
+.Planche {
+	background-color: var(--FondLigneTabGrisClair);
+	display: inline-block;	 
+
+	
+}
+
+.PlancheGroupe {background-color: var(--boutonRouge);
+vertical-align: top;
+	
+}
+
+
+
+.plancheSELECTIONNER {
+	display: inline-block;	 
+
+	margin: 10px 10px 10px 10px;	
+	border: 0.5rem dashed var(--boutonRouge);
+}
+
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: var(--boutonRouge);
+  width: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: blue;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+#ImgPlancheIndiv {
+	cursor: pointer;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+width: 150px;
+
+	/*box-shadow: -4px 4px 4px 4px var(--boutonVert);
+
+	animation: shake 0.2s;
+	animation-iteration-count: 1;	*/
+}
+#ImgPlancheIndiv:hover {opacity: 0.7;}
+
+#ImgPlancheGroupe {
+	cursor: pointer;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+	width: 350px;
+}
+#ImgPlancheGroupe:hover {opacity: 0.7;}
+

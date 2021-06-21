@@ -6,18 +6,25 @@ if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
-include 'APIConnexion.php';
-include 'CATFonctions.php';
+include_once 'APIConnexion.php';
+include_once 'CATFonctions.php';
 
-$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 
 ?>
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
+<?php 
+if($isDebug){
+	header("Cache-Control: no-cache, must-revalidate");
+}
+
+
+?>
 	<META HTTP-EQUIV="Refresh" CONTENT="<?php echo ($isDebug?'5':'10'); ?>; URL=<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>">
-	<title id="GO-PHOTOLAB">Commandes en cours</title>
+	<title id="PHOTOLAB">Commandes en cours</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
@@ -35,10 +42,10 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 
 <?php
 	$g_IsLocalMachine = IsLocalMachine();
-	$repertoireTirages = $GLOBALS['repTIRAGES'];
-	$repertoireCMD = $GLOBALS['repCMDLABO'];
-
-	$repertoireMiniatures = $GLOBALS['repMINIATURES'];
+	//$repertoireTirages = $GLOBALS['repTIRAGES'];
+	//$repertoireCMD = $GLOBALS['repCMDLABO'];
+	//$repertoireMiniatures = $GLOBALS['repMINIATURES'];
+	
 /*
 	$monGroupeCmdes = new CGroupeCmdes($repertoireCMD.$myfileName);
 	
@@ -69,9 +76,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
 			}
 		BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 	} 
-	elseif (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
-		BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode'], $_GET['CodeEcole']);
-	}
+
 	elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
 		//echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 	}

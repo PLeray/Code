@@ -8,10 +8,10 @@ var g_NumVersion = 3.0;
 
 var g_NomVersion = 'PhotoLab PLUGIN v3.3';
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
-var g_FichierSource = g_Rep_PHOTOLAB + 'Code/Sources.csv';
+var g_FichierSource = g_Rep_PHOTOLAB + 'SOURCES/Sources.csv';
 var isDebug = ($.fileName.substr(-4) == '.jsx'); //et non .jsxbin !
 
-var g_NomVersion = 'PhotoLab PLUGIN v' + g_NumVersion + (isDebug?' !!! BETA !!!':'');
+var g_NomVersion = 'PhotoLab PLUGIN BETA v' + g_NumVersion + (isDebug?' !!! DEV-BETA !!!':'');
 //alert('$.fileName.substr(-4)  : ' + $.fileName.substr(-4) + ' is debug : ' + isDebug);
 
 var g_CeCalculateur = '';

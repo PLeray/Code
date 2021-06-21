@@ -1,5 +1,5 @@
 <?php
-include 'CMDClassesDefinition.php';
+include_once 'CMDClassesDefinition.php';
 
 class CINFOfichierLab {
 	var $Fichier;	
@@ -108,7 +108,7 @@ class CINFOfichierArbo {
 		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.Erreur';
 		$this->AffichageNomCMD = substr($this->Fichier, 16, -5);
 		
-		$this->DateTirage = substr($this->Fichier, 5, 10);
+		//$this->DateTirage = substr($this->Fichier, 5, 10);
 
 		for($i = 0; $i < count($tabFICHIERLabo); $i++){
 			$identifiant = substr($tabFICHIERLabo[$i],0,1);
@@ -132,6 +132,7 @@ class CINFOfichierArbo {
 			//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
 					$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
 					$this->DateTirage = $morceau[0];
+					//$this->DateTirage = substr($morceau[0], 5, 10); 
 					$this->NomEcole = $morceau[1];			
 				}
 				if ($identifiant == '#') {
@@ -143,7 +144,8 @@ class CINFOfichierArbo {
     function RepTirage(){
 		$leRepTirage = '';
 		if ($this->EtatFichier){
-			$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;	
+			$leRepTirage = 'LUMYS-' . $this->DateTirage . '-' .$this->NomEcole ;	
+			//js : g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
 		}
 		return $leRepTirage;
     } 
@@ -177,41 +179,60 @@ function SuprimeFichier($strFILELAB){
 		$fichier = $GLOBALS['repCMDLABO'] . $strFILELAB ;
 		if (file_exists($fichier)){ 
 			// NEW SUP ARBORESCENCE FICHIER		
-			$mesInfosFichier = new CINFOfichierLab($fichier); 
-			global $repertoireTirages;
-			global $repertoireMiniatures;	
-			if ($mesInfosFichier->RepTirage() != '') {
-				SuprArborescenceDossier($repertoireTirages.$mesInfosFichier->RepTirage());
-				SuprArborescenceDossier($repertoireMiniatures.$mesInfosFichier->RepTirage());
+			if (substr($strFILELAB, -5, 4) == 'lab'){
+				$mesInfosFichier = new CINFOfichierLab($fichier); 				
+				//global $repertoireTirages;
+				//global $repertoireMiniatures;	
+				if ($mesInfosFichier->RepTirage() != '') {
+					SuprArborescenceDossier($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage());
+					SuprArborescenceDossier($GLOBALS['repMINIATURES'].$mesInfosFichier->RepTirage());
+				}
+			}
+			else{
+				$mesInfosFichier = new CINFOfichierArbo($fichier); 
+				if ($mesInfosFichier->RepTirage() != '') {
+					SuprArborescenceDossier($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage());
+				}
 			}
 
+
 			//Supression du .lab0
-			unlink($fichier);
+			SuprFichier($fichier);
 			$Extension = '.' . TypeFichier($strFILELAB);
 			$strBaseName = substr($fichier, 0, strpos($fichier, $Extension));
 			if (file_exists($strBaseName . '.Erreur')){ 
 				//Supression du fichier erreur
-				unlink($strBaseName . '.Erreur');
+				SuprFichier($strBaseName . '.Erreur');
 			}				
 		}
 	} 	
 }
 
 function SuprArborescenceDossier($nomDossier) {
+	if($GLOBALS['isDebug']){
+			Echo '<br>TENTATIVE DE SUPPRIMER le DOSSIER '. $nomDossier;
+	}
+			
 	if (is_dir($nomDossier)) {
-		if($GLOBALS['isDebug']){
-				Echo '<br>TENTATIVE DE SUPPRIMER le DOSSIER '. $nomDossier;
-		}
-		
+
 		$files = array_diff(scandir($nomDossier), array('.','..'));
 		/**/
 		foreach ($files as $file) {
-		  (is_dir("$nomDossier/$file")) ? SuprArborescenceDossier("$nomDossier/$file") : unlink("$nomDossier/$file");
+		  (is_dir("$nomDossier/$file")) ? SuprArborescenceDossier("$nomDossier/$file") : SuprFichier("$nomDossier/$file");
 		}
-		return rmdir($nomDossier);
+		return SuprDossier($nomDossier);
 	}	
 }
-	
+function SuprFichier($fichier) {
+	//chmod($fichier,0777);
+	unlink($fichier);
+}	
+
+function SuprDossier($Dossier) {
+	//chmod($Dossier,0777);
+	return rmdir($Dossier);
+}	
+
 function LienIMGSuprFichierLab($fichier, $Etat) {
 	$Lien = 'CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($fichier);// . '&apiEtat=' . $Etat;
 	$retour = '';
@@ -240,15 +261,15 @@ function ChangeEtat($strFILELAB, $Etat){
 		if ($Etat > 2){
 			if (file_exists($fichierdeBase . $Extension . '0')){ 
 				//Supression du .lab0
-				unlink($fichierdeBase . $Extension . '0');
+				SuprFichier($fichierdeBase . $Extension . '0');
 			}
 			if (file_exists($fichierdeBase . $Extension . '1')){ 
 				//Supression du .lab0
-				unlink($fichierdeBase . $Extension . '1');
+				SuprFichier($fichierdeBase . $Extension . '1');
 			}			
 			if (file_exists($fichierdeBase . '.Erreur')){ 
 				//Supression du .lab0
-				unlink($fichierdeBase . '.Erreur');
+				SuprFichier($fichierdeBase . '.Erreur');
 			}
 		}
 		return 'OK';
@@ -290,34 +311,6 @@ function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 	fclose($file);	
 }
 
-function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole){
-
-	if ($GLOBALS['isDebug']){
-		echo "<br> STOP !<br> ";
-		echo '<br><br>' . $NewFichier;
-	}
-	$line ='';
-	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
-	
-	// New
-	/*Ouvre le fichier et retourne un tableau contenant une ligne par élément
-	$lines = file($strURL_RECFileLab);
-	if ($GLOBALS['isDebug']){		
-		foreach ($lines as $lineNumber => $lineContent){//On parcourt le tableau $lines et on affiche le contenu de chaque ligne précédée de son numéro
-			echo $lineNumber .' : ' . $lineContent .'<br>';
-		}	
-	}*/
-
-	//
-	$file = fopen($strURL_NewFichier, 'w');
-		$ligne = '[Version : 2.0' . $BDDRECCode . "\n";
-		fputs($file, $ligne);
-		$ligne = '{Etat 1 :0%%En Cours....}' . "\n";
-		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
-		$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";
-		fputs($file, $ligne);	 //@2021-02-26_L2-Ecole TEST-MAROU_ACC7_Ecole web !@ 
-	fclose($file);	
-}
 function RECFileLab($strRECFileLab){
 	if ($GLOBALS['isDebug']){
 		echo "<br> STOP<br> ";
@@ -383,7 +376,7 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 			//if (file_exists($GLOBALS['repCMDLABO'] . substr($tabFichierLabo[$i], 0, -5) .'.Erreur')){				
 			if (file_exists($mesInfosFichier->LienFichierERREUR())){	
 			$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR() . '." title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
+				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR() . '" title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
 					<img src="img/ERREUR.png" alt="ERREUR">
 					<font size="3" color="red">ATTENTION : Erreurs !</font></a>
 					' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
@@ -452,7 +445,7 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 				<td colspan=3>';
 				if (file_exists($mesInfosFichier->LienFichierERREUR())){
 					$affiche_Tableau .=	'			
-					<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '." title="Afficher les erreurs">
+					<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '" title="Afficher les erreurs">
 						<img src="img/ERREUR.png" alt="ERREUR">
 						<font size="3" color="red">ATTENTION : Erreurs !</font></a>
 						' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
@@ -517,15 +510,15 @@ function TableauRepFichier($ExtFichier, $isEnCours){
 				//echo $GLOBALS['repCMDLABO'] . substr($fichier, 0, -5) . $ExtFichier;
 				if (file_exists($fichierdeBase . '0')){  //voir fichier de base
 					//Supression du .lab0
-					unlink($fichierdeBase . '0');
+					SuprFichier($fichierdeBase . '0');
 				}
 				if (file_exists($fichierdeBase . '1')){ 
 					//Supression du .lab0
-					unlink($fichierdeBase . '1');
+					SuprFichier($fichierdeBase . '1');
 				}			
 				if (file_exists($fichierdeBase . '.Erreur')){ 
 					//Supression du .lab0
-					unlink($fichierdeBase . '.Erreur');
+					SuprFichier($fichierdeBase . '.Erreur');
 				}
 			}			
 		} 
@@ -630,7 +623,7 @@ function LienFichierLab($fichier) {
 			$LienFichier = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 			break;
 		default:
-			$LienFichier = "CMDViewNEW.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
+			$LienFichier = "CMDView.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
 			break;		
 	}
   
@@ -667,11 +660,7 @@ function execInBackground($cmd) {
 */	
  $last_line = system($cmd, $retval);
 
- // Affichage d'autres informations
- echo '
-</pre>
-<hr />La dernière ligne en sortie de la commande : ' . $last_line . '
-<hr />Valeur retournée : ' . $retval;	
+
 	
 	
 	

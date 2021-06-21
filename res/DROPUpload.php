@@ -1,16 +1,7 @@
 <?php
-//include 'res/CConnexionLOCAL.php';
-/*
-include 'res/APIConnexion.php';
-include 'res/CATFonctions.php';
-include 'res/ConvertCSV.php';
-
-$repCommandesLABO = "../CMDLABO/";
-*/
-
-include 'APIConnexion.php';
-include 'CATFonctions.php';
-include 'ConvertCSV.php';
+include_once 'APIConnexion.php';
+include_once 'CATFonctions.php';
+include_once 'ConvertCSV.php';
 
 $repCommandesLABO = "../../CMDLABO/";
 
@@ -19,7 +10,7 @@ if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
-$maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 	
 if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé par DROP (15 octobre)
 		echo  API_PostFILELAB();
@@ -69,11 +60,14 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 					$retourMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
 					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";					
 					$uploadOk = 2; // Flag test si OK
-					//$target_file_seul = substr($target_file, 8, -1); // Pour etre dans la même forme que . lab pas lab0
 					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
-					//echo '<br><br>target_file_seul : ' . $target_file_seul;
-					//echo '<br>target_file : ' . $target_file;
-				}				
+				}	
+				else {					
+					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";	
+					$retourMSG .= "<h3>Erreur sur le fichier !</h3>"  ;
+					$target_file = '';
+					//$uploadOk = 0;
+				}
 			} 
 			else {
 				if (move_uploaded_file($_FILES["myfile"]["tmp_name"], $target_file)) {
@@ -85,6 +79,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 					$retourMSG = "APIPhotoLab : Probleme d'enregistrement de :" . $target_file;
 				}				
 			}
+			$CMDhttpLocal ='';
 			if ($uploadOk == 2) {
 
 				$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
@@ -95,7 +90,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				
 				$mesInfosFichier = new CINFOfichierLab($target_file); 
 				//$CMDAvancement ='';
-				$CMDhttpLocal ='';
+				
 				//$Compilateur = '';				
 				$NBPlanches = $mesInfosFichier->NbPlanches;
 

@@ -1,22 +1,34 @@
 ﻿// Pierre S Mac Leray Jr
 //#target photoshop-60.064 // Pour cs6 direct
 #target photoshop
+
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
 var g_NumVersion = 3.1;
 
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
-var g_FichierSource = g_Rep_PHOTOLAB + 'Code/Sources.csv';
+var g_FichierSource = g_Rep_PHOTOLAB + 'SOURCES/Sources.csv';
+
+
+
 var isDebug = ($.fileName.substr(-4) == '.jsx'); //et non .jsxbin !
 
-var g_NomVersion = 'PLUGIN-PhotoLab v' + g_NumVersion + (isDebug?' !!! BETA !!!':'');
+
+var g_NomVersion = 'PhotoLab PLUGIN BETA v' + g_NumVersion + (isDebug?' !!! DEV-BETA !!!':'');
 //alert('$.fileName.substr(-4)  : ' + $.fileName.substr(-4) + ' is debug : ' + isDebug);
 
 var g_CeCalculateur = '';
 var g_CodeClient = '';
 
+//////////TEST ////////////////////////////
+var g_REN = g_Rep_PHOTOLAB + 'Code/TEST';
+var doc  =  new Folder(g_REN);
+doc.rename('TTTTES4');
 
+
+
+///////////////////////////
 
 var g_LargeurUI = 550;
 var g_HauteurDetailsUI = 1080;
@@ -87,9 +99,9 @@ LoadConfig();
 
 RecupNomOrdi();
 
-
+var g_TypeUI =  'dialog'; // 'palette'; ''   'window'    'dialog' (MAC
 //PHOTOLAB
-var PHOTOLAB = new Window ('palette', g_NomVersion + '     [' + g_CeCalculateur + ']', undefined); 
+var PHOTOLAB = new Window (g_TypeUI, g_NomVersion + '     [' + g_CeCalculateur + ']', undefined); 
 
 //var PHOTOLAB = new Window ('dialog', 'PHOTOLAB PLUGIN '); 
 //PHOTOLAB.size.height = 150;
@@ -98,12 +110,6 @@ PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphic
 PHOTOLAB.graphics.foregroundColor = PHOTOLAB.graphics.newPen(PHOTOLAB.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
 
 
-	var Groupefermer = PHOTOLAB.add("group", undefined, {name: "Groupefermer"}); 
-	Groupefermer.alignment = ["right","top"]; 
-	var btnFermer = Groupefermer.add("button", undefined, 'Fermer', {name: "btnFermer"}); 	
-	btnFermer.onClick = function () {	
-		PHOTOLAB.close();
-	}	
 
 
 
@@ -166,24 +172,24 @@ if (File.fs !== "Windows") {
 	//var e = group.add ("edittext");
 	var dpDown = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
 }
-dpDown.graphics.foregroundColor = dpDown.graphics.newPen(dpDown.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+	dpDown.graphics.foregroundColor = dpDown.graphics.newPen(dpDown.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
 
 
 
 
 
-dpDown.selection = 0;
-g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 
-//e.text = g_NomFichierEnCours;
-//e.active = true;
-dpDown.preferredSize.width = 340;
-//e.preferredSize.width = 220; e.preferredSize.height = 20;
+	dpDown.selection = 0;
+	g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 
+	//e.text = g_NomFichierEnCours;
+	//e.active = true;
+	dpDown.preferredSize.width = 340;
+	//e.preferredSize.width = 220; e.preferredSize.height = 20;
 
 
-dpDown.onChange = function () {
-g_NomFichierEnCours = dpDown.selection.text;
+	dpDown.onChange = function () {
+	g_NomFichierEnCours = dpDown.selection.text;
 
-}	
+	}	
 
 
 	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,25], '0/0', {multiline: true});
@@ -220,6 +226,16 @@ var fichierEnCours = Zone2Progression.add ('statictext {justify: "center"}'); //
 var progressBar = Zone2Progression.add ('progressbar', [0,0,g_LargeurUI,10], 0, 15);
 
 
+
+	var Groupefermer = PHOTOLAB.add("group", undefined, {name: "Groupefermer"}); 
+	Groupefermer.alignment = ["center","top"]; 
+	var btnQuitter = Groupefermer.add("button", undefined, 'Quitter', {name: "btnQuitter"}); 	
+	btnQuitter.onClick = function () {	
+		PHOTOLAB.close();
+	}	
+
+
+
 PHOTOLAB.onDeactivate = function(){
     // just to prevent window from fading out
     PHOTOLAB.update();
@@ -245,6 +261,28 @@ while(FermerPhotoLab == false){
 
 ////////////////////////////// LES FONCTIONS //////////////////////////////////////////////
 function Raffraichir() { 
-    app.refresh(); // or, alternatively, waitForRedraw(); 
-    PHOTOLAB.update(); // A voir sur MAC?
+    //app.refresh(); // or, alternatively, 
+    WaitForRedraw(); 
+    
+    /*var waitForRedraw = function() {
+      var d;
+      d = new ActionDescriptor();
+      d.putEnumerated(app.stringIDtoTypeID('state'),
+      app.stringIDtoTypeID('state'),
+      app.stringIDtoTypeID('redrawComplete'));
+      return executeAction(app.stringIDtoTypeID('wait'), d, DialogModes.NO);
+    }; */
+
+    //PHOTOLAB.update(); // A voir sur MAC?
 }
+
+function WaitForRedraw(){
+    var eventWait = charIDToTypeID("Wait")
+    var enumRedrawComplete = charIDToTypeID("RdCm")
+    var typeState = charIDToTypeID("Stte")
+    var keyState = charIDToTypeID("Stte")
+    var desc = new ActionDescriptor()
+    desc.putEnumerated(keyState, typeState, enumRedrawComplete)
+    executeAction(eventWait, desc, DialogModes.NO)
+}  
+

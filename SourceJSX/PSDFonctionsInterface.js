@@ -315,7 +315,13 @@ function MAJinfoEcole(uneEcole) {
 			MsgLOGInfo('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
 			MsgLOGInfo('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));
 			//alert('InitGroupesClasseIndive : ' + uneEcole.Commentaire);
-			g_GroupeIndiv.length = 0;
+			//NEW 20 MAI 2021
+			//g_GroupeIndiv.length = 0;
+			//g_GroupeIndiv.splice(0, g_GroupeIndiv.length);
+			
+			
+			
+			
 			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
 			valRetour = true;		
 		}
@@ -608,13 +614,12 @@ function GenererFichiersWEB() {
 		// On met en gris au depart ...
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 		
-		chronoDebut = new Date().getTime();
-				
+		chronoDebut = new Date().getTime();				
 		//alert("ZX000 : RecupSourceDepuisCode");			
 		var SRCEcole = new Ecole (g_CommandeLabo.Ecole);	
 		//alert("ZX00AA : RecupSourceDepuisCode : " + SRCEcole.CodeRefEcole);	
 		var cdecole = SRCEcole.CodeRefEcole;
-		
+		var isEcoleOK = MAJinfoEcole(SRCEcole);			
 		LireFichierSource();
 		var uneSource = new objSourceCSV(); 
 		uneSource = RecupSourceDepuisCode(cdecole);
@@ -623,10 +628,16 @@ function GenererFichiersWEB() {
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
 		g_RepSOURCE  = uneSource.Repertoire;
 		g_TabListeNomsClasses = [];
-		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);	
+		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);
 
-		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
-		//alert("ZX00FFF : InitialisationSourcePourLewEB ok");
+
+		var theFolder = new Folder(g_RepSOURCE);
+		//alert("ZX00FFF : MAJinfoEcole = "+isEcoleOK);		
+
+		InitialisationSourcePourLeWEB(theFolder, []);
+		
+		//InitGroupesClasseIndiv(theFolder, []);
+		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
 		var size = 0;
 		var i = 0;
 		for(var fichier in g_GroupeIndiv){
@@ -634,6 +645,7 @@ function GenererFichiersWEB() {
 		}	
 		progressBar.maxvalue = size;	
 		//alert("ZX001 : nb de fichier : " + size );	
+
 		for(var fichier in g_GroupeIndiv){
 			i = i + 1;
 			progressBar.value = i ;
@@ -643,7 +655,7 @@ function GenererFichiersWEB() {
 			//UI
 			Raffraichir(); // A voir ?		
 
-			//alert("ZX01 : fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
+			//alert("ZXXDXDXD 01 : le fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
 			CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
 
 			if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
@@ -651,12 +663,23 @@ function GenererFichiersWEB() {
 
 			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
 			EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
+			
+			//progressBar.value = i;
+			g_CommandeAVANCEMENT = Number( ( i + 1)  / (size - 1) ); //g_CommandeLabo.NbPlanchesACreer()
+			g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
+			txtTraitement.text = String ( i + 1 ) + " / " +  String (size);				
+			//alert("ZXXDXDXD 01 : g_CommandeAVANCEMENT : " + g_CommandeAVANCEMENT );
+			
 		}			
         if (!g_IsGenerationEnPause){ 
-			//alert(' FIN');
+			
+			var etatCompil = (g_CommandeAVANCEMENT<1)?1:2;			
 			var nbErreur = EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
+			etatCompil = nbErreur?1:etatCompil; 
+			
 			BilanFinTraitement(chronoDebut, nbErreur);		
-			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),(nbErreur?1:2));
+			//alert(' FIN etatCompil : ' + etatCompil);
+			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),etatCompil);
 		}
 	}
 	catch(err) {
@@ -735,7 +758,7 @@ function GenererFichiersWEB_OLD() { ////////////////////////////////////////////
 
 
 function LoadConfig() {
-	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
+	var fileName = g_Rep_PHOTOLAB + 'PhotoLab-config.ini'; // 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	if ( file.open("r")){
 		file.readln();		//Planche inversé ?			
@@ -759,7 +782,7 @@ function LoadConfig() {
 }
 
 function SaveConfig(checkOrdre, typeConfigWeb, isPhotosGroupes, isPhotosIndiv, isPhotosFratrie) {
-	var fileName = g_Rep_PHOTOLAB + 'Code/PhotoLab-config.ini';	
+	var fileName = g_Rep_PHOTOLAB + 'PhotoLab-config.ini'; // 'Code/PhotoLab-config.ini';	
 	var file = new File(fileName);
 	file.encoding='UTF-8';
 	file.open("w"); // open file with write access

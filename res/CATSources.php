@@ -6,19 +6,21 @@ if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
-include 'APIConnexion.php';
-//include 'CATFonctions.php';
+include_once 'APIConnexion.php';
+include_once 'CMDClassesDefinition.php';
 
-$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
+
+
+$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATSources');
 
 ?>
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-	<title id="GO-PHOTOLAB">Sources enregistrées</title>
+	<title id="PHOTOLAB">Sources enregistrées</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
+	<link rel="stylesheet" type="text/css" href="css/CATSources.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 	<link rel="stylesheet" type="text/css" href="css/Menu.css">
 </head>
@@ -44,6 +46,9 @@ if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier l
 		}
 	BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 } 
+elseif (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
+	BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode'], $_GET['CodeEcole']);
+}
 elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
     //echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 }
@@ -57,7 +62,7 @@ elseif (isset($_GET['apiSupprimer'])) {
 
 $nb_fichier = 0;
 
-$affiche_Tableau = AfficheTableauSOURCES($nb_fichier, "../Sources.csv");
+$affiche_Tableau = AfficheTableauSOURCES($nb_fichier, "../../SOURCES/Sources.csv");
 
 ?>
 <div class="zoneTable" >
@@ -79,74 +84,71 @@ $affiche_Tableau = AfficheTableauSOURCES($nb_fichier, "../Sources.csv");
 	<p class="mention">	<?php echo VersionPhotoLab();?> </p>
 </div>
 
-
-
 </body>
 </html>
 
 <?php
 
 
-
-function csv_to_array($filename='', $delimiter=';')
-{
-    //echo ('$filename ' . $filename);
-	if(!file_exists($filename) || !is_readable($filename))
-        return FALSE;
-
-    $header = NULL;
-    $data = array();
-    if (($handle = fopen($filename, 'r')) !== FALSE)
-    {
-        while (($row = fgetcsv($handle, 0, $delimiter)) !== FALSE)
-        {
-            if(!$header)
-                $header = $row;
-            else
-                $data[] = array_combine($header, $row);
-        }
-        fclose($handle);
-    }
-    return $data;
-}
-
-
-
-
 function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV){ 
-	$TabCSV = csv_to_array($fichierCSV, ';');
 	$affiche_Tableau = '';
-	foreach ($TabCSV as $key => $row) {
+	if (file_exists($fichierCSV)){
+		$TabCSV = csv_to_array($fichierCSV, ';');
+
+		$NbLignes=count($TabCSV);
+		//echo 'nb ligne catalog source ' . $NbLignes;
+		if ($NbLignes){
+			/* A quoi ca sert dsans tri .?
+			foreach ($TabCSV as $key => $row) {
 				$NomProjet[$key] = $row['NomProjet'];
-	}
-	array_multisort($NomProjet, SORT_DESC, $TabCSV); // Tri par nom de projet
-	$NbLignes=count($TabCSV);
-	$nb_fichier = $NbLignes;
-	for($i = 0; $i < $NbLignes; $i++)
-	{ 
-		$affiche_Tableau .=	'<tr>			
-	<td><div class="tooltip">' . $TabCSV[$i]["Code"] .'
-				<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>				
-	<td><div class="tooltip">' . $TabCSV[$i]["Rep Scripts PS"] .'
-				<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>	
-	<td><div class="tooltip">' . $TabCSV[$i]["Annee"] .'
-				<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>		
-	<td align="left" class="titreCommande" ><div class="tooltip">' . $TabCSV[$i]["NomProjet"] .'
-				<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>			
-	<td><div class="tooltip"><a href="' . LienOuvrirDossierOS($TabCSV[$i]["Repertoire"] ) . '" >' . NBfichiersDOSSIER($TabCSV[$i]["NomProjet"]) . '</a>';		
-			
-		$isArbo	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($TabCSV[$i]["NomProjet"]) . '2');
+			}
+			*/
+			// supr pour Mac qu'en y en a qu'un NE FONCTIONNE PAS 
+			//array_multisort($NomProjet, SORT_DESC, $TabCSV); // Tri par nom de projet
+
+			$nb_fichier = $NbLignes;
+			for($i = 0; $i < $NbLignes; $i++)
+			{ 
+				$affiche_Tableau .=	'<tr>			
+			<td><div class="tooltip">' . $TabCSV[$i]["Code"] .'
+						<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>				
+			<td><div class="tooltip">' . $TabCSV[$i]["Rep Scripts PS"] .'
+						<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>	
+			<td><div class="tooltip">' . $TabCSV[$i]["Annee"] .'
+						<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>		
+			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["Annee"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>
+						<span class="tooltiptext">'. $TabCSV[$i]["Repertoire"] . '</span></div></td>			
+			<td><div class="tooltip"><a href="' . LienOuvrirDossierOS($TabCSV[$i]["Repertoire"] ) . '" >' . NBfichiersDOSSIER($TabCSV[$i]["NomProjet"]) . '</a>';		
+					
+				$isArbo	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($TabCSV[$i]["NomProjet"]) . '2');
+				
+				$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"], $TabCSV[$i]["Code"], $isArbo).'"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($isArbo) . '</a></td>';	
+
+
+					
+				$affiche_Tableau .=	'</tr>';	
+			}
+
+		}
 		
-		$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"], $TabCSV[$i]["Code"], $isArbo).'"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($isArbo) . '</a></td>';	
-
-
-			
-		$affiche_Tableau .=	'</tr>';	
 	}
 
 
 	return $affiche_Tableau;
 }
+
+
+function LienImgSource($codeProjet, $anneeProjet) {
+	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+
+	$LienFichier = "#";
+
+	$LienFichier = "CMDImgSource.php". $Environnement . "&codeSource=" . urlencode($codeProjet). "&anneeSource=" . urlencode($anneeProjet);
+	//$isDebug = true;
+	return $LienFichier;
+}
+
+
 
 function NomfichierARBO($NomProjet) {
   return 'ARBO-' . $NomProjet. '.web';
@@ -192,6 +194,28 @@ function LienImageArbo($isOK){
 	//return $Lien;
 	return '<img ' . $Lien . '>';
 } 
+
+function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole){
+
+	if ($GLOBALS['isDebug']){
+		echo "<br> STOP !<br> ";
+		echo '<br><br>' . $NewFichier;
+	}
+	
+	$line ='';
+	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
+	
+	$file = fopen($strURL_NewFichier, 'w');
+		$ligne = '[Version : 2.0' . $BDDRECCode . "\n";
+		fputs($file, $ligne);
+		$ligne = '{Etat 1 :0%%En Cours....}' . "\n";
+		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
+		$nomFichier = utf8_decode($NewFichier);
+		$ligne =  '@'. substr($nomFichier, 5, 10) .'_'.substr($nomFichier, 16, -4).'_'.$CodeEcole.'_Ecole web !@' . "\n";
+		//$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";
+		fputs($file, $ligne);	 //@2021-02-26_L2-Ecole TEST-MAROU_ACC7_Ecole web !@ 
+	fclose($file);	
+}
 
 
 ?>

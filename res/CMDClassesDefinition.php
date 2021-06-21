@@ -431,4 +431,105 @@ function RecopierPlanche($LienOrigine,$LienDestination){
 	}
 }
 
+class CImgSource {
+	var $FichierPlanche;
+	var $Fichier;
+	var $Dossier;
+	var $CodeEcole;
+    var $ScriptsPS;
+	var $Annee;
+
+	//var $Extension;
+    function __construct($Fichier,$Dossier,$CodeEcole,$Annee,$ScriptsPS){
+			$morceau = explode(".", $this->FichierPlanche);		
+			$this->Fichier = $Fichier;
+			$this->Dossier = $Dossier;
+			$this->CodeEcole = $CodeEcole;
+			$this->Annee = $Annee;
+			$this->ScriptsPS = $ScriptsPS;
+}   
+
+	function isGroupe(){
+		return (strlen($this->Fichier) > 10); // à 10 caharctere ;
+	}
+	
+	function Affiche(){
+		$resultat = '';
+		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="'.($this->isGroupe()?'PlancheGroupe':'Planche') .'" title="'. urldecode($this->FichierPlanche) . '">';		
+			
+			$Lien = $this->Dossier . 'Cache/' .  $this->Fichier;
+			$LienBig = $this->Dossier . $this->Fichier;			
+			if (!file_exists($LienBig)){$LienBig = $Lien;}
+			//echo strlen($this->Fichier);
+			//echo ($this->isGroupe()?'groupe ':'indiv ')  ;
+			$resultat .= ($this->isGroupe()?'<span>':'');
+			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
+			//$resultat .= '<img id="ImgPlanche" src="' . $Lien . '">';	
+			$resultat .= ($this->isGroupe()?'</span>':'');
+			
+			$resultat .= '<p>'. $this->Fichier .'</p>';
+		$resultat .= '</span> ';
+		return $resultat;
+	}
+	function Ecrire($tabPlanche, &$isRecommande){
+		 $resultat ='';
+		if (in_array($this->FichierPlanche, $tabPlanche)) {
+			$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
+			$resultat = $this->FichierPlanche . PHP_EOL;
+			//fputs($Fichier, $lines[$i]);
+			//(RECOMMANDES) EN COURS
+			global $repertoireTirages;
+			global $repertoireMiniatures;
+			global $EcoleEnCours;
+			
+			
+			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
+			$Lien = $repertoireMiniatures . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
+			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
+			
+			$DossierRECOenCours = CreationDossier($repertoireTirages . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierTailleRECOenCours = CreationDossier($DossierRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');
+			$DossierMiniatureRECOenCours = CreationDossier($repertoireMiniatures . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierMiniatureTailleRECOenCours = CreationDossier($DossierMiniatureRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');				
+			
+			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
+			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
+			//RecopierPlanche($LienBig,$LienBig.".jpg");
+		}
+		/*
+		$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
+		if ($isRecommande) {
+			return $this->FichierPlanche;			
+		}	
+		else{
+			return '';			
+		}	*/
+		return $resultat;				
+	}		
+}
+
+function csv_to_array($filename='', $delimiter=';')
+{
+    //echo ('$filename ' . $filename);
+	if(!file_exists($filename) || !is_readable($filename))
+        return FALSE;
+
+    $header = NULL;
+    $data = array();
+    if (($handle = fopen($filename, 'r')) !== FALSE)
+    {
+        while (($row = fgetcsv($handle, 0, $delimiter)) !== FALSE)
+        {
+            if(!$header)
+                $header = $row;
+            else
+                $data[] = array_combine($header, $row);
+        }
+        fclose($handle);
+    }
+    return $data;
+}
+
+
+
 ?>

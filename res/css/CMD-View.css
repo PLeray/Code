@@ -1,12 +1,21 @@
-/*       @import url(Couleurs.css);        */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	/* overflow:hidden; */
+	overflow-y: scroll;
+	overflow-x:hidden;
 
+}
+
+
+/******************************/
+/*       
 * {
   box-sizing: border-box;
 }
+
+STYLE DE BASE        */
 /******************************/
-/*       STYLE DE BASE        */
-/******************************/
-body {font-family: Arial, Helvetica, sans-serif;}
+
 
 h1 { /*Police texte Ecole */
     text-align: center;
@@ -25,7 +34,7 @@ h2 { /*Police texte Adresse */
 	padding: 10px;
 	margin: 10px;
 	font-family: "Courier New", Times, serif;
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid var(--FondLigneTabGrisSombre);
 }
 
 h3 { 
@@ -54,14 +63,127 @@ h4 { /*Police texte produit */
 	
 }
 
-p {/*Police Détails Fichier commande et commun  */
+h5 {/*Police Nom de Classe  */
     letter-spacing: 1px;
 	line-height: 0;
-	font-size: 10px;
+	font-size: 12px;
+	color: var(--boutonRouge);
+	margin-bottom: 0px;
+}
+
+h6 {/*Police Nombre de planche  */
+	display: inline-block; 
+    color: var(--boutonVert);
+    /*letter-spacing: 2px;*/
+	padding-top: 0px;
+	margin-bottom: -30px;
+	font-weight: bold;
+	font-size: 15px;
+	font-family: "Courier New", Times, serif;
+	text-align: center;
+	
+	/*max-width: 180px;*/
+}
+
+p {/*Police Détails Fichier commande et commun  */
+    letter-spacing: 1px;
+
+	font-size: 11px;
 	color: var(--FondLigneTabGrisSombre);
 	/*color: var(--boutonVert);*/
 }
 
+/*//////////ENTETE /////////////////////////////////////////*/
+.logo {
+  position: absolute;
+  left: 8px;
+  Top: 0px;
+
+  z-index: 1; 
+}
+
+.titreFichier {
+	position: absolute;
+	padding: 1px;
+	text-align: center;
+	/*left: 230px;*/
+	Top: 80px;
+	width: 100%;
+    color: var(--texteGris);
+	font-family: "Courier New", Times, serif;
+    letter-spacing: 3px;	
+}
+
+/* ////////////////////////   BOUTON + ET - ///////////////////// */
+.affichageNBPage {
+ /*    
+	right: 20px;
+
+	z-index: 1; 
+	*/
+	position: absolute;
+	top: -5px;
+	text-align: center;
+	  margin: 0 auto;
+	width: 100%;
+	
+}
+
+.moinsplus {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: var(--boutonRouge);
+	    padding: 0px 16px;
+    color: white;
+	    text-decoration: none;
+    display: inline-block;
+	border-radius: 15px;
+}
+
+.moinsplus:hover {
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
+
+#btnRemonter {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 9; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: var(--boutonRouge); /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#btnRemonter:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
+/* The Loupe Button (x) <img src="img/search-more.png">*/ 
+#loupe {
+  opacity: 0.5;
+    position: absolute;
+    right: 40px;
+    top:10px;
+    color: var(--FondLigneTabGrisSombre);
+line-height: 0;
+    cursor: pointer;
+	display:block;
+text-align: right;
+
+  font-size: 10px;
+
+/*  z-index: 2;*/ 
+
+}
+
+#loupe:hover{opacity: 0.7;}
 
 
 /******************************/
@@ -72,11 +194,11 @@ p {/*Police Détails Fichier commande et commun  */
 .ecole {
     text-align: center;
 	font-size: 20px;
-	
+	width: -10px;
 	
 	padding: 10px;
 
-	position: relative;/**/
+	/*position: relative;*/
 	
 	background-color: var(--FondEnteteTableau);
 	color: var(--FondLigneTabGrisClair);
@@ -85,29 +207,41 @@ p {/*Police Détails Fichier commande et commun  */
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.24); 
 }
 
-
-.Titrecommande {
-  content: '\2212';
-  cursor: pointer;
-  /*margin-left: -10px;*/
-  padding: 10px 10px 10px 10px;
-  width: 100%;
-  border: none;
-  outline: none;
-    color: var(--FondLigneTabGrisSombre);
+.TitrecommandeRecherche {
+	padding: 5px 5px 5px 5px;
+	width: 100%;
+	border: none;
+	outline: none;
+	color: var(--FondLigneTabGrisSombre);
 
 	text-align: left;
-    letter-spacing: 2px;
-	font-size: 15x;
+	letter-spacing: 2px;
+	font-size: 18x;
 
 	font-family: "Courier New", Times, serif;
-	border-bottom: 1px solid var(--FondLigneTabGrisSombre);;  
+	border-bottom: 1px solid var(--FondLigneTabGrisSombre); 
 }
+.Titrecommande {
+	content: '\2212';
+	cursor: pointer;
+	/*margin-left: -10px;
+	padding: 10px 10px 10px 10px;
+*/
+	border: none;  
+	
+	padding: 5px 5px 5px 5px;
+	width: 100%;
 
-.active, .Titrecommande:hover {
-  /*background-color: var(--FondLigneTabGrisClair);*/
-  color: var(--boutonRouge);
-  font-weight: bold;
+	outline: none;
+	color: var(--FondLigneTabGrisSombre);
+
+	text-align: left;
+	letter-spacing: 2px;
+	font-size: 18px;
+
+	font-family: "Courier New", Times, serif;
+	 /*  */
+	 border-bottom: 1px solid var(--FondLigneTabGrisSombre);
 }
 
 .Titrecommande:after {
@@ -117,12 +251,25 @@ p {/*Police Détails Fichier commande et commun  */
   float: right;
 }
 
+.grosNumCMD {
+  font-weight: bold;
+  color: black;
+  font-size: 30x;
+}
+.active, .Titrecommande:hover {
+  /*background-color: var(--FondLigneTabGrisClair);*/
+  color: var(--boutonRouge);
+  font-weight: bold;
+}
+
 .commande {
-	width: auto; /*97%;*/
+	 /*width: auto;97%;*/
+	display: block;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
 
-	margin: 10px;
-
-	position: relative;/**/
+	/*position: relative;*/
 	background-color: white;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	transition: max-height 0.2s ease-out;
@@ -140,7 +287,7 @@ p {/*Police Détails Fichier commande et commun  */
 	text-align: center;
 	margin: 10px;
 
-	position: relative;/**/
+	/*position: relative;*/
 	
 }
 
@@ -151,276 +298,497 @@ p {/*Police Détails Fichier commande et commun  */
 	
 }
 
-#myImgPlanche {
-	cursor: pointer;
+.plancheSELECTIONNER {
+	display: inline-block;	 
 
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	animation: shake 0.2s;
-	animation-iteration-count: 1;	
-}
-#myImgPlanche:hover {opacity: 0.7;}
-
-
-.mention {/* les mentions  */
-    letter-spacing: 1px;
-	line-height: 1;
-	font-size: 10px;
-    text-align: right;	
+	margin: 10px 10px 10px 10px;	
+	border: 0.5rem dashed var(--boutonVert);
 }
 
-.pagination {
-    text-align: center;
-    padding: 5px;
-	font-size: 12px;
-	line-height: 2;
-	/* padding-left: 100px;
-    display: inline-block; */
-}
 
-.pagination a {
-    color: black;
-    /*float: left;*/
-    background-color: var(--FondLigneTabGrisFonce);
-	text-align: center;
-	padding: 10px 5px;
-    text-decoration: none;
-}
-
-.pagination a.active {
-    background-color: var(--FondLigneTabGrisClair);     
-	text-align: center;
-	padding: 7px 12px 5px 22px;
-	margin: 10px -5px 10px -5px;
-
-    color: gray;
-	cursor: default;
-
-	font-family: "Courier New", Times, serif;	
-	
-    letter-spacing: 3px;
-
-	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;
-}
-
-.pagination a.disabled {
-    background-color: var(--boutonVert);
-	font-size: 18px;
-    color: white;
-	padding: 8px 15px;
-	margin: 8px;
-	border-radius: 50%;  
-	opacity: 0.6;
-    cursor: default;
-}
-
-.pagination a.buton {
-    background-color: var(--boutonVert);
-	font-size: 18px;
-    color: white;
-	padding: 8px 15px;
-	margin: 8px;
-	border-radius: 50%;
-}
-
-.pagination a:hover:not(.disabled) {
-	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
-}
-
-/* ////////////////////////   BOUTON + ET - ///////////////////// */
-.affichageNBPage {
-    position: absolute;
-    Right: 150px;
-
-    top: 25px;
-    text-align: center;
-}
-
-.moinsplus {
-    font-size: 14px;
-    font-weight: bold;
-    background-color: var(--boutonRouge);
-	    padding: 12px 16px;
-    color: white;
-	    text-decoration: none;
-    display: inline-block;
-	border-radius: 25px;
-}
-
-.moinsplus:hover {
-    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
-}
-
-/* The Close Button (x) */
-.close {
-    position: absolute;
-    right: 20px;
-    top: -15px;
-    color: #000;
-    font-size: 100px;
-    font-weight: bold;
-	text-decoration: none;
-}
-
-.close:hover,
-.close:focus {
-    color: var(--boutonRouge);
-    cursor: pointer;
-}
-/*/////////////////////////////////////////////////////////*/
-.logo {
+.overlay {
   position: absolute;
-  left: 8px;
-  Top: 0px;
-
-  z-index: 1; 
+  bottom: 0;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1;
+  width: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: blue;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center;
 }
 
-.titreFichier {
-	position: absolute;
-	padding: 1px;
-	text-align: left;
-	left: 230px;
-	Top: -1px;
-	
-    color: var(--texteGris);
-	font-family: "Courier New", Times, serif;
-    letter-spacing: 3px;	
-}
 
-.recherche {
-	padding: 1px;
-	padding-Top: 28px;
+
+#ImgPlanche {
+	cursor: pointer;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+	/*box-shadow: -4px 4px 4px 4px var(--boutonVert);
+
+	animation: shake 0.2s;
+	animation-iteration-count: 1;	*/
+}
+#ImgPlanche:hover {opacity: 0.7;}
+
+
+
+.ResumeCMD {
+margin: 10px 10px 10px 10px;
+
+padding: 10px;
+
+	width: auto; 
+	display: inline-block;
+
 	text-align: center;
-}
-#mySearch {
-    border-box: box-sizing;
-    background-image: url('../img/searchicon.png');
-    background-position: 14px 12px;
-    background-repeat: no-repeat;
-    font-size: 16px;
-    padding: 14px 40px 12px 45px;
-    border: none;
-    border-bottom: 1px solid var(--FondLigneTabGrisFonce);
-}
+	vertical-align: top;
+	/*	margin: 10px;
 
-#mySearch:focus {
-    /*outline: 3px solid var(--FondLigneTabGrisFonce);
-    background-color: #f6f6f6;
-	border-bottom: 1px solid #FFF;*/
-	border: red;
+border: 1px solid var(--FondLigneTabGrisSombre);*/
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
 }
-/*RESULTAT RECHERCHE */
-.dropdown {
-    position: relative;
-    display: inline-block;
-	background: rgba(245, 245, 245, 0.85);
-	
+.maFacture {
+animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  animation-iteration-count: 3;
+  /*	  margin-top: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ 
+ */
 }
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-	margin-left: 20%;
+.maFacture:hover {opacity: 0.7;
 
 
-    /*background-color: #f9f9f9;
-	background: rgba(245, 245, 245, 0.85);
-    left: 0;	
-	text-align: center;	
-	margin-top: -2px;	
-	
+}
+.nbPanches {
+	display: inline-block; 
+	/*padding-top: -140px;margin-top: 100px;margin: 0px;
+	line-height: 0;
 	*/
+	 
+	line-height: 20px;
+
+	font-size: 144px;
+	color: var(--boutonVert);
 	
+
 	
-	background: var(--FondBDialog);
-    width: 60%;
+vertical-align: middle;
+}
 
 
-	border: 1px solid var(--FondLigneTabGrisFonce);
-    box-shadow: 10px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+
+/**/
+#zoneRechercheCMD{
 
 }
 
-.dropdown-content a {
-   /*	padding: 2px 12px 2px 22px;
-	margin: 10px -5px 10px -5px;
-    color: grey;	
-*/	
-
-	text-align: center;
-
-    text-decoration: none;
-    display: inline;
+/*DEBUT PAGINATOR*/
+.zonePagesCMD {
+	/*display: flex;
+	flex-direction: column;
+	background-color: white;*/
 	
- 
-
-	border-color: var(--FondLigneTabGrisFonce);
-	text-align: center;
-
-    color: var(--FondLigneTabGrisFonce);
-   /*		
-  	background-color: var(--FondLigneTabGrisClair);  //   
-   
-   padding: 7px 7px 7px 7px;
-	margin: 5px;
-	border: 10px 1px 1px 1px solid ;	
-*/
-
-	font-family: "Courier New", Times, serif;	
-	
-    letter-spacing: 3px;
+	width: 100%;	
+	align-items: center;
 }
 
-.dropdown-content a:hover {
-	
-	color: var(--boutonRouge);
+.item {
+
 	/*
-	background: var(--FondLigneTabGrisFonce);
-	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;	*/
+	width: 162px;
+	height: 100px;
+	padding: 10px;
+	margin: 10px;
+*/
 }
-.dropdown-content a.active {
-	color: var(--FondLigneTabGrisSombre);
+
+.pageCMD {
+width: 100%;
+
+}
+
+.page_navigation { 
+/*
+	width: 100%; 
+	text-align: center;
+   border-top: 1px solid var(--FondLigneTabGrisSombre); 	
+	  overflow: hidden;
+
+*/	
+	text-align: center;	
+
+
+  background-color: white;
+  border-bottom: 1px solid var(--FondLigneTabGrisFonce);
+
+
+  
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  
+  z-index: 1;
+  
 	
-	/*var(--boutonVert);
-	background: rgba(200, 200, 200, 0.55);
-	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;	*/
-}
-.dropdown-content a.active:hover {
-	
-	color: var(--boutonRouge);
-	/*background: var(--FondLigneTabGrisFonce);
-	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;	*/
 }
 
-/*.dropdown-content a:hover {
-	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
-}*/
+.page_navigation ul { 
 
-.show {display:block;}
+  margin: -12px;
 
-#myBtn {
-  display: none; /* Hidden by default */
-  position: fixed; /* Fixed/sticky position */
-  bottom: 20px; /* Place the button at the bottom of the page */
-  right: 30px; /* Place the button 30px from the right */
-  z-index: 9; /* Make sure it does not overlap */
-  border: none; /* Remove borders */
-  outline: none; /* Remove outline */
-  background-color: var(--boutonRouge); /* Set a background color */
-  color: white; /* Text color */
-  cursor: pointer; /* Add a mouse pointer on hover */
-  padding: 15px; /* Some padding */
-  border-radius: 10px; /* Rounded corners */
-  font-size: 18px; /* Increase font size */
 }
 
-#myBtn:hover {
-  background-color: #555; /* Add a dark-grey background on hover */
-}
-
+.page_navigation li {
+box-sizing: border-box;
+display: inline-block;	
+ background: black;
+ border-radius: 50%;
+ height: 40px;/*Taille diametre des boutons rond*/	
+ width: 40px;
+ margin: 7px;
+ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
  
+  font-size: 14px;	
+ padding: 10px; /*Position chiffre  diametre des boutons rond*/	
+}
+
+.page_navigation li a{
+	text-align: center;
+
+	font-weight: bolder;
+	color: var(--FondLigneTabGrisSombre);
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.page_navigation li:hover{
+
+cursor: pointer;
+
+	 background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
+}
+
+.page_navigation li.active_page {
+	border: 5px solid var(--FondLigneTabGrisFonce);
+	height: 50px;/*Taille diametre des boutons rond*/	
+	width: 50px;
+	margin: 2px;
+	background: radial-gradient(circle at 0px 5px, white, var(--boutonRouge));
+	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+
+}
+
+.page_navigation li.previous_link {
+	 margin: 20px;
+ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
+}
+.page_navigation li.next_link{
+		 margin: 20px;
+ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
+
+}
+
+.page_navigation li.previous_link:hover {
+background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
+}
+.page_navigation li.next_link:hover{
+background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
+
+}
+
+/*FIN PAGINATOR*/
+
+/*  DEBUT BAR DROITE */
+
+.sidenav {
+  width: 0;
+    min-height: 100%;	
+	
+	  color: white;
+	
+  position: fixed;
+  /**/   z-index: 1;
+  top: 0;
+  right: 0;
+
+  border-left: 1px solid var(--FondLigneTabGrisFonce); 
+  
+  background-color: var(--FondEnteteTableau);
+  transition: 0.5s;  
+  /*   overflow: hidden; */
+
+  padding-top: 5px;
+}
+
+.sidenav a {
+ /*  padding: 8px 8px 8px 32px;
+
+  font-size: 15px;
+  color: #818181;
+  display: block;*/
+  transition: 0.3s; 
+  text-decoration: none;
+}
+/*
+.sidenav a:hover {
+  color: var(--boutonVert);
+}
+*/
+.sidenav .closebtn {
+
+  /*    
+  position: absolute; 
+  top: -10px;
+  right: 15px;*/
+  font-size: 36px;
+margin-left: 210px; 
+  
+    color: white;
+
+}
+
+
+.sidenav .closebtn:hover,
+.sidenav .closebtn:focus {
+    color: var(--boutonRouge);
+
+}
+
+/* Style the search box */
+#zoneRecherche {
+  width: 240px;
+
+  font-size: 18px;
+  padding: 11px;
+  margin-left: 5px;
+  
+
+}
+
+#zoneRecherche:hover,
+#zoneRecherche:focus {
+color: var(--boutonRouge);
+
+}
+
+#zoneListePageCMD {
+	/* overflow-y: scroll; */cv 
+
+  min-height: 100%;
+
+}
+
+
+/* Style the navigation menu inside the left column */
+#listeRechercheCMD {
+top: 70px;
+  /*;
+  background-color: var(--FondLigneTabGrisClair);
+  font-size: 20px;*/
+  column-count: 4;
+	
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+
+	vertical-align: middle;
+	 /*margin-right: 5px;
+		  overflow-y: scroll;  
+	height: 100%;*/
+	
+  min-height: 100%;	
+}
+
+#listeRechercheCMD li a {
+	font-size: 10px;
+	
+	text-decoration: none;
+	color: white;
+	display: block;
+	  padding: 3px;
+	/*	
+	margin: 5px  5px  5px -10px;*/	
+	margin: 0 5px 0 5px;
+}
+
+#listeRechercheCMD li a:hover {
+  background-color: var(--boutonVert);
+  color: white;
+}
+
+#Entete {
+  padding: 27px;  /* Défini la hauteur du Header !!z-index: 1;*/
+  text-align: center;
+  
+  background-color: white;
+}
+
+	/*.Recommandes {
+	position: absolute;
+	top: 5px;
+	text-align: center;
+
+	width: 50%;
+  
+  background-color: red;
+}
+	*/
+
+#main {
+	/* overflow-y: scroll;
+	position: absolute;
+	Top:100px;
+	z-index: 1;   
+	padding: 20px;	
+		
+	*/
+  -ms-flex: 70%; /* IE10 */
+  flex: 70%;
+  background-color: white;
+
+  
+	transition: margin-left .5s;
+	padding: 16px 0px 0px 16px;
+
+	transition: 0.5s;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+/* Footer */
+.footer {
+  padding: 5px;
+  text-align: left;
+
+}
+
+/*  FIN  BAR DROITE */
+
+/*  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER */
+#MSGChargement {
+
+
+}
+.cs-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+}
+
+.cs-loader-inner {
+  transform: translateY(-50%);
+  top: 50%;
+  position: absolute;
+  width: calc(100% - 200px);
+  color: var(--boutonVert);
+  padding: 0 100px;
+  text-align: center;
+}
+
+.cs-loader-inner label {
+  font-size: 60px;
+  opacity: 0;
+  display:inline-block;
+}
+
+@keyframes lol {
+  0% {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+  33% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+}
+
+@-webkit-keyframes lol {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-300px);
+  }
+  33% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+  }
+  66% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(300px);
+  }
+}
+
+.cs-loader-inner label:nth-child(6) {
+  -webkit-animation: lol 3s infinite ease-in-out;
+  animation: lol 3s infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(5) {
+  -webkit-animation: lol 3s 100ms infinite ease-in-out;
+  animation: lol 3s 100ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(4) {
+  -webkit-animation: lol 3s 200ms infinite ease-in-out;
+  animation: lol 3s 200ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(3) {
+  -webkit-animation: lol 3s 300ms infinite ease-in-out;
+  animation: lol 3s 300ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(2) {
+  -webkit-animation: lol 3s 400ms infinite ease-in-out;
+  animation: lol 3s 400ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(1) {
+  -webkit-animation: lol 3s 500ms infinite ease-in-out;
+  animation: lol 3s 500ms infinite ease-in-out;
+}
+
+/*  FIN LOADER */

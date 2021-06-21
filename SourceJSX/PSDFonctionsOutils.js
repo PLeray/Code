@@ -110,7 +110,8 @@ function RecupNomOrdi() {
 			file.close();
 		}
 		else{
-			alert ('Pas de Calculateur !');
+			//alert ('Pas de Calculateur !');
+			g_CeCalculateur = 'Defaut';
 		}
 	}
 //alert ('g_CeCalculateur : ' + g_CeCalculateur);		
@@ -120,7 +121,7 @@ function SauverFichierFromTableauDeLigne(fileName,numEtatCompil) {
 	//Fchier etat/ lab1 ou lab2 ou web1 web2
 	var fileName = fileName.substr(0,fileName.length-1); // lab0 >> lab1
 	fileName = g_SelectFichierLab.path + '/' + fileName + numEtatCompil; // + '1' : Etat les planches de la commande sont EN COURS (16-11)
-	//alert('TESTY01  SauverFichierFromTableauDeLigne ' +  fileName);
+	//alert('TESTY01  SauverFichierFromTableauDeLigne ' +  TableauTOStr(g_TabLigneOriginale));
 	var file = new File(fileName);
 	file.encoding='UTF-8';
 	file.open("w"); // open file with write access
@@ -419,7 +420,156 @@ function SuiteERREURGenerer() {
 
 function CreerUnProduitPourLeLaboratoire(unProduit){
 	var nomFichierPhoto = unProduit.FichierPhoto;
-	var unNomdePlanche = NomPlancheLabo(unProduit, nomFichierPhoto);
+	var valRetour = unNomdePlanche;	
+	//alert('QQQ001 nomFichierPhoto.substr(4, 6) == "-QCoin"  :' + nomFichierPhoto.substr(4, 6));
+
+	if (nomFichierPhoto.substr(4, 6) == '-QCoin'){   //2012-QCoinD-WEB.jpg	
+		valRetour = CreerUnProduitQUATTROPourLeLaboratoire(unProduit);
+	}
+	else{
+		var unNomdePlanche = NomPlancheLabo(unProduit, nomFichierPhoto);
+
+		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
+		var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
+		if(!isFichierExiste(unPathPlanche)){
+			try {
+				//alert('CreerUnProduitPourLeLaboratoire \n Code de unProduit ' + unProduit.Code);
+
+				//alert('TESTZ50 DEBUT CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
+				if (unProduit.Code){
+					if (unProduit.FichierPhoto.length && unProduit.isNeedGroupeClasse()){//Ouvrir la bonne photo ? Groupe
+						//alert('sdsdsdsdur : ' + nomFichierPhoto ); //////////////////////////////////////////////
+						nomFichierPhoto = GroupeClassePourIndiv(unProduit);
+						//alert('nomFichierPhoto : ' + nomFichierPhoto);
+					}
+					if (unProduit.Type.indexOf('QUATTRO') > -1){ //Produit QUATTRO Besoin du fichier Quatro !!
+						//alert('Pour CADRE-QUATTRO : ' + nomFichierPhoto + ' Sera ' + NextQuattro(nomFichierPhoto) ); 
+						nomFichierPhoto = NextQuattro(nomFichierPhoto);										
+					}	
+					
+					if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
+						nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
+					}					
+					
+					//alert('Avant OUverture CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
+					var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+					var reussiteTraitement = (laPhoto != null);	
+					if (reussiteTraitement) {
+						var docName = laPhoto.name;
+						//var basename = docName.match(/(.*)\.[^\.]+$/)[1];
+						//var docPath = laPhoto.path;		SUPRESSION 17/11/2020 ??!!						
+						////////  Cas des fratrie ou Indiv en paysage =>> Portrait /////////
+						var isFratrie = false;
+						var myDocument = app.activeDocument; 
+						if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {
+							if (myDocument.width > myDocument.height) { 
+								//alert('rotateCanvas' ); 						
+								isFratrie = true;
+								myDocument.rotateCanvas(90)  
+							}  
+						}	
+						//alert('TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
+						//////////////// VERIF-DPI //////////////////////
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');				
+						//////////////// TRANSFORMATIONS //////////////////////
+						// 1 : LA TEINTE  DE L'IMAGE /////////////////////////
+						if (unProduit.Teinte != "Couleur" && !unProduit.isSansNB()){
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Teinte);
+							//Raffraichir();  AVOIR new 27-08
+						}
+						
+						// CADRE-CARRE-ID !!!!!!!!!
+						if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+							//reussiteTraitement = reussiteTraitement && 
+							ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
+						}	
+						// INSITU-CARRE-ID !!!!!!!!!
+						if (unProduit.Type.indexOf('INSITU-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+							//reussiteTraitement = reussiteTraitement && 
+							ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
+						}								
+						
+						// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
+						if (unProduit.Type != "PORTRAIT" 
+							&& unProduit.Type != "PANO" 
+							&& unProduit.Type != "TRAD" 
+							&& unProduit.Type != "CUBE" 
+							&& unProduit.Type != "RUCH"						
+							&& unProduit.Type != "CADRE-GP" // utilité ???
+							&& unProduit.Type != "INSITU-GP"){
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Type);
+							//Raffraichir(); AVOIR new 27-08
+						}
+						/*if (unProduit.Type != "PORTRAIT" 
+							&& unProduit.isTypeGroupe() == false){
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Type);
+							Raffraichir(); 
+						}*/					
+						// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
+						if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2021-Cadre-Studio²'){ // QQue pour Studio² !!!						
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
+							
+						}
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+						
+						/*else{ // Sinon !!!		
+							// A REVOIR !!!!!!!		
+							if ((unProduit.Type.lastIndexOf("PORTRAIT") > -1)||(unProduit.Type.lastIndexOf("TRAD") > -1)){ 
+								//alert('lastIndexOf("Agrandissements") ');
+								reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);		
+							}
+						}	
+						*/
+						reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
+						reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
+						
+						if (reussiteTraitement){
+							// Pour avoir des planches homogenes dans le viewer de commandes					
+							myDocument = app.activeDocument; 
+							if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {  
+								if (myDocument.width > myDocument.height) { myDocument.rotateCanvas(-90);}  
+							} 
+							//La sauvegarde ...						
+							SauvegardeJPEG(laPhoto, unPathPlanche);
+							
+							// Ici Faire 10%
+							Miniature_Reduction(10.000000); // Soit 10 %
+							SauvegardeJPEG(laPhoto, unPathMiniature);
+
+							laPhoto.close(SaveOptions.DONOTSAVECHANGES);						
+
+							valRetour = unNomdePlanche;
+						}
+						else {
+							laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+							valRetour = "KO";
+						}
+					}
+					else { valRetour = "KO";}
+				}
+				return valRetour;
+			}
+			catch(err) {
+				g_Erreur = "Commande  : " + g_CommandePDTEncours + " ERREUR ds CreerUnProduitPourLeLaboratoire pour : " + nomFichierPhoto;
+				laPhoto.close(SaveOptions.DONOTSAVECHANGES);
+				return "KO";
+			}
+		}		
+	}
+	return valRetour;
+}
+
+
+function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
+	var nomFichierPhoto = unProduit.FichierPhoto;
+	
+	//Recadrage à faire
+	var leRECADRAGE = 'Portrait-' + nomFichierPhoto.substr(10, 1);
+	//alert('QQQ000  : ' + leRECADRAGE +  ' pour le nom photo : ' + nomFichierPhoto);
+
+	var nomFichierPhoto = nomFichierPhoto.substr(0,4) + '.jpg';
+	//alert('QQQ003 nouveau nom de photo ' + nomFichierPhoto);
+	var unNomdePlanche = NomPlancheLabo(unProduit, unProduit.FichierPhoto);
 	var valRetour = unNomdePlanche;
 	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 	var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
@@ -436,11 +586,12 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 				}
 				if (unProduit.Type.indexOf('QUATTRO') > -1){ //Produit QUATTRO Besoin du fichier Quatro !!
 					//alert('Pour CADRE-QUATTRO : ' + nomFichierPhoto + ' Sera ' + NextQuattro(nomFichierPhoto) ); 
-					nomFichierPhoto = NextQuattro(nomFichierPhoto);										
+					leRECADRAGE = 'KO';									
 				}	
 				
+				/**/
 				if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
-					nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
+					leRECADRAGE = 'Portrait-A';									
 				}					
 				
 				//alert('Avant OUverture CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
@@ -462,14 +613,26 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					}	
 					//alert('TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
 					//////////////// VERIF-DPI //////////////////////
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');				
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');	
+					
+					
+					// CADRE-CARRE-ID !!!!!!!!!
+					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Extract-ID');					
+					}						
+
+
+					if (leRECADRAGE != 'KO'){
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(leRECADRAGE);	
+					}	
+					
 					//////////////// TRANSFORMATIONS //////////////////////
 					// 1 : LA TEINTE  DE L'IMAGE /////////////////////////
 					if (unProduit.Teinte != "Couleur" && !unProduit.isSansNB()){
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Teinte);
-						//Raffraichir();  AVOIR new 27-08
 					}
 					
+					/*
 					// CADRE-CARRE-ID !!!!!!!!!
 					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
 						//reussiteTraitement = reussiteTraitement && 
@@ -480,7 +643,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						//reussiteTraitement = reussiteTraitement && 
 						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
 					}								
-					
+					*/
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 					if (unProduit.Type != "PORTRAIT" 
 						&& unProduit.Type != "PANO" 
@@ -498,18 +661,20 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						Raffraichir(); 
 					}*/					
 					// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-					if (g_RepSCRIPTSPhotoshop == "PHOTOLAB-Studio²"){ // QQue pour Studio² !!!						
+					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2021-Cadre-Studio²'){ // QQue pour Studio² !!!						
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
-						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+						
 					}
-					else{ // Sinon !!!		
+					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+					
+					/*else{ // Sinon !!!		
 						// A REVOIR !!!!!!!		
 						if ((unProduit.Type.lastIndexOf("PORTRAIT") > -1)||(unProduit.Type.lastIndexOf("TRAD") > -1)){ 
 							//alert('lastIndexOf("Agrandissements") ');
 							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);		
 						}
 					}	
-					
+					*/
 					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
 					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
 					
@@ -547,6 +712,10 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 	}
 	return valRetour;
 }
+
+
+
+
 
 /*
 function CreerUnProduitPourLeSiteWEB(unProduit){
@@ -740,7 +909,7 @@ function NbJPGArborescence(theFolder, theNombre) {
          theNombre = NbJPGArborescence(theObject, theNombre)
          }
 	  else {
-		  if (theObject.name.slice(-4) == ".JPG" && theObject.name.substr(0, 2) != "._" ) {
+		  if ((theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg" ) && theObject.name.substr(0, 2) != "._" ) {
 			 theNombre = theNombre + 1;
 		  }
 	  }
@@ -765,7 +934,9 @@ function TestIndivPhotoDeGroupe(){
 function GroupeClassePourIndiv(unProduit){
 	var nomGroupe = 'aucun';
    // On recupere le(s) groupe(s) de l'indiv
-   //alert('g_GroupeIndiv[unProduit.FichierPhoto]' + unProduit.FichierPhoto + " => " + g_GroupeIndiv[unProduit.FichierPhoto]);
+   alert('g_GroupeIndiv[unProduit.FichierPhoto]' + unProduit.FichierPhoto + " => " + g_GroupeIndiv[unProduit.FichierPhoto]);
+   alert('TableauAssociatifTOStr  : ' + TableauAssociatifTOStr(g_GroupeIndiv));
+
     if (g_GroupeIndiv[unProduit.FichierPhoto]){
         var TableauListeGroupe = g_GroupeIndiv[unProduit.FichierPhoto].split('_'); 
 		//alert('TableauListeGroupe: ' + TableauListeGroupe);		
@@ -782,6 +953,7 @@ function GroupeClassePourIndiv(unProduit){
 			}
 		}		
 	}
+	//alert('nomGroupe  : ' + nomGroupe);
 	return nomGroupe;
 }
 
@@ -794,7 +966,7 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 		var strNUMEROClasse = '';
 		var StrLesGroupesClasse = '';
 		var TabLesGroupesClasse = [];
-		//OK alert("boucle sur : " + leContenuRep.length + " fichiers : ");
+		//alert("boucle sur : " + leContenuRep.length + " fichiers : ");
 		leContenuRep.sort();
 		for (var n = 0; n < leContenuRep.length; n++){
 			var theObject = leContenuRep[n];
@@ -816,15 +988,17 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 				}
 				else {
 					StrLesGroupesClasse = RecupPhotoDeGroupe(TabLesGroupesClasse, StrLesGroupesClasse);
-					//alert("g_GroupeIndiv[theObject.name] : " + theObject.name + " [  " + StrLesGroupesClasse);
+					//alert("g_GroupeIndiv[theObject.name] : " + theObject.name + " [  " + StrLesGroupesClasse + " ]");
 					TabLesGroupesClasse.length = 0; // = [];
 					g_GroupeIndiv[theObject.name] = StrLesGroupesClasse;
 					strNUMEROClasse = "";
+					
 					
 				}
 			}
 		}
 		//alert("FIN InitClasseIndiv START sur " + leRepSOURCE);
+		//alert('TableauAssociatifTOStr  : ' + TableauAssociatifTOStr(g_GroupeIndiv));
 		return theFiles;
 	}
 	catch(err) {
@@ -960,7 +1134,7 @@ function TableauAssociatifTOStr(unTableau){
 	
 	for(var valeur in unTableau){
 		 //document.write('<strong>'+valeur + ' : </strong>' + monTab[valeur] + '</br>');
-		 strTableau = strTableau + "\n" + ' valeur : '+ valeur + ' unTableau[valeur] : ' + unTableau[valeur] ;
+		 strTableau = strTableau + "\n" + ' valeur : '+ valeur + ' unTableau[valeur] : ' + unTableau[valeur] + "\n";
 	   }	
 	return strTableau;	
 }
@@ -982,8 +1156,9 @@ function ExtensionTeinte(uneTeinte){
 }
 /////////////// NEW JUILLET 2020 ///////////////////////////////////////
 function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
-	//alert("ZRY00AAA " + leRepSOURCE);/**/
+	
 	try {
+		/*alert("ZRY00");*/
 		if (!theFiles) {var theFiles = []};
 		var leContenuRep = leRepSOURCE.getFiles();
 
@@ -992,8 +1167,9 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 		var StrLesGroupesClasse = '';
 		leContenuRep.sort();
 		
-
+		//alert("ZRY00AAA leContenuRep.length = " + leContenuRep.length + " theObject.name : "+leContenuRep.name);/**/
 		
+		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
 		for (var n = 0; n < leContenuRep.length; n++){
 			var theObject = leContenuRep[n];
 			if (theObject.constructor.name == "Folder") {
@@ -1007,7 +1183,7 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 							//TabLesGroupesClasse.length = 0; // = [];
 							strNUMEROClasse = NumeroClasseDepuisNomGroupe(theObject.name);							
 							strNOMClasse = NomClasseDepuisNomGroupe(theObject.name);
-							//alert("strNOMClasse.name : " + strNOMClasse);
+							//alert("XXXXXXX strNOMClasse.name : " + strNOMClasse);
 							g_TabListeNomsClasses[strNUMEROClasse] = strNOMClasse;	
 					}					
 					// Même pour les groupe classes
@@ -1019,7 +1195,9 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 			}
 		}
 		return theFiles;
+		alert(TableauAssociatifTOStr(g_GroupeIndiv));
 	}
+	
 	catch(err) {
 		MsgLOGInfo("Commande  : " + g_CommandePDTEncours + " ERREUR : CreationSOURCEWEB()", ErreurInfoMSG(err));
 		return '';
@@ -1030,17 +1208,17 @@ function CreerQUATTROPresentationWEB(unfichier, extension, repertoire){
 		var nomFichierPhoto = unfichier;
 		var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
 		
-		var unNomdePlancheAWEB = unfichier.slice(0,-4) + '-PA-WEB.jpg';
-		var unNomdePlancheAWEBQuattro = unfichier.slice(0,-4) + '-PA-WEB' + extension + '.jpg'; // nb ou Quattro
+		var unNomdePlancheAWEB = unfichier.slice(0,-4) + '-QCoinA-WEB.jpg';
+		var unNomdePlancheAWEBQuattro = unfichier.slice(0,-4) + '-QCoinA-WEB' + extension + '.jpg'; // nb ou Quattro
 
-		var unNomdePlancheBWEB = unfichier.slice(0,-4) + '-PB-WEB.jpg';
-		var unNomdePlancheBWEBQuattro = unfichier.slice(0,-4) + '-PB-WEB' + extension + '.jpg'; // nb ou Quattro
+		var unNomdePlancheBWEB = unfichier.slice(0,-4) + '-QCoinB-WEB.jpg';
+		var unNomdePlancheBWEBQuattro = unfichier.slice(0,-4) + '-QCoinB-WEB' + extension + '.jpg'; // nb ou Quattro
 		
-		var unNomdePlancheCWEB = unfichier.slice(0,-4) + '-PC-WEB.jpg';
-		var unNomdePlancheCWEBQuattro = unfichier.slice(0,-4) + '-PC-WEB' + extension + '.jpg'; // nb ou Quattro	
+		var unNomdePlancheCWEB = unfichier.slice(0,-4) + '-QCoinC-WEB.jpg';
+		var unNomdePlancheCWEBQuattro = unfichier.slice(0,-4) + '-QCoinC-WEB' + extension + '.jpg'; // nb ou Quattro	
 		
-		var unNomdePlancheDWEB = unfichier.slice(0,-4) + '-PD-WEB.jpg';
-		var unNomdePlancheDWEBQuattro = unfichier.slice(0,-4) + '-PD-WEB' + extension + '.jpg'; // nb ou Quattro		
+		var unNomdePlancheDWEB = unfichier.slice(0,-4) + '-QCoinD-WEB.jpg';
+		var unNomdePlancheDWEBQuattro = unfichier.slice(0,-4) + '-QCoinD-WEB' + extension + '.jpg'; // nb ou Quattro		
 
 		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire + "/";
 

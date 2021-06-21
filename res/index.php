@@ -1,7 +1,7 @@
 <?php
 setlocale(LC_TIME, 'french');
 
-include 'APIConnexion.php';
+include_once 'APIConnexion.php';
 
 /*include 'res/CATFonctions.php';
 include 'res/ConvertCSV.php';
@@ -13,7 +13,7 @@ if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
-$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug);
+$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 
 if ($codeMembre == '' || $codeMembre == '0'){
 	header('Location: ' . $maConnexionAPI->URL . '/index.php?PourConnexionLOCAL=true');
@@ -26,7 +26,7 @@ if ($codeMembre == '' || $codeMembre == '0'){
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-	<title id="GO-PHOTOLAB">PhotoLab : accueil</title>
+	<title id="PHOTOLAB">PhotoLab : accueil</title>
     <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
@@ -39,13 +39,17 @@ if ($codeMembre == '' || $codeMembre == '0'){
 <body>
 
 <div class="logo">
+	
 	<img src="img/Logo.png" alt="Image de fichier">
+	
 </div>
 
 
 	<center>
 		<div class="recherche">	
+		<?php $localURL = 'http//'.$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ;	echo $localURL; ?>
 		<h1>Phot<img src="img/Logo-Ultra-mini.png" width="20">Lab <?php echo $GLOBALS['VERSION'] ?></h1>
+		
 		</div>
 
 		<?php 		
@@ -185,4 +189,4 @@ var nbDone = 0; // initialisation of nb files already uploaded during the proces
 	</body>
 </html>
 
-<?php ?>
+

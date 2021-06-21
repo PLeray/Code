@@ -346,3 +346,11 @@ function getLine(html){
     }
     return line;
 }
+
+function TailleTableauAssociatif(obj){
+    var i=0;
+    for(var props in obj){
+        i++;
+    }
+    return i;
+}
