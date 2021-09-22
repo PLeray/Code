@@ -13,8 +13,7 @@ function RetourEcranFichier($myfileName){
 		$RetourEcran = 'CATHistorique.php';
 	}
 	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
-}	
-
+}
 
 function FormatNumCmd($strCMD){
 	//Ajoute toute la ligne commande / client A changer pour juste numéro!
@@ -116,6 +115,22 @@ function LienAffichePlusMoins($signe,$Commande){
 	$LienFichier = htmlspecialchars($_SERVER['PHP_SELF']) . $Environnement;
 	//echo $LienFichier;
 	return $LienFichier;
+}
+
+function LienRecherche($Commande){
+	
+	//echo $Commande;
+	$NbCMD=$GLOBALS['NbCMDAffiche'];
+
+	//
+	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . $NbCMD;
+	$Environnement = $Environnement . $Commande;
+	
+	//$LienFichier = htmlspecialchars($_SERVER['PHP_SELF']) . $Environnement;
+	/* */ 
+	$LienFichier= 'CMDRecherche.php'. $Environnement;;
+	return $LienFichier;
+	
 }
 
 /////////////

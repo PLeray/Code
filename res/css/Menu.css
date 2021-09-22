@@ -23,6 +23,9 @@ z-index:5;
 #mySidenav a:hover {
   top: 0;
 }
+#ajoutCommandeGroupee {
+  background-image: url('../img/menuBouton0.png');
+}
 
 #sourcePhotos {
   background-image: url('../img/menuBouton1.png');

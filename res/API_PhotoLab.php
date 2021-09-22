@@ -30,8 +30,8 @@ $EnteteHTML =
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <html>
     <head>
-	<link rel="stylesheet" type="text/css" href="css/Couleurs' . ($isDebug?'':'AMP') .'.css">
-    <link rel="stylesheet" type="text/css" href="css/API_PhotoLab.css">
+	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
+    <link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
     <body>
@@ -102,90 +102,30 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 		return "OK";
 	}
 	else {
-		$repertoireCMD = "CMDLABO/";
-		if (file_exists($repertoireCMD . $strAPI_CMDLAB)){
-			$strCMDLabo = RecupPlanchesFichierLab($repertoireCMD . $strAPI_CMDLAB);
+		$GLOBALS['repCMDLABO'] = "CMDLABO/";
+		if (file_exists($GLOBALS['repCMDLABO'] . $strAPI_CMDLAB)){
+			$strCMDLabo = RecupPlanchesFichierLab($GLOBALS['repCMDLABO'] . $strAPI_CMDLAB);
 			return 'OK' . $strCMDLabo;
 		}
 		else {
-			return " le fichier " .$repertoireCMD . $strAPI_CMDLAB . " est manquant !";
+			return " le fichier " .$GLOBALS['repCMDLABO'] . $strAPI_CMDLAB . " est manquant !";
 			return "APIPhotoLab : erreur 33";
 		}		
 	}
 }
 
 function API_GetFILELAB($strAPI_FILELAB){
-	$repertoireCMD = "CMDLABO/";
-	if (file_exists($repertoireCMD . $strAPI_FILELAB)){
-		$strCMDLabo = RecupFichierLabTotal($repertoireCMD . $strAPI_FILELAB);
+	$GLOBALS['repCMDLABO'] = "CMDLABO/";
+	if (file_exists($GLOBALS['repCMDLABO'] . $strAPI_FILELAB)){
+		$strCMDLabo = RecupFichierLabTotal($GLOBALS['repCMDLABO'] . $strAPI_FILELAB);
 		return 'OK' . $strCMDLabo;
 	}
 	else {
-		return " le fichier " .$repertoireCMD . $strAPI_FILELAB . " est manquant !";
+		return " le fichier " .$GLOBALS['repCMDLABO'] . $strAPI_FILELAB . " est manquant !";
 		return "APIPhotoLAb : erreur 55";
 	}		
 }
-/*
-function API_PostFILELAB() {//upload de fichier
-	$retourMSG = $GLOBALS['DebutMessageBox'];
-	$retourMSG = $retourMSG . '	<div class="msgcontainer">';
-	$repertoireCMD = "../CMDLABO/";
-	$target_file_seul = utf8_decode(basename($_FILES['myfile']['name']));
-	$target_file = $repertoireCMD . $target_file_seul;
-	//echo $target_file;
-	$target_file = $target_file . "0"; // 0 etat : uploadé / enregistré
-	$uploadOk = 1;
-	$extensionsAutorisee = array('.lab', '.web');
-	$extension = strrchr($_FILES['myfile']['name'], '.'); 
-	//Début des vérifications de sécurité...
-	if(!in_array($extension, $extensionsAutorisee)) //Si l'extension n'est pas dans le tableau
-	{
-		$retourMSG = $retourMSG . "APIPhotoLAb : Vous devez sélectionner un fichier de type lab ou web...";
-		$uploadOk = 0;			 
-	}
-	// Check file size
-	if ($_FILES["myfile"]["size"] > 500000) {
-		$retourMSG = $retourMSG . "APIPhotoLAb : Le fichier  est trop gros, vérifiez...";
-		$uploadOk = 0;
-	}
-	// Check if $uploadOk is set to 0 by an error
-	if ($uploadOk == 0) {
-		$retourMSG = $retourMSG ."APIPhotoLAb : Ce fichier n'est pas autorisé.";
-	} 
-	else {// if everything is ok, try to upload file
-		if (file_exists($_FILES["myfile"]["tmp_name"])){
-			if (move_uploaded_file($_FILES["myfile"]["tmp_name"], $target_file)) {
-				$retourMSG .= "<br><br><br><h3>Pour créer les planches de la commande : </h3>"  ;
-				$retourMSG .= "<h1>" .	substr(basename($_FILES['myfile']['name']) ,0,-4) . " </h1>";
-				$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-				$retourMSG .= '<h3>Démarrer sur PC le plug-in PhotoLab pour Photoshop<br>(PhotoLab-AUTO.jsxbin).</h3><br>';
-				$retourMSG .= '<br><br>';					
-					
-				$CMDhttpLocal = '&CMDdate=' . substr($target_file_seul, 0, 10);	
-				$CMDhttpLocal = $CMDhttpLocal . '&CMDnbPlanches=' . NBPlanchesFichierLab($target_file);
-				$CMDhttpLocal = $CMDhttpLocal . '&BDDFileLab=' . urlencode(basename($_FILES['myfile']['name']));
-				$retourMSG = $retourMSG .'<br><br>
-					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal)  . ' " class="OK" title="Valider et retour écran général des commandes">Retour aux Commandes</a>		
-					
-					<br><br><br>';
-			} 
-			else {
-				$retourMSG = "APIPhotoLab : Probleme d'enregistrement de :" . $target_file;
-			}			
-		}
-		else{
-			$retourMSG = "APIPhotoLab : Erreur " . $target_file . " est manquant !";
-		}
-	}
-	//echo "<br><br> Fermer la fenetre (faire un bouton!)";
-	$retourMSG = $retourMSG . '
-		</div>	  
-	</div>
-</div>';	
-	return $retourMSG;
-	
-}
-*/
+
 function API_DropFILELAB() {//upload de fichier
 	$sFileName = $_FILES['fileToDrop']['name'];
 	$sFileSize = bytesToSize1024($_FILES['fileToDrop']['size']);
@@ -302,7 +242,7 @@ function API_Photoshop($strAPI_fichierLAB){
 	$retourMSG .= "<br><br><br><h3>Pour créer les planches de la commande : </h3>"  ;
 	$retourMSG .= "<h1>".utf8_encode(substr($strAPI_fichierLAB,0,-1))."</h1>";
 	$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-	$retourMSG .= '<h3>Démarrer le plug-in PhotoLab pour Photoshop<br>(PhotoLab-AUTO.jsxbin) sur PC.</h3><br>';
+	$retourMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin) sur PC.</h3><br>';
 	$retourMSG .= '<br><br>
 		<a href="CATPhotolab.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
 			<br><br><br>';

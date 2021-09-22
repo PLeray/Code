@@ -1,12 +1,14 @@
 <?php
-$VERSION = '2021';
+$VERSION = 0.833;
+$ANNEE = '2021';
 
 $repCMDLABO = "../../CMDLABO/";
 $repMINIATURES = "../../CMDLABO/MINIATURES/";
 $repTIRAGES = "../../TIRAGES/";
 $repWEBARBO = "../../WEB-ARBO/";
 
-//ini_set("auto_detect_line_endings", true); // Lecture MAC fin de ligne
+// remis le 21/06/2021 ??
+ini_set("auto_detect_line_endings", true); // Lecture MAC fin de ligne
 
 ////////////////////////////// APIConnexion //////////////////////////////////////////////
 class CConnexionAPI {
@@ -30,54 +32,111 @@ class CConnexionAPI {
         else {
             //$this->Service = '/res/' . $this->PageRetour . '.php';
             //$this->Service = '/res/LOGPhotoLab.php';
-			$this->URL = 'https://photolab-site.fr'; //https://www.studio-carre.fr/PeterTest/API_photolab/   
+			$this->URL = 'https://photolab-site.fr'; 
             $this->Domaine = 'www.photolab-site.fr:80';  
 			
         }
     }
     function Adresse($ParamGET = true){
+		$cmd = '';
 		if ($ParamGET){
-			$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod');
+			$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod'). '&pageRetour=' . $this->PageRetour . '&serveurRetour=' . urlencode(ServeurLocal());
 		}
         return $this->URL . $this->Service . $cmd;
     } 
     function CallServeur($CMDLocal){
-		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod') . '&pageRetour=' . $this->PageRetour ;
+		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod') . '&pageRetour=' . $this->PageRetour . '&serveurRetour=' . urlencode(ServeurLocal()) ;
         return $this->URL .'/res/talkServeur.php' . $cmd . $CMDLocal;
     } 	
 }
 
 function VersionPhotoLab(){
-	return '©PhotoLab ' . $GLOBALS['VERSION'] . ' : Création et visualisation de commandes de photographies';
+	return '©PhotoLab ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSION'].') : Création et visualisation de commandes de photographies';
 }
 
-function ArgumentURL(){
-	return '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
+function ArgumentURL($ARGSupl = ''){
+	return '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod') . $ARGSupl;
 }
 
-function LienOuvrirDossierOS($repertoire) {
+function MAJPhotoLab($NouvelleVersion) {
+	if( $GLOBALS['VERSION'] < $NouvelleVersion){ 
+		header('Location: MAJPhotoLab.php'. ArgumentURL('&version='. $NouvelleVersion));
+	}
+}
+
+
+function ServeurLocal(){
+	//$urlLocal = $_SERVER['HTTP_REFERER']; 	
+	
+	$urlLocal = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'];
+	
+	//echo '<br> urlencode : ' . $urlLocal; 	
+	$PosCode = strripos($urlLocal,'/Code/');
+	$urlLocal = substr($urlLocal, 0, $PosCode) ;
+	//echo '<br> ServeurLocal : ' . $urlLocal;	
+	return $urlLocal; 
+}
+
+
+function LienOuvrirDossierOS($Dossier,$depuisPage) {
 	$LienFichier = '#';
-	if ($repertoire != ''){
+	if ($Dossier != ''){
 		$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
-		$LienFichier = "CATPhotolab.php". $Environnement . "&OpenRep=" . urlencode($repertoire);		
+		$LienFichier = $depuisPage . '.php'. $Environnement . '&OpenRep=' . urlencode($Dossier);		
 	}
 	return $LienFichier;
 }
 
-function AfficheMenuPage($Page,$maConnexionAPI) {
-echo '
-<center>
-<div id="mySidenav" class="sidenav">
-  <a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>
-  <a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>
-  <a href="CATHistorique2.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>
-  <a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>
-</div>
-</center>
-'
+function execInBackground($cmd) {
+    
+	if (substr(php_uname(), 0, 7) == "Windows"){
+        pclose(popen("start /B ". $cmd, "r")); 
+    }
+    else {
+        exec($cmd . " > /dev/null &");  
+    }
+/*	
+ $last_line = system($cmd, $retval);
 
-;
+*/
+	
 }
+function IsLocalMachine() {
+	$isLocal = false;
+
+  //echo 'L adresse IP de l utilisateur est : '.$_SERVER['REMOTE_ADDR'];
+  //echo '<br>L adresse IP du serveur est : '.$_SERVER['SERVER_ADDR'];
+
+	return ($_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']) ;
+}
+
+function AfficheMenuPage($Page,$maConnexionAPI) {
+$menuPage = '<center>
+<div id="mySidenav" class="sidenav">';
+	if ($Page != "ajoutCommandeGroupee") {$menuPage .= '<a href="index.php' . ArgumentURL().'" id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';}
+	if ($Page != "sourcePhotos") {$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>';}
+	if ($Page != "commandesEnCours") {$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';}
+	if ($Page != "commandesExpediees") {$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>';}
+	if ($Page != "administration") {$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>';}
+   
+	$menuPage .= '</div>
+	</center>';
+
+	echo $menuPage;
+}
+
+function Mini($Nom) {
+	echo strMini($Nom);
+}
+
+function strMini($Nom) {
+	$PosExtention = strripos($Nom,'.');
+	$NewNom = substr($Nom, 0, $PosExtention) . ($GLOBALS['isDebug']?'':'.min') . substr($Nom, $PosExtention);
+	if (file_exists($NewNom)){$Nom=$NewNom;}
+
+	return $Nom;
+}
+
 
 
 ?>

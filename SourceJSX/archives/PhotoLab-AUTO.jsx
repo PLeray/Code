@@ -88,7 +88,7 @@ LoadConfig();
 
 RecupNomOrdi();
 
-//RECHERCHE REPERTOIRE SOURCE
+//RECHERCHE DOSSIER SOURCE
 /*
 var g_UIWINRechercheSource = new Window ('palette');
 
@@ -98,10 +98,10 @@ g_UIWINRechercheSource.graphics.backgroundColor = g_UIWINRechercheSource.graphic
 g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,20], "SCAN POUR TROUVER LES SOURCES DES IMAGES");
 //g_UIWINRechercheSource.graphics.font = "Arial-Bold:18";
 
-var UIRepertoireSource = g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,50], "Recherche de Sources", {multiline: true});
-UIRepertoireSource.graphics.foregroundColor = UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);
+var UIDossierSource = g_UIWINRechercheSource.add ("statictext", [0,0,g_LargeurUI,50], "Recherche de Sources", {multiline: true});
+UIDossierSource.graphics.foregroundColor = UIDossierSource.graphics.newPen (UIDossierSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);
 */
-//RECHERCHE REPERTOIRE SOURCE
+//RECHERCHE DOSSIER SOURCE
 
 //PHOTOLAB
 var PHOTOLAB = new Window ('palette', g_NomVersion + '     [' + g_CeCalculateur + ']', undefined); 
@@ -196,7 +196,7 @@ g_NomFichierEnCours = dpDown.selection.text;
 		
 		var buttonScanCMD = Zone131Action.add ("button", [0,0,g_LargeurUI/4,25], "Scanner rep Commandes");
 		buttonScanCMD.alignment = "left";
-		buttonScanCMD.helpTip = "Scanner et traiter le repertoire des commandes ..."; 
+		buttonScanCMD.helpTip = "Scanner et traiter le dossier des commandes ..."; 
 		buttonScanCMD.onClick = function () {	
 			Auto(); 
 		}*/

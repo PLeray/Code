@@ -121,7 +121,7 @@ var group6 = panel2.add("group", undefined, {name: "group6"});
     group6.alignment = ["right","top"]; 
 
 var statictext6 = group6.add("statictext", undefined, undefined, {name: "statictext6"}); 
-    statictext6.helpTip = "Si vos projet sont directement sous le répertoire de Base,\nexemple : D:\Prises de vue\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\Prises de vue\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\Prises de vue\2019-2020\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 3"; 
+    statictext6.helpTip = "Si vos projet sont directement dans le dossier de Base,\nexemple : D:\Prises de vue\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\Prises de vue\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\Prises de vue\2019-2020\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 3"; 
     statictext6.text = "Profondeur de sous niveau à explorer "; 
 
 var edittext6 = group6.add('edittext {properties: {name: "edittext6"}}'); 
@@ -255,9 +255,11 @@ function DLGConfiguration(){
 		dialog.margins = 16; 
 		
 		dialog.frameLocation = [ -1,0 ];
-		dialog.graphics.backgroundColor = dialog.graphics.newBrush (dialog.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+		//PSJ AOUT 21 
+		dialog.graphics.backgroundColor = dialog.graphics.newBrush (dialog.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]); 
 
-		dialog.graphics.foregroundColor =UIRepertoireSource.graphics.newPen (UIRepertoireSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);	
+		//PSJ AOUT 21 
+		dialog.graphics.foregroundColor =UIDossier.graphics.newPen (UIDossierSource.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);	
 
 	// PANEL1
 	// ======
@@ -358,7 +360,7 @@ function DLGConfiguration(){
 	var editProfondeurSOURCE = group6.add('edittext {properties: {name: "editProfondeurSOURCE"}}'); 
 		editProfondeurSOURCE.text = "2"; 
 		editProfondeurSOURCE.preferredSize.width = 400; 
-		editProfondeurSOURCE.helpTip = "Si vos projet sont directement sous le répertoire de Base,\nexemple : D:\Prises de vue\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\Prises de vue\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\Prises de vue\2019-2020\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 3"; 
+		editProfondeurSOURCE.helpTip = "Si vos projet sont directement dans le dossier de Base,\nexemple : D:\Prises de vue\St Joseph-Nantes (AFF3456) saisir 1\nexemple : D:\Prises de vue\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 2\nexemple : D:\Prises de vue\2019-2020\Novembre 2019\St Joseph-Nantes (AFF3456) saisir 3"; 
 	// GROUP7
 	// ======
 	var group7 = panel2.add("group", undefined, {name: "group7"}); 

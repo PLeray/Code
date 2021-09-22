@@ -32,13 +32,21 @@ h2 { /*Police texte Adresse */
 }
 
 h3 { /*Police texte produits */
-	
     letter-spacing: 2px;
 	padding: 0px;
 	line-height: 12px;
 	font-size: 12px;
 	font-family: "Courier New", Times, serif;
 	color: var(--texteGris);
+}
+
+h4 { /*Police texte Erreur */
+    letter-spacing: 2px;
+	padding: 0px;
+	line-height: 16px;
+	font-size: 16px;
+	font-family: "Courier New", Times, serif;
+	color: red;
 }
 
 p {/*Police Détails Fichier commande et commun  */

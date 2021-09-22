@@ -159,7 +159,9 @@ function CouleurBoutonPage(numPage) {
 	return BoutonBackground;
 }
 
-function InitCommandes(referme = true) {
+//function InitCommandes(referme = true) {
+function InitCommandes(referme) {
+	var referme = (typeof referme !== 'undefined') ? referme : true;	
     var cmd, i, etat;	
 	cmd = document.getElementsByClassName('Contenucommande');
     for (i = 0; i < cmd.length; i++) {
@@ -215,7 +217,7 @@ function filterFunction() {
         }
     }
 	document.getElementById("myDropdown").classList.toggle("show");
-}*/
+}
 
 function filterFunction() {
 	var input, filter;  
@@ -224,111 +226,8 @@ function filterFunction() {
 	var elementsRech = input.value.toUpperCase().split(' ');
 	RechercheMulti(filter);
 }
-
-function RechercheMulti(strElementsRech) {
-	var tabElementsRech = strElementsRech.split(' ');
-    var cmd, i, e, listDrop  ;
-	var tabCMD = [];
-	var synthTabCMD = [];	
-	document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
-	for (e = 0; e < tabElementsRech.length; e++) {
-		////////////////////////////////////////////////:
-		/* pour les num de commandes */
-		cmd = document.getElementsByClassName("commande");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				texteColoration = cmd[i].getElementsByTagName("button")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);			
-			
-				tabCMD.push(cmd[i].id.toUpperCase()); // ajoute num commande ds Tableau
-			}
-			else {cmd[i].getElementsByTagName("button")[0].removeAttribute("mark"); }
-		}	
-		/*		
-		cmd = document.getElementsByClassName("TitrecommandeRecherche");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].textContent.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				texteColoration = cmd[i][0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);			
-			
-				tabCMD.push(cmd[i].id.toUpperCase()); // ajoute num commande ds Tableau
-			}
-		}	
 */
 
-		
-		////////////////////////////////////////////////:
-		/* pour les Produits */
-		cmd = document.getElementsByClassName("produit");
-		//a = div.getElementsByTagName("a");
-		for (i = 0; i < cmd.length; i++) {			
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {		
-				texteColoration = cmd[i].getElementsByTagName("h4")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);
-				texteColoration = cmd[i].getElementsByTagName("h5")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);
-			
-				tabCMD.push('C-' + cmd[i].parentNode.id.toUpperCase()); // ajoute num commande ds Tableau
-			}		
-		}	
-		////////////////////////////////////////////////:
-		/* pour les nom Planche derriere photo */
-		cmd = document.getElementsByClassName("planche");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				texteColoration = cmd[i].getElementsByTagName("p")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);
-				tabCMD.push('C-' + cmd[i].parentNode.parentNode.id.toUpperCase()); // ajoute num commande ds Tableau
-			}
-		}	
-
-		////////////////////////////////////////////////:
-		// On recupere les elements uniques des commandes trouvées
-		if(e == 0){
-			synthTabCMD = [...new Set(tabCMD)];
-			//console.log("synthTabCMD0 '" + tabElementsRech[e] + "' : " + synthTabCMD);
-		}
-		else{
-			synthTabCMD = intersect(synthTabCMD, tabCMD)
-			//console.log("synthTabCMDn '" + tabElementsRech[e] + "' : " + synthTabCMD);
-		}
-		tabCMD = [];
-		
-	}
-	// Affichage des commandes affichées dans la Dropdown à Jour 
-
-	listDrop = document.getElementById("listeRechercheCMD").getElementsByTagName("li");
-    for (i = 0; i < listDrop.length; i++) {	
-		menu = listDrop[i].getElementsByTagName("a")[0];
-		//console.log("menu : " + menu.innerHTML.trim());	
-		//console.log("synthTabCMD : " + synthTabCMD);	
-        if (synthTabCMD.indexOf('C-' + menu.innerHTML.trim().toUpperCase()) > -1) { 		
-            listDrop[i].style.display = "";
-        } else {
-            listDrop[i].style.display = "none";
-        }
-    }	
-	// Affichage des commandes affichées dans la page à Jour 
-	//listDrop = document.getElementById("myDropdown").getElementsByTagName("a");//dropdown-content
-	cmd = document.getElementsByClassName("commande");
-	
-    for (i = 0; i < cmd.length; i++) {		
-        if (synthTabCMD.indexOf(cmd[i].id.toUpperCase()) > -1) { 	
-			//console.log("cmd[i].id.toUpperCase() : " + cmd[i].id.toUpperCase());		
-            cmd[i].style.display = ""; // .parentNode effacer toute la commande, même le titre
-        } else {
-            cmd[i].style.display = "none";
-        }
-    }	
-
-	
-	InitCommandes(strElementsRech == '');
-}
-
-function intersect(a, b) {
-  var setB = new Set(b);
-  return [...new Set(a)].filter(x => setB.has(x));
-}
 
 function ColorRecherche(unTexte, UneRech) {
 	if(UneRech!=''){

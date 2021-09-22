@@ -23,69 +23,115 @@ if (isset($_GET['anneeSource'])) { // Test connexion l'API
 }
 
 
-	$affiche_Tableau = AfficheSOURCES("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+	//$affiche_Tableau = AfficheSOURCES("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
 	
 	
-	$DefautNbCMDAffiche = 15;
+	/*$DefautNbCMDAffiche = 15;
 	$NbCMDAffiche = $DefautNbCMDAffiche;
-	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
+	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}*/
 ?>
 <?php 
 if($isDebug){
 	header("Cache-Control: no-cache, must-revalidate");
 }
 
-
+$monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
 ?>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
 
 
-    <title id="PHOTOLAB"><?php echo substr($myfileName,0, -5) ?> : Préparation de commandes</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-    <link rel="stylesheet" type="text/css" href="css/CMDImgSource.css">
+    <title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 
 	
 
-
 </head>
 
-<body >
- <!-- 
-<div id="chargement" style="width:150px;height:50px;position:absolute;top:0;left:0;color:red;font-weight:bold;font-size:14px;background:white;">
-   Chargement ...
-</div>-->
-<?php
+<body onload="EffacerChargement()">
 
-
-
-?>
-
+<div id="MSGChargement" onclick="EffacerChargement()"> 
+	<div class="cs-loader">
+	
+	  <div class="cs-loader-inner">
+	  <H5>Mise en cache des photos de : <?php echo $monProjet->NomProjet ; 	?></H5>
+	  <br>
+		<label>●</label>
+		<label>●</label>
+		<label>●</label>
+		<label>●</label>
+		<label>●</label>
+		<label>●</label>
+		<br>
+		<br>
+		<H5>Patientez ...</H5>
+	  </div>
+	</div>
+</div> 
 <div id="site"">
    <!-- Tout le site ici -->
-
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
 	
-
+	<div id="Entete">	
+		<div class="logo"><a href="<?php echo RetourEcranSources(); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
+		</div>
+		
+		<div class="titreFichier">	
+			<?php echo $monProjet->NomProjet ; 	?>
+		</div>
+		<?php echo  '<p>' . $monProjet->Dossier . '</p>';?>
+		<div class="titreFichier">Afficher : 
+			<span id="idAfficheTout" onclick=AfficheTout()>|Toutes les photos|</span>
+			<span id="idAfficheGroupe" onclick=AfficheGroupe()>|Seulement les groupes|</span>	
+			<span id="idAfficheIndivs" onclick=AfficheIndivs()>|Seulement les individuelles|</span>
+			
+		</div>		
+		<span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p><?php //echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?><img src="img/search-more.png"></p></span>	
+	</div>
 
 	  <div id="main">
-	  
-		<div id="ImageClasse">	
-		<br><br>
-			<?php 	echo $affiche_Tableau;   ?>	
-		</div>	<!-- -->
-
-
-		<div class="footer">
-		  <p class="mention">	<?php echo VersionPhotoLab();?> </p>
+		<div id="mySidenav" class="sidenav">
+		
+		<a href="<?php RetourEcranSources(); ?>" class="closebtn">&times;</a>
+			<div id="myRecommandes" class="infoRecommandes">Mes Commandes<br>
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>				
+				<form name="FormEnvoieRecos" method="post" action="<?php RetourEcranSources(); ?> >" enctype="multipart/form-data">	
+					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
+	
+					<button type="submit">Enregistrer ces Commandes</button>
+				</form> 	
+			</div>		
 		</div>
+	  
+		<div id="zoneRechercheCMD">	
+		<br><br>
+			<?php 	//echo $affiche_Tableau;   ?>	
+			<?php echo AfficheSOURCESEcole($monProjet); ?>	
+		
+		
+		
+			<div class="footer">
+			  <p class="mention"><?php echo VersionPhotoLab();?> </p>
+			</div>		
+		
+		
+		</div>	
+
+
 
 	</div>
  
 </div>
 
+<script type="text/javascript" src="<?php Mini('js/CMDImgSource.js');?>"></script>
+<script>
+	EffacerChargement();
+	AfficheRechercheCMD(true);
+	openNav();
+</script>
 
 </body>
 </html>
@@ -93,10 +139,7 @@ if($isDebug){
 
 <?php 
 
-
-
-function AfficheSOURCES($fichierCSV, $codeProjet, $anneeProjet){ 
-	$affiche_Tableau = '';
+function ChercherSOURCESEcole($fichierCSV, $codeProjet, $anneeProjet){ 
 	if (file_exists($fichierCSV)){
 		$TabCSV = csv_to_array($fichierCSV, ';');
 
@@ -104,49 +147,36 @@ function AfficheSOURCES($fichierCSV, $codeProjet, $anneeProjet){
 		//echo 'nb ligne catalog source ' . $NbLignes;
 		if ($NbLignes){
 
-	
-		$Dossier='';
-		$ScriptsPS='';
-		$NomProjet='';
-		/*
-		foreach ($TabCSV as $key => $row) {
-			$NomProjet[$key] = $row['NomProjet'];
-		}
-		*/
-		$NbLignes=count($TabCSV);
-		for($i = 0; $i < $NbLignes; $i++){ 
-			if ($codeProjet == $TabCSV[$i]["Code"]  && $anneeProjet == $TabCSV[$i]["Annee"]){
-				$Annee=$TabCSV[$i]["Annee"];
-				$CodeEcole=$TabCSV[$i]["Code"];
-				$ScriptsPS=$TabCSV[$i]["Rep Scripts PS"];
-				$Dossier=$TabCSV[$i]["Repertoire"];			
-				$NomProjet=$TabCSV[$i]["NomProjet"];
+			$NbLignes=count($TabCSV);
+			for($i = 0; $i < $NbLignes; $i++){ 
+				if ($codeProjet == $TabCSV[$i]["Code"]  && $anneeProjet == $TabCSV[$i]["Annee"]){
+					$Dossier = $TabCSV[$i]["DossierSources"];	
+					$Dossier = "../.." . urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
+					$monProjet = new CProjetSource($TabCSV[$i]["NomProjet"], 
+												$Dossier, 
+												$codeProjet,
+												$anneeProjet,
+												$TabCSV[$i]["Rep Scripts PS"]);
 				break;
+				}
 			}
 		}
-		//$DossierTEST = "../../SOURCES/2020-2021/2021-02-31-Ecole-test-Max-Planck-NANTES" ;	
-		//echo  $DossierTEST .'<br />';
-		$Dossier = "../.." . urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
-		$DossierTEST = urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
-		echo  'Dossier Source : ' . $DossierTEST  .'<br />';
+	}
+	return $monProjet;
+}
 
 
-	//Quel les fichier avvec" -CADR-"
-	$dir = $Dossier . '/*-CADR-*.*{jpg,jpeg}';
-	$dir = $Dossier . '/*.*{jpg,jpeg}';
+function AfficheSOURCESEcole($monProjet){ 
+	$dir = $monProjet->Dossier . '/*.*{jpg,jpeg}';
 	$files = glob($dir,GLOB_BRACE);
 
-	CreationDossier($Dossier . '/Cache');
-	  
-	//echo 'Listing des images du repertoire miniatures <br />';
+	CreationDossier($monProjet->Dossier . '/Cache');
 
-
-	//<p> <span class=”malettrine”>U</span>ne lettrine historiée etc etc etc.</p>
-		$affiche_Tableau = '<p>';
+	$affiche_Tableau = '<p>';
 		
-	$affiche_Tableau .= '
-				<table>';	
+	//$affiche_Tableau .= '				<table>';	
 	foreach($files as $image){ 
+		$FichierARefaire = false;
 		$posDernier = 1 + strripos($image, '/');
 		$FichierSource = substr($image, $posDernier);
 		$FichierCache = 'Cache/'. $FichierSource;
@@ -154,43 +184,44 @@ function AfficheSOURCES($fichierCSV, $codeProjet, $anneeProjet){
 		
 
 		// Vérification que le fichier existe
-		if(!file_exists($Dossier . $FichierCache)):
-			resize_img($Dossier . $FichierSource, $Dossier . $FichierCache);
-		endif;	 
-		 
-
-		 $mesSources = new CImgSource($FichierSource, $Dossier, $CodeEcole,$Annee,$ScriptsPS);
-		 
-		 /**/
-		 if ($mesSources->isGroupe()){
-			 //echo 'GROUPE';
-			 $affiche_Tableau .= '<tr><td style=vertical-align:top>';
-			 
-		 }
-
-
-		$affiche_Tableau .= $mesSources->Affiche();
-		
-		 if ($mesSources->isGroupe()){
-			 //echo 'GROUPE';
-			 $affiche_Tableau .= '</td><td>';
-			 
-		 }	
-	}
-
-
-
-	$affiche_Tableau .= '</td></tr></table>' ;
-
-
-		//http://peter-msi/PhotoLab/SOURCES/2020-2021/2021-02-31-Ecole-test-Max-Planck-NANTES/Cache/Cache/2001.jpg
-		
-			$affiche_Tableau .= '</p>';
+		// Vérification que le fichier existe
+		if(!file_exists($Dossier . $FichierCache)){
+			$FichierARefaire = true	;	
 		}
+		else{
+			//$origin = new DateTime('2023-10-10');
+			//$target = date(filemtime($FichierImage));
+			 if (filemtime($Dossier . $FichierSource) > filemtime($Dossier . $FichierCache)){
+				 $FichierARefaire = true;		 
+				 }
+		}		
+		if($FichierARefaire){
+			resize_img($Dossier . $FichierSource, $Dossier . $FichierCache);	
+		}
+
+
+		 $mesSources = new CImgSource($FichierSource, $Dossier, $monProjet->CodeEcole,$monProjet->Annee,$monProjet->ScriptsPS);
+		 
+		
+		 if ($mesSources->isGroupe()){
+			 //echo 'GROUPE';
+			 $affiche_Tableau .= '<div class="ligne_classe">'.NomClasseDepuisNomGroupe($mesSources->Fichier).'</div>';
+			 //$affiche_Tableau .= '<tr><td style=vertical-align:top>';
+		 }
+		$affiche_Tableau .= $mesSources->Affiche();
 	}
+
+	//$affiche_Tableau .= '</td></tr></table>' ;
+			$affiche_Tableau .= '</p>';
+
 	return $affiche_Tableau;
 }
 
+	
+function RetourEcranSources(){
+	$RetourEcran = 'CATSources.php';	
+	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+}	
 
 function CreationDossier($nomDossier) {
 	if (!is_dir($nomDossier)) {
@@ -198,6 +229,19 @@ function CreationDossier($nomDossier) {
 	}
 	return $nomDossier;
 }
+
+
+function NomClasseDepuisNomGroupe($strNOMdeClasse){
+	$NomClasse = '';
+	if (strpos(strtolower($strNOMdeClasse),'fratrie')){
+		$NomClasse = 'Fratries';
+	}else{
+		$NomClasse = substr($strNOMdeClasse, 1 + strpos($strNOMdeClasse, '-', 5), -4);
+	}
+	return  '   ' . $NomClasse . '   ' ;
+}
+
+
 
 
 /**

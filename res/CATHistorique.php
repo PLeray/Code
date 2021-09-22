@@ -19,15 +19,15 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATHistorique');
 <html>
 <head>
 	<title id="PHOTOLAB">Historique des commandes</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-	<script type="text/javascript" src="js/CATFonctions.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/Menu.css">
+	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
 </head>
 
 <body>
-<?php AfficheMenuPage('',$maConnexionAPI); ?>
+<?php AfficheMenuPage('commandesExpediees',$maConnexionAPI); ?>
 <div class="logo">
 	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
 </div>

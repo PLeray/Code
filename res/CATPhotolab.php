@@ -25,14 +25,14 @@ if($isDebug){
 ?>
 	<META HTTP-EQUIV="Refresh" CONTENT="<?php echo ($isDebug?'5':'10'); ?>; URL=<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>">
 	<title id="PHOTOLAB">Commandes en cours</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-	<link rel="stylesheet" type="text/css" href="css/CATPhotolab.css">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
-	<link rel="stylesheet" type="text/css" href="css/Menu.css">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
 </head>
 
 <body>
-<?php AfficheMenuPage('',$maConnexionAPI); ?>
+<?php AfficheMenuPage('commandesEnCours',$maConnexionAPI); ?>
 <!-- 
 <p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
 -->
@@ -42,12 +42,12 @@ if($isDebug){
 
 <?php
 	$g_IsLocalMachine = IsLocalMachine();
-	//$repertoireTirages = $GLOBALS['repTIRAGES'];
-	//$repertoireCMD = $GLOBALS['repCMDLABO'];
-	//$repertoireMiniatures = $GLOBALS['repMINIATURES'];
+	//$GLOBALS['repTIRAGES'] = $GLOBALS['repTIRAGES'];
+	//$GLOBALS['repCMDLABO'] = $GLOBALS['repCMDLABO'];
+	//$GLOBALS['repMINIATURES'] = $GLOBALS['repMINIATURES'];
 	
 /*
-	$monGroupeCmdes = new CGroupeCmdes($repertoireCMD.$myfileName);
+	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$myfileName);
 	
 	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
 */	
@@ -111,7 +111,7 @@ if($isDebug){
 	<table id="commandes">
 	  <tr class="header">
 		<th style="width:110px;"><H3>Etat</H3></th>			  
-		<th style="width:127px;" onclick="sortTable(0)"><H3>Date</H3></th>
+		<th style="width:110px;" onclick="sortTable(0)"><H3>Date</H3></th>
 
 		<th  onclick="sortTable(1)"><H3>Groupes de commandes de planches</H3></th>
 		<th  style="width:150px;" ><H3>Commandes<br><br>Planches</H3></th>	
@@ -137,7 +137,7 @@ if($isDebug){
 	<table id="commandes">
 	  <tr class="header" >
 		<th style="width:110px;" onclick="sortTable(1)"><H3>Etat</H3></th>		  
-		<th style="width:127px;" onclick="sortTable(0)"><H3>Date</H3></th>
+		<th style="width:110px;" onclick="sortTable(0)"><H3>Date</H3></th>
 			
 		<th  onclick="sortTable(1)"><H3>Arborescence de fichiers pour présentation web</H3></th>	
 		<th style="width:100px;" onclick="sortTable(2)"><H3>Nb Fichiers</H3></th>					

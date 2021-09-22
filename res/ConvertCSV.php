@@ -124,7 +124,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		
 		if ($GLOBALS['ERREUR_EnCOURS'] != ''){
 			$affiche_Tableau = '';
-			echo 'Erreur !!! : ' . $GLOBALS['ERREUR_EnCOURS'];
+			//echo '<br style="background-color:#EAEFF5" />  Erreur !!! : ' . $GLOBALS['ERREUR_EnCOURS'] .'</br>';
 		}
 		else{ // Tout va bien !
 			# Chemin vers fichier texte
@@ -180,8 +180,6 @@ function EcrireBilanCMD( $NbCommandes)
 
 function EcrireEcole($Ecole, $PrefixeTirage)
 {
-	//$RepertoireTirage = ($isGroupee?'':'(ISOLEES) ') . $Ecole;
-	//$RepertoireTirage = $PrefixeTirage . $Ecole;
 	$valRetour = '';
 	if ($Ecole != $GLOBALS['Ecole_EnCOURS']) {   
 		$GLOBALS['Ecole_EnCOURS'] = $Ecole;

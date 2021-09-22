@@ -242,7 +242,7 @@ function OuvrirPhotoSource(unFichierPhoto){
 		AjoutBilanGeneration(msg);
 		msg = '     PROBLEME : Ouverture de la photo : ' + unFichierPhoto;		
 		AjoutBilanGeneration(msg);
-		msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto + " existe bien dans le repertoire SOURCE de l'ecole !";	
+		msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto + " existe bien dans le dossier SOURCE de l'ecole !";	
 		AjoutBilanGeneration(msg);		
 		AjoutBilanGeneration('');
 		g_Erreur = msg;
@@ -282,44 +282,6 @@ function TrouverFichierSource(unFichierPhoto) {
 }
 */
 
-/**/
-/*
-function ChercherSOURCESousRepertoire(theFolder, RepChercheRep, reference) {
-   // if (!theFiles) {var theFiles = []};
-    var theContent = theFolder.getFiles();
-	//alert('ChercherRefRepertoire ' + theContent);
-							var laProfondeur = Profondeur;
-							theContent.sort();
-    for (var n = 0; n < theContent.length; n++) {
-        var theObject = theContent[n];
-        if (theObject.constructor.name == "Folder") {
-			// UI Affichage 
-			UIRepertoireSource.text  = theObject.path + '/' + theObject.name;
-			
-			//alert('theObject.path +  theObject.name ' + theObject.path + '/' + theObject.name);
-			UIText = theObject.path + '/' + theObject.name; //UIRepertoireSource.text + '.';
-			//alert('TEst Rep ' + UIText);
-			//g_UIWINRechercheSource.update();
-			 //win.update();
-			 $.sleep(20);
-			 g_UIWINRechercheSource.update();
-			// UI Affichage
-            if (theObject.name.indexOf(reference) != -1){ 
-                RepChercheRep = theObject.path + '/' + theObject.name ;
-				g_ProfondeurMAX = laProfondeur;
-                break;
-            }
-            //alert(' REP : ' + theObject.path + '/' + theObject.name);
-			if (laProfondeur < g_ProfondeurMAX){
-				//laProfondeur = laProfondeur + 1;
-				RepChercheRep = ChercherRefRepertoire(theObject, RepChercheRep, reference, laProfondeur + 1);			
-			}
-         }
-    }
-	//alert('RepChercheRep ' + RepChercheRep);
-   return RepChercheRep; 
-}
-*/
 
 function Action_Script_PhotoshopPSP(N_action){
 	try {
@@ -488,7 +450,11 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							//reussiteTraitement = reussiteTraitement && 
 							ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
 						}								
-						
+						// IMPORT FOND D'ici
+						if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+							//reussiteTraitement = reussiteTraitement && 
+							ImporterAutrePhoto(g_Rep_GABARITS + unProduit.Type + '.png');					
+						}							
 						// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 						if (unProduit.Type != "PORTRAIT" 
 							&& unProduit.Type != "PANO" 
@@ -520,8 +486,8 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							}
 						}	
 						*/
-						reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
-						reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
+						reussiteTraitement = reussiteTraitement && CreerUnDossier(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
+						reussiteTraitement = reussiteTraitement && CreerUnDossier(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
 						
 						if (reussiteTraitement){
 							// Pour avoir des planches homogenes dans le viewer de commandes					
@@ -559,7 +525,6 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 	return valRetour;
 }
 
-
 function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 	var nomFichierPhoto = unProduit.FichierPhoto;
 	
@@ -588,6 +553,10 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					//alert('Pour CADRE-QUATTRO : ' + nomFichierPhoto + ' Sera ' + NextQuattro(nomFichierPhoto) ); 
 					leRECADRAGE = 'KO';									
 				}	
+				if (unProduit.Type.indexOf('Portrait-') > -1){ //Produit QUATTRO Besoin du fichier Quatro !!
+					//alert('Pour CADRE-QUATTRO : ' + nomFichierPhoto + ' Sera ' + NextQuattro(nomFichierPhoto) ); 
+					leRECADRAGE = 'KO';									
+				}					
 				
 				/**/
 				if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
@@ -620,7 +589,10 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Extract-ID');					
 					}						
-
+					// CADRE-PHOTOMATON !!!!!!!!!
+					if (unProduit.Type.indexOf('CADRE-PHOTOMATON') > -1){ //Produit CARRE-PHOTOMATON Besoin du fichier QUATTRO !!							
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Extract-Quattro');					
+					}	
 
 					if (leRECADRAGE != 'KO'){
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(leRECADRAGE);	
@@ -632,18 +604,12 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Teinte);
 					}
 					
-					/*
-					// CADRE-CARRE-ID !!!!!!!!!
-					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+					// IMPORT FOND D'ici
+					if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
 						//reussiteTraitement = reussiteTraitement && 
-						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
-					}	
-					// INSITU-CARRE-ID !!!!!!!!!
-					if (unProduit.Type.indexOf('INSITU-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
-						//reussiteTraitement = reussiteTraitement && 
-						ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
-					}								
-					*/
+						ImporterAutrePhoto(g_Rep_GABARITS + unProduit.Type + '.png');					
+					}
+
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 					if (unProduit.Type != "PORTRAIT" 
 						&& unProduit.Type != "PANO" 
@@ -661,7 +627,7 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 						Raffraichir(); 
 					}*/					
 					// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2021-Cadre-Studio²'){ // QQue pour Studio² !!!						
+					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio²'){ // QQue pour Studio² !!!						
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
 						
 					}
@@ -675,8 +641,8 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 						}
 					}	
 					*/
-					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
-					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
+					reussiteTraitement = reussiteTraitement && CreerUnDossier(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
+					reussiteTraitement = reussiteTraitement && CreerUnDossier(g_RepMINIATURES_DateEcole + "/"+ unProduit.Taille + " (1ex de chaque)");
 					
 					if (reussiteTraitement){
 						// Pour avoir des planches homogenes dans le viewer de commandes					
@@ -750,7 +716,7 @@ function CreerUnProduitPourLeSiteWEB(unProduit){
 						Raffraichir(); 
 						//extTeinte = ExtensionTeinte(unProduit.Teinte); //SEP / SEPIA NB / Noir et blanc
 						}
-					reussiteTraitement = reussiteTraitement && CreerRepertoire(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille );
+					reussiteTraitement = reussiteTraitement && CreerUnDossier(g_RepTIRAGES_DateEcole + "/"+ unProduit.Taille );
 					if (reussiteTraitement){
 						// Pour avoir des planches homogenes dans le viewer de commandes					
 						myDocument = app.activeDocument; 
@@ -843,11 +809,11 @@ function SauvegardeJPEG(unDocument, unNomdeFichier){
 	  //return unNomdeFichier;
 }	
 
-function VerifNomRep(unNomdeRepertoire){
+function VerifNomRep(unNomdeDossier){
   	// A REVOIR !!!!!!!!!
-    //alert("verif " +unNomdeRepertoire);
+    //alert("verif " +unNomdeDossier);
 	var regex = new RegExp('^[a-zA-Z0-9]+([\.|-]{1}[a-z0-9]+)*[\.]{1}[a-z0-9]{2,6}$', 'i'); 
-	if (regex.test (unNomdeRepertoire)) {
+	if (regex.test (unNomdeDossier)) {
         //alert ('Nom de dossier incorrect');
 		MsgLOGInfo('Erreur','Nom de dossier incorrect');
         return false;
@@ -858,10 +824,10 @@ function VerifNomRep(unNomdeRepertoire){
     //return true;
 }
 
-function CreerRepertoire(unNomdeRepertoire){
+function CreerUnDossier(unNomdeDossier){
 	try {
 		var repOK = true;
-		var folder = new Folder(unNomdeRepertoire); 	 
+		var folder = new Folder(unNomdeDossier); 	 
 		if (!folder.exists) {  
 			repOK = folder.create();
 			return repOK;
@@ -869,14 +835,14 @@ function CreerRepertoire(unNomdeRepertoire){
 		return repOK;
 	}
 	catch(err) {
-		//alert ("Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message, "ERREUR : CreerRepertoire()", true);
-		MsgLOGInfo("ERREUR : CreerRepertoire()", "Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message);
+		//alert ("Impossible de creer le repertore : \n\n" + unNomdeDossier + "\n\n" + err.message, "ERREUR : CreerUnDossier()", true);
+		MsgLOGInfo("ERREUR : CreerUnDossier()", "Impossible de creer le repertore : \n\n" + unNomdeDossier + "\n\n" + err.message);
 		return false;
 	}
 }
 
-function isRepertoireExiste(unNomdeRepertoire){
-	var folder = new Folder(unNomdeRepertoire); 	 
+function isDossierExiste(unNomdeDossier){
+	var folder = new Folder(unNomdeDossier); 	 
 	return folder.exists;
 }
 
@@ -886,7 +852,7 @@ function isFichierExiste(unNomdeFichier){
 	return fichier.exists;
 }
 
-function NbFichiersRepertoire(theFolderPath) {
+function NbFichiersDossier(theFolderPath) {
 	var leRep = Folder(theFolderPath)
 	var theContent = leRep.getFiles();
 	var nb=0;
@@ -894,10 +860,11 @@ function NbFichiersRepertoire(theFolderPath) {
 	  var theObject = theContent[n];
 	  if (theObject.constructor.name != "Folder") {
 		 nb = nb + 1;
-		 }
+		}
 	}
 	return nb;
 }
+
 
 function NbJPGArborescence(theFolder, theNombre) {
    //if (!theFiles) {var theFiles = []};
@@ -934,8 +901,8 @@ function TestIndivPhotoDeGroupe(){
 function GroupeClassePourIndiv(unProduit){
 	var nomGroupe = 'aucun';
    // On recupere le(s) groupe(s) de l'indiv
-   alert('g_GroupeIndiv[unProduit.FichierPhoto]' + unProduit.FichierPhoto + " => " + g_GroupeIndiv[unProduit.FichierPhoto]);
-   alert('TableauAssociatifTOStr  : ' + TableauAssociatifTOStr(g_GroupeIndiv));
+   //alert('g_GroupeIndiv[unProduit.FichierPhoto]' + unProduit.FichierPhoto + " => " + g_GroupeIndiv[unProduit.FichierPhoto]);
+   //alert('TableauAssociatifTOStr  : ' + TableauAssociatifTOStr(g_GroupeIndiv));
 
     if (g_GroupeIndiv[unProduit.FichierPhoto]){
         var TableauListeGroupe = g_GroupeIndiv[unProduit.FichierPhoto].split('_'); 
@@ -1002,7 +969,7 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 		return theFiles;
 	}
 	catch(err) {
-		//alert ("Impossible de creer le repertore : \n\n" + unNomdeRepertoire + "\n\n" + err.message, "ERREUR : CreerRepertoire()", true);
+		//alert ("Impossible de creer le repertore : \n\n" + unNomdeDossier + "\n\n" + err.message, "ERREUR : CreerUnDossier()", true);
 		MsgLOGInfo("Commande  : " + g_CommandePDTEncours + " ERREUR : InitGroupesClasseIndiv()", ErreurInfoMSG(err));
 		return '';
 	}		
@@ -1030,9 +997,25 @@ function NomClasseDepuisNomGroupe(strNOMdeClasse){
 			retour = 'Fratries';
 	}
 	else{
-		retour = strNOMdeClasse.slice(10,-4);		
+		retour = strNOMdeClasse.slice(PosDeuxiemeTiret(strNOMdeClasse),-4);		
 	}
 	return retour;
+}
+
+// Avant// Avant// Avant// Avant// Avant// Avant
+function PosDeuxiemeTiret(strNOMdeClasse){
+	var pos = nthIndex(strNOMdeClasse,'-',2) + 1;
+	//alert('Position  ' + pos );
+	return pos; // Avant
+}
+
+function nthIndex(str, pat, n){
+    var L= str.length, i= -1;
+    while(n-- && i++<L){
+        i= str.indexOf(pat, i);
+        if (i < 0) break;
+    }
+    return i;
 }
 
 function RecupPhotoDeGroupe(TabLesGroupesClasse, StrLesGroupesClasse){
@@ -1047,14 +1030,14 @@ function RecupPhotoDeGroupe(TabLesGroupesClasse, StrLesGroupesClasse){
 }
 
 //////  jpg-files from folder and subfolders //////
-function ChercherFichierJPGRepertoire(theFolder, theFiles) {
+function ChercherFichierJPGdansDossier(theFolder, theFiles) {
    if (!theFiles) {var theFiles = []};
    var theContent = theFolder.getFiles();
    
    for (var n = 0; n < theContent.length; n++) {
       var theObject = theContent[n];
       if (theObject.constructor.name == "Folder") {
-         theFiles = ChercherFichierJPGRepertoire(theObject, theFiles)
+         theFiles = ChercherFichierJPGdansDossier(theObject, theFiles)
          }
       if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
          theFiles = theFiles.concat(theObject);
@@ -1064,17 +1047,17 @@ function ChercherFichierJPGRepertoire(theFolder, theFiles) {
 }
 //////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
-function ChercherRefRepertoire(theFolder, RepChercheRep, reference, Profondeur) {
+function ChercherRefDossier(theFolder, RepChercheRep, reference, Profondeur) {
     var theContent = theFolder.getFiles();
-	//alert('ChercherRefRepertoire ' + theContent);
+	//alert('ChercherRefDossier ' + theContent);
 	var laProfondeur = Profondeur;
 	theContent.sort();
     for (var n = 0; n < theContent.length; n++) {
         var theObject = theContent[n];
         if (theObject.constructor.name == "Folder") {
 			// UI Affichage 
-			UIRepertoireSource.text  = theObject.path + '/' + theObject.name;
-			UIText = theObject.path + '/' + theObject.name; //UIRepertoireSource.text + '.';
+			UIDossierSource.text  = theObject.path + '/' + theObject.name;
+			UIText = theObject.path + '/' + theObject.name; //UIDossierSource.text + '.';
 
 			// UI Affichage
 			//g_UIWINRechercheSource.update();
@@ -1089,7 +1072,7 @@ function ChercherRefRepertoire(theFolder, RepChercheRep, reference, Profondeur) 
             }
             //alert(' REP : ' + theObject.path + '/' + theObject.name);
 			if (laProfondeur < g_ProfondeurMAX){
-				RepChercheRep = ChercherRefRepertoire(theObject, RepChercheRep, reference, laProfondeur + 1);			
+				RepChercheRep = ChercherRefDossier(theObject, RepChercheRep, reference, laProfondeur + 1);			
 			}
          }
     }
@@ -1102,11 +1085,11 @@ function TrouverSOURCE(refEcole) {
 	g_UIWINRechercheSource.show();
 	
 	var repDepart = g_RepBASESOURCE;
-	UIRepertoireSource.text = 'Recherche de Sources... ';
+	UIDossierSource.text = 'Recherche de Sources... ';
 
 	var theFolder = new Folder(repDepart);	
-	repRech = ChercherRefRepertoire(theFolder, '', refEcole, 0);
-	UIRepertoireSource.text = repRech;
+	repRech = ChercherRefDossier(theFolder, '', refEcole, 0);
+	UIDossierSource.text = repRech;
 
 	g_UIWINRechercheSource.onClose = function() {return repRech ;}
 	g_UIWINRechercheSource.close();
@@ -1204,7 +1187,7 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 	}	
 }
 
-function CreerQUATTROPresentationWEB(unfichier, extension, repertoire){
+function CreerQUATTROPresentationWEB(unfichier, extension, unDossier){
 		var nomFichierPhoto = unfichier;
 		var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
 		
@@ -1220,7 +1203,7 @@ function CreerQUATTROPresentationWEB(unfichier, extension, repertoire){
 		var unNomdePlancheDWEB = unfichier.slice(0,-4) + '-QCoinD-WEB.jpg';
 		var unNomdePlancheDWEBQuattro = unfichier.slice(0,-4) + '-QCoinD-WEB' + extension + '.jpg'; // nb ou Quattro		
 
-		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire + "/";
+		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unDossier + "/";
 
 		if(	
 			(!isFichierExiste(unPathPlanche + unNomdePlancheWEBFiche)) || 
@@ -1235,7 +1218,7 @@ function CreerQUATTROPresentationWEB(unfichier, extension, repertoire){
 			){
 				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
 				var reussiteTraitement = (laPhoto != null);
-				reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche.slice(0,-1));
+				reussiteTraitement = reussiteTraitement && CreerUnDossier(unPathPlanche.slice(0,-1));
 				if (reussiteTraitement){
 					// Pour avoir des planches homogenes dans le viewer de commandes					
 					var myDocument = app.activeDocument; 				
@@ -1283,13 +1266,13 @@ function CreerQUATTROPresentationWEB(unfichier, extension, repertoire){
 		return unfichier;	
 }
 
-function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire){
+function CreerUnFichiersPresentationWEB(unfichier, extension, unDossier){
 	var isTransformQUATTRO = false;
 
 	if (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO'){
-		isTransformQUATTRO = isTransformQUATTRO || ((repertoire.indexOf('Fratrie') < 0) && (unfichier.length < g_MinimuNomClasse) && g_CONFIGisPhotosIndiv);	
+		isTransformQUATTRO = isTransformQUATTRO || ((unDossier.indexOf('Fratrie') < 0) && (unfichier.length < g_MinimuNomClasse) && g_CONFIGisPhotosIndiv);	
 		//alert('isTransformQUATTRO ' + isTransformQUATTRO );		
-		isTransformQUATTRO = isTransformQUATTRO || ((repertoire.indexOf('Fratrie') > -1) && g_CONFIGisPhotosFratrie);
+		isTransformQUATTRO = isTransformQUATTRO || ((unDossier.indexOf('Fratrie') > -1) && g_CONFIGisPhotosFratrie);
 		//alert('isTransformQUATTRO ' + isTransformQUATTRO );
 		isTransformQUATTRO = isTransformQUATTRO || ((unfichier.length >= g_MinimuNomClasse) && g_CONFIGisPhotosGroupes);
 	}
@@ -1301,7 +1284,7 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire){
 	+ ' g_CONFIGtypeConfigWeb ' + g_CONFIGtypeConfigWeb);*/
 	
 	if (isTransformQUATTRO){	
-		CreerQUATTROPresentationWEB(unfichier, extension, repertoire);
+		CreerQUATTROPresentationWEB(unfichier, extension, unDossier);
 	}
 	else{
 		var nomFichierPhoto = unfichier;
@@ -1311,16 +1294,16 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire){
 		var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
 		//var valRetour = unNomdePlanche;
 		var valRetour = unNomdePlancheWEB;		
-		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire;
-		//alert('g_RepTIRAGES_DateEcole + "/" + repertoire : ' + g_RepTIRAGES_DateEcole + "/" + repertoire);
+		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unDossier;
+		//alert('g_RepTIRAGES_DateEcole + "/" + unDossier : ' + g_RepTIRAGES_DateEcole + "/" + unDossier);
 		try {
-			var copiefichierOriginal = TypeTraitement(unfichier, repertoire, false);
+			var copiefichierOriginal = TypeTraitement(unfichier, unDossier, false);
 			//ON FAIT LA COPIE NORMALE !! (Ou pas si 0 - 5 sur Quattro !)	
 			if (copiefichierOriginal != 'KO') {
 				if(	(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEB)) || (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBVariante)) ||  (isFichierIdentite(nomFichierPhoto) && (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBFiche)))  ){		
 					var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
 					var reussiteTraitement = (laPhoto != null);
-					reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche);
+					reussiteTraitement = reussiteTraitement && CreerUnDossier(unPathPlanche);
 					if (reussiteTraitement){
 						// Pour avoir des planches homogenes dans le viewer de commandes					
 						var myDocument = app.activeDocument; 
@@ -1329,8 +1312,8 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire){
 						SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
 						
 						// traitement de la variante =>N&B, Quattro, autres ?
-						//var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);
-						var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);					
+						//var copiefichierVariante = TypeTraitement(unfichier, unDossier, true);
+						var copiefichierVariante = TypeTraitement(unfichier, unDossier, true);					
 						//alert ('copiefichierVariante ' + copiefichierVariante);
 						if (copiefichierVariante != 'KO') {
 							if (copiefichierVariante == 'WEB-QUATTRO'){
@@ -1390,89 +1373,8 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, repertoire){
 	
 }
 
-/* // x5 Fichier  chgt 10 Avril
-function CreerUnFichiersPresentationWEB_OLD(unfichier, extension, repertoire ){  
-	var nomFichierPhoto = unfichier;
-	//var unNomdePlanche = unfichier.slice(0,-4) + extension + '.jpg';
-	var unNomdePlancheWEB = unfichier.slice(0,-4) + '-WEB.jpg';
-	var unNomdePlancheWEBVariante = unfichier.slice(0,-4) + '-WEB' + extension + '.jpg'; // nb ou Quattro
-	var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
-	//var valRetour = unNomdePlanche;
-	var valRetour = unNomdePlancheWEB;		
-	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + repertoire;
-	//alert('g_RepTIRAGES_DateEcole + "/" + repertoire : ' + g_RepTIRAGES_DateEcole + "/" + repertoire);
-	try {
-		var copiefichierOriginal = TypeTraitement(unfichier, repertoire, false);
-		//ON FAIT LA COPIE NORMALE !! (Ou pas si 0 - 5 sur Quattro !)	
-		if (copiefichierOriginal != 'KO') {
-			if(	(!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEB)) || (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBVariante)) ||  (isFichierIdentite(nomFichierPhoto) && (!isFichierExiste(unPathPlanche + "/" + unNomdePlancheWEBFiche)))  ){		
-				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
-				var reussiteTraitement = (laPhoto != null);
-				reussiteTraitement = reussiteTraitement && CreerRepertoire(unPathPlanche);
-				if (reussiteTraitement){
-					// Pour avoir des planches homogenes dans le viewer de commandes					
-					var myDocument = app.activeDocument; 
-					//La sauvegarde ...	
-					//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + nomFichierPhoto);
-					SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEB);
-					
-					// traitement de la variante =>N&B, Quattro, autres ?
-					//var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);
-					var copiefichierVariante = TypeTraitement(unfichier, repertoire, true);					
-					//alert ('copiefichierVariante ' + copiefichierVariante);
-					if (copiefichierVariante != 'KO') {
-						if (copiefichierVariante == 'WEB-QUATTRO'){
-							//alert ('NextQuattro(nomFichierPhoto) ' + NextQuattro(nomFichierPhoto));
-							laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-							
-							laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
-							reussiteTraitement = (laPhoto != null);								
-						}
-						if (reussiteTraitement){	
-							myDocument = app.activeDocument; 	
-							//////////////// TRANSFORMATIONS //////////////////////
-							//alert ('g_RepSCRIPTSPhotoshop ' + g_RepSCRIPTSPhotoshop);
-							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(copiefichierVariante);
-							//alert ('copiefichierVariante ' + copiefichierVariante);
-							//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlanche);
-							SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBVariante);
-							
-							//WEB-PRESENTATION-FICHE	
-							// if 1 ou 6
-							if (isFichierIdentite(nomFichierPhoto) && (copiefichierVariante == 'WEB-QUATTRO'))
-							{
-								laPhoto.close(SaveOptions.DONOTSAVECHANGES);							
-								laPhoto = OuvrirPhotoSource(NextQuattro(nomFichierPhoto)); 	
-								reussiteTraitement = (laPhoto != null);
-								if (reussiteTraitement){	
-									myDocument = app.activeDocument; 	
-									//////////////// TRANSFORMATIONS //////////////////////
-									reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
-									SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlancheWEBFiche);
-								}															
-							}
-						}	
-					}
-					laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-				}
-				else {
-					laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-				}			
-			}					
 
-		}
-		
-	}
-	catch(err) {
-		g_Erreur = "Commande  : " + g_CommandePDTEncours + " ERREUR CreerUnFichiersPresentationWEB pour : " + nomFichierPhoto;
-		laPhoto.close(SaveOptions.DONOTSAVECHANGES);
-		return "KO";
-	}
-
-	return valRetour;	
-}*/
-
-function TypeTraitement(unFichier, unRepertoire, isVariante){
+function TypeTraitement(unFichier, unDossier, isVariante){
 	var retourval = g_CONFIGtypeConfigWeb;
 	var numFichierIndiv = 0;
 	
@@ -1482,7 +1384,7 @@ function TypeTraitement(unFichier, unRepertoire, isVariante){
 		// Pas sur Groupe
 				retourval = 'KO';
 		}
-		if ((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie && isVariante) { // Pas sur les Fratries ?
+		if ((unDossier.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie && isVariante) { // Pas sur les Fratries ?
 				retourval = 'KO';
 		}
 		else{
@@ -1490,7 +1392,7 @@ function TypeTraitement(unFichier, unRepertoire, isVariante){
 			if ((unFichier.length <= g_MinimuNomClasse) && (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO')) { // Pas sur Groupe
 				numFichierIndiv = parseFloat(unFichier.slice(0,-4));	
 				if (numFichierIndiv != NaN){				
-					if (((numFichierIndiv % 5) == 0) && !((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie)){
+					if (((numFichierIndiv % 5) == 0) && !((unDossier.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie)){
 						retourval = 'KO'; // on ne fait pas les 0 et 5 car ce sont des Quattrod !
 					}					
 				}				
@@ -1506,7 +1408,7 @@ function TypeTraitement(unFichier, unRepertoire, isVariante){
 	return retourval;
 }
 
-function TypeTraitementOLD(unFichier, unRepertoire, isPlancheWEBVariante){
+function TypeTraitementOLD(unFichier, unDossier, isPlancheWEBVariante){
 	//var pasLesGroupe = (traitement.substr(0,1) == 'I');
 	//var pasLesFratries = (traitement.substr(1,1) != 'F');
 	var retourval = g_CONFIGtypeConfigWeb;
@@ -1518,14 +1420,14 @@ function TypeTraitementOLD(unFichier, unRepertoire, isPlancheWEBVariante){
 	// Pas sur Groupe
 			retourval = 'KO';
 	}
-	if ((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie && isPlancheWEBVariante) { // Pas sur les Fratries ?
+	if ((unDossier.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie && isPlancheWEBVariante) { // Pas sur les Fratries ?
 			retourval = 'KO';
 	}
 	else{
 		if ((unFichier.length <= g_MinimuNomClasse) && (g_CONFIGtypeConfigWeb != 'Rien')) { // Pas sur Groupe
 			numFichierIndiv = parseFloat(unFichier.slice(0,-4));	
 			if (numFichierIndiv != NaN){				
-				if (((numFichierIndiv % 5) == 0) && !((unRepertoire.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie)){
+				if (((numFichierIndiv % 5) == 0) && !((unDossier.indexOf('Fratrie') > -1) && !g_CONFIGisPhotosFratrie)){
 					retourval = 'KO';
 				}					
 			}				

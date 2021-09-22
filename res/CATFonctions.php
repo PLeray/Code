@@ -181,8 +181,8 @@ function SuprimeFichier($strFILELAB){
 			// NEW SUP ARBORESCENCE FICHIER		
 			if (substr($strFILELAB, -5, 4) == 'lab'){
 				$mesInfosFichier = new CINFOfichierLab($fichier); 				
-				//global $repertoireTirages;
-				//global $repertoireMiniatures;	
+				//global $GLOBALS['repTIRAGES'];
+				//global $GLOBALS['repMINIATURES'];	
 				if ($mesInfosFichier->RepTirage() != '') {
 					SuprArborescenceDossier($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage());
 					SuprArborescenceDossier($GLOBALS['repMINIATURES'].$mesInfosFichier->RepTirage());
@@ -223,6 +223,7 @@ function SuprArborescenceDossier($nomDossier) {
 		return SuprDossier($nomDossier);
 	}	
 }
+
 function SuprFichier($fichier) {
 	//chmod($fichier,0777);
 	unlink($fichier);
@@ -361,7 +362,7 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 		'<tr>
 			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">
 					<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>			
-			<td>' . $mesInfosFichier->DateTirage .'</td>			
+			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
 			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
 				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>
 
@@ -436,8 +437,8 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 			$affiche_Tableau .=
 			'<tr>
 				<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>				
-				<td>' . $mesInfosFichier->DateTirage .'</td>	
-				<td align="left">' . $mesInfosFichier->AffichageNomCMD . '</a></td>		
+				<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>	
+				<td  class="titreCommande" align="left">' . $mesInfosFichier->AffichageNomCMD . '</a></td>		
 				<td>' . $mesInfosFichier->NbPlanches . '</a></td>';
 
 			if($mesInfosFichier->EtatFichier < 2){
@@ -499,7 +500,7 @@ function TitleEtat($Etat){
 }
 
 function TableauRepFichier($ExtFichier, $isEnCours){
-	// NETOYAGE REPERTOIRE FICHIERS DE COMMANDES!!
+	// NETOYAGE Dossier FICHIERS DE COMMANDES!!
 	if($dossier = opendir($GLOBALS['repCMDLABO'])){
 		while(false !== ($fichier = readdir($dossier))){
 			$Extension = strrchr($fichier, '.');
@@ -526,7 +527,7 @@ function TableauRepFichier($ExtFichier, $isEnCours){
 	} else {
 		 echo 'Erreur TableauRepFichier : Le dossier n\' a pas pu être ouvert';
 	}
-	// SCAN DU REPERTOIRE 
+	// SCAN DU Dossier 
 	$tabFichierLabo = array();
 	$EtatFinal = 5;
 	if($dossier = opendir($GLOBALS['repCMDLABO'])){
@@ -649,23 +650,7 @@ function TypeFichier($myfileName){
 	return substr($myfileName, -4, 3);
 }
 
-function execInBackground($cmd) {
-    /*
-	if (substr(php_uname(), 0, 7) == "Windows"){
-        pclose(popen("start /B ". $cmd, "r")); 
-    }
-    else {
-        exec($cmd . " > /dev/null &");  
-    }
-*/	
- $last_line = system($cmd, $retval);
 
-
-	
-	
-	
-	
-}
 
 // POUR LES RECOMMANDES !
 function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
@@ -695,8 +680,8 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 
 function EnvoieLABORecommandes($FichierOriginal) {
    // changer nom
-   // changer repertoire    
-      // Activer lien vers repertoire
+   // changer Dossier    
+      // Activer lien vers Dossier
 
 }
 
@@ -707,14 +692,7 @@ function CreationDossier($nomDossier) {
 	return $nomDossier;
 }
 
-function IsLocalMachine() {
-	$isLocal = false;
 
-  //echo 'L adresse IP de l utilisateur est : '.$_SERVER['REMOTE_ADDR'];
-  //echo '<br>L adresse IP du serveur est : '.$_SERVER['SERVER_ADDR'];
-
-	return ($_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']) ;
-}
 
 function CodeLienImageDossier($mesInfosFichier){	
 
@@ -725,8 +703,8 @@ function CodeLienImageDossier($mesInfosFichier){
 	
 	if ($Lien) {
 		$codeHTML = '<div class="tooltip">
-		<a href="' . LienOuvrirDossierOS($mesInfosFichier->RepTirage()) . '" >' . $codeHTML . '</a>
-		<span class="tooltiptext"><br>Cliquez pour aller vers le repertoire des planches crées<br><br></span></div>';
+		<a href="' . LienOuvrirDossierOS($mesInfosFichier->RepTirage(),'CATPhotolab') . '" >' . $codeHTML . '</a>
+		<span class="tooltiptext"><br>Cliquez pour aller vers le dossier des planches crées<br><br></span></div>';
 		
 	}
 	$codeHTML = $codeHTML ;

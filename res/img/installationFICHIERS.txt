@@ -1,0 +1,2 @@
+debug.txt changer nom pour suprimer le mode debug
+PLUGIN-PhotoLab.jsxbin

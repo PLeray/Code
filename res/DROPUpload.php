@@ -22,8 +22,8 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<html>
 		<head>
-		<link rel="stylesheet" type="text/css" href="css/Couleurs' . ($GLOBALS['isDebug']?'':'AMP') .'.css">
-		<link rel="stylesheet" type="text/css" href="css/API_PhotoLab.css">
+		<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
+		<link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
 		</head>
 		<body>
 		<body onload="document.getElementById(\'apiReponse\').style.display=\'block\'">';
@@ -63,8 +63,8 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
 				}	
 				else {					
-					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";	
-					$retourMSG .= "<h3>Erreur sur le fichier !</h3>"  ;
+					$retourMSG .= '<h2>' .	utf8_encode(substr($target_file ,14,-5)) . '</h2>';	
+					$retourMSG .= '<h4>'. $GLOBALS['ERREUR_EnCOURS'] .'</h4>'  ;
 					$target_file = '';
 					//$uploadOk = 0;
 				}
@@ -83,7 +83,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			if ($uploadOk == 2) {
 
 				$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-				$retourMSG .= '<h3>Démarrer sur PC le plug-in PhotoLab pour Photoshop<br>(PhotoLab-AUTO.jsxbin).</h3>';			
+				$retourMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin).</h3>';			
 				
 				//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
 			

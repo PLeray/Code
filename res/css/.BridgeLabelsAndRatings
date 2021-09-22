@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<bridgedata version='1'>
+	<ratings version='1'>
+		<item key='photolabGestion.css' rating='3'/>
+		<item key='Couleurs.css' rating='3'/>
+		<item key='index.min.css' rating='5'/>
+		<item key='CMD-View.min.css' rating='5'/>
+		<item key='Menu.css' rating='3'/>
+		<item key='CMD-View.css' rating='3'/>
+		<item key='CouleursAMP.min.css' rating='5'/>
+		<item key='Couleurs.min.css' rating='5'/>
+		<item key='CMDImgSource.min.css' rating='5'/>
+		<item key='CMDImgSource.css' rating='3'/>
+		<item key='API_PhotoLab.min.css' rating='5'/>
+		<item key='photolabGestion.min.css' rating='5'/>
+		<item key='CATPhotolab.css' rating='3'/>
+		<item key='CouleursAMP.css' rating='3'/>
+		<item key='API_PhotoLab.css' rating='3'/>
+		<item key='index.css' rating='3'/>
+		<item key='CATPhotolab.min.css' rating='5'/>
+		<item key='CATSources.css' rating='3'/>
+		<item key='Menu.min.css' rating='5'/>
+		<item key='CATSources.min.css' rating='5'/>
+	</ratings>
+</bridgedata>

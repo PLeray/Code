@@ -8,7 +8,7 @@ include 'res/ConvertCSV.php';
 
 $repCommandesLABO = "../CMDLABO/";
 */
-$codeMembre = 0;
+$codeMembre = '0';
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
@@ -16,10 +16,20 @@ if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true :
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 
 if ($codeMembre == '' || $codeMembre == '0'){
-	header('Location: ' . $maConnexionAPI->URL . '/index.php?PourConnexionLOCAL=true');
-
+	echo '<br> ServeurLocal :ServeurLocal :ServeurLocal :ServeurLocal :ServeurLocal : ' . ServeurLocal();	
+	
+	header('Location: ' . $maConnexionAPI->URL . '/res/index.php?PourConnexionLOCAL=true'. '&serveurRetour=' . urlencode(ServeurLocal()));
 }
 
+if ($isDebug ) { 
+	echo "GLOBALS[VERSION] : " . $GLOBALS['VERSION'] . " GET[version]:  ";
+	if (isset($_GET['version'])) { 	echo $_GET['version'];} 
+	else { echo 'PAS DE VERSION';}
+}
+if (isset($_GET['version'])) { 
+	//MAJ PHOTOLAB !!!
+	if( $GLOBALS['VERSION'] < $_GET['version']){ MAJPhotoLab($_GET['version']);}
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,11 +37,9 @@ if ($codeMembre == '' || $codeMembre == '0'){
 <html>
 <head>
 	<title id="PHOTOLAB">PhotoLab : accueil</title>
-    <link rel="stylesheet" type="text/css" href="css/Couleurs<?php echo ($isDebug?'':'AMP'); ?>.css">
-	<link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/index.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-	<!-- <script type="text/javascript" src="res/js/CATFonctions.js"></script>
-	<script type="text/javascript" src="res/APIConnexion.js"></script>	 -->
 </head>
 <!-- <div class="logo">	
 		<img src="res/img/Logo.png" alt="Image de fichier">
@@ -47,8 +55,20 @@ if ($codeMembre == '' || $codeMembre == '0'){
 
 	<center>
 		<div class="recherche">	
-		<?php $localURL = 'http//'.$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ;	echo $localURL; ?>
-		<h1>Phot<img src="img/Logo-Ultra-mini.png" width="20">Lab <?php echo $GLOBALS['VERSION'] ?></h1>
+		<?php 
+		if ($isDebug) { 
+			$localURL = 'http//'.$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ;	
+			echo $localURL;
+			echo '<br> ServeurLocal : ' . ServeurLocal();	
+
+				/*		
+					$urlCode = urlencode($_SERVER['PHP_SELF']); 	
+		echo '<br> urlencode : ' . $urlCode; 		
+		echo '<br> urldecode : ' . urldecode($urlCode);	*/	
+			
+		} 
+		?>
+		<h1>Phot<img src="img/Logo.png" width="20">Lab <?php echo $GLOBALS['ANNEE'] ?></h1>
 		
 		</div>
 
@@ -67,7 +87,7 @@ echo '
 		<?php 
 		if ($codeMembre != '' && $codeMembre != '0'){
 			echo '<div id="dropArea"><br>Glisser déposer un fichier commandes dans cette zone.<br>
-			Soit un fichier (.lab ou .web) créé par ProdEcole (Excel).<br>
+			Soit un fichier (.lab ou .web) créé par ProdEcole.<br>
 			Soit un fichier (.csv) téléchargé depuis le site de vente en ligne Lumys.<br>
 			<span id="count"></span>
 			<div id="result"></div>				

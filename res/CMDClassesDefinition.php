@@ -1,7 +1,7 @@
 <?php
 
 $DateISOLEE = '2020-09-31';
-$FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES) EN COURS";
+$FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
 
 class CGroupeCmdes {
     var $ListePromoteurs;
@@ -362,13 +362,15 @@ class CPlanche {
 	function Affiche(){
 		$resultat = '';
 		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
-			global $repertoireTirages;
-			global $repertoireMiniatures;
+
 			global $EcoleEnCours;
+			//echo $GLOBALS['repTIRAGES'] . '<br>';
+			//echo $GLOBALS['repMINIATURES']. '<br>';
+
 			
 			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
-			$Lien = $repertoireMiniatures . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;
-			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;				
+			$Lien = $GLOBALS['repMINIATURES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;
+			$LienBig = $GLOBALS['repTIRAGES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;				
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			
 			//$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
@@ -386,23 +388,25 @@ class CPlanche {
 			$resultat = $this->FichierPlanche . PHP_EOL;
 			//fputs($Fichier, $lines[$i]);
 			//(RECOMMANDES) EN COURS
-			global $repertoireTirages;
-			global $repertoireMiniatures;
+
 			global $EcoleEnCours;
+				
+
 			
-			
+			 
 			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
-			$Lien = $repertoireMiniatures . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
-			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
+			$Lien = $GLOBALS['repMINIATURES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
+			$LienBig = $GLOBALS['repTIRAGES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
 			
-			$DossierRECOenCours = CreationDossier($repertoireTirages . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierRECOenCours = CreationDossier($GLOBALS['repTIRAGES'] . $GLOBALS['FichierDossierRECOMMANDE']);
 			$DossierTailleRECOenCours = CreationDossier($DossierRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');
-			$DossierMiniatureRECOenCours = CreationDossier($repertoireMiniatures . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierMiniatureRECOenCours = CreationDossier($GLOBALS['repMINIATURES'] . $GLOBALS['FichierDossierRECOMMANDE']);
 			$DossierMiniatureTailleRECOenCours = CreationDossier($DossierMiniatureRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');				
 			
 			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
 			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
 			//RecopierPlanche($LienBig,$LienBig.".jpg");
+
 		}
 		/*
 		$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
@@ -418,6 +422,10 @@ class CPlanche {
 
 function RecopierPlanche($LienOrigine,$LienDestination){
 
+	//echo $LienOrigine . '<br><br>';
+	//echo $LienDestination . '<br><br>';
+	//2021-07-05-L2-MAX PLANCK-(DEMO)/20x20cm (1ex de chaque)/P0074.0102-QCoinB.pngCADRE-QUATTRO-CALENDRIER-2021.20x20cm.jpg
+//9999-99-99-(RECOMMANDES)-EN-COURS/20x20cm (1ex de chaque)/P0074.0102-QCoinB.pngCADRE-QUATTRO-CALENDRIER-2021.20x20cm.jpg
 	$valReturn = copy($LienOrigine,$LienDestination);
 
 	if($GLOBALS['isDebug']){
@@ -429,6 +437,24 @@ function RecopierPlanche($LienOrigine,$LienDestination){
 		} 	
 		return $valReturn;
 	}
+}
+
+class CProjetSource {
+	//var $FichierPlanche;
+	//var $Fichier;
+	var $NomProjet;
+	var $Dossier;
+	var $CodeEcole;
+	var $Annee;
+    var $ScriptsPS;
+	
+    function __construct($NomProjet,$Dossier,$CodeEcole,$Annee,$ScriptsPS){
+			$this->NomProjet = $NomProjet;
+			$this->Dossier = $Dossier;
+			$this->CodeEcole = $CodeEcole;
+			$this->Annee = $Annee;
+			$this->ScriptsPS = $ScriptsPS;
+	}  
 }
 
 class CImgSource {
@@ -447,7 +473,7 @@ class CImgSource {
 			$this->CodeEcole = $CodeEcole;
 			$this->Annee = $Annee;
 			$this->ScriptsPS = $ScriptsPS;
-}   
+	}   
 
 	function isGroupe(){
 		return (strlen($this->Fichier) > 10); // à 10 caharctere ;
@@ -455,16 +481,19 @@ class CImgSource {
 	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="'.($this->isGroupe()?'PlancheGroupe':'Planche') .'" title="'. urldecode($this->FichierPlanche) . '">';		
+		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'" title="'. urldecode($this->FichierPlanche) . '">';		
 			
+
 			$Lien = $this->Dossier . 'Cache/' .  $this->Fichier;
 			$LienBig = $this->Dossier . $this->Fichier;			
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
-			//echo strlen($this->Fichier);
-			//echo ($this->isGroupe()?'groupe ':'indiv ')  ;
+			if (strpos(strtolower($this->Fichier),'fratrie')){
+				$Lien = '../../Code/res/img/Fratries.png';
+			}
+			
 			$resultat .= ($this->isGroupe()?'<span>':'');
 			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
-			//$resultat .= '<img id="ImgPlanche" src="' . $Lien . '">';	
+
 			$resultat .= ($this->isGroupe()?'</span>':'');
 			
 			$resultat .= '<p>'. $this->Fichier .'</p>';
@@ -476,34 +505,24 @@ class CImgSource {
 		if (in_array($this->FichierPlanche, $tabPlanche)) {
 			$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
 			$resultat = $this->FichierPlanche . PHP_EOL;
-			//fputs($Fichier, $lines[$i]);
-			//(RECOMMANDES) EN COURS
-			global $repertoireTirages;
-			global $repertoireMiniatures;
+
 			global $EcoleEnCours;
 			
 			
 			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
-			$Lien = $repertoireMiniatures . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
-			$LienBig = $repertoireTirages . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
+			$Lien = $GLOBALS['repMINIATURES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
+			$LienBig = $GLOBALS['repTIRAGES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
 			
-			$DossierRECOenCours = CreationDossier($repertoireTirages . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierRECOenCours = CreationDossier($GLOBALS['repTIRAGES'] . $GLOBALS['FichierDossierRECOMMANDE']);
 			$DossierTailleRECOenCours = CreationDossier($DossierRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');
-			$DossierMiniatureRECOenCours = CreationDossier($repertoireMiniatures . $GLOBALS['FichierDossierRECOMMANDE']);
+			$DossierMiniatureRECOenCours = CreationDossier($GLOBALS['repMINIATURES'] . $GLOBALS['FichierDossierRECOMMANDE']);
 			$DossierMiniatureTailleRECOenCours = CreationDossier($DossierMiniatureRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');				
 			
 			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
 			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
 			//RecopierPlanche($LienBig,$LienBig.".jpg");
 		}
-		/*
-		$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
-		if ($isRecommande) {
-			return $this->FichierPlanche;			
-		}	
-		else{
-			return '';			
-		}	*/
+
 		return $resultat;				
 	}		
 }

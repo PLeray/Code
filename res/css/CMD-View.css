@@ -99,15 +99,15 @@ p {/*Police Détails Fichier commande et commun  */
   left: 8px;
   Top: 0px;
 
-  z-index: 1; 
+  z-index: 10; 
 }
 
 .titreFichier {
-	position: absolute;
-	padding: 1px;
-	text-align: center;
+margin-left: 125px;
+margin-top: -15px;
+	text-align: left;
 	/*left: 230px;*/
-	Top: 80px;
+
 	width: 100%;
     color: var(--texteGris);
 	font-family: "Courier New", Times, serif;
@@ -123,10 +123,11 @@ p {/*Police Détails Fichier commande et commun  */
 	*/
 	position: absolute;
 	top: -5px;
+	right: 150px;
 	text-align: center;
 	  margin: 0 auto;
-	width: 100%;
 	
+	z-index: 10; 
 }
 
 .moinsplus {
@@ -179,7 +180,7 @@ text-align: right;
 
   font-size: 10px;
 
-/*  z-index: 2;*/ 
+z-index: 10; 
 
 }
 
@@ -671,9 +672,9 @@ top: 70px;
   flex: 70%;
   background-color: white;
 
-  
+  margin-top: -50px;
 	transition: margin-left .5s;
-	padding: 16px 0px 0px 16px;
+
 
 	transition: 0.5s;
 }

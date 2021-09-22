@@ -15,11 +15,11 @@ function LireFichierSource() {
 				//g_LesSourcesListe.push(uneSource.Affiche());
 			}
 		file.close();
-		/**/
+		
 	}
-	else{
+	/*else{
 		alert ('Pas de SOURCE : ' + g_FichierSource);
-	}
+	}*/
 	return g_FichierSource.length;
 }
 
@@ -46,7 +46,7 @@ function MAJFichierSource() {
 	var file = new File(g_FichierSource);
 	file.encoding='UTF-8';
 	file.open("w");	
-        file.writeln('Code;NomProjet;Annee;Rep Scripts PS;Repertoire;OrdrePlancheInverse;typeConfigWeb;isPhotosGroupes;isPhotosIndiv;isPhotosFratrie'); // On Ecrit les entetes du csv	
+        file.writeln('Code;NomProjet;Annee;Rep Scripts PS;DossierSources;OrdrePlancheInverse;typeConfigWeb;isPhotosGroupes;isPhotosIndiv;isPhotosFratrie'); // On Ecrit les entetes du csv	
 		for (var n = 0; n < g_LesSources.length; n++) {
 			//test = test + g_LesSources[n].LigneCSV();
 			file.writeln(g_LesSources[n].LigneCSV());
@@ -83,7 +83,7 @@ function TrouverRepSOURCEdansBibliotheque(leCode) {
 	LireFichierSource();
 	var laSource = RecupSourceDepuisCode(leCode)
 	if (laSource){
-		repSource = laSource.Repertoire;
+		repSource = laSource.DossierSources;
 	}
 	return repSource;
 	g_LesSources = [];
@@ -107,7 +107,7 @@ function objSourceCSV(uneLigne) {
 	this.NomProjet = this.TableauInfo[1] || "";
 	this.Annee = this.TableauInfo[2] || "";
 	this.RepScriptPS = this.TableauInfo[3] || "PHOTOLAB-Studio²";	
-	this.Repertoire = this.TableauInfo[4] || "";
+	this.DossierSources = this.TableauInfo[4] || "";
 	
 
 	this.OrdrePlancheInverse = this.TableauInfo[5] || "true";
@@ -121,7 +121,7 @@ function objSourceCSV(uneLigne) {
 	this.LigneCSV = function(){
 		return this.CodeEcole + ';' + this.NomProjet + ';' + 
 		this.Annee + ';' + this.RepScriptPS + ';' + 
-		this.Repertoire + ';'	+ this.OrdrePlancheInverse + ';' + 
+		this.DossierSources + ';'	+ this.OrdrePlancheInverse + ';' + 
 		this.typeConfigWeb + ';' + this.isPhotosGroupes + ';' + 
 		this.isPhotosIndiv  + ';' + this.isPhotosFratrie ;
 	};
@@ -132,12 +132,12 @@ function objSourceCSV(uneLigne) {
 		this.NomProjet + ';' + 
 		this.Annee  + ';' + 
 		this.RepScriptPS + ';' + 
-		this.Repertoire;
+		this.DossierSources;
 	};	
 */
 	
 	this.isValide = function(){
-		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(this.Repertoire).exists);		
+		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(this.DossierSources).exists);		
 	};
 
 	
@@ -147,11 +147,13 @@ function AfficheListeSOURCE() {
 	var valRetour = 0; // Rien
 	if (LireFichierSource()){ // il y a au moins une source
 		//var dlgListeSOURCE = new Window ('palette {text: "Bibliotheque des sources photos PhotoLab", alignChildren: "fill"}');
-    var dlgListeSOURCE = new Window (g_TypeUI,"Bibliotheque des sources de photos pour PhotoLab");
+    var dlgListeSOURCE = new Window ('dialog',"Bibliotheque des sources de photos pour PhotoLab");
         dlgListeSOURCE.alignChildren = ["left","top"]; 
                 //dlgListeSOURCE.frameLocation = [ -4, -4 ];
-        dlgListeSOURCE.graphics.backgroundColor = dlgListeSOURCE.graphics.newBrush (dlgListeSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-        dlgListeSOURCE.graphics.foregroundColor = dlgListeSOURCE.graphics.newPen(dlgListeSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+        //PSJ AOUT 21 
+		dlgListeSOURCE.graphics.backgroundColor = dlgListeSOURCE.graphics.newBrush (dlgListeSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+        //PSJ AOUT 21 
+		dlgListeSOURCE.graphics.foregroundColor = dlgListeSOURCE.graphics.newPen(dlgListeSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
         
 		// GROUP1
 		var group1 = dlgListeSOURCE.add("group", undefined, {name: "group1"}); 
@@ -180,7 +182,7 @@ function AfficheListeSOURCE() {
                 
 		// GROUP2
 	var group2 = dlgListeSOURCE.add ("group");
-		var listSOURCE = group2.add ('listbox', [0, 0, 800, 250]," ",{numberOfColumns: 5, showHeaders: true, columnTitles: ["Code", "Année", "Nom du projet", "Dossier Script PS", "Répertoire source"]});
+		var listSOURCE = group2.add ('listbox', [0, 0, 800, 250]," ",{numberOfColumns: 5, showHeaders: true, columnTitles: ["Code", "Année", "Nom du projet", "Dossier Script PS", "Dossier source"]});
 		
 		Init = function () {//INIT	
 			TRIERSource();
@@ -190,7 +192,7 @@ function AfficheListeSOURCE() {
 					subItems[0].text = g_LesSources[i].Annee;            
 					subItems[1].text = g_LesSources[i].NomProjet;
 					subItems[2].text = g_LesSources[i].RepScriptPS; 
-					subItems[3].text = decodeURI(g_LesSources[i].Repertoire);
+					subItems[3].text = decodeURI(g_LesSources[i].DossierSources);
 				}
 			}    
 		}
@@ -227,7 +229,7 @@ function AfficheListeSOURCE() {
 					subItems[0].text = g_LesSources[i].Annee;            
 					subItems[1].text = g_LesSources[i].NomProjet;
 					subItems[2].text = g_LesSources[i].RepScriptPS; 
-					subItems[3].text = decodeURI(g_LesSources[i].Repertoire);
+					subItems[3].text = decodeURI(g_LesSources[i].DossierSources);
 					}
 				}
 			}
@@ -260,7 +262,7 @@ function AfficheListeSOURCE() {
 
 		// We need the button to catch the Return/Enter key (CC and later)
 		//dlgListeSOURCE.add ('button', undefined, 'Ok', {name: 'ok'});
-        //dlgListeSOURCE.show () ;
+        //dlgListeSOURCE.show () ;dlgListeSOURCE.close();
 		
 		if (dlgListeSOURCE.show () != 2){			//return listSOURCE.selection.text;
 			return valRetour;
@@ -269,6 +271,8 @@ function AfficheListeSOURCE() {
         g_LesSources = [];
 	}
 }
+
+
 
 		
 

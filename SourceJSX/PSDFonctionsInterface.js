@@ -35,7 +35,9 @@ function Auto() {
 		// TANT QU'IL Y A DES FICHIERS '0' > initialiser tableau de fichier a traiter
 		//alert('TANT QU IL Y A DES g_TabListeCompilationFichier   ' + g_TabListeCompilationFichier.length);
 		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
+			
 			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
+			listboxFichier.selection.text = g_NomFichierEnCours;
 			//alert('AUTO : ' + g_TabListeCompilationFichier[i]  + ' n° ' + i);
 
 			GenererLeFichierNOM(); //g_NomFichierEnCours
@@ -70,6 +72,7 @@ function AutoOLD() {
 
 function GenererLeFichierNOM() { 
 	//alert('TESTZ10  GenererLeFichierNOM !!!' + g_SelectFichierLab);
+	//PSJ AOUT 21 
 	PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 	g_IsGenerationEnCours = true;
 	g_IsGenerationEnPause = false;	
@@ -244,7 +247,7 @@ function OuvrirFichierLabo() {
 					
 					//alert('TESTZ7  InitListePlanches');					
 					//UI
-					//nbFichierAGenerer.text = 'Repertoire TIRAGE :     (Nombre de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')';
+					//nbFichierAGenerer.text = 'Dossier TIRAGE :     (Nombre de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')';
 					Select_Generer.enabled =  (g_SelectFichierLab) ? true : false ;
 					//buttonConfig.enabled = true;
 					progressBar.maxvalue = g_CommandeLabo.NbPlanchesACreer();		
@@ -285,7 +288,7 @@ function MAJinfoEcole(uneEcole) {
 
 		msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE dans la bibliotheque avec ce code (" + uneEcole.CodeRefEcole + ")";
 		AjoutBilanGeneration(msg);
-		msg = "     SOLUTION PROBABLE : Créer ou ajouter le repertoire de photo avec le code : " + uneEcole.CodeRefEcole + " dans la bibliotheque de PhotoLAb !";
+		msg = "     SOLUTION PROBABLE : Créer ou ajouter le dossier de photo avec le code : " + uneEcole.CodeRefEcole + " dans la bibliotheque de PhotoLAb !";
 		AjoutBilanGeneration(msg);			
 		AjoutBilanGeneration('');
 		MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
@@ -294,7 +297,7 @@ function MAJinfoEcole(uneEcole) {
 	}
 	else {
 
-		if (isRepertoireExiste(g_RepSOURCE)){
+		if (isDossierExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
 				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
 			} else {					
@@ -328,7 +331,7 @@ function MAJinfoEcole(uneEcole) {
 		else{
 			msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE pour les photos avec ce code (" + uneEcole.CodeRefEcole + ")";
 			AjoutBilanGeneration(msg);
-			msg = "     SOLUTION PROBABLE : Modifier ou ajouter le code (" + uneEcole.CodeRefEcole + ") dans le nom du repertoire de l'école " + g_CommandeECOLEEncours;
+			msg = "     SOLUTION PROBABLE : Modifier ou ajouter le code (" + uneEcole.CodeRefEcole + ") dans le nom du dossier de l'école " + g_CommandeECOLEEncours;
 			AjoutBilanGeneration(msg);			
 			AjoutBilanGeneration('');
 			MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
@@ -345,6 +348,7 @@ function GenererFichiersLABO() {
 	try {
 		var isEcoleOK = false;
 		// On met en gris au depart ...
+		//PSJ AOUT 21 
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 
 		var chronoDebut = new Date().getTime();
@@ -372,7 +376,7 @@ function GenererFichiersLABO() {
 					//UI
 					
 										
-					if (isEcoleOK && ligne && CreerRepertoire(g_RepTIRAGES_DateEcole)){                
+					if (isEcoleOK && ligne && CreerUnDossier(g_RepTIRAGES_DateEcole)){                
 					
 						g_CommandePDTEncours = ligne.substr(0,ligne.length-2);
 						var unProduit = new Produit(ligne);  					
@@ -477,7 +481,8 @@ function BilanFinTraitement(chronoDebut, nbErreur) {
 	var VitesseMoy = nbSecondes / g_CommandeLabo.NbPlanchesACreer();
 	var bilan = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."
 	MsgLOGInfo(bilan, VitesseMoy + " secondes par planche");
-	txtTraitement.text = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."; 
+	//txtTraitement.text = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."; 
+	fichierEnCours.text = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."; 
 	/////////////////////////////////////////////////
 	if (nbErreur > 0){
 		MsgLOGInfo("!!! ATTENTION !!!", "Il y a " + nbErreur + " planche(s) qui n'ont pas été crée(s) !!! Voir le détail dans le fichier.erreur...");
@@ -612,6 +617,7 @@ function MAJTableauLOG(Col1, Col2, Col3, isCoche, isNew){
 function GenererFichiersWEB() { 
 	try {
 		// On met en gris au depart ...
+		//PSJ AOUT 21 
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 		
 		chronoDebut = new Date().getTime();				
@@ -626,7 +632,7 @@ function GenererFichiersWEB() {
 		
 		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
-		g_RepSOURCE  = uneSource.Repertoire;
+		g_RepSOURCE  = uneSource.DossierSources;
 		g_TabListeNomsClasses = [];
 		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);
 
@@ -687,71 +693,7 @@ function GenererFichiersWEB() {
 		Select_Generer.enabled = true;
 	}
 }
-/*
-function GenererFichiersWEB_OLD() { //////////////////////////////////////////////
-	try {
-		var isEcoleOK = false;
-		// On met en gris au depart ...
-		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-		
-		chronoDebut = new Date().getTime();
-        var nbLigneFichier = g_CommandeLabo.NbLignes();
-		//var cmdReste = nbLigneFichier;
-		for (var m = 0; m < nbLigneFichier; m++) {
-            var ligne = g_CommandeLabo.TableauLignes[m];
-			if (!isEntete(ligne) && !isLigneEtat(ligne))
-			{			
-				if (isEcole( ligne)){// Mise à jour des SOURCES !!
-					g_CommandeECOLEEncours = ligne;	
-					var uneEcole = new Ecole(g_CommandeECOLEEncours);  
-					//MAJinfoEcole(uneEcole);	
-					isEcoleOK = MAJinfoEcole(uneEcole);							
-				}  
-				else {
-					if (isEcoleOK && ligne && CreerRepertoire(g_RepTIRAGES_DateEcole)){                
-						//UI
-						progressBar.value = m + 1;
-						g_CommandeAVANCEMENT = Number( m  / g_CommandeLabo.NbPlanchesACreer()); 
-						g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 					
-						txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier);
-						
-							var unProduit = new Produit (ligne);  
-							if (unProduit.isProduitLABO()){
-								var plancheCree = CreerUnProduitPourLeSiteWEB(unProduit);
-							}else{
-								var plancheCree = unProduit.Type;
-								g_TabLigneOriginale[unProduit.indexOriginal] = plancheCree;
-							}
 
-						//UI
-						MAJTableauGeneration(plancheCree,unProduit);
-
-						Raffraichir(); // A voir ?					
-					}                   
-				}
-			}				
-			//if (isInterruptionTraitement()){break;};	
-			if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
-			// Attention*
-
-			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
-			EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
-			//alert('SauverFichierFromTableauDeLigne ' +  plancheCree);				
-        }
-        if (!g_IsGenerationEnPause){ 
-			//alert(' FIN');
-			var nbErreur = EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
-			BilanFinTraitement(chronoDebut, nbErreur);		
-			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),(nbErreur?1:2));
-		}
-	}
-	catch(err) {
-		MsgLOGInfo("ERREUR GenererFichiersWEB()", "Fichier en cours : " + unProduit.FichierPhoto + "\n" + ErreurInfoMSG(err));
-		Select_Generer.enabled = true;
-	}
-}
-*/
-//////////////////////////////////////
 
 
 

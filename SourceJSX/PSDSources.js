@@ -6,10 +6,12 @@ function AfficheEditionSOURCE(uneSource) {
 	//alert('uneSourceisNEW : ' + isNEW);
 	var isMAJ = 0; // Rien
 	// DIALOG
-	var dlgEditSOURCE = new Window (g_TypeUI); 
+	var dlgEditSOURCE = new Window ('dialog'); 
         //dlgEditSOURCE.frameLocation = [ -4, -4 ];
-        dlgEditSOURCE.graphics.backgroundColor = dlgEditSOURCE.graphics.newBrush (dlgEditSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
-        dlgEditSOURCE.graphics.foregroundColor = dlgEditSOURCE.graphics.newPen(dlgEditSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+        //PSJ AOUT 21 
+		dlgEditSOURCE.graphics.backgroundColor = dlgEditSOURCE.graphics.newBrush (dlgEditSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+        //PSJ AOUT 21 
+		dlgEditSOURCE.graphics.foregroundColor = dlgEditSOURCE.graphics.newPen(dlgEditSOURCE.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
         
 		dlgEditSOURCE.text = "Edition d'une source de photos pour PhotoLab"; 
 		dlgEditSOURCE.orientation =  "row"; 
@@ -34,26 +36,6 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
     ColonneDroite.spacing = 10; 
     ColonneDroite.margins = 0; 
 
-/*
-var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFermer"}); 
-	btnFermer.alignment = ["right","top"]; 	
-	btnFermer.onClick = function () {	
-		dlgEditSOURCE.close();
-	}		
-	*/
-	
-		
-/*
-	// GROUPEINFO2
-	// ===========
-	var GroupeInfo2 = ColonneDroite.add("group", undefined, {name: "GroupeInfo2"}); 
-		GroupeInfo2.orientation = "column"; 
-		GroupeInfo2.alignChildren = ["center","top"]; 
-		GroupeInfo2.spacing = 10; 
-		GroupeInfo2.margins = 0; 	
-	
-
-*/
 	var btnScanDossier = ColonneDroite.add("button", undefined, undefined, {name: "btnScanDossier"}); 
 	btnScanDossier.text = "Scanner dossier source";
 	btnScanDossier.helpTip = "Scanner le dossier source et verifier les nom de classes"; 
@@ -66,11 +48,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 	var listClasses = ColonneDroite.add ("edittext", [0, 0, 300, 300], " ", {name: "Noms des classes :", multiline: true});
 	listClasses.text = "Aucune ..."; 
 	
-	
-	
-	
 
-	
 	btnScanDossier.onClick = function () {	
 		
 		var typeConfig = 'Rien';
@@ -88,11 +66,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 		uneSource.isPhotosFratrie = checkPhotosFratrie.value;
 		
 
-	
-		//app.refresh(); // or, alternatively, waitForRedraw(); 
-		//dlgArboWEB.update(); // A voir sur MAC?
-		
-		g_RepSOURCE  = uneSource.Repertoire;
+		g_RepSOURCE  = uneSource.DossierSources;
 
 		g_TabListeNomsClasses = [];
 		
@@ -119,11 +93,6 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 		listClasses.text = decodeURIComponent(nomClasse);
 		titrelistClasses.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
 	};
-		
-	
-	
-
-
 
 	// group5 '1- Dossier des SOURCES du projet :'	
 	var group5 = ColonneGauche.add("group", undefined, {name: "group5"}); 
@@ -135,32 +104,32 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 
 		var statictext3 = group5.add("statictext", undefined, '1- Dossier des SOURCES du projet :', {name: "statictext3"}); 			
 
-	var btnRepertoire = group5.add("button", undefined, undefined, {name: "btnRepertoire"}); 
-	btnRepertoire.text = "Sélectionner dossier"; 
-	btnRepertoire.helpTip = "Sélection du dossier contenant les photos 'Source'";
+	var btnDossier = group5.add("button", undefined, undefined, {name: "btnDossier"}); 
+	btnDossier.text = "Importer dossier"; 
+	btnDossier.helpTip = "Sélection du dossier à importer qui contient les photos 'Source'";
 	
-	btnRepertoire.onClick = function () {	
-		var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text, g_Rep_PHOTOLAB + "/SOURCES/");	
+	btnDossier.onClick = function () {	
+		var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos à importer pour: " + editNomProjet.text, g_Rep_PHOTOLAB + "/SOURCES/");	
 		//var leRepSOURCE = Folder.selectDialog("Sélectionnez un dossier de Photos pour: " + editNomProjet.text);
 		//alert('leRepSOURCE : ' + leRepSOURCE);
 		if(leRepSOURCE){
 			var leChemin = leRepSOURCE.path + '/' + leRepSOURCE.name;
 			//var leChemin = leRepSOURCE.fsName.toString();
 			//alert('leChemin : ' + leChemin);
-			uneSource.Repertoire = leChemin;
-			staticRepertoire.text = decodeURI(uneSource.Repertoire);
-			editNomProjet.text = decodeURI(leRepSOURCE.name);
+			uneSource.DossierSources = leChemin;
+			staticDossier.text = decodeURI(uneSource.DossierSources);
+			editNomProjet.text = decodeURI(NomDossierSOURCE(leRepSOURCE.name));
 		}
 	}
-	var staticRepertoire = ColonneGauche.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
-	//staticRepertoire.graphics.font = ScriptUI.newFont ('', '', 10);
-    staticRepertoire.text = decodeURI(uneSource.Repertoire);
-    staticRepertoire.preferredSize.width = 600;		
+	var staticDossier = ColonneGauche.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
+	//staticDossier.graphics.font = ScriptUI.newFont ('', '', 10);
+    staticDossier.text = decodeURI(uneSource.DossierSources);
+    staticDossier.preferredSize.width = 600;		
 	
-	staticRepertoire.graphics.foregroundColor = staticRepertoire.graphics.newPen (staticRepertoire.graphics.PenType.SOLID_COLOR, [0, 1,
-	0], 1);
-	staticRepertoire.graphics.backgroundColor = staticRepertoire.graphics.newBrush (staticRepertoire.graphics.BrushType.SOLID_COLOR,
-	[0.35, 0.35, 0.35]);
+	//PSJ AOUT 21 
+	staticDossier.graphics.foregroundColor = staticDossier.graphics.newPen (staticDossier.graphics.PenType.SOLID_COLOR, [0, 1,	0], 1);
+	//PSJ AOUT 21 
+	staticDossier.graphics.backgroundColor = staticDossier.graphics.newBrush (staticDossier.graphics.BrushType.SOLID_COLOR,	[0.35, 0.35, 0.35]);
 	
 	
 	// GROUP1 '2- Nom Projet :'
@@ -173,7 +142,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 		var statictext1 = group1.add("statictext", undefined, '2- Nom projet :', {name: "statictext1"}); 
 
 		var editNomProjet = group1.add('edittext {properties: {name: "editNomProjet"}}'); 
-			editNomProjet.text = decodeURI(uneSource.NomProjet); 		
+			editNomProjet.text = decodeURI(NomDossierSOURCE(uneSource.NomProjet)); 		
 			editNomProjet.preferredSize.width = 500; 
 			
 			
@@ -185,7 +154,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 		group2.spacing = 10; 
 		group2.margins = 0; 
 		
-		var staticAnnee = group2.add("statictext", undefined, '3- Années scolaire :', {name: "staticAnnee"}); 
+		var staticAnnee = group2.add("statictext", undefined, '3- Année scolaire :', {name: "staticAnnee"}); 
 
 		var dropdownAnnee_array = ["2019-2020", "2020-2021","2021-2022","2022-2023", "2023-2024","2024-2025"]; 
 		var dropdownAnnee = group2.add("dropdownlist", undefined, undefined, {name: "dropdownAnnee", items: dropdownAnnee_array}); 
@@ -250,23 +219,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 	var divider1 = ColonneGauche.add("panel", undefined, undefined, {name: "divider1"}); 
     divider1.alignment = "fill"; 
 	
-	
-	/*
-	var btnArboWeb = ColonneGauche.add("button", undefined, undefined, {name: "btnArboWeb"}); 
-	btnArboWeb.text = "Création des fichiers WEB";
-	btnArboWeb.helpTip = "Création du repertoire structuré pour transférer sur l'interface Lumys"; 
-	
-	btnArboWeb.onClick = function () {	
-		if (uneSource.isValide()){
-			if(AfficheClassesAvantArboWeb(uneSource)){
-				isMAJ = 3; // MAJ Source + Arrbo WEB
-				dlgEditSOURCE.close();
-			}								
-		}else{alert('Tout les champs doivent être remplis !');}	
-	}	
-	*/
-	
-	
+
 	var group5 = ColonneGauche.add("group", undefined, {name: "group5"}); 
 		group5.orientation = "row"; 
 		group5.alignChildren = ["left","center"]; 	
@@ -276,7 +229,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 	// PANEL1
 	// ======
 	var panel1 = group5.add("panel", undefined, undefined, {name: "panel1"}); 
-		panel1.text = "Configuration du dossier Source"; 
+		panel1.text = "Configuration des photos pour la boutique en ligne"; 
 		panel1.orientation = "column"; 
 		panel1.alignChildren = ["left","top"]; 
 		panel1.spacing = 10; 
@@ -333,17 +286,6 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 		checkPhotosFratrie.text = "Fratries"; 	
 		checkPhotosFratrie.value = uneSource.isPhotosFratrie;	
 	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
 
 	// GROUP4
 	var group4 = ColonneDroite.add("group", undefined, {name: "group4"}); 
@@ -376,7 +318,7 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 			uneSource.Annee = dropdownAnnee.selection.text;
 			//uneSource.RepScriptPS = editRepScriptPS.text;
 			uneSource.RepScriptPS = dropdownRepScriptPS.selection.text;
-			uneSource.Repertoire = staticRepertoire.text;			
+			uneSource.DossierSources = staticDossier.text;			
 
 		var typeConfig = 'Rien';
 		if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
@@ -394,7 +336,9 @@ var btnFermer = ColonneDroite.add("button", undefined, 'Fermer', {name: "btnFerm
 			if (uneSource.isValide()){
 				//MAJFichierSource();
 				isMAJ = 1; // MAJ Source
-				dlgEditSOURCE.close();								
+				dlgEditSOURCE.close();
+				ImporterSource(uneSource);
+												
 			}else{alert('Tout les champs doivent être remplis !');}
 		}		
 
@@ -500,3 +444,168 @@ function ActionData() {
     }
 }
 //////////
+function AfficheImportationSOURCE2(dossierAImporter, DossierDestination) {
+	if (dossierAImporter != DossierDestination) {
+		var leRep = Folder(dossierAImporter)
+		if (leRep) {
+			//AfficheImportationSOURCE(theFolder.fullName, 'Copy');
+			var dlgImportationSOURCE = new Window("dialog"); 	
+			//var dlgImportationSOURCE = new Window('palette'); 
+				dlgImportationSOURCE.text = "Importation SOURCE"; 
+				dlgImportationSOURCE.preferredSize.width = 400; 
+				dlgImportationSOURCE.orientation = "column"; 
+				dlgImportationSOURCE.alignChildren = ["center","top"]; 
+				dlgImportationSOURCE.spacing = 10; 
+				dlgImportationSOURCE.margins = 16; 
+						
+				//PSJ AOUT 21 
+				dlgImportationSOURCE.graphics.backgroundColor = dlgImportationSOURCE.graphics.newBrush (dlgImportationSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+
+				//PSJ AOUT 21 
+				dlgImportationSOURCE.graphics.foregroundColor = dlgImportationSOURCE.graphics.newPen (dlgImportationSOURCE.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);				
+
+			var statictext1 = dlgImportationSOURCE.add("statictext", undefined, undefined, {name: "statictext1"}); 
+				statictext1.text = "Importation SOURCE ..."; 
+
+
+			var leRep = Folder(dossierAImporter)
+			var theContent = leRep.getFiles();
+			var nbfichier = theContent.length;
+			
+			var isImpor = false;
+			dlgImportationSOURCE.onActivate = function () {			
+				if (!isImpor){
+					isImpor = true;
+					//alert("le onActivate");
+					//statictext1.text = 	"Importation SOURCE ...     0 / " +  String (nbfichier);
+
+					for (var n = 0; n < nbfichier; n++) {
+					  var theObject = theContent[n]; 
+						if (theObject.constructor.name != "Folder") {
+							if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
+								var fichierACopier = new File(theObject); 	
+								var nomFichierSOURCE = fichierACopier.name.substr(0,fichierACopier.name.length-4);
+								nomFichierSOURCE = nomFichierSOURCE.replace('.', ' '); // ATTENTION NE SUPPRIME QU4UN SEUL POINT VOIR REGEX PAs de point dans le nome de la classe
+								//alert("le Fichier : " + fichierACopier + "    vers : " + DossierDestination + '/' + nomFichierSOURCE + '.jpg' );
+								if (!fichierACopier.copy(DossierDestination + '/' + nomFichierSOURCE + '.jpg')) alert('ERREUR IMPORTATION SOURCE : ' + fichierACopier.error); 	
+								//statictext1.text = 	"Importation SOURCE ...     " + String ( n + 1 ) + " / " +  String (nbfichier);
+								//if ((  n %  50 ) == 0) {Raffraichir(); } // tout les 50
+								
+							}
+						}
+					}
+					//statictext1.text = "Importation SOURCE : Terminé !"; 
+					//Raffraichir();
+					dlgImportationSOURCE.close();				
+				}
+
+		}
+		dlgImportationSOURCE.show();	
+		}
+	}
+}
+
+
+function AfficheImportationSOURCE(dossierAImporter, DossierDestination) {
+	if (dossierAImporter != DossierDestination) {	
+		var leRep = Folder(dossierAImporter)
+		if (leRep) {
+			//AfficheImportationSOURCE(theFolder.fullName, 'Copy');
+			//var dlgImportationSOURCE = new Window("dialog"); 	
+			var dlgImportationSOURCE = new Window('palette'); 
+				dlgImportationSOURCE.text = "Importation SOURCE"; 
+				dlgImportationSOURCE.preferredSize.width = 400; 
+				dlgImportationSOURCE.orientation = "column"; 
+				dlgImportationSOURCE.alignChildren = ["center","top"]; 
+				dlgImportationSOURCE.spacing = 10; 
+				dlgImportationSOURCE.margins = 16; 
+						
+				//PSJ AOUT 21 
+				dlgImportationSOURCE.graphics.backgroundColor = dlgImportationSOURCE.graphics.newBrush (dlgImportationSOURCE.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
+
+				//PSJ AOUT 21 
+				dlgImportationSOURCE.graphics.foregroundColor = dlgImportationSOURCE.graphics.newPen (dlgImportationSOURCE.graphics.PenType.SOLID_COLOR, [0.9, 0.9, 0.9], 1);				
+
+			var statictext1 = dlgImportationSOURCE.add("statictext", undefined, undefined, {name: "statictext1"}); 
+				statictext1.text = "Importation SOURCE ..."; 
+
+
+			var leRep = Folder(dossierAImporter)
+			var theContent = leRep.getFiles();
+			var nbfichier = theContent.length;		
+
+			dlgImportationSOURCE.show();
+			statictext1.text = 	"Importation SOURCE ...     0 / " +  String (nbfichier);
+			
+			for (var n = 0; n < nbfichier; n++) {
+			  var theObject = theContent[n]; 
+				if (theObject.constructor.name != "Folder") {
+					if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
+						var fichierACopier = new File(theObject); 
+						//alert("le Fichier : " + fichierACopier + "    vers : " + DossierDestination + fichierACopier.name);	
+						var nomFichierSOURCE = fichierACopier.name.substr(0,fichierACopier.name.length-4);
+
+						nomFichierSOURCE = SuprimerToutCharactere(nomFichierSOURCE, '.'); 
+						if (!fichierACopier.copy(DossierDestination + '/' + nomFichierSOURCE + '.jpg'  )) alert('ERREUR IMPORTATION SOURCE : ' + fichierACopier.error); 	
+						statictext1.text = 	"Importation SOURCE ...     " + String ( n + 1 ) + " / " +  String (nbfichier);
+						if ((  n %  50 ) == 0) {Raffraichir(); } // tout les 50
+						
+					}
+				}
+			}
+			statictext1.text = "Importation SOURCE : Terminé !"; 
+			Raffraichir();
+			dlgImportationSOURCE.close();		
+		}
+	}
+}
+
+function SuprimerToutCharactere(chaine, charactere){
+	while(chaine.indexOf(charactere) > -1){
+		chaine = chaine.replace(charactere, ' ');	
+	}
+    return chaine;
+}
+
+function ImporterSource(uneSource) {
+	var destSource = g_Rep_PHOTOLAB  + 'SOURCES/' + uneSource.Annee;
+	if (destSource != uneSource.DossierSources) {
+		var theFolder = Folder(uneSource.DossierSources);
+		if (theFolder) {
+			//var destSource = g_Rep_PHOTOLAB  + 'SOURCES/' + uneSource.Annee;
+			if (CreerUnDossier(destSource)){
+				destSource = destSource  + '/' + uneSource.NomProjet;
+				//alert("le Dos " + destSource);
+				if (CreerUnDossier(destSource)){
+					AfficheImportationSOURCE(theFolder.fullName, destSource);
+					uneSource.DossierSources = destSource;
+				}			
+			}
+		}
+		
+		
+	}
+}
+
+
+function NomDossierSOURCE(chaine){
+   /*alert( '"'+chaine+'"');
+ chaine = removeDiacritics(chaine);
+  chaine = chaine.replace(/[~`!@#$%^&*()+={}\[\];:\'\"<>.,\/\\\?-_]/g, '');
+  chaine = chaine.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+   chaine = chaine.replace(/ /g, '-');
+*/
+    return chaine;
+}
+
+
+var changes;
+function removeDiacritics (str) {
+    if(!changes) {
+        changes = defaultDiacriticsRemovalMap;
+    }
+    for(var i=0; i<changes.length; i++) {
+        str = str.replace(changes[i].letters, changes[i].base);
+    }
+    return str;
+}
