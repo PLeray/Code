@@ -215,7 +215,9 @@ function CommandesLabo(tableaudeLabo, FichierLab) {
 				(identifiant != '')) {
 
 				if (!isEcole(this.TableauLignes[i]) && (this.TableauLignes[i])) {
-					this.ListePlanches.push(this.TableauLignes[i]);
+					//this.ListePlanches.push(this.TableauLignes[i]);
+					//NEW 30-09-2021
+					this.ListePlanches.push(this.TableauLignes[i].substr(0,this.TableauLignes[i].indexOf(sepNumLigne)));					
 				}
 			}				
 		} 		

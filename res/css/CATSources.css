@@ -85,6 +85,12 @@ div.recherche {
   Top: 0px;
 }
 
+.majCache {
+  position: absolute;
+  right: 8px;
+  Top: -20px;
+}
+
 .zoneTable {
     margin-left: auto;
     margin-right: auto;
@@ -96,9 +102,9 @@ div.recherche {
   /*border: 1px solid var(--boutonRouge);*/
 }
 
-img.OKKOIMG {
-    width: 30px;
-	margin: 3%;
+img.imgArbo {
+    width: 35%;
+	margin: 1%;
 	
 }
 
@@ -136,6 +142,24 @@ img {
 	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
 }
 */
+
+.titreFichier {
+
+	text-align: center;
+	/*left: 230px;*/
+
+	width: 100%;
+    color: var(--texteGris);
+	font-family: "Courier New", Times, serif;
+    letter-spacing: 3px;	
+}
+
+.titreFichier a{
+color: var(--boutonVert);
+	text-decoration:none; 	
+}
+
+
 .BoutonVoirenCours, .BoutonVoirhistorique {
     text-decoration: none;
 	cursor: pointer;
@@ -279,5 +303,10 @@ img {
 }
 
 .mini {
+  font-size: 10px;
+}
+
+.mini a{
+	color : var(--boutonVert);
   font-size: 10px;
 }

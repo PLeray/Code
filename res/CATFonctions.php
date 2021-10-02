@@ -96,7 +96,7 @@ class CINFOfichierArbo {
 	var $Compilateur;
 	//var $isOuvrable;
     var $NbPlanches = 0;
-    var $NbCommandes = 0;
+    var $AffichageNomSOURCE;
     var $NomEcole;
     var $DateTirage;
 
@@ -105,8 +105,8 @@ class CINFOfichierArbo {
 		$tabFICHIERLabo = LireFichierLab($myfileName);
 		$this->Fichier = basename($myfileName);
 		$this->EtatFichier = substr($this->Fichier, -1,1);
-		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.Erreur';
-		$this->AffichageNomCMD = substr($this->Fichier, 16, -5);
+		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.ErreurW';
+		$this->AffichageNomSOURCE = substr($this->Fichier, 5, -5);
 		
 		//$this->DateTirage = substr($this->Fichier, 5, 10);
 
@@ -141,10 +141,24 @@ class CINFOfichierArbo {
 			}		
 		}
 	}
+	function NBfichiersARBOWEB() {
+		$Dossier = $GLOBALS['repWEBARBO'] . $this->RepTirage();
+		$NbFicher = 0;
+		$files = glob($Dossier . '/*',GLOB_BRACE);	
+		//echo  $Dossier;
+		foreach($files as $SousDossier) {
+			//$NbFicher = NBfichiersDOSSIER($SousDossier);
+			//echo  $NbFicher + 10;
+			$NbFicher = $NbFicher + count(glob($Dossier . '/'.  $SousDossier . '/*.*{jpg,jpeg}',GLOB_BRACE));
+		}
+		return $NbFicher;
+	}
+
+	
     function RepTirage(){
 		$leRepTirage = '';
 		if ($this->EtatFichier){
-			$leRepTirage = 'LUMYS-' . $this->DateTirage . '-' .$this->NomEcole ;	
+			$leRepTirage = 'LUMYS-' .$this->NomEcole ;	
 			//js : g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
 		}
 		return $leRepTirage;
@@ -208,31 +222,6 @@ function SuprimeFichier($strFILELAB){
 	} 	
 }
 
-function SuprArborescenceDossier($nomDossier) {
-	if($GLOBALS['isDebug']){
-			Echo '<br>TENTATIVE DE SUPPRIMER le DOSSIER '. $nomDossier;
-	}
-			
-	if (is_dir($nomDossier)) {
-
-		$files = array_diff(scandir($nomDossier), array('.','..'));
-		/**/
-		foreach ($files as $file) {
-		  (is_dir("$nomDossier/$file")) ? SuprArborescenceDossier("$nomDossier/$file") : SuprFichier("$nomDossier/$file");
-		}
-		return SuprDossier($nomDossier);
-	}	
-}
-
-function SuprFichier($fichier) {
-	//chmod($fichier,0777);
-	unlink($fichier);
-}	
-
-function SuprDossier($Dossier) {
-	//chmod($Dossier,0777);
-	return rmdir($Dossier);
-}	
 
 function LienIMGSuprFichierLab($fichier, $Etat) {
 	$Lien = 'CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($fichier);// . '&apiEtat=' . $Etat;
@@ -438,8 +427,8 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 			'<tr>
 				<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>				
 				<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>	
-				<td  class="titreCommande" align="left">' . $mesInfosFichier->AffichageNomCMD . '</a></td>		
-				<td>' . $mesInfosFichier->NbPlanches . '</a></td>';
+				<td  class="titreCommande" align="left">' . $mesInfosFichier->AffichageNomSOURCE . '</a></td>		
+				<td>' . $mesInfosFichier->NBfichiersARBOWEB() . '</a></td>';
 
 			if($mesInfosFichier->EtatFichier < 2){
 				$affiche_Tableau .=	'

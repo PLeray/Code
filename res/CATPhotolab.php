@@ -58,7 +58,7 @@ if($isDebug){
 	if (isset($_POST['lesRecommandes']) ){
 		$lesRecommandes = $_POST['lesRecommandes'];
 		if ($isDebug){
-			echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $_POST['leFichierOriginal']  . ' : ' . $lesRecommandes;
+			echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $lesRecommandes;
 		}	
 		MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
 	}
@@ -137,9 +137,9 @@ if($isDebug){
 	<table id="commandes">
 	  <tr class="header" >
 		<th style="width:110px;" onclick="sortTable(1)"><H3>Etat</H3></th>		  
-		<th style="width:110px;" onclick="sortTable(0)"><H3>Date</H3></th>
+		<th style="width:110px;" onclick="sortTable(0)"><H3>Type</H3></th>
 			
-		<th  onclick="sortTable(1)"><H3>Arborescence de fichiers pour présentation web</H3></th>	
+		<th  onclick="sortTable(1)"><H3>Projet Source</H3></th>	
 		<th style="width:100px;" onclick="sortTable(2)"><H3>Nb Fichiers</H3></th>					
 		<th  style="width:122px;" ><H3>Fichiers Web crées</H3></th>		
 		<th style="width:122px;" onclick="sortTable(2)"><H3>Déposés sur LUMYS</H3></th>

@@ -1,5 +1,5 @@
 <?php
-$VERSION = 0.833;
+$VERSION = 0.835;
 $ANNEE = '2021';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -137,6 +137,31 @@ function strMini($Nom) {
 	return $Nom;
 }
 
+function SuprArborescenceDossier($nomDossier) {
+	if($GLOBALS['isDebug']){
+			Echo '<br>TENTATIVE DE SUPPRIMER le DOSSIER '. $nomDossier;
+	}
+			
+	if (is_dir($nomDossier)) {
+
+		$files = array_diff(scandir($nomDossier), array('.','..'));
+		/**/
+		foreach ($files as $file) {
+		  (is_dir("$nomDossier/$file")) ? SuprArborescenceDossier("$nomDossier/$file") : SuprFichier("$nomDossier/$file");
+		}
+		return SuprDossier($nomDossier);
+	}	
+}
+
+function SuprFichier($fichier) {
+	//chmod($fichier,0777);
+	unlink($fichier);
+}	
+
+function SuprDossier($Dossier) {
+	//chmod($Dossier,0777);
+	return rmdir($Dossier);
+}	
 
 
 ?>

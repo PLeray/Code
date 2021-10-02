@@ -19,9 +19,9 @@ STYLE DE BASE        */
 
 h1 { /*Police texte Ecole */
     text-align: center;
-	font-size: 14px;
+	font-size: 20px;
 
-    color: var(--boutonVert);
+    color: white;
 }
 
 h2 { /*Police texte Adresse */
@@ -63,9 +63,9 @@ h4 { /*Police texte produit */
 	
 }
 
-h5 {/*Police Nom de Classe  */
+h5 {/*Police Nom de Classe  line-height: 0;*/
     letter-spacing: 1px;
-	line-height: 0;
+	
 	font-size: 12px;
 	color: var(--boutonRouge);
 	margin-bottom: 0px;
@@ -261,15 +261,28 @@ text-align: right;
   font-weight: bold;
 }
 
-.commande {
+.ListeCommandes {
 	 /*width: auto;97%;*/
 	display: block;
-	width: 100%;
-	margin-top: 10px;
-	margin-bottom: 10px;
 
-	/*position: relative;*/
-	background-color: white;
+	margin :10px;
+padding: 5px;
+
+	/*position: relative;
+	background-color: white;*/
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	transition: max-height 0.2s ease-out;
+}
+
+.ListeFichiersBoutique {
+	 /*width: auto;97%;*/
+	display: block;
+
+	margin :10px;
+padding: 5px;
+
+	/*position: relative;
+	background-color: white;*/
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	transition: max-height 0.2s ease-out;
 }
@@ -295,22 +308,71 @@ text-align: right;
 	display: inline-block;	 
 
 	margin: 0px 20px 10px 20px;
+	/*margin: 0px 20px 10px 20px;*/	
+}
+.PlancheIndiv .textImageSource {
+	display: none;
 }
 
-.PlancheGroupe {background-color: var(--FondLigneTabGrisClair);
-vertical-align: top;
+.IndivSELECTION {
+	display: inline-block;	 
+
+	margin: -5px 15px 5px 15px;
+	border: 5px dashed var(--boutonVert);
+	position: relative;
+}
+
+
+.IndivSELECTION .textImageSource {
+	background: var(--FondLigneTabGrisClair);
+	z-index: 10;
+	position: absolute;
+	text-align: center;
+	font-family: "Courier New", Times, serif;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	top: 30%;
+	color: blue;
+	width: 100%;
+	border-top: 1px solid var(--FondLigneTabGrisFonce);
+	border-bottom: 1px solid var(--FondLigneTabGrisFonce);
+}
+
+.PlancheGroupe {
+	background-color: var(--FondLigneTabGrisClair);
+		display: inline-block;	 
+		vertical-align: top;
 	/*display: block;	*/
 	margin: 0px 20px 10px 20px;
 	float: left
 }
-
-.plancheSELECTIONNER {
-	display: inline-block;	 
-
-	margin: 10px 10px 10px 10px;	
-	border: 0.5rem dashed var(--boutonVert);
+.PlancheGroupe .textImageSource {
+	display: none;
 }
 
+.GroupeSELECTION {
+	/*display: inline-block;*/	 
+		float: left;
+	margin: -5px 15px 5px 15px;
+	border: 5px dashed var(--boutonVert);
+position: relative;
+}
+.GroupeSELECTION .textImageSource {
+	background: var(--FondLigneTabGrisClair);
+	z-index: 10;
+	position: absolute;
+	text-align: center;
+	font-family: "Courier New", Times, serif;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	top: 30%;
+	color: blue;
+	width: 100%;
+	border-top: 1px solid var(--FondLigneTabGrisFonce);
+	border-bottom: 1px solid var(--FondLigneTabGrisFonce);
+}
 .ligne_classe { 
 	display: flex; 
 	flex-direction: row; 
@@ -329,6 +391,11 @@ vertical-align: top;
 	border-bottom: 2px solid var(--FondLigneTabGrisFonce);
 	margin: auto; 
 } 
+
+
+
+
+
 .overlay {
   position: absolute;
   bottom: 0;
@@ -413,7 +480,7 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 
 
-#zoneRechercheCMD{
+#zoneAffichagePhotoEcole{
 
 /**/
 margin-top: -10px;
@@ -458,13 +525,11 @@ margin-top: -10px;
 */
 .sidenav .closebtn {
 
-  /*    
-  position: absolute; 
-  top: -10px;
-  right: 15px;*/
-  font-size: 36px;
-margin-left: 210px; 
   
+  top: 5px;
+  margin-left: 15px;/*315px;*/
+  font-size: 20px;
+
     color: white;
 
 }
@@ -681,3 +746,56 @@ display: none ;
 }
 
 /*  FIN LOADER */
+
+.ctxmenu
+{
+  position:absolute;    
+  min-width: 128px;
+  height:auto;
+  padding: 8px;
+  margin:0;
+  margin-left:32px;
+  margin-top:-16px;
+  border: 1px solid var(--FondLigneTabGrisFonce);
+  background: #F8F8F8;
+/*   box-shadow: 2px 2px 2px #AAA; */
+  z-index:11;
+  overflow: visible;
+}
+.ctxline
+{
+  display:block;
+  margin:0px;
+  padding:2px 2px 2px 8px;
+/*  border:1px solid var(--FondLigneTabGrisSombre);
+   border-radius:3px;*/
+  font-size:13px;
+  font-family:Arial, Helvetica, sans-serif;
+  overflow:visible;
+}
+.ctxline:hover
+{
+  border:1px solid #BBB;
+  background-color: var(--boutonVert);
+  color: white;
+/*       border:1px solid #BBB;
+background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%,
+    from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(top, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',
+    endColorstr='#e6e6e6', GradientType=0); */
+}
+
+#content
+{
+  position:static;
+  margin-left: 218px;
+  margin-top: 92px;	
+} 
+
+

@@ -1,48 +1,28 @@
 <!DOCTYPE html>
+<?php
+	setlocale(LC_TIME, 'french');
+	include_once 'APIConnexion.php';
+	
+	$codeMembre = 0;
+	if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
+	$isDebug = false;
+	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
+	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}	
+?>	
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
+	<title id="PHOTOLAB">Sources enregistrées</title>
 
-.bg {
-  /* The image used */
-	background-color: #3b3b3b;
-	background-image: url("<?php echo $_GET['urlImage']; ?>");
-
-
-  /* Full height */
-  height: 100%; 
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-
-}
-/* The Close Button (x) */
-.close {
-    position: absolute;
-    right: 20px;
-    top: -15px;
-    color: #FFF;
-    font-size: 100px;
-    font-weight: bold;
-	text-decoration: none;
-}
-
-.close:hover,
-.close:focus {
-    color: #F00;
-    cursor: pointer;
-} 
-</style>
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDAffichePlanche.css');?>">
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 </head>
+
 <body>
-<div class="bg"></div>
-<a href="javascript:history.go(-1)" title="Retour aux commandes" class="close">&times;</a>
+
+<div class="bg">
+	<img src="<?php echo $_GET['urlImage']; ?>" alt="Image de fichier">
+	<a href="javascript:history.go(-1)" title="Fermer" class="close">&times;</a>
+</div>
 </body>
 </html>

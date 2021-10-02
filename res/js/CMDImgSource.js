@@ -1,7 +1,7 @@
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
-/*var rech = document.getElementById("zoneRechercheCMD");
+/*var rech = document.getElementById("zoneAffichagePhotoEcole");
 rech.style.display = 'none';
 AfficheRechercheCMD(false);*/
 
@@ -12,36 +12,32 @@ function EffacerChargement(){
    document.getElementById('site').style.display='block';
 }
 
-
+function BasculeAfficheSideBar() {
+	var isAffiche = (document.getElementById("mySidenav").style.width == "350px");
+	AfficheRechercheCMD(!isAffiche);
+}
 
 function AfficheRechercheCMD(isAffiche) {
-	isRECOmmandes = isAffiche;
+	//isRECOmmandes = isAffiche;
+	
 	if (isAffiche){
 		
 		document.getElementById("mySidenav").style.width = "350px";
 		//document.getElementById("mySidenav").style.z-index = 2;  
 		document.getElementById("main").style.marginRight = "350px";
-		document.getElementById("Entete").style.marginRight = "350px";			
+		document.getElementById("Entete").style.marginRight = "350px";	
 		
-		var rech = document.getElementById("zoneRechercheCMD");
-		rech.style.display = '';
-		var list = document.getElementById("zoneListePageCMD");
-		list.style.display = 'none';			
-		
+		//document.getElementById("myListeCommandes").innerHTML = 'kjhkjh';	
 	}
 	else{
-		document.getElementById("zoneRecherche").value ='';
-		RechercheMulti(' ');
-		document.getElementById("mySidenav").style.width = "0";
+		//alert('AfficheRechercheCMD()! : ' + isAffiche);	
+
+		document.getElementById("mySidenav").style.width = "50px";
 		  //document.getElementById("mySidenav").style.z-index = -2;  
-		document.getElementById("main").style.marginRight = "0";
-		document.getElementById("Entete").style.marginRight = "0";		
-		
-		
-		var rech = document.getElementById("zoneRechercheCMD");
-		rech.style.display = 'none';
-		var list = document.getElementById("zoneListePageCMD");
-		list.style.display = 'block';			
+		document.getElementById("main").style.marginRight = "50px";
+		document.getElementById("Entete").style.marginRight = "50px";
+
+		//alert('AfficheRechercheCMD()! : ' + isAffiche);			
 	}
 }
 	
@@ -177,7 +173,7 @@ function RechercheMulti(strElementsRech) {
     var cmd, i, e, listDrop  ;
 	var tabCMD = [];
 	var synthTabCMD = [];	
-	document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+	document.getElementById("zoneAffichagePhotoEcole").removeAttribute("mark"); 
 	for (e = 0; e < tabElementsRech.length; e++) {
 		////////////////////////////////////////////////:
 		/* pour les num de commandes */
@@ -309,13 +305,32 @@ InitCommandes();
 }
 
 function SelectionPhoto(x) {
-	if(x.classList.contains("planche") && isRECOmmandes){
-		x.classList.replace("planche", "plancheSELECTIONNER");
-		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));					
-	}else {
-		x.classList.replace("plancheSELECTIONNER", "planche");
+		
+	if(x.classList.contains("PlancheIndiv")){
+		x.classList.replace("PlancheIndiv", "IndivSELECTION");
+		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
+		//document.getElementById("myListeCommandes").innerHTML =  'kjh'; 		
+		//x.lastChildChild.style.display = "inline-block";
+
+		//x.getElementsByClassName("textImageSource").style.display = "inline-block";
+
+	}else if(x.classList.contains("IndivSELECTION")){
+		x.classList.replace("IndivSELECTION", "PlancheIndiv");
 		x.setAttribute('title',  x.getAttribute('id'));
-	}  
+		//x.lastChildChild.style.display = "none";
+
+	}else if(x.classList.contains("PlancheGroupe")){
+		
+		x.classList.replace("PlancheGroupe", "GroupeSELECTION");
+		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
+		//x.getElementsByClassName(names)
+		//x.lastChildChild.style.display = "inline-block";
+	}else if(x.classList.contains("GroupeSELECTION")){
+		x.classList.replace("GroupeSELECTION", "PlancheGroupe");
+		x.setAttribute('title',  x.getAttribute('id'));
+		//x.lastChildChild.style.display = "none";
+	}  	
+
 	mesRecommandes();
 }
 			
@@ -332,26 +347,41 @@ function VoirPhotoSelection(x) {
 }		
 
 function mesRecommandes() {
+	//alert('qsd');
 	var mesReco ='';
-	var mesPlanches = document.getElementsByClassName("plancheSELECTIONNER");
+	var mesPlanches = document.getElementsByClassName("GroupeSELECTION");
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
-	  mesReco = mesReco + '%' + mesPlanches[i].getAttribute('id');
-	  //mesPlanches[i].setAttribute('title',  'Planche en cours de recommande  ' + mesPlanches[i].getAttribute('id'));
-	}		
+	  mesReco = mesReco  + mesPlanches[i].getAttribute('id') + '<br>';
+	  mesPlanches[i].setAttribute('title',  'Planche en cours de recommande  ' + mesPlanches[i].getAttribute('id'));
+	}	
+	var mesPlanches = document.getElementsByClassName("IndivSELECTION");
+	//console.log(' Nombre Page : ' + BoutonPage.length );	
+	for (i = 0; i < mesPlanches.length; i++) {
+	  //mesReco = mesReco + '%' + mesPlanches[i].getAttribute('id');
+	  mesReco = mesReco  + mesPlanches[i].getAttribute('id') + '<br>';
+	  mesPlanches[i].setAttribute('title',  'Planche en cours de recommande  ' + mesPlanches[i].getAttribute('id'));
+	}	
 
-	document.getElementById('lesRecommandes').value =  mesReco;
+	document.getElementById('lesCommandes').value =  mesReco;
+	document.getElementById("myListeCommandes").innerHTML =  mesReco;
 }	
-			
-			
-/*
-function coloriserString(text, debut, fin, color) {
-	return text.substring(0, debut) 
-		+ "<strong>" + text.substring(debut, fin+1) + "</strong>"
-		+ text.substring(fin+1);
+
+
+function AjoutFichierBoutique(element) {
+	//alert('xcvxcvxcv.id : ' + element.getAttribute('id')); 
+	var leFichier = element.getAttribute('id');
+	var cmdfichierBoutique = document.getElementById("lesFichierBoutique").value;
+	var AfffichierBoutique = document.getElementById("myListeFichiersBoutique").innerHTML;
+	/*	*/		
+	if(cmdfichierBoutique.indexOf(leFichier)>-1){//On l'enleve		
+		document.getElementById("lesFichierBoutique").value = cmdfichierBoutique.replace(leFichier, '');
+		document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique.replace(leFichier + '<br>', '');
+	}else{//On l'ajoute
+		document.getElementById("lesFichierBoutique").value = cmdfichierBoutique + leFichier;
+		document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique +  leFichier + '<br>';	
+	
+	}
 }
-function coloriserString2(text, debut, fin, color) {
-	return text.substring(0, debut) 
-		+ "<span style='color:" + color + "'>" + text.substring(debut, fin+1) + "</span>"
-		+ text.substring(fin+1);
-}*/
+		
+

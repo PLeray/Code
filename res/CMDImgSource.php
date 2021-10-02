@@ -22,18 +22,29 @@ if (isset($_GET['anneeSource'])) { // Test connexion l'API
 	$anneeSource = $_GET['anneeSource'];
 }
 
+$MAJ = false;
+if (isset($_GET['MAJ'])) { // Lancement apres
+	$MAJ = $_GET['MAJ'];
+}
 
-	//$affiche_Tableau = AfficheSOURCES("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
-	
-	
-	/*$DefautNbCMDAffiche = 15;
-	$NbCMDAffiche = $DefautNbCMDAffiche;
-	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}*/
-?>
-<?php 
 if($isDebug){
 	header("Cache-Control: no-cache, must-revalidate");
 }
+
+$lesCommandes = '';
+if (isset($_POST['lesCommandes']) ){
+	$lesCommandes = $_POST['lesCommandes'];
+	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesCommandes;}	
+	MAJFichierCommandes($lesCommandes, $codeSource, $anneeSource);
+}
+$lesFichierBoutique = '';
+if (isset($_POST['lesFichierBoutique']) ){
+	$lesFichierBoutique = $_POST['lesFichierBoutique'];
+	if ($isDebug){echo 'VOILA LES lesFichierBoutique : ' . $lesFichierBoutique;}	
+	MAJFichierBoutique($lesFichierBoutique, $codeSource, $anneeSource);
+}
+
+
 
 $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
 ?>
@@ -45,6 +56,8 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
     <title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
+	
+	
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 
 	
@@ -53,11 +66,11 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 
 <body onload="EffacerChargement()">
 
-<div id="MSGChargement" onclick="EffacerChargement()"> 
+<div id="MSGChargement" > 
 	<div class="cs-loader">
 	
 	  <div class="cs-loader-inner">
-	  <H5>Mise en cache des photos de : <?php echo $monProjet->NomProjet ; 	?></H5>
+	  <H5>Creation du cache des photographies de : <?php echo $monProjet->NomProjet ; 	?> ...</H5>
 	  <br>
 		<label>●</label>
 		<label>●</label>
@@ -67,21 +80,30 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 		<label>●</label>
 		<br>
 		<br>
-		<H5>Patientez ...</H5>
+		<H5>Patientez, selon le nombre de photos à traiter, cela peut durer quelques minutes ...</H5>
 	  </div>
 	</div>
 </div> 
+
+<?php 
+if (!$MAJ){
+	$RefSource = "&codeSource=" . urlencode($codeSource). "&anneeSource=" . urlencode($anneeSource);
+	
+	echo '<meta http-equiv="refresh" content="0; URL=CMDImgSource.php' . ArgumentURL($RefSource.'&MAJ=true') .'"> ';
+}
+?>
 <div id="site"">
    <!-- Tout le site ici -->
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
 	
 	<div id="Entete">	
-		<div class="logo"><a href="<?php echo RetourEcranSources(); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
+		<div class="logo"><a href="<?php echo RetourEcranSources($monProjet->Annee); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
 		</div>
 		
 		<div class="titreFichier">	
 			<?php echo $monProjet->NomProjet ; 	?>
 		</div>
+
 		<?php echo  '<p>' . $monProjet->Dossier . '</p>';?>
 		<div class="titreFichier">Afficher : 
 			<span id="idAfficheTout" onclick=AfficheTout()>|Toutes les photos|</span>
@@ -89,29 +111,41 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 			<span id="idAfficheIndivs" onclick=AfficheIndivs()>|Seulement les individuelles|</span>
 			
 		</div>		
-		<span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p><?php //echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?><img src="img/search-more.png"></p></span>	
 	</div>
 
 	  <div id="main">
 		<div id="mySidenav" class="sidenav">
 		
-		<a href="<?php RetourEcranSources(); ?>" class="closebtn">&times;</a>
-			<div id="myRecommandes" class="infoRecommandes">Mes Commandes<br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>				
-				<form name="FormEnvoieRecos" method="post" action="<?php RetourEcranSources(); ?> >" enctype="multipart/form-data">	
-					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
+		
+		<!-- <a href="<?php // RetourEcranSources(); ?>" class="closebtn">&times;</a> -->
+		<a href="javascript:void(0)" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
+			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher Mes Commandes</a>	
+				<div id="myListeCommandes" class="ListeCommandes">		
+				
+				</div>		
+				<div id="myListeFichiersBoutique" class="ListeFichiersBoutique">Photos pour presentation boutique :<br>
+				</div>
+				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandes(); ?>" enctype="multipart/form-data">	
+					<input type="hidden" name="lesCommandes" id="lesCommandes" value="" /> 
+					<input type="hidden" name="lesFichierBoutique" id="lesFichierBoutique" value="" /> 
 	
-					<button type="submit">Enregistrer ces Commandes</button>
+					<button type="submit">Quitter et Enregistrer ces Commandes</button>
 				</form> 	
+					
 			</div>		
 		</div>
 	  
-		<div id="zoneRechercheCMD">	
-		<br><br>
-			<?php 	//echo $affiche_Tableau;   ?>	
-			<?php echo AfficheSOURCESEcole($monProjet); ?>	
+		<div id="zoneAffichagePhotoEcole">	
+			<br><br>
+			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
 		
-		
+			<?php  
+			if ($MAJ){
+				set_time_limit(2000);		
+				echo AfficheSOURCESEcole($monProjet);
+			}
+			?>
 		
 			<div class="footer">
 			  <p class="mention"><?php echo VersionPhotoLab();?> </p>
@@ -128,18 +162,36 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 
 <script type="text/javascript" src="<?php Mini('js/CMDImgSource.js');?>"></script>
 <script>
+<?php 
+if ($MAJ){	
+	echo '	
 	EffacerChargement();
 	AfficheRechercheCMD(true);
-	openNav();
+	openNav(); 
+	';
+}
+?>
+	/*EffacerChargement();
+	AfficheRechercheCMD(true);
+	openNav();*/
 </script>
-
+<script type="text/javascript" src="<?php Mini('js/ClickDroit.js');?>"></script>
 </body>
 </html>
 
 
 <?php 
+function MAJFichierCommandes($ListeFichier, $codeSource, $anneeSource){ 
+echo 'VOILA LES MAJFichierCommandes : ' . $ListeFichier;
+}
+
+function MAJFichierBoutique($ListeFichier, $codeSource, $anneeSource){ 
+echo 'VOILA LES lesFichierBoutique : ' . $ListeFichier;
+}
+
 
 function ChercherSOURCESEcole($fichierCSV, $codeProjet, $anneeProjet){ 
+	$monProjet = '';
 	if (file_exists($fichierCSV)){
 		$TabCSV = csv_to_array($fichierCSV, ';');
 
@@ -218,9 +270,16 @@ function AfficheSOURCESEcole($monProjet){
 }
 
 	
-function RetourEcranSources(){
-	$RetourEcran = 'CATSources.php';	
-	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+function RetourEcranSources($ParamAnnee = ''){
+	$RetourEcran = 'CATSources.php?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	return $RetourEcran . (($ParamAnnee != '')?'&AnneeScolaire='.$ParamAnnee :'') ;
+}	
+
+function ValidationCommandes($ParamAnnee = ''){
+	//$RetourEcran = 'CMDImgSource.php'. ArgumentURL('&codeSource=' . $GLOBALS['codeSource'] . '&anneeSource=' . $GLOBALS['anneeSource']. '&MAJ=true') ;
+	
+	$RetourEcran = 'CATSources.php' . ArgumentURL(($ParamAnnee != '')?'&AnneeScolaire='.$ParamAnnee :''); 
+	return $RetourEcran ;
 }	
 
 function CreationDossier($nomDossier) {

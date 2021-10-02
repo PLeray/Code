@@ -260,7 +260,7 @@ InitCommandes();
 function SelectionPhoto(x) {
 	if(x.classList.contains("planche") && isRECOmmandes){
 		x.classList.replace("planche", "plancheSELECTIONNER");
-		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));					
+		x.setAttribute('title',  'Planche en cours de recommande ' + x.getAttribute('id'));					
 	}else {
 		x.classList.replace("plancheSELECTIONNER", "planche");
 		x.setAttribute('title',  x.getAttribute('id'));

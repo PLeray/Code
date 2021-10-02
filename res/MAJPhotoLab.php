@@ -83,12 +83,15 @@ function TelechargerFichier($nomFichier, $urlBase, &$msgDezip){
 		}else{
 			$dossier_enregistrement = "../../";
 		}
-		//echo $dossier_enregistrement . $nomFichier ;
-		//echo dirname($dossier_enregistrement . $nomFichier) .'<br><br>';
 		CreationDossier(dirname($dossier_enregistrement . $nomFichier)).'<br><br>';
 
 		//$retour = file_put_contents($dossier_enregistrement . $nomFichier, $fichier_contenu);
 		$retour = TransfertFichier($url, $dossier_enregistrement . $nomFichier);
+		
+		//Supression des rep Css json_decode
+		SuprArborescenceDossier($dossier_enregistrement . 'Code/res/css');
+		SuprArborescenceDossier($dossier_enregistrement . 'Code/res/js');		
+		
 		$msgDezip = DezipperFichier($dossier_enregistrement , $nomFichier);
 		if(!file_exists ('../../NO-MAJ-Auto.txt')){
 			// A REMETTRE unlink($dossier_enregistrement . $nomFichier);
@@ -118,9 +121,6 @@ function Curl_get_file_contents( $URL ){
 	endif;	
 }
 
-function TransfertFichierOLD($urlInitiale, $urlFinale){
-	$retour = file_put_contents($urlFinale, file_get_contents($urlInitiale));
-}
 
 function CreationDossier($nomDossier) {
 	if (!is_dir($nomDossier)) {

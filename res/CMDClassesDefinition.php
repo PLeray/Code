@@ -263,7 +263,7 @@ class CCommande {
 			$resultat .= '</div>';
 			$gestionPage->compteurCMD++;
 		}   
-		else{		 // Pour la recherche
+		else{ // Pour la recherche
 			$resultat .= '<div id="C-'. $this->Numero .'" class="commande"  >';			
 				$resultat .= '<button  class="TitrecommandeRecherche"> Commande <span class="grosNumCMD"> ' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 				//Le contenu ...
@@ -390,9 +390,6 @@ class CPlanche {
 			//(RECOMMANDES) EN COURS
 
 			global $EcoleEnCours;
-				
-
-			
 			 
 			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
 			$Lien = $GLOBALS['repMINIATURES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
@@ -421,11 +418,6 @@ class CPlanche {
 }
 
 function RecopierPlanche($LienOrigine,$LienDestination){
-
-	//echo $LienOrigine . '<br><br>';
-	//echo $LienDestination . '<br><br>';
-	//2021-07-05-L2-MAX PLANCK-(DEMO)/20x20cm (1ex de chaque)/P0074.0102-QCoinB.pngCADRE-QUATTRO-CALENDRIER-2021.20x20cm.jpg
-//9999-99-99-(RECOMMANDES)-EN-COURS/20x20cm (1ex de chaque)/P0074.0102-QCoinB.pngCADRE-QUATTRO-CALENDRIER-2021.20x20cm.jpg
 	$valReturn = copy($LienOrigine,$LienDestination);
 
 	if($GLOBALS['isDebug']){
@@ -467,7 +459,7 @@ class CImgSource {
 
 	//var $Extension;
     function __construct($Fichier,$Dossier,$CodeEcole,$Annee,$ScriptsPS){
-			$morceau = explode(".", $this->FichierPlanche);		
+			//$morceau = explode(".", $this->FichierPlanche);		
 			$this->Fichier = $Fichier;
 			$this->Dossier = $Dossier;
 			$this->CodeEcole = $CodeEcole;
@@ -481,23 +473,50 @@ class CImgSource {
 	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'" title="'. urldecode($this->FichierPlanche) . '">';		
-			
-
 			$Lien = $this->Dossier . 'Cache/' .  $this->Fichier;
 			$LienBig = $this->Dossier . $this->Fichier;			
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			if (strpos(strtolower($this->Fichier),'fratrie')){
 				$Lien = '../../Code/res/img/Fratries.png';
-			}
+			}		
+			$resultat .= '   
+			<span oncontextmenu="return monMenuContextuel(this)"
+			  onclick="SelectionPhoto(this)" 
+			  id="'. urldecode($this->Fichier) . '" 
+			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'" 
+			  title="'. urldecode($this->Fichier) . '" 
+			  paramLien="'. ArgumentURL('&urlImage=' . $LienBig ) . '">';		
+			
+		
 			
 			$resultat .= ($this->isGroupe()?'<span>':'');
-			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
-
-			$resultat .= ($this->isGroupe()?'</span>':'');
 			
-			$resultat .= '<p>'. $this->Fichier .'</p>';
+
+			
+			/*
+			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';				
+			*/
+			
+			
+			$resultat .= '<img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">';	
+
+			
+			$resultat .= '<div class="textImageSource">';	
+			
+			
+			$resultat .= '<h1><div onclick="NbPlancheMOINS(this)"  class="moinsplus">-</div><B> 1 </B><div onclick="NbPlanchePLUS(this)"  class="moinsplus">+</div></h1>';
+			
+			
+			//$resultat .= '<h1>-   1   +</h1>';	
+			$resultat .= '</div>';	
+			
+			$resultat .= ($this->isGroupe()?'</span>':'');
+			$resultat .= '<p>'. substr($this->Fichier, 0, -4)  .'</p>';
+			//Affichage Nombre +-
+				
+			
 		$resultat .= '</span> ';
+		//$resultat .= '</div>';
 		return $resultat;
 	}
 	function Ecrire($tabPlanche, &$isRecommande){

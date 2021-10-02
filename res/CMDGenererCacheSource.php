@@ -22,15 +22,11 @@ if (isset($_GET['anneeSource'])) { // Test connexion l'API
 	$anneeSource = $_GET['anneeSource'];
 }
 
+$MAJ = false;
+if (isset($_GET['MAJ'])) { // Lancement apres
+	$MAJ = $_GET['MAJ'];
+}
 
-	//$affiche_Tableau = AfficheSOURCES("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
-	
-	
-	/*$DefautNbCMDAffiche = 15;
-	$NbCMDAffiche = $DefautNbCMDAffiche;
-	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}*/
-?>
-<?php 
 if($isDebug){
 	header("Cache-Control: no-cache, must-revalidate");
 }
@@ -40,24 +36,19 @@ if($isDebug){
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-
-
-    <title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
+    <title id="PHOTOLAB">Mise à jour du cache des photos</title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-
-	
-
 </head>
 
-<body onload="EffacerChargement()">
+<body >
 
-<div id="MSGChargement" onclick="EffacerChargement()"> 
+<div id="MSGChargement" > 
 	<div class="cs-loader">
 	
 	  <div class="cs-loader-inner">
-	  <H5>Mise en cache des photos</H5>
+	  <H5>Mise à jour du cache des photographies des projets ...</H5>
 	  <br>
 		<label>●</label>
 		<label>●</label>
@@ -67,10 +58,16 @@ if($isDebug){
 		<label>●</label>
 		<br>
 		<br>
-		<H5>Patientez ...</H5>
+		<H5>Patientez, selon le nombre de photos à traiter, cela peut durer quelques minutes ...</H5>
 	  </div>
 	</div>
 </div> 
+
+<?php 
+if (!$MAJ){
+	echo '<meta http-equiv="refresh" content="0; URL=CMDGenererCacheSource.php' . ArgumentURL('&MAJ=true') .'"> ';
+}
+?>
 <div id="site"">
    <!-- Tout le site ici -->
 	<div class="footer">
@@ -79,44 +76,42 @@ if($isDebug){
 	<div id="Entete">	
 		</div>
 		<?php  
-			set_time_limit(2000);
-		
-			GenererCacheDesProjetsPhoto("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
-
-		?>		
+		if ($MAJ){
+				set_time_limit(2000);		
+				GenererCacheDesProjetsPhoto("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+			}
+		?>
 		<div class="titreFichier">	
-			Mise en cache des photographies Terminée
+			La mise en cache des photographies est terminée !
 			<br><br>
-			<a href="<?php echo RetourEcranSources(); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a><br><br>		
+			<a href="<?php echo RetourEcranSources() ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
+			<br><br>		
 			Vous pouvez retourner à la liste des sources de photos en cliquant sur l'icône ci dessus.
-					
-
-
 		</div>
 	</div>
-
-	  <div id="main">
-<br>
-
-
-
+	<div id="main">
+		<br>
 	</div>
  
 </div>
 
 <script type="text/javascript" src="<?php Mini('js/CMDImgSource.js');?>"></script>
 <script>
-	EffacerChargement();
-	AfficheRechercheCMD(true);
+<?php 
+	if ($MAJ){	
+		echo 'EffacerChargement(); ';
+	}
+?>
+	//EffacerChargement();
 </script>
+
+
 
 </body>
 </html>
 
 
 <?php 
-
-
 
 function GenererCachePhoto($monProjet){ 
 	$dir = $monProjet->Dossier . '/*.*{jpg,jpeg}';

@@ -82,7 +82,7 @@ function GenererLeFichierNOM() {
 	//alert('TESTZ11bb  GenererLeFichierNOM !!!' + g_NomFichierEnCours);
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
 		//alert('TESTZ20  OuvrirSelectFichierLab0 !!!' + g_NomFichierEnCours);
-		InitInfoFichier();
+		//InitInfoFichier();
 		
 		if (g_IsPlancheSiteWEB){
 			//alert('TESTZ21  GenererFichiersWEB !!!' + g_SelectFichierLab);
@@ -494,26 +494,12 @@ function BilanFinTraitement(chronoDebut, nbErreur) {
 
 
 
-
+/*
 function InitInfoFichier() { 
 	try {
 		txtTraitement.text = "0 / " + String (g_CommandeLabo.NbPlanchesACreer());
 		fichierEnCours.text = 'Traitement de : ' + g_NomFichierEnCours;
-		/*while (UIListeMessage.items.length > 0){
-			UIListeMessage.remove(0);
-		}*/
-		//MsgLOGInfo('InitTableauFichier()');
-		//UIListeMessage.add ("item", "-");
-		//UIListeMessage.add ("item", "-");	
-		
-		/*Supression UIListeMessage 
-		for (var m = 0; m < g_CommandeLabo.NbPlanchesACreer() ; m++) {
-			var unProduit = new Produit (g_CommandeLabo.ListePlanches[m]);
-			//UIListeMessage.add ("item", FormatSTR("Commande : " + unProduit.Code, 55,' ',false)+ "  " + FormatSTR("a faire... ", 60,' ',false));
-			UIListeMessage.add ("item", "Commande : " + unProduit.Code + " a faire... ");			
-			//MsgLOGInfo(FormatSTR(unProduit.Code, 55,' ',false))
-		}
-		*/
+
 	}
 	catch(err) {
 		var msg = "Init de TableauFichier :  \n \n";
@@ -524,7 +510,7 @@ function InitInfoFichier() {
 }
 
 
-/*
+
 function MsgERREUR(Titre,Message){
 	MsgLOGInfo(Titre, Message, 'ERREUR', false, 'NL');
 }
@@ -630,7 +616,8 @@ function GenererFichiersWEB() {
 		var uneSource = new objSourceCSV(); 
 		uneSource = RecupSourceDepuisCode(cdecole);
 		
-		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/LUMYS-' +  uneSource.NomProjet;
+		
+		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/ARBO-' +  uneSource.NomProjet;
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
 		g_RepSOURCE  = uneSource.DossierSources;
 		g_TabListeNomsClasses = [];
@@ -644,37 +631,51 @@ function GenererFichiersWEB() {
 		
 		//InitGroupesClasseIndiv(theFolder, []);
 		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
-		var size = 0;
-		var i = 0;
-		for(var fichier in g_GroupeIndiv){
-			size++;
-		}	
-		progressBar.maxvalue = size;	
-		//alert("ZX001 : nb de fichier : " + size );	
+		//var size = 0;
+		//var i = 0;
+		alert('ZZZZ TYTY g_CommandeLabo.ListePlanches[0] =   ' + g_CommandeLabo.ListePlanches[0]);
+		var leSousGroupeDeFichier = [];
+		if (g_CommandeLabo.ListePlanches[0] == 'TOUTES LES PHOTOS'){
+			for(var fichier in g_GroupeIndiv){
+				//size++;
+				leSousGroupeDeFichier.push(fichier);
+			}	
+		}
+		else{
+			//alert("ZX001 : nb de fichier : " + leSousGroupeDeFichier.length );	
+			//var leSousGroupeDeFichier = ['0101.jpg', '0102.jpg'];
+			leSousGroupeDeFichier = g_CommandeLabo.ListePlanches;			
+		}
 
-		for(var fichier in g_GroupeIndiv){
-			i = i + 1;
-			progressBar.value = i ;
-			txtTraitement.text = String (i) + " / " + String (size);
-			fichierEnCours.text = 'Création arborescence web pour : ' + decodeURIComponent(fichier);
+		progressBar.maxvalue = leSousGroupeDeFichier.length;			
+		//for(var fichier in g_GroupeIndiv){//Pour tout les fichier du Source
+		for (var i = 0; i < leSousGroupeDeFichier.length; i++) {	
+				var fichier = leSousGroupeDeFichier[i];
+			//alert('leSousGroupeDeFichier['+i+'] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
+			//if (leSousGroupeDeFichier.includes(fichier)){
+				//i = i + 1;
+				progressBar.value = i + 1 ;
+				txtTraitement.text = String (i) + " / " + String (leSousGroupeDeFichier.length);
+				fichierEnCours.text = 'Création arborescence web pour : ' + decodeURIComponent(fichier);
 
-			//UI
-			Raffraichir(); // A voir ?		
+				//UI
+				Raffraichir(); // A voir ?		
 
-			//alert("ZXXDXDXD 01 : le fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
-			CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
+				//alert("ZXXDXDXD 01 : le fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
+				CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
 
-			if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
-			// Attention*
+				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
+				// Attention*
 
-			SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
-			EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
-			
-			//progressBar.value = i;
-			g_CommandeAVANCEMENT = Number( ( i + 1)  / (size - 1) ); //g_CommandeLabo.NbPlanchesACreer()
-			g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
-			txtTraitement.text = String ( i + 1 ) + " / " +  String (size);				
-			//alert("ZXXDXDXD 01 : g_CommandeAVANCEMENT : " + g_CommandeAVANCEMENT );
+				SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
+				EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
+				
+				//progressBar.value = i;
+				g_CommandeAVANCEMENT = Number( ( i + 1)  / (leSousGroupeDeFichier.length - 1) ); //g_CommandeLabo.NbPlanchesACreer()
+				g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
+				txtTraitement.text = String ( i + 1 ) + " / " +  String (leSousGroupeDeFichier.length);				
+				//alert("ZXXDXDXD 01 : g_CommandeAVANCEMENT : " + g_CommandeAVANCEMENT );
+			//}    
 			
 		}			
         if (!g_IsGenerationEnPause){ 
