@@ -12,6 +12,7 @@
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
 	
+	$sepFinLigne = '§';	
 	
 $codeSource = 'qsd';
 if (isset($_GET['codeSource'])) { // Test connexion l'API
@@ -22,26 +23,34 @@ if (isset($_GET['anneeSource'])) { // Test connexion l'API
 	$anneeSource = $_GET['anneeSource'];
 }
 
+$maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATSources');
+
 $MAJ = false;
 if (isset($_GET['MAJ'])) { // Lancement apres
-	$MAJ = $_GET['MAJ'];
+	$MAJ = ($_GET['MAJ']=='true')?true:false;
 }
 
 if($isDebug){
 	header("Cache-Control: no-cache, must-revalidate");
 }
 
+$lesPhotoSelection = '';
+if (isset($_POST['lesPhotoSelection']) ){
+	$lesPhotoSelection = $_POST['lesPhotoSelection'];
+	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesPhotoSelection;}	
+	///MAJFichierCommandes($lesCommandes, $codeSource, $anneeSource);
+}
 $lesCommandes = '';
 if (isset($_POST['lesCommandes']) ){
 	$lesCommandes = $_POST['lesCommandes'];
 	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesCommandes;}	
 	MAJFichierCommandes($lesCommandes, $codeSource, $anneeSource);
 }
-$lesFichierBoutique = '';
-if (isset($_POST['lesFichierBoutique']) ){
-	$lesFichierBoutique = $_POST['lesFichierBoutique'];
-	if ($isDebug){echo 'VOILA LES lesFichierBoutique : ' . $lesFichierBoutique;}	
-	MAJFichierBoutique($lesFichierBoutique, $codeSource, $anneeSource);
+$lesFichiersBoutique = '';
+if (isset($_POST['lesFichiersBoutique']) ){
+	$lesFichiersBoutique = $_POST['lesFichiersBoutique'];
+	if ($isDebug){echo 'VOILA LES lesFichiersBoutique : ' . $lesFichiersBoutique;}	
+	MAJFichierBoutique($lesFichiersBoutique, $codeSource, $anneeSource);
 }
 
 
@@ -51,14 +60,10 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-
-
     <title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
-	
-	
-	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 
 	
 
@@ -117,20 +122,46 @@ if (!$MAJ){
 		<div id="mySidenav" class="sidenav">
 		
 		
-		<!-- <a href="<?php // RetourEcranSources(); ?>" class="closebtn">&times;</a> -->
 		<a href="javascript:void(0)" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
 			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher Mes Commandes</a>	
-				<div id="myListeCommandes" class="ListeCommandes">		
+
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour tirage</a>	
+				<div id="myListePhoto" class="ListeCommandes">		
+					<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
+				</div>	
 				
-				</div>		
-				<div id="myListeFichiersBoutique" class="ListeFichiersBoutique">Photos pour presentation boutique :<br>
-				</div>
-				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandes(); ?>" enctype="multipart/form-data">	
-					<input type="hidden" name="lesCommandes" id="lesCommandes" value="" /> 
-					<input type="hidden" name="lesFichierBoutique" id="lesFichierBoutique" value="" /> 
 	
-					<button type="submit">Quitter et Enregistrer ces Commandes</button>
+				<div class="dropdown">
+					
+					<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
+					<div id="myDropdown" class="dropdown-content">
+						<a href="#about">Agrandissement  20x20cm</a>
+						<a href="#base">Quattro  20x20cm</a>
+						<a href="#about">Agrandissement  20x20cm</a>
+						<a href="#base">Quattro  20x20cm</a>
+						<a href="#about">Agrandissement 20x20cm</a>
+						<a href="#base">Quattro  20x20cm</a>
+					</div>
+				</div>
+
+				<br><br>	
+				<a href="javascript:void(0)" class="btnAjouterTirages" onclick="TransfererCMD()">Ajouter tirages</a><span id="SelectProduit" >Agrandissement  20x20cm</span>		 
+				<br><br>
+				<div id="myListeCommandes" class="ListeCommandes">		
+					<?php echo str_replace($sepFinLigne, "<br>", $lesCommandes); ?>      
+				</div>	
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour fichiers boutiques</a>	
+				<div id="myListeFichiersBoutique" class="ListeCommandes">
+					<?php echo str_replace($sepFinLigne, "<br>", $lesFichiersBoutique); ?>
+				</div>
+				
+				<br><br><br>				
+				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandes($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
+					<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
+					<input type="hidden" name="lesCommandes" id="lesCommandes" value="<?php echo $lesCommandes; ?>" /> 					
+					<input type="hidden" name="lesFichiersBoutique" id="lesFichiersBoutique" value="<?php echo $lesFichiersBoutique; ?>" /> 
+	
+					<button type="submit" class="btnEnregistrer">Quitter et enregistrer ces commandes</button>
 				</form> 	
 					
 			</div>		
@@ -153,22 +184,25 @@ if (!$MAJ){
 		
 		
 		</div>	
-
-
-
 	</div>
- 
 </div>
 
 <script type="text/javascript" src="<?php Mini('js/CMDImgSource.js');?>"></script>
 <script>
 <?php 
 if ($MAJ){	
-	echo '	
-	EffacerChargement();
-	AfficheRechercheCMD(true);
-	openNav(); 
-	';
+	$AffichePanneau = false;
+	//echo "alert('MAJAffichage');";
+	echo 'MAJAffichageSelectionPhotos(true);';
+	
+	//echo 'MAJEnregistrementSelectionPhotos();';
+	if(($lesPhotoSelection != '') || ($lesCommandes != '') || ($lesFichiersBoutique != '')) {$AffichePanneau  = true; }
+	echo 'EffacerChargement();';
+	if($AffichePanneau) {
+		echo 'AfficheRechercheCMD(true);';
+	}else{
+		echo 'AfficheRechercheCMD(false);';
+	}
 }
 ?>
 	/*EffacerChargement();
@@ -182,11 +216,11 @@ if ($MAJ){
 
 <?php 
 function MAJFichierCommandes($ListeFichier, $codeSource, $anneeSource){ 
-echo 'VOILA LES MAJFichierCommandes : ' . $ListeFichier;
+//echo 'VOILA LES MAJFichierCommandes : ' . $ListeFichier;
 }
 
 function MAJFichierBoutique($ListeFichier, $codeSource, $anneeSource){ 
-echo 'VOILA LES lesFichierBoutique : ' . $ListeFichier;
+//echo 'VOILA LES lesFichiersBoutique : ' . $ListeFichier;
 }
 
 
@@ -225,6 +259,8 @@ function AfficheSOURCESEcole($monProjet){
 	CreationDossier($monProjet->Dossier . '/Cache');
 
 	$affiche_Tableau = '<p>';
+
+	$PrecedentEstGroupe = false;
 		
 	//$affiche_Tableau .= '				<table>';	
 	foreach($files as $image){ 
@@ -255,11 +291,14 @@ function AfficheSOURCESEcole($monProjet){
 		 $mesSources = new CImgSource($FichierSource, $Dossier, $monProjet->CodeEcole,$monProjet->Annee,$monProjet->ScriptsPS);
 		 
 		
-		 if ($mesSources->isGroupe()){
+		 if ($mesSources->isGroupe() && !$PrecedentEstGroupe){
 			 //echo 'GROUPE';
 			 $affiche_Tableau .= '<div class="ligne_classe">'.NomClasseDepuisNomGroupe($mesSources->Fichier).'</div>';
+			 $PrecedentEstGroupe = true;
 			 //$affiche_Tableau .= '<tr><td style=vertical-align:top>';
-		 }
+		 }else{
+			$PrecedentEstGroupe = false;	
+		}
 		$affiche_Tableau .= $mesSources->Affiche();
 	}
 
@@ -272,15 +311,34 @@ function AfficheSOURCESEcole($monProjet){
 	
 function RetourEcranSources($ParamAnnee = ''){
 	$RetourEcran = 'CATSources.php?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
-	return $RetourEcran . (($ParamAnnee != '')?'&AnneeScolaire='.$ParamAnnee :'') ;
+	return $RetourEcran . '&AnneeScolaire=' . $ParamAnnee ;
 }	
 
-function ValidationCommandes($ParamAnnee = ''){
+function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 	//$RetourEcran = 'CMDImgSource.php'. ArgumentURL('&codeSource=' . $GLOBALS['codeSource'] . '&anneeSource=' . $GLOBALS['anneeSource']. '&MAJ=true') ;
 	
-	$RetourEcran = 'CATSources.php' . ArgumentURL(($ParamAnnee != '')?'&AnneeScolaire='.$ParamAnnee :''); 
-	return $RetourEcran ;
+	//$RetourEcran = 'CATSources.php' . ArgumentURL(($ParamAnnee != '')?'&AnneeScolaire='.$ParamAnnee :''); 
+
+	$fichierARBO = NomCorrectionARBO($NomProjet);
+
+	$CMDhttpLocal ='';			
+	//$NBPlanches = NBfichiersARBOWEB($fichier);
+	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
+	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
+	//$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
+	$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
+	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
+	$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode($fichierARBO));	
+	
+	$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
+
+	return $retourMSG ;
 }	
+
+function NomCorrectionARBO($NomProjet) {
+	//return 'ARBO-' . date("Y-m-d") . '-' . $NomProjet. '.web';
+	return 'CORR-' . $NomProjet. '.web';
+  }
 
 function CreationDossier($nomDossier) {
 	if (!is_dir($nomDossier)) {

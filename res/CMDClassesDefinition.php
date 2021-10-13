@@ -481,42 +481,40 @@ class CImgSource {
 			}		
 			$resultat .= '   
 			<span oncontextmenu="return monMenuContextuel(this)"
-			  onclick="SelectionPhoto(this)" 
+			  onclick="CopierCommandes(this)" 
 			  id="'. urldecode($this->Fichier) . '" 
-			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'" 
-			  title="'. urldecode($this->Fichier) . '" 
-			  paramLien="'. ArgumentURL('&urlImage=' . $LienBig ) . '">';		
+			  Nb="0" 
+			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';		
+
+
+		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->Annee). '&urlImage=' . $LienBig;
+			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
+			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
+			<input type="hidden" name="lesCommandes" id="ZlesCommandes" value="0" /> 
+			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> 
+
+			<button type="submit" class="EnregistrerPhoto"><img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">';
+			$resultat .= '</button>';
+			$resultat .= '</form>';		
 			
+			
+			$resultat .= '<span class="textImageSource">';	
+			
+			$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
+						<span class="NombrePhoto"> 0 </span>
+						<span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';
 		
-			
+			$resultat .= '</span>';	
+
 			$resultat .= ($this->isGroupe()?'<span>':'');
-			
-
-			
-			/*
-			$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';				
-			*/
-			
-			
-			$resultat .= '<img id="'.($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">';	
-
-			
-			$resultat .= '<div class="textImageSource">';	
-			
-			
-			$resultat .= '<h1><div onclick="NbPlancheMOINS(this)"  class="moinsplus">-</div><B> 1 </B><div onclick="NbPlanchePLUS(this)"  class="moinsplus">+</div></h1>';
-			
-			
-			//$resultat .= '<h1>-   1   +</h1>';	
-			$resultat .= '</div>';	
 			
 			$resultat .= ($this->isGroupe()?'</span>':'');
 			$resultat .= '<p>'. substr($this->Fichier, 0, -4)  .'</p>';
-			//Affichage Nombre +-
-				
-			
+
+			$resultat .= '<div class="ImageFichierWeb"></div>';		
+		
 		$resultat .= '</span> ';
-		//$resultat .= '</div>';
+		
 		return $resultat;
 	}
 	function Ecrire($tabPlanche, &$isRecommande){
@@ -539,7 +537,6 @@ class CImgSource {
 			
 			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
 			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
-			//RecopierPlanche($LienBig,$LienBig.".jpg");
 		}
 
 		return $resultat;				
@@ -549,7 +546,7 @@ class CImgSource {
 function csv_to_array($filename='', $delimiter=';')
 {
     //echo ('$filename ' . $filename);
-	if(!file_exists($filename) || !is_readable($filename))
+	if (!file_exists($filename) || !is_readable($filename))
         return FALSE;
 
     $header = NULL;

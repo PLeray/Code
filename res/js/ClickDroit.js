@@ -9,22 +9,26 @@ document.onmousemove = function(e)
  
 function Voir(element)
 {
-  window.location.href= 'CMDAffichePlanche.php' + element.getAttribute('paramLien');
+  //window.location.href= 'CMDAffichePlanche.php' + element.getAttribute('paramLien');
+  SelectionPhoto(element);
+  openNav();
 }
  
 function FichierWeb(element)
 {
   AjoutFichierBoutique(element);
+  openNav();
   //alert('xcvxcvxcv.id : ' + element.getAttribute('id'));   
 }  
 
 function Enregistrer(element)
 {
-  alert('xcvxcvxcv.id : ' + element.getAttribute('paramLien'));    
+	window.location.href= 'CMDAffichePlanche.php' + element.getAttribute('paramLien');
+	alert('xcvxcvxcv.id : ' + element.getAttribute('paramLien'));    
 }  
  
 function monMenuContextuel(element)
-{
+{	var verbe = '';
 	var x = document.getElementById('ctxmenu1');
 	if(x) x.parentNode.removeChild(x);
 
@@ -42,14 +46,15 @@ function monMenuContextuel(element)
 	d.appendChild(p);
 	p.onclick=function() { Voir(element) };
 	p.setAttribute('class', 'ctxline');
-	p.innerHTML = "Voir l'image en grand";
+	verbe = (document.getElementById("lesPhotoSelection").value.indexOf(element.getAttribute('id'))>-1)?"Supprimer":"Ajouter";
+	p.innerHTML = verbe + " photo pour un tirage";
 
 	var p2 = document.createElement('p');
 	d.appendChild(p2);
 	p2.onclick=function() { FichierWeb(element) };  
 	p2.setAttribute('class', 'ctxline');
-	var verbe = (document.getElementById("lesFichierBoutique").value.indexOf(element.getAttribute('id'))>-1)?"Annuler ":"Créer ";
-	p2.innerHTML = verbe + "fichiers pour boutique web"; 
+	verbe = (document.getElementById("lesFichiersBoutique").value.indexOf(element.getAttribute('id'))>-1)?"Annuler":"Créer";
+	p2.innerHTML = verbe + " fichiers pour boutique web"; 
 	
 	
 	

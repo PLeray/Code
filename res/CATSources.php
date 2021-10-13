@@ -55,30 +55,30 @@ $AnneeScolaire = '2021-2022';
 if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 
+/**/if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
+	if ($GLOBALS['isDebug']){
+		echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
+		}
+	BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
+}else 
 
-
-	
-
-
-
+if (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
+	$CMDwebArbo = '';
+	if (isset($_GET['CMDwebArbo']) ){
+		$CMDwebArbo = $_GET['CMDwebArbo'];
+		if ($isDebug){
+			echo '<br><br>VOILA LES $_GET[CMDwebArbo  : ' . $CMDwebArbo;
+		}	
+	}
+	BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode'], $_GET['CodeEcole'],$CMDwebArbo);
+}
 
 if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
 	if ($GLOBALS['isDebug']){
 		echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
 		}
-	BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
-} 
-elseif (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
-	$lesFichierBoutique = '';
-	if (isset($_POST['lesFichierBoutique']) ){
-		$lesFichierBoutique = $_POST['lesFichierBoutique'];
-		if ($isDebug){
-			echo '<br><br>VOILA LES $_POST[lesFichierBoutique :  ' . $_POST['lesFichierBoutique']  . ' : ' . $lesFichierBoutique;
-		}	
-	}
-	BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode'], $_GET['CodeEcole'],$lesFichierBoutique);
+	BDDLibreRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode'], $_GET['CodeEcole'], isset($_GET['AnneeScolaire']), $CMDwebArbo);
 }
-
 
 
 
@@ -188,7 +188,7 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV, $AnneeScolaire){
 			
 			// supr pour Mac qu'en y en a qu'un NE FONCTIONNE PAS 
 			array_multisort($NomProjet, SORT_DESC, $TabCSV); // Tri par nom de projet
-
+			$nbFichier = 0;
 			$nb_fichier = $NbLignes;
 			for($i = 0; $i < $NbLignes; $i++)
 			{ 
@@ -203,10 +203,12 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV, $AnneeScolaire){
 					<td class="titreCommande" ><div class="tooltip">' . $TabCSV[$i]["Annee"] .'
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>		
 					<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["Annee"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>
-								<span class="tooltiptext">'. $Dossier . '</span></div></td>						
-					<td>'. CodeLienImageDossier($Dossier) . '</td>';				
+								<span class="tooltiptext">'. $Dossier . '</span></div></td>';						
+					$nbFichier = NBfichiersDOSSIER($Dossier);
+					$affiche_Tableau .= '<td>'. CodeLienImageDossier($Dossier,$nbFichier) . '</td>';				
 							
-					$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"], $TabCSV[$i]["Code"]).'"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($TabCSV[$i]["NomProjet"]) . '</a></td>';	
+					//$affiche_Tableau .= '<td><a href="' . LienEtatArbo($TabCSV[$i]["NomProjet"], $TabCSV[$i]["Code"]).'"  title="Faire un ensemble de fichier pour presentation web">' . LienImageArbo($TabCSV[$i]["NomProjet"]) . '</a></td>';	
+					$affiche_Tableau .= '<td>' . LienImageArbo($TabCSV[$i]["NomProjet"], $TabCSV[$i]["Code"],$nbFichier).'</td>';	
 
 					$affiche_Tableau .=	'</tr>';	
 				}
@@ -216,25 +218,22 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV, $AnneeScolaire){
 	return $affiche_Tableau;
 }
 
-function CodeLienImageDossier($Dossier){	
+function CodeLienImageDossier($Dossier, $nbFichier){	
 /*	*/
 	$Lien = $GLOBALS['g_IsLocalMachine'] ;
 	$DossierOK =($Lien )? 'OK':'KO' ;
 	$codeHTML = '<div class="containerCMDPLanche">
-		<div class="txtCMDPLanche">' . NBfichiersDOSSIER($Dossier) . ' <span class="mini">photos</span><br>' . NBClassesDOSSIER($Dossier) .  ' <span class="mini">classes</span></div>'. '<img src="img/Dossier' . $DossierOK . '.png"></div>';	
+		<div class="txtCMDPLanche">' . $nbFichier . ' <span class="mini">photos</span><br>' . NBClassesDOSSIER($Dossier) .  ' <span class="mini">classes</span></div>'. '<img src="img/Dossier' . $DossierOK . '.png"></div>';	
 	
 	if ($Lien) {
 		$codeHTML = '<div class="tooltip">
 		<a href="' . LienOuvrirDossierOS($Dossier,'CATSources') . '" >' . $codeHTML . '</a>
-		<span class="tooltiptext"><br>Cliquez pour aller vers le dossier des photos sources<br><br></span></div>';
+		<span class="tooltiptext"><br>Cliquez pour aller vers le dossier des fichiers<br><br></span></div>';
 		
 	}
 	$codeHTML = $codeHTML ;
 	
 	return $codeHTML;
-
-	//<td><div class="tooltip"><a href="' . LienOuvrirDossierOS($Dossier,'CATSources') . '" >' . NBfichiersDOSSIER($Dossier) . '</a></td>';
-	
 }
 
 
@@ -276,25 +275,87 @@ function NBClassesDOSSIER($Dossier) {
 	$NbFicher = count($files);/* Variable $compteur pour compter (count) les fichiers lister ($files) dans le dossier */
 	return $NbFicher;
 }
-function LienEtatArbo($fichier , $CodeEcole) {
+
+
+function LienEtatArbo($fichier , $CodeEcole, $nbFichier) {
 	$isDone	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($fichier) . '2');
 	$fichierARBO = NomfichierARBO($fichier);
 	$retourMSG = '#';
 	if(! $isDone){
 		$CMDhttpLocal ='';			
-		$NBPlanches = NBfichiersARBOWEB($fichier);
+		//$NBPlanches = NBfichiersARBOWEB($fichier);
 		//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 		//echo "Apres move_uploaded_file";
-		$CMDhttpLocal = '&CMDdate=' . 'LUMYS-'; //substr($fichierARBO, 5, 10);	
-		//$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
+		$CMDhttpLocal .= '&CMDdate=' . date("Y-m-d"); 
+		$CMDhttpLocal .= '&CMDnbPlanches=' . $nbFichier;
+		
+		
+		
+		$CMDhttpLocal .= '&CMDwebArbo='. urlencode('ARBO');
 		$CMDhttpLocal .= '&CodeEcole=' . $CodeEcole;
-		$CMDhttpLocal .= '&CMDwebArbo=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));		
-		//$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));	
+		$CMDhttpLocal .= '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;  
+		//$CMDhttpLocal .= '&CMDwebArbo=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));		
+		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));	
 		
 		$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);				
 	}	
 	return $retourMSG;	
 }
+
+function LienImageArbo($fichier, $CodeEcole, $nbFichier) {
+	$ImageLien = '';
+	$title = '';
+	$LienPage ='';	
+	$isOn	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($fichier) . '0');
+	$isDone	= isArboPrete($fichier);
+	//echo  '<br> isDone : ' . $isDone;
+	if ($isDone){
+		$ImageLien = 'src="img/ArboOK.png"';
+		if ($GLOBALS['g_IsLocalMachine']) {
+			$LienPage = LienOuvrirDossierOS($GLOBALS['repWEBARBO'] .'ARBO-' . $fichier,'CATSources');
+			$title = 'Voir : Ensemble de fichier pour presentation web';
+		}else{ 
+			$title = 'les fichier sont pret surl la machine "serveur"';
+		}
+	} elseif($isOn){
+		$ImageLien = 'src="img/ArboON.png"';
+		$title = 'Commande : Ensemble de fichier pour presentation web';
+		$LienPage = 'CATPhotolab.php' . ArgumentURL();	
+	}else{
+		$ImageLien = 'src="img/ArboKO.png"';
+		$title = 'Faire : Ensemble de fichier pour presentation web';				
+		//$NBPlanches = NBfichiersARBOWEB($fichier);
+		//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $LienPage, $Compilateur);
+		//echo "Apres move_uploaded_file";
+		$LienPage = '&CMDdate=' . date("Y-m-d"); 
+		$LienPage .= '&CMDnbPlanches=' . $nbFichier;
+		//$LienPage .= '&CMDwebArbo=' . $NBPlanches;
+		$LienPage .= '&CMDwebArbo='. urlencode('ARBO');
+		$LienPage .= '&CodeEcole=' . $CodeEcole;
+		$LienPage .= '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;  
+		//$LienPage .= '&CMDwebArbo=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));		
+		$LienPage .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents(NomfichierARBO($fichier)))));	
+		
+		$LienPage = $GLOBALS['maConnexionAPI']->CallServeur($LienPage);	
+
+	}
+	//return '<img ' . $ImageLien. ' class="imgArbo">';
+	return  '<a href="' . $LienPage .'" title="'.$title .'"><img ' . $ImageLien. 'class="imgArbo"></a>';
+
+
+	
+
+} 
+
+
+function isArboPrete($NomProjet) {
+	$DossierCMDLABO = $GLOBALS['repCMDLABO'];
+	$files = glob( $DossierCMDLABO . NomfichierARBO($NomProjet) .'{2,3,4,5}',GLOB_BRACE);	
+	//$NbFicher = count($files); 
+	//echo  '<br> isArboPrete (count($files) > 0) : ' . (count($files) > 0);
+	return (count($files) > 0)?true:false;
+}
+
 
 function SUPRAccents($str, $charset='utf-8' ) {
     $str = htmlentities( $str, ENT_NOQUOTES, $charset );
@@ -303,14 +364,6 @@ function SUPRAccents($str, $charset='utf-8' ) {
     $str = preg_replace( '#&[^;]+;#', '', $str );    
     return $str;
 }
-
-function LienImageArbo($NomProjet){
-	$isOn	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($NomProjet) . '0');
-	$isDone	= file_exists($GLOBALS['repCMDLABO'] .  NomfichierARBO($NomProjet) . '2');
-	$Lien = ($isOn?'src="img/ArboON.png" alt="En cours"':($isDone?'src="img/ArboOK.png" alt="Oui"':'src="img/ArboKO.png" alt="Non"')). ' class="imgArbo"';
-	//return $Lien;
-	return '<img ' . $Lien . '>';
-} 
 
 function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $strListeFichiers = ''){
 	$listeFichiers = explode("_", $strListeFichiers);
@@ -321,8 +374,10 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $strListeFichiers 
 		echo '<br><br>' . $strListeFichiers;
 	}
 	
-	$line ='';
+	$Tabl = [];
 	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
+
+	if (file_exists($strURL_NewFichier)) { 	$Tabl = file($strURL_NewFichier); }//Les commande existantes s'il y en a 
 	
 	$file = fopen($strURL_NewFichier, 'w');
 		$ligne = '[Version : 2.0' . $BDDRECCode . "\n";
@@ -331,16 +386,21 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $strListeFichiers 
 		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
 		$nomFichier = utf8_decode($NewFichier);
 		
-		$Type = ($strListeFichiers == '')?'@ARBO_':'@CORR_';
-		
-		$ligne =  $Type . substr($nomFichier,5 , -4).'_'.$CodeEcole.'_Fichiers de présentation pour boutique en ligne!@' . "\n";
+		$ligne =   (($strListeFichiers != '')?'@CORR_':'@ARBO_') . substr($nomFichier,5 , -4).'_'.$CodeEcole.'_Fichiers de présentation pour boutique en ligne!@' . "\n";
 		//$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";
 		fputs($file, $ligne);	 //@2021-02-26_L2-Ecole TEST-MAROU_ACC7_Ecole web !@ 
 		
-		if (count($listeFichiers)>0){
+		
+		
+		if ($strListeFichiers != ''){
+			//Les commande existantes
+			for($i = 3; $i < count($Tabl) ; $i++){		
+				if ($Tabl[$i] != '' ) {fputs($file, $Tabl[$i]);}				
+			}	
 			for($i = 0; $i < count($listeFichiers); $i++){		
-				fputs($file, $listeFichiers[$i]);
+				fputs($file, $listeFichiers[$i] . "\n");
 			}
+			//fputs($file, 'nb S ' . count($listeFichiers) . '  0 : ' .  $listeFichiers[0]);
 		}
 		else {
 			fputs($file, 'TOUTES LES PHOTOS');
@@ -348,5 +408,48 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $strListeFichiers 
 	fclose($file);	
 }
 
+function BDDLibreRECFileLab($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire, $strListeFichiers = ''){
+	$listeFichiers = explode("_", $strListeFichiers);
+	
+	if ($GLOBALS['isDebug']){
+		echo "<br> STOP !<br> ";
+		echo '<br><br>' . $NewFichier;
+		echo '<br><br>' . $strListeFichiers;
+	}
+	$monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $CodeEcole, $Annnescolaire);
+	
+	$Tabl = [];
+	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
 
+	if (file_exists($strURL_NewFichier)) { 	$Tabl = file($strURL_NewFichier); }//Les commande existantes s'il y en a 
+	
+	$file = fopen($strURL_NewFichier, 'w');
+		$ligne = '[Version : 2.0' . $BDDRECCode . "\n";
+		fputs($file, $ligne);
+		$ligne = '{Etat 1 :0%%En Cours....}' . "\n";
+		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
+		$nomFichier = utf8_decode($NewFichier);
+		
+		$ligne =   (($strListeFichiers != '')?'@CORR_':'@ARBO_') . substr($nomFichier,5 , -4).'_'.$CodeEcole.'_Fichiers de présentation pour boutique en ligne!@' . "\n";
+		//$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";
+		fputs($file, $ligne);	 //@2021-02-26_L2-Ecole TEST-MAROU_ACC7_Ecole web !@ 
+		
+		if ($strListeFichiers != ''){
+			$ligne =    '#Libre__Date du jour# ' . "\n";
+		
+
+			//Les commande existantes
+			for($i = 3; $i < count($Tabl) ; $i++){		
+				if ($Tabl[$i] != '' ) {fputs($file, $Tabl[$i]);}				
+			}	
+			for($i = 0; $i < count($listeFichiers); $i++){		
+				fputs($file, $listeFichiers[$i] . "\n");
+			}
+			//fputs($file, 'nb S ' . count($listeFichiers) . '  0 : ' .  $listeFichiers[0]);
+		}
+		else {
+			fputs($file, 'TOUTES LES PHOTOS');
+		}
+	fclose($file);	
+}
 ?>

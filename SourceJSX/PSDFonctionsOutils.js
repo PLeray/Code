@@ -462,7 +462,8 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							&& unProduit.Type != "CUBE" 
 							&& unProduit.Type != "RUCH"						
 							&& unProduit.Type != "CADRE-GP" // utilité ???
-							&& unProduit.Type != "INSITU-GP"){
+							&& unProduit.Type != "INSITU-GP"
+							&& unProduit.Type != "" ){// NEW PSL OCTOBRE 2021	
 							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Type);
 							//Raffraichir(); AVOIR new 27-08
 						}
@@ -580,10 +581,17 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 							myDocument.rotateCanvas(90)  
 						}  
 					}	
+
 					//alert('TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
 					//////////////// VERIF-DPI //////////////////////
 					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');	
-					
+					//HACK pour passer au quattro reel dans LR donc si taille >7204 (69cm) on rogne	à 61cm
+					//alert('myDocument.width : ' + myDocument.width );
+					if (myDocument.width > 7500) {reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('ROGNAGE-61CM');} 
+						
+						
+
+								
 					
 					// CADRE-CARRE-ID !!!!!!!!!
 					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
@@ -1220,8 +1228,16 @@ function CreerQUATTROPresentationWEB(unfichier, extension, unDossier){
 				var reussiteTraitement = (laPhoto != null);
 				reussiteTraitement = reussiteTraitement && CreerUnDossier(unPathPlanche.slice(0,-1));
 				if (reussiteTraitement){
+
 					// Pour avoir des planches homogenes dans le viewer de commandes					
-					var myDocument = app.activeDocument; 				
+					var myDocument = app.activeDocument; 	
+					
+					//HACK pour passer au quattro reel dans LR donc si taille >7204 (69cm) on rogne	à 61cm
+					//alert('myDocument.width : ' + myDocument.width );
+					if (myDocument.width > 7500) {reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('ROGNAGE-61CM');} 
+					
+
+
 					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Instantane');
 					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
 					//1

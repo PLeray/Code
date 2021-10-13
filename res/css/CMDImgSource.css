@@ -114,21 +114,18 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 /* ////////////////////////   BOUTON + ET - ///////////////////// */
-.affichageNBPage {
- /*    
-	right: 20px;
-
-	z-index: 1; 
-	*/
-	position: absolute;
-	top: -5px;
+.NombrePhoto {
+  /*display: inline-block;*/
+  font-weight: bold;
 	text-align: center;
 	  margin: 0 auto;
-	width: 100%;
+
+  color: var(--texteGris);
 	
 }
 
 .moinsplus {
+  cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     background-color: var(--boutonRouge);
@@ -143,7 +140,47 @@ p {/*Police Détails Fichier commande et commun  */
     box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
+.EnregistrerPhoto {
+  all: unset;
+  cursor: pointer;
 
+}
+.btnAjouterTirages {
+
+  text-align: center;
+  z-index: 9; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: var(--boutonRouge); /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 10px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 12px; /* Increase font size */
+}
+
+.btnAjouterTirages:hover { 
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
+.btnEnregistrer {
+  all: unset;
+  text-align: center;
+  z-index: 9; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: var(--boutonVert); /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 14px; /* Increase font size */
+}
+
+.btnEnregistrer:hover {
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+
+}
 #btnRemonter {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -161,7 +198,7 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 #btnRemonter:hover {
-  background-color: #555; /* Add a dark-grey background on hover */
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
 /* The Loupe Button (x) <img src="img/search-more.png">*/ 
@@ -253,7 +290,7 @@ text-align: right;
 .grosNumCMD {
   font-weight: bold;
   color: black;
-  font-size: 30x;
+  font-size: 30px;
 }
 .active, .Titrecommande:hover {
   /*background-color: var(--FondLigneTabGrisClair);*/
@@ -264,28 +301,30 @@ text-align: right;
 .ListeCommandes {
 	 /*width: auto;97%;*/
 	display: block;
-
-	margin :10px;
+  font-size: 12x;
+  margin : 10px 20px 10px 0px;
 padding: 5px;
-
+height: 75px;	/**/
+max-height: 200px;
+overflow-y: scroll;
+font-size: 12px;
 	/*position: relative;
 	background-color: white;*/
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	transition: max-height 0.2s ease-out;
 }
 
-.ListeFichiersBoutique {
-	 /*width: auto;97%;*/
-	display: block;
 
-	margin :10px;
-padding: 5px;
+.infoRecommandes {
+  /*width: auto;97%;*/
+ display: block;
 
-	/*position: relative;
-	background-color: white;*/
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	transition: max-height 0.2s ease-out;
+ margin-left :50px;
+
+
+
 }
+
 
 .Contenucommande {background-color: white;
 	
@@ -306,58 +345,39 @@ padding: 5px;
 .PlancheIndiv {
 	background-color: var(--FondLigneTabGrisClair);
 	display: inline-block;	 
-
 	margin: 0px 20px 10px 20px;
-	/*margin: 0px 20px 10px 20px;*/	
-}
-.PlancheIndiv .textImageSource {
-	display: none;
+  position: relative;
 }
 
+.PlancheGroupe {
+	background-color: var(--FondLigneTabGrisClair);
+  vertical-align: top;
+	margin: 0px 20px 10px 20px;
+	float: left;
+  position: relative;
+}
+
+.GroupeSELECTION {	 
+	float: left;
+	margin: -5px 15px 5px 15px;
+	border: 5px dashed var(--boutonVert);
+  position: relative;
+}
+
+	
 .IndivSELECTION {
 	display: inline-block;	 
-
 	margin: -5px 15px 5px 15px;
 	border: 5px dashed var(--boutonVert);
 	position: relative;
 }
 
-
-.IndivSELECTION .textImageSource {
-	background: var(--FondLigneTabGrisClair);
-	z-index: 10;
-	position: absolute;
-	text-align: center;
-	font-family: "Courier New", Times, serif;
-	margin: 0 auto;
-	left: 0;
-	right: 0;
-	top: 30%;
-	color: blue;
-	width: 100%;
-	border-top: 1px solid var(--FondLigneTabGrisFonce);
-	border-bottom: 1px solid var(--FondLigneTabGrisFonce);
-}
-
-.PlancheGroupe {
-	background-color: var(--FondLigneTabGrisClair);
-		display: inline-block;	 
-		vertical-align: top;
-	/*display: block;	*/
-	margin: 0px 20px 10px 20px;
-	float: left
-}
+.PlancheIndiv .textImageSource,
 .PlancheGroupe .textImageSource {
 	display: none;
 }
 
-.GroupeSELECTION {
-	/*display: inline-block;*/	 
-		float: left;
-	margin: -5px 15px 5px 15px;
-	border: 5px dashed var(--boutonVert);
-position: relative;
-}
+.IndivSELECTION .textImageSource,
 .GroupeSELECTION .textImageSource {
 	background: var(--FondLigneTabGrisClair);
 	z-index: 10;
@@ -367,12 +387,44 @@ position: relative;
 	margin: 0 auto;
 	left: 0;
 	right: 0;
-	top: 30%;
-	color: blue;
+  top: 50%; /* poussé de la moitié de hauteur du référent */
+  transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
 	width: 100%;
 	border-top: 1px solid var(--FondLigneTabGrisFonce);
 	border-bottom: 1px solid var(--FondLigneTabGrisFonce);
+  padding: 10px 0px 10px 0px ;
 }
+
+
+/*
+.GroupeSELECTION .textImageSource {
+	background: var(--FondLigneTabGrisClair);
+	z-index: 10;
+	position: absolute;
+	text-align: center;
+	font-family: "Courier New", Times, serif;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+  top: 50%; 
+  transform: translateY(-50%); 
+
+	width: 100%;
+	border-top: 1px solid var(--FondLigneTabGrisFonce);
+	border-bottom: 1px solid var(--FondLigneTabGrisFonce);
+  padding: 10px 0px 10px 0px ;
+}
+*/
+.ImageFichierWeb {
+  display: none;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  bottom: -6px;
+  right:-18px;
+  background-image: url('../img/fichiers-Web.png');
+}
+
 .ligne_classe { 
 	display: flex; 
 	flex-direction: row; 
@@ -390,11 +442,7 @@ position: relative;
 	flex: 1 1; 
 	border-bottom: 2px solid var(--FondLigneTabGrisFonce);
 	margin: auto; 
-} 
-
-
-
-
+}
 
 .overlay {
   position: absolute;
@@ -412,7 +460,7 @@ position: relative;
 }
 
 #ImgPlancheIndiv {
-	cursor: pointer;
+  cursor: url('../img/mini-Loupe.png'), pointer;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	width: 151px;
 
@@ -422,7 +470,7 @@ position: relative;
 #ImgPlancheIndiv:hover {opacity: 0.7;}
 
 #ImgPlancheGroupe {
-	cursor: pointer;
+  cursor: url('../img/mini-Loupe.png'), pointer;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 	width: 350px;
@@ -773,8 +821,7 @@ display: none ;
   font-family:Arial, Helvetica, sans-serif;
   overflow:visible;
 }
-.ctxline:hover
-{
+.ctxline:hover{
   border:1px solid #BBB;
   background-color: var(--boutonVert);
   color: white;
@@ -791,11 +838,70 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
     endColorstr='#e6e6e6', GradientType=0); */
 }
 
-#content
-{
+#content{
   position:static;
   margin-left: 218px;
   margin-top: 92px;	
 } 
+
+
+/*         DROP LISTE //////////////////////////*/
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#ZoneSaisie {
+  box-sizing: border-box;
+  background-image: url('../img/searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 12px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  width:  240px;
+}
+
+#ZoneSaisie:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+  font-size: 10px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 5px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+#SelectProduit {
+  font-size: 12px;
+}
 
 

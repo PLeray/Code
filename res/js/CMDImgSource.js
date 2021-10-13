@@ -1,3 +1,5 @@
+var sepFinLigne = '§';
+
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
@@ -45,7 +47,7 @@ function AfficheRechercheCMD(isAffiche) {
 /********************************/
 window.onload = function (){ 
 //alert('Onload :!!');
-	InitCommandes();
+	//InitCommandes();
 	EffacerChargement();
 };
 
@@ -120,218 +122,53 @@ function topFunction() {
 } 
 
 
-
-//function InitCommandes(referme = true) {
-function InitCommandes(referme) {
-	var referme = (typeof referme !== 'undefined') ? referme : true;	
-    var cmd, i, etat;	
-	cmd = document.getElementsByClassName('Contenucommande');
-    for (i = 0; i < cmd.length; i++) {
-		if (referme){
-			etat = 'block';
-			if (getCookie(cmd[i].id)=='cache'){	etat = 'none';}
-			cmd[i].style.display = etat;						
-		}else{
-			cmd[i].style.display = 'block';			
-		}
-    }	
-	MAJPage();	
-}
-
-function setCookie(cname, cvalue, exdays) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-	var expires = "expires="+d.toUTCString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-	var name = cname + "=";
-	var ca = document.cookie.split(';');
-	for(var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-		}
-	}
-	return "";
-}
-
-function filterFunction() {
-	var input, filter;  
-	input = document.getElementById("zoneRecherche");
-	filter = input.value.toUpperCase();	
-	//var elementsRech = input.value.toUpperCase().split(' ');
-	RechercheMulti(filter);
-}
-
-function RechercheMulti(strElementsRech) {
-	var tabElementsRech = strElementsRech.split(' ');
-    var cmd, i, e, listDrop  ;
-	var tabCMD = [];
-	var synthTabCMD = [];	
-	document.getElementById("zoneAffichagePhotoEcole").removeAttribute("mark"); 
-	for (e = 0; e < tabElementsRech.length; e++) {
-		////////////////////////////////////////////////:
-		/* pour les num de commandes */
-		cmd = document.getElementsByClassName("commande");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				texteColoration = cmd[i].getElementsByTagName("button")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);			
-			
-				tabCMD.push(cmd[i].id.toUpperCase()); // ajoute num commande ds Tableau
-			}
-			else {cmd[i].getElementsByTagName("button")[0].removeAttribute("mark"); }
-		}	
-		/*		
-		cmd = document.getElementsByClassName("TitrecommandeRecherche");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].textContent.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				texteColoration = cmd[i][0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);			
-			
-				tabCMD.push(cmd[i].id.toUpperCase()); // ajoute num commande ds Tableau
-			}
-		}	
-*/
-
-		
-		////////////////////////////////////////////////:
-		/* pour les Produits */
-		cmd = document.getElementsByClassName("produit");
-		//a = div.getElementsByTagName("a");
-		for (i = 0; i < cmd.length; i++) {			
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {		
-				texteColoration = cmd[i].getElementsByTagName("h4")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);
-				texteColoration = cmd[i].getElementsByTagName("h5")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);
-			
-				tabCMD.push('C-' + cmd[i].parentNode.id.toUpperCase()); // ajoute num commande ds Tableau
-			}		
-		}	
-		////////////////////////////////////////////////:
-		/* pour les nom Planche derriere photo */
-		cmd = document.getElementsByClassName("planche");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				texteColoration = cmd[i].getElementsByTagName("p")[0];
-				texteColoration.innerHTML = ColorRecherche(texteColoration.textContent, tabElementsRech[e]);
-				tabCMD.push('C-' + cmd[i].parentNode.parentNode.id.toUpperCase()); // ajoute num commande ds Tableau
-			}
-		}	
-
-		////////////////////////////////////////////////:
-		// On recupere les elements uniques des commandes trouvées
-		if(e == 0){
-			//synthTabCMD = [...new Set(tabCMD)]; // Pour Minify ...
-			synthTabCMD = tabCMD; // // Averifier .?? Pour Minify ...
-			//console.log("synthTabCMD0 '" + tabElementsRech[e] + "' : " + synthTabCMD);
-		}
-		else{
-			synthTabCMD = intersect(synthTabCMD, tabCMD)
-			//console.log("synthTabCMDn '" + tabElementsRech[e] + "' : " + synthTabCMD);
-		}
-		tabCMD = [];
-		
-	}
-	// Affichage des commandes affichées dans la Dropdown à Jour 
-
-	listDrop = document.getElementById("listeRechercheCMD").getElementsByTagName("li");
-    for (i = 0; i < listDrop.length; i++) {	
-		menu = listDrop[i].getElementsByTagName("a")[0];
-		//console.log("menu : " + menu.innerHTML.trim());	
-		//console.log("synthTabCMD : " + synthTabCMD);	
-        if (synthTabCMD.indexOf('C-' + menu.innerHTML.trim().toUpperCase()) > -1) { 		
-            listDrop[i].style.display = "";
-        } else {
-            listDrop[i].style.display = "none";
-        }
-    }	
-	// Affichage des commandes affichées dans la page à Jour 
-	//listDrop = document.getElementById("myDropdown").getElementsByTagName("a");//dropdown-content
-	cmd = document.getElementsByClassName("commande");
-	
-    for (i = 0; i < cmd.length; i++) {		
-        if (synthTabCMD.indexOf(cmd[i].id.toUpperCase()) > -1) { 	
-			//console.log("cmd[i].id.toUpperCase() : " + cmd[i].id.toUpperCase());		
-            cmd[i].style.display = ""; // .parentNode effacer toute la commande, même le titre
-        } else {
-            cmd[i].style.display = "none";
-        }
-    }	
-
-	
-	InitCommandes(strElementsRech == '');
-}
-/* ne minify pas ...
-function intersect(a, b) {
-  var setB = new Set(b);
-  var setA = new Set(a);
-  //return [...new Set(a)].filter(x => setB.has(x));
-  return setA.filter(x => setB.has(x));
-}
-*/
-function ColorRecherche(unTexte, UneRech) {
-	if(UneRech!=''){
-		var regex = new RegExp(UneRech,'i');
-		textedeRemplacement = unTexte.substr(unTexte.toUpperCase().indexOf(UneRech), UneRech.length);
-		unTexte = unTexte.replace(regex,'<mark>'+ textedeRemplacement +'</mark>' );	
-		
-		//unTexte = unTexte.replace(regex,'<mark>'+ UneRech +'</mark>' );	
-	}
-	return unTexte;
-}
-
 function openNav() {
-
-
-
-AfficheRechercheCMD(true);	
-
+	AfficheRechercheCMD(true);	
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {  
 
 
-AfficheRechercheCMD(false);
-InitCommandes();
+	AfficheRechercheCMD(false);
+	//InitCommandes();
+
+}
+
+function CopierCommandes(x) {
+	//alert('lesCommandes generales : ' + document.getElementById("lesCommandes").value + ' lesFichiersBoutique generales : ' + document.getElementById("lesFichiersBoutique").value); 
+	//alert('etzrte : '); 	
+	x.querySelector("#ZlesPhotoSelection").value = document.getElementById("lesPhotoSelection").value;
+	x.querySelector("#ZlesCommandes").value = document.getElementById("lesCommandes").value;
+	x.querySelector("#ZlesFichiersBoutique").value = document.getElementById("lesFichiersBoutique").value;
+	//x.setAttribute('name',  document.getElementById("lesFichiersBoutique").value);
+	//alert('ZlesCommandes : ' + x.querySelector("#ZlesCommandes").value + ' ZlesFichiersBoutique : ' +  x.querySelector("#ZlesFichiersBoutique").value); 
 
 }
 
 function SelectionPhoto(x) {
-		
-	if(x.classList.contains("PlancheIndiv")){
-		x.classList.replace("PlancheIndiv", "IndivSELECTION");
-		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
-		//document.getElementById("myListeCommandes").innerHTML =  'kjh'; 		
-		//x.lastChildChild.style.display = "inline-block";
+/* */	
+	if (parseInt(x.getAttribute('Nb')) == 0){
+		x.setAttribute('Nb',  ' 1 ');
+	}else{
+		x.setAttribute('Nb',  ' 0 ');
+	}
+	RemplacementClassSelection(x);
 
-		//x.getElementsByClassName("textImageSource").style.display = "inline-block";
+/** 
+	if(x.classList.contains("PlancheIndiv")){x.classList.replace("PlancheIndiv", "IndivSELECTION");}
+	else if(x.classList.contains("IndivSELECTION")){x.classList.replace("IndivSELECTION", "PlancheIndiv");}
+	else if(x.classList.contains("PlancheGroupe")){x.classList.replace("PlancheGroupe", "GroupeSELECTION");
+	}else if(x.classList.contains("GroupeSELECTION")){x.classList.replace("GroupeSELECTION", "PlancheGroupe");}  	
+	*/
+	MAJEnregistrementSelectionPhotos();
+}
 
-	}else if(x.classList.contains("IndivSELECTION")){
-		x.classList.replace("IndivSELECTION", "PlancheIndiv");
-		x.setAttribute('title',  x.getAttribute('id'));
-		//x.lastChildChild.style.display = "none";
-
-	}else if(x.classList.contains("PlancheGroupe")){
-		
-		x.classList.replace("PlancheGroupe", "GroupeSELECTION");
-		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));
-		//x.getElementsByClassName(names)
-		//x.lastChildChild.style.display = "inline-block";
-	}else if(x.classList.contains("GroupeSELECTION")){
-		x.classList.replace("GroupeSELECTION", "PlancheGroupe");
-		x.setAttribute('title',  x.getAttribute('id'));
-		//x.lastChildChild.style.display = "none";
-	}  	
-
-	mesRecommandes();
+function RemplacementClassSelection(x) {
+	if(x.classList.contains("PlancheIndiv")){x.classList.replace("PlancheIndiv", "IndivSELECTION");}
+	else if(x.classList.contains("IndivSELECTION")){x.classList.replace("IndivSELECTION", "PlancheIndiv");}
+	else if(x.classList.contains("PlancheGroupe")){x.classList.replace("PlancheGroupe", "GroupeSELECTION");
+	}else if(x.classList.contains("GroupeSELECTION")){x.classList.replace("GroupeSELECTION", "PlancheGroupe");}  	
 }
 			
 function VoirPhotoSelection(x) {
@@ -346,42 +183,161 @@ function VoirPhotoSelection(x) {
 	}	
 }		
 
-function mesRecommandes() {
+function MAJEnregistrementSelectionPhotos() {
 	//alert('qsd');
-	var mesReco ='';
+	var mesRecoInfo ='';
 	var mesPlanches = document.getElementsByClassName("GroupeSELECTION");
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
-	  mesReco = mesReco  + mesPlanches[i].getAttribute('id') + '<br>';
-	  mesPlanches[i].setAttribute('title',  'Planche en cours de recommande  ' + mesPlanches[i].getAttribute('id'));
+		mesRecoInfo = mesRecoInfo  + mesPlanches[i].getAttribute('id') + '____'
+								+ mesPlanches[i].getAttribute('Nb') + sepFinLigne;
 	}	
 	var mesPlanches = document.getElementsByClassName("IndivSELECTION");
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
-	  //mesReco = mesReco + '%' + mesPlanches[i].getAttribute('id');
-	  mesReco = mesReco  + mesPlanches[i].getAttribute('id') + '<br>';
-	  mesPlanches[i].setAttribute('title',  'Planche en cours de recommande  ' + mesPlanches[i].getAttribute('id'));
+	  mesRecoInfo = mesRecoInfo  + mesPlanches[i].getAttribute('id') + '____'
+	 							 + mesPlanches[i].getAttribute('Nb') + sepFinLigne;
 	}	
 
-	document.getElementById('lesCommandes').value =  mesReco;
-	document.getElementById("myListeCommandes").innerHTML =  mesReco;
+	document.getElementById('lesPhotoSelection').value =  mesRecoInfo;
+	document.getElementById("myListePhoto").innerHTML =  AfficherCMDparLigne(mesRecoInfo);
+
+	MAJAffichageSelectionPhotos();
+	
 }	
 
+function MAJAffichageSelectionPhotos(chargement = false) {
+	var TableauSelectionPhotos = document.getElementById('lesPhotoSelection').value.split(sepFinLigne);
+	//alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
+	for (i = 0; i < TableauSelectionPhotos.length  ; i++) {
+		//alert('TableauSelectionPhotos : "'  + TableauSelectionPhotos[i] + '"');	
+		if(TableauSelectionPhotos[i].trim()!=''){
+			var CMDSelectionPhoto = TableauSelectionPhotos[i].split('____');
+			var maPhoto = document.getElementById(CMDSelectionPhoto[0]);
+			if (chargement) {
+				RemplacementClassSelection(maPhoto);
+				maPhoto.setAttribute('Nb', CMDSelectionPhoto[1].trim());
+			}
+			maPhoto.getElementsByClassName("NombrePhoto")[0].textContent = CMDSelectionPhoto[1];
+		}
+	}
+	var TableauFichierBoutique = document.getElementById('lesFichiersBoutique').value.split(sepFinLigne);
+	//alert('TableauFichierBoutique ' + TableauFichierBoutique);
+	for (i = 0; i < TableauFichierBoutique.length  ; i++) {
+		if(TableauFichierBoutique[i].trim()!=''){
+			var maPhoto = document.getElementById(TableauFichierBoutique[i]);
+			//alert('ImageFichierWeb : "'  + maPhoto.getElementsByClassName("ImageFichierWeb")[0].textContent + '"');	
+			maPhoto.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";
+			
+		}
+	}	
+
+}
 
 function AjoutFichierBoutique(element) {
 	//alert('xcvxcvxcv.id : ' + element.getAttribute('id')); 
 	var leFichier = element.getAttribute('id');
-	var cmdfichierBoutique = document.getElementById("lesFichierBoutique").value;
-	var AfffichierBoutique = document.getElementById("myListeFichiersBoutique").innerHTML;
+	var cmdfichierBoutique = document.getElementById("lesFichiersBoutique").value;
+	//var AfffichierBoutique = document.getElementById("myListeFichiersBoutique").innerHTML;
 	/*	*/		
 	if(cmdfichierBoutique.indexOf(leFichier)>-1){//On l'enleve		
-		document.getElementById("lesFichierBoutique").value = cmdfichierBoutique.replace(leFichier, '');
-		document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique.replace(leFichier + '<br>', '');
+		document.getElementById("lesFichiersBoutique").value = cmdfichierBoutique.replaceAll(leFichier + sepFinLigne, '');
+		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "none";
+		//document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique.replaceAll(leFichier + '<br>', '');
 	}else{//On l'ajoute
-		document.getElementById("lesFichierBoutique").value = cmdfichierBoutique + leFichier;
-		document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique +  leFichier + '<br>';	
+		document.getElementById("lesFichiersBoutique").value = cmdfichierBoutique + leFichier + sepFinLigne;
+		//document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique +  leFichier + '<br>';	
+		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";
 	
 	}
+	document.getElementById("myListeFichiersBoutique").innerHTML = AfficherCMDparLigne( document.getElementById("lesFichiersBoutique").value); 
+	//MAJAffichageSelectionPhotos();
 }
-		
 
+function AfficherCMDparLigne(str) {
+	str = str.trim();
+	return str.replaceAll(sepFinLigne, '<br>');
+}
+/* 
+function MAJCommandes() {
+	document.getElementById("myListeCommandes").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("lesCommandes").value); 
+	document.getElementById("myListeFichiersBoutique").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("lesFichiersBoutique").value); 
+}
+*/
+function NbPlancheMOINS(element) {
+	var nombre = parseInt( element.parentElement.parentElement.getAttribute('Nb'));
+	nombre = nombre -1;
+	element.parentElement.parentElement.setAttribute('Nb',  ' ' + nombre +  ' ');
+	if (nombre < 1) {SelectionPhoto(element.parentElement.parentElement);}
+	MAJEnregistrementSelectionPhotos();
+	//alert('Moins : ' + element.parentElement.parentElement.getAttribute('id') +  '  x' + element.parentElement.parentElement.getAttribute('Nb')); 
+
+}
+function NbPlanchePLUS(element) {
+	var nombre = parseInt( element.parentElement.parentElement.getAttribute('Nb'));
+	nombre = nombre + 1;
+	element.parentElement.parentElement.setAttribute('Nb', ' ' + nombre +  ' ');	
+	MAJEnregistrementSelectionPhotos();
+	//alert('PLUS : ' + element.parentElement.parentElement.getAttribute('id') +  '  x' + element.parentElement.parentElement.getAttribute('Nb')); 
+}
+
+function TransfererCMD() {
+	var TableauSelectionPhotos = document.getElementById('lesPhotoSelection').value.split(sepFinLigne);
+	//alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
+	for (i = 0; i < TableauSelectionPhotos.length  ; i++) {
+		
+		if(TableauSelectionPhotos[i].trim()!=''){
+			var CMDSelectionPhoto = TableauSelectionPhotos[i].split('____');
+			var maPhoto = document.getElementById(CMDSelectionPhoto[0]);
+			RemplacementClassSelection(maPhoto);
+			maPhoto.setAttribute('Nb', '0');
+		}
+	}
+	document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value							
+											+ '<xx%20 cm>'+ sepFinLigne;									
+	document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value
+											 + CMDPhotosProduits(document.getElementById('lesPhotoSelection').value, 
+											 					document.getElementById('SelectProduit').innerHTML);
+	document.getElementById('lesPhotoSelection').value =  '';
+	document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML				
+	+ '&#60;' + document.getElementById("SelectProduit").innerHTML + '&#62;' + '<br>';	// '&#60;' et '&#62;' pour remplacer les '<' et '>'
+	document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML
+															+ AFFPhotosProduits(document.getElementById("myListePhoto").innerHTML,
+																	 document.getElementById('SelectProduit').innerHTML);															
+	document.getElementById("myListePhoto").innerHTML =  '';
+}
+
+function CMDPhotosProduits(PhotoNombre, Produits) {
+
+	return PhotoNombre.replaceAll('____', '_' + Produits + '_');
+
+}
+
+function AFFPhotosProduits(PhotoNombre, Produits) {
+
+	return PhotoNombre.replaceAll('____', '_' + CodeProduit(Produits) + '_');
+}
+
+function CodeProduit(Produits) {
+	return '20x20cm__';
+}
+
+function SelectionProduit() {
+	document.getElementById("myDropdown").classList.toggle("show");
+}
+  
+function filterProduits() {
+	var input, filter, ul, li, a, i;
+	input = document.getElementById("ZoneSaisie");
+	filter = input.value.toUpperCase();
+	div = document.getElementById("myDropdown");
+	a = div.getElementsByTagName("a");
+	for (i = 0; i < a.length; i++) {
+		txtValue = a[i].textContent || a[i].innerText;
+		if (txtValue.toUpperCase().indexOf(filter) > -1) {
+		a[i].style.display = "";
+		} else {
+		a[i].style.display = "none";
+		}
+	}
+}

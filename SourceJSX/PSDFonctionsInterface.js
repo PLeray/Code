@@ -616,13 +616,14 @@ function GenererFichiersWEB() {
 		var uneSource = new objSourceCSV(); 
 		uneSource = RecupSourceDepuisCode(cdecole);
 		
+		var isCORR = (g_CommandeLabo.ListePlanches[0] != 'TOUTES LES PHOTOS');
+
 		
-		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/ARBO-' +  uneSource.NomProjet;
+		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + (isCORR? 'CORR-' : 'ARBO-') +  uneSource.NomProjet;
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
 		g_RepSOURCE  = uneSource.DossierSources;
 		g_TabListeNomsClasses = [];
 		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);
-
 
 		var theFolder = new Folder(g_RepSOURCE);
 		//alert("ZX00FFF : MAJinfoEcole = "+isEcoleOK);		
@@ -633,20 +634,18 @@ function GenererFichiersWEB() {
 		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
 		//var size = 0;
 		//var i = 0;
-		alert('ZZZZ TYTY g_CommandeLabo.ListePlanches[0] =   ' + g_CommandeLabo.ListePlanches[0]);
+		//alert('ZZZZ TYTY g_CommandeLabo.ListePlanches[0] =   ' + g_CommandeLabo.ListePlanches[0]);
 		var leSousGroupeDeFichier = [];
-		if (g_CommandeLabo.ListePlanches[0] == 'TOUTES LES PHOTOS'){
+		if (isCORR){
+			leSousGroupeDeFichier = g_CommandeLabo.ListePlanches;	
+		}
+		else{
 			for(var fichier in g_GroupeIndiv){
 				//size++;
 				leSousGroupeDeFichier.push(fichier);
-			}	
+			}			
 		}
-		else{
-			//alert("ZX001 : nb de fichier : " + leSousGroupeDeFichier.length );	
-			//var leSousGroupeDeFichier = ['0101.jpg', '0102.jpg'];
-			leSousGroupeDeFichier = g_CommandeLabo.ListePlanches;			
-		}
-
+		//alert(TableauTOStr(leSousGroupeDeFichier));
 		progressBar.maxvalue = leSousGroupeDeFichier.length;			
 		//for(var fichier in g_GroupeIndiv){//Pour tout les fichier du Source
 		for (var i = 0; i < leSousGroupeDeFichier.length; i++) {	
@@ -694,11 +693,6 @@ function GenererFichiersWEB() {
 		Select_Generer.enabled = true;
 	}
 }
-
-
-
-
-
 
 function LoadConfig() {
 	var fileName = g_Rep_PHOTOLAB + 'PhotoLab-config.ini'; // 'Code/PhotoLab-config.ini';	
