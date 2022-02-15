@@ -283,28 +283,31 @@ function NbPlanchePLUS(element) {
 
 function TransfererCMD() {
 	var TableauSelectionPhotos = document.getElementById('lesPhotoSelection').value.split(sepFinLigne);
-	//alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
-	for (i = 0; i < TableauSelectionPhotos.length  ; i++) {
-		
-		if(TableauSelectionPhotos[i].trim()!=''){
-			var CMDSelectionPhoto = TableauSelectionPhotos[i].split('____');
-			var maPhoto = document.getElementById(CMDSelectionPhoto[0]);
-			RemplacementClassSelection(maPhoto);
-			maPhoto.setAttribute('Nb', '0');
+	if (TableauSelectionPhotos.length > 1 ) {
+		alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
+		for (i = 0; i < TableauSelectionPhotos.length  ; i++) {
+			
+			if(TableauSelectionPhotos[i].trim()!=''){
+				var CMDSelectionPhoto = TableauSelectionPhotos[i].split('____');
+				var maPhoto = document.getElementById(CMDSelectionPhoto[0]);
+				RemplacementClassSelection(maPhoto);
+				maPhoto.setAttribute('Nb', '0');
+			}
 		}
+		document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value							
+												+ '<xx%20 cm>'+ sepFinLigne;									
+		document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value
+												+ CMDPhotosProduits(document.getElementById('lesPhotoSelection').value, 
+																	document.getElementById('SelectProduit').innerHTML);
+		document.getElementById('lesPhotoSelection').value =  '';
+		document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML				
+		+ '&#60;' + document.getElementById("SelectProduit").innerHTML + '&#62;' + '<br>';	// '&#60;' et '&#62;' pour remplacer les '<' et '>'
+		document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML
+																+ AFFPhotosProduits(document.getElementById("myListePhoto").innerHTML,
+																		document.getElementById('SelectProduit').innerHTML);															
+		document.getElementById("myListePhoto").innerHTML =  '';
+
 	}
-	document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value							
-											+ '<xx%20 cm>'+ sepFinLigne;									
-	document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value
-											 + CMDPhotosProduits(document.getElementById('lesPhotoSelection').value, 
-											 					document.getElementById('SelectProduit').innerHTML);
-	document.getElementById('lesPhotoSelection').value =  '';
-	document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML				
-	+ '&#60;' + document.getElementById("SelectProduit").innerHTML + '&#62;' + '<br>';	// '&#60;' et '&#62;' pour remplacer les '<' et '>'
-	document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML
-															+ AFFPhotosProduits(document.getElementById("myListePhoto").innerHTML,
-																	 document.getElementById('SelectProduit').innerHTML);															
-	document.getElementById("myListePhoto").innerHTML =  '';
 }
 
 function CMDPhotosProduits(PhotoNombre, Produits) {

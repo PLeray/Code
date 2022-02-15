@@ -1,9 +1,7 @@
-﻿
+
 
 function AfficheEditionSOURCE(uneSource) {
 	LoadConfig();	
-	//var isNEW = (uneSource == null);	
-	//alert('uneSourceisNEW : ' + isNEW);
 	var isMAJ = 0; // Rien
 	// DIALOG
 	var dlgEditSOURCE = new Window ('dialog'); 
@@ -158,8 +156,8 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
 
 		var dropdownAnnee_array = ["2019-2020", "2020-2021","2021-2022","2022-2023", "2023-2024","2024-2025"]; 
 		var dropdownAnnee = group2.add("dropdownlist", undefined, undefined, {name: "dropdownAnnee", items: dropdownAnnee_array}); 
-		dropdownAnnee.selection = 1; // Annee par defaut 2020-2021
-		for (var i = 0; i < dropdownAnnee.items.length; i++) {if (dropdownAnnee.items[i].text == uneSource.Annee ){dropdownAnnee.selection = i;}}
+		dropdownAnnee.selection = 2; // Annee par defaut 2020-2021
+		for (var i = 0; i < dropdownAnnee.items.length; i++) {if (dropdownAnnee.items[i].text == uneSource.AnneeScolaire ){dropdownAnnee.selection = i;}}
 		
 		
 		
@@ -304,7 +302,7 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
 		
 		var btnSuprProjet = group4.add ('button', undefined, 'Suprimer Projet', {name: 'btnSuprProjet'});		
 		btnSuprProjet.onClick = function () {	
-			SuprimerSourceDepuisCode(uneSource.CodeEcole);
+			SuprimerSourceDepuiobjEcole(uneSource);
 			isMAJ = 1; // MAJ Source
 			dlgEditSOURCE.close();	
 		}	
@@ -315,7 +313,7 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
 		btnOK.onClick = function () {	
 			uneSource.CodeEcole = editCodeEcole.text;
 			uneSource.NomProjet = editNomProjet.text;
-			uneSource.Annee = dropdownAnnee.selection.text;
+			uneSource.AnneeScolaire = dropdownAnnee.selection.text;
 			//uneSource.RepScriptPS = editRepScriptPS.text;
 			uneSource.RepScriptPS = dropdownRepScriptPS.selection.text;
 			uneSource.DossierSources = staticDossier.text;			
@@ -568,11 +566,11 @@ function SuprimerToutCharactere(chaine, charactere){
 }
 
 function ImporterSource(uneSource) {
-	var destSource = g_Rep_PHOTOLAB  + 'SOURCES/' + uneSource.Annee;
+	var destSource = g_Rep_PHOTOLAB  + 'SOURCES/' + uneSource.AnneeScolaire;
 	if (destSource != uneSource.DossierSources) {
 		var theFolder = Folder(uneSource.DossierSources);
 		if (theFolder) {
-			//var destSource = g_Rep_PHOTOLAB  + 'SOURCES/' + uneSource.Annee;
+			//var destSource = g_Rep_PHOTOLAB  + 'SOURCES/' + uneSource.AnneeScolaire;
 			if (CreerUnDossier(destSource)){
 				destSource = destSource  + '/' + uneSource.NomProjet;
 				//alert("le Dos " + destSource);

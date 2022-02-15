@@ -1,11 +1,12 @@
-﻿////////////////////////////// LES FONCTIONS INTERFACE //////////////////////////////////////////////
-#include PSDFonctionsOutils.js
+////////////////////////////// LES FONCTIONS INTERFACE //////////////////////////////////////////////
+#include PSDFonctionsOutils.js;
 
 var g_CommandePDTEncours = '';
 var g_CommandeECOLEEncours = ''; 
 var g_CommandeAVANCEMENT = ''; 
 
 var g_TabFichierATraiter = [];
+var g_TabPlancheDEJAFaites = [];
 
 function InitCommande() { 
 	g_CommandePDTEncours = '';
@@ -33,14 +34,17 @@ function Auto() {
 	
 	while (g_IsPhotoLabON && g_IsTravail){ 
 		// TANT QU'IL Y A DES FICHIERS '0' > initialiser tableau de fichier a traiter
-		//alert('TANT QU IL Y A DES g_TabListeCompilationFichier   ' + g_TabListeCompilationFichier.length);
-		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
-			
-			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
-			listboxFichier.selection.text = g_NomFichierEnCours;
-			//alert('AUTO : ' + g_TabListeCompilationFichier[i]  + ' n° ' + i);
+		// new 2 Jan 2022
+		
 
-			GenererLeFichierNOM(); //g_NomFichierEnCours
+		for (var i = 0; i < g_TabListeCompilationFichier.length; i++) {
+			g_BilanGeneration.length = 0; 
+			g_NomFichierEnCours = g_TabListeCompilationFichier[i];
+			listboxCommandes.selection.text = g_NomFichierEnCours;
+			//alert('AUTO : ' + g_TabListeCompilationFichier[i]  + ' n° ' + i);
+			
+
+			GenererLeFichierNOM(); //g_NomFichierEnCours cad le fichier selectionné dans la liste box
 
 		} 		
 		nbFichierATraiter = ChercherFichierLab('SansLesErreurs');
@@ -78,7 +82,7 @@ function GenererLeFichierNOM() {
 	g_IsGenerationEnPause = false;	
 	//buttonConfig.enabled = false;
 	//alert('TESTZ11  GenererLeFichierNOM !!!' + g_SelectFichierLab);
-	Raffraichir();
+	//NEW 02-01-2022 Raffraichir();
 	//alert('TESTZ11bb  GenererLeFichierNOM !!!' + g_NomFichierEnCours);
 	if (OuvrirSelectFichierLab0(g_NomFichierEnCours)){
 		//alert('TESTZ20  OuvrirSelectFichierLab0 !!!' + g_NomFichierEnCours);
@@ -149,7 +153,7 @@ function ChercherFichierLab(avecErreur) {
 	//alert('var avecErreur ? : ' + avecErreur);
 	var theFolder = new Folder(g_Rep_PHOTOLAB + 'CMDLABO/');	
 	var theContent = theFolder.getFiles();
-	//alert('ChercherFichierLab ON');
+
 	g_TabFichierATraiter.length = 0; // = [];
 	g_TabListeCompilationFichier.length = 0; // = [];
 	var leFichier = '';
@@ -278,29 +282,28 @@ function MAJinfoEcole(uneEcole) {
 	var valRetour = false;
 	var msg = '';
 	var repTirage = '';
-
-	g_RepSOURCE = TrouverRepSOURCEdansBibliotheque(uneEcole.CodeRefEcole);
-	g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole.CodeRefEcole);
-	//alert("TEST Z60 ");	
-    if (g_RepSOURCE ==''){
+		
+	g_RepSOURCE = TrouverRepSOURCEdansBibliotheque(uneEcole);
+	g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole);
+	//alert("g_RepSOURCE " + g_RepSOURCE);	
+    if (g_RepSOURCE == ''){
 		msg = "Ecole en cours : " + g_CommandeECOLEEncours
 		AjoutBilanGeneration(msg);
 
-		msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE dans la bibliotheque avec ce code (" + uneEcole.CodeRefEcole + ")";
+		msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE dans la bibliotheque avec ce code (" + uneEcole.CodeEcole + ")";
 		AjoutBilanGeneration(msg);
-		msg = "     SOLUTION PROBABLE : Créer ou ajouter le dossier de photo avec le code : " + uneEcole.CodeRefEcole + " dans la bibliotheque de PhotoLAb !";
+		msg = "     SOLUTION PROBABLE : Créer ou ajouter le dossier de photo avec le code : " + uneEcole.CodeEcole + " dans la bibliotheque de PhotoLAb !";
 		AjoutBilanGeneration(msg);			
 		AjoutBilanGeneration('');
 		MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
 		g_Erreur = msg;
 		//alert("TEST Z61 ");	
-	}
-	else {
-
+	}else{
 		if (isDossierExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
 				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
-			} else {					
+			} /* Dtermination du dossier de tirage en amont du script : à l'ouverture du fichier
+			else {					
 				//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
 				if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
 					var ladate=new Date();
@@ -311,27 +314,20 @@ function MAJinfoEcole(uneEcole) {
 				}				
 				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
 				g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
-			}
-			nbFichiers = 0;
-			nbFichiers = NbJPGArborescence(Folder(g_RepSOURCE),nbFichiers) ;
+			}*/
+			//nbFichiers = 0;
+			//nbFichiers = NbJPGArborescence(Folder(g_RepSOURCE),nbFichiers) ;
 
-			MsgLOGInfo('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
-			MsgLOGInfo('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));
-			//alert('InitGroupesClasseIndive : ' + uneEcole.Commentaire);
-			//NEW 20 MAI 2021
-			//g_GroupeIndiv.length = 0;
-			//g_GroupeIndiv.splice(0, g_GroupeIndiv.length);
-			
-			
-			
+			//MsgLOGInfo('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
+			//MsgLOGInfo('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));	
 			
 			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
 			valRetour = true;		
 		}
 		else{
-			msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE pour les photos avec ce code (" + uneEcole.CodeRefEcole + ")";
+			msg = "     PROBLEME : PhotoLab n'a pas trouvé de dossier SOURCE pour les photos avec ce code (" + uneEcole.CodeEcole + ")";
 			AjoutBilanGeneration(msg);
-			msg = "     SOLUTION PROBABLE : Modifier ou ajouter le code (" + uneEcole.CodeRefEcole + ") dans le nom du dossier de l'école " + g_CommandeECOLEEncours;
+			msg = "     SOLUTION PROBABLE : Modifier ou ajouter le code (" + uneEcole.CodeEcole + ") dans le nom du dossier de l'école " + g_CommandeECOLEEncours;
 			AjoutBilanGeneration(msg);			
 			AjoutBilanGeneration('');
 			MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
@@ -354,12 +350,47 @@ function GenererFichiersLABO() {
 		var chronoDebut = new Date().getTime();
         var nbLigneFichier = g_CommandeLabo.NbLignes();
 		//var cmdReste = nbLigneFichier;	
-        //alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);		
+        //alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);	
+		
+		// Definition du repertoire de tirage : unique par fichier de commande !!!
 		for (var m = 0; m < nbLigneFichier; m++) {
-			
+            var ligne = g_CommandeLabo.TableauLignes[m];
+			if (!isEntete(ligne) && !isLigneEtat(ligne))
+			{		
+				if (isEcole(ligne)){// Mise à jour des SOURCES !!
+					var uneEcole = new Ecole(ligne);  
+					//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
+					if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
+						var ladate=new Date();
+						repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
+					}
+					else{
+						repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
+					}				
+					g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
+					g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
+					break;
+					//alert("TEST Z44440 g_RepTIRAGES_DateEcole : " + g_RepTIRAGES_DateEcole);	
+				}
+			}  			
+		}
+		//Initialisation du tableau de planche déja faites!
+		/*	*/
+
+		g_TabPlancheDEJAFaites = [];
+		//alert('TEST Z42 ' + TableauTOStr(g_TabPlancheDEJAFaites));
+		var strListeFichier = '';
+		strListeFichier = strListeFichiersJPGDossierTirage(Folder(g_RepTIRAGES_DateEcole),strListeFichier);
+		if (strListeFichier != ''){			
+			g_TabPlancheDEJAFaites = strListeFichier.split(sepNumLigne);
+		}
+		
+		//alert('TEST Z43 ' + TableauTOStr(g_TabPlancheDEJAFaites));
+		/*		*/
+		// Creation des planches du fichier de commande !!!
+		for (var m = 0; m < nbLigneFichier; m++) {
 			// ATTENtion ici on n utilise plus le tableau de ligne avec seulement ecole et planche
 			// Mais tout ...
-			//
             var ligne = g_CommandeLabo.TableauLignes[m];
 			//alert("TEST Z39 : " + ligne);
 			if (!isEntete(ligne) && !isLigneEtat(ligne))
@@ -373,15 +404,14 @@ function GenererFichiersLABO() {
 					
 				}  
 				else {
-					//UI
-					
-										
+					//UI			
 					if (isEcoleOK && ligne && CreerUnDossier(g_RepTIRAGES_DateEcole)){                
 					
 						g_CommandePDTEncours = ligne.substr(0,ligne.length-2);
 						var unProduit = new Produit(ligne);  					
 						
 						if (unProduit.isProduitLABO()){
+							//SUPRIMMER CA POUR VOIR SI PREND DU TEMPS!
 							var plancheCree = CreerUnProduitPourLeLaboratoire(unProduit);
 						}else{
 							var plancheCree = unProduit.Type;
@@ -391,22 +421,33 @@ function GenererFichiersLABO() {
 						//UI
 						//NEW SUPR
 						//MAJTableauGeneration(plancheCree,unProduit);
-						Raffraichir(); 			
+						//NEW 02-01-2022 Raffraichir(); 			
 					}                   
 				}
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
 				// Attention
 				//alert("TEST Z44 ");
+
+				// TOUT LES 10 SEULEMENT
+				/*
+				if (( m % 10) == 0){ 					
+					SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
+					//alert("TEST Z45 ");
+					if (g_BilanGeneration.length > 0) {EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));}				
+				}	*/
 				SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
 				//alert("TEST Z45 ");
-				EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
+				if (g_BilanGeneration.length > 0) {EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));}								
 				//alert("TEST Z46 ");
 				//alert('SauverFichierFromTableauDeLigne ' +  plancheCree);			
 			}
+			//NEW 02-01-2022 
+			Raffraichir(); 
 			progressBar.value = m + 1;
 			g_CommandeAVANCEMENT = Number( ( m + 1)  / (nbLigneFichier - 1) ); //g_CommandeLabo.NbPlanchesACreer()
 			g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
-			txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier);			
+			txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier) + "\n(Appuyer sur la touche MAJ pour stopper)";			
+			
 		}
 		/////// Retour sur le temps Passé   //////////////
         if (!g_IsGenerationEnPause && g_IsPhotoLabON){ 
@@ -437,18 +478,23 @@ function MAJTableauGeneration(plancheCree,unProduit)
 }
 */
 
+function QuestionInterruptionTraitement() { 
+	var leMessage = 'Voulez vous stopper la creation des planches ? ';
+	return confirm(leMessage);
+}
+
 function isInterruptionTraitement() { 
 	var isStop = false;
 	if (g_IsGenerationEnPause){		//alert('g_IsGenerationEnPause ' + g_IsGenerationEnPause);	
 		SetBoutonGenerer();
-		var leMessage = 'Voulez vous stopper la creation des planches ? ';
+		//var leMessage = 'Voulez vous stopper la creation des planches ? ';
 		// affichage des erreurs :
 		/*if (g_BilanGeneration.length > 0){
 			for (var n = 0; n < g_BilanGeneration.length; n++) {
 				leMessage = g_BilanGeneration[n] + '\n\n' + leMessage;
 			}		
 		}*/
-		var retour = confirm(leMessage);
+		var retour = QuestionInterruptionTraitement();
 		if (retour == true) {
 			
 			EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
@@ -607,50 +653,46 @@ function GenererFichiersWEB() {
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 		
 		chronoDebut = new Date().getTime();				
-		//alert("ZX000 : RecupSourceDepuisCode");			
+	
 		var SRCEcole = new Ecole (g_CommandeLabo.Ecole);	
-		//alert("ZX00AA : RecupSourceDepuisCode : " + SRCEcole.CodeRefEcole);	
-		var cdecole = SRCEcole.CodeRefEcole;
+
 		var isEcoleOK = MAJinfoEcole(SRCEcole);			
+		//alert("MAJinfoEcole(SRCEcole)"+ isEcoleOK);	
 		LireFichierSource();
 		var uneSource = new objSourceCSV(); 
-		uneSource = RecupSourceDepuisCode(cdecole);
+		//uneSource = RecupSourceDepuisobjEcole(cdecole);
+		uneSource = RecupSourceDepuisobjEcole(SRCEcole);
 		
 		var isCORR = (g_CommandeLabo.ListePlanches[0] != 'TOUTES LES PHOTOS');
 
-		
 		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + (isCORR? 'CORR-' : 'ARBO-') +  uneSource.NomProjet;
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
 		g_RepSOURCE  = uneSource.DossierSources;
 		g_TabListeNomsClasses = [];
-		//alert("ZX00EE : RecupSourceDepuisCode: " + g_RepSOURCE);
 
 		var theFolder = new Folder(g_RepSOURCE);
 		//alert("ZX00FFF : MAJinfoEcole = "+isEcoleOK);		
 
 		InitialisationSourcePourLeWEB(theFolder, []);
-		
-		//InitGroupesClasseIndiv(theFolder, []);
-		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
-		//var size = 0;
-		//var i = 0;
-		//alert('ZZZZ TYTY g_CommandeLabo.ListePlanches[0] =   ' + g_CommandeLabo.ListePlanches[0]);
+
 		var leSousGroupeDeFichier = [];
 		if (isCORR){
 			leSousGroupeDeFichier = g_CommandeLabo.ListePlanches;	
 		}
 		else{
 			for(var fichier in g_GroupeIndiv){
-				//size++;
 				leSousGroupeDeFichier.push(fichier);
 			}			
 		}
+		leSousGroupeDeFichier.sort();
 		//alert(TableauTOStr(leSousGroupeDeFichier));
+		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
+		
 		progressBar.maxvalue = leSousGroupeDeFichier.length;			
 		//for(var fichier in g_GroupeIndiv){//Pour tout les fichier du Source
 		for (var i = 0; i < leSousGroupeDeFichier.length; i++) {	
 				var fichier = leSousGroupeDeFichier[i];
-			//alert('leSousGroupeDeFichier['+i+'] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
+			//alert('leSousGroupeDeFichier[i] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
 			//if (leSousGroupeDeFichier.includes(fichier)){
 				//i = i + 1;
 				progressBar.value = i + 1 ;
@@ -660,16 +702,13 @@ function GenererFichiersWEB() {
 				//UI
 				Raffraichir(); // A voir ?		
 
-				//alert("ZXXDXDXD 01 : le fichier : " + fichier + " g_GroupeIndiv[fichier] : " + g_GroupeIndiv[fichier]);
 				CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
 
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
-				// Attention*
 
 				SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
 				EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
 				
-				//progressBar.value = i;
 				g_CommandeAVANCEMENT = Number( ( i + 1)  / (leSousGroupeDeFichier.length - 1) ); //g_CommandeLabo.NbPlanchesACreer()
 				g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
 				txtTraitement.text = String ( i + 1 ) + " / " +  String (leSousGroupeDeFichier.length);				

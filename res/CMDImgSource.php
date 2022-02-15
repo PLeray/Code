@@ -37,7 +37,7 @@ if($isDebug){
 $lesPhotoSelection = '';
 if (isset($_POST['lesPhotoSelection']) ){
 	$lesPhotoSelection = $_POST['lesPhotoSelection'];
-	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesPhotoSelection;}	
+	if ($isDebug){echo 'VOILA LES PHOTOS SELECTIONNEES  pour ' . $lesPhotoSelection;}	
 	///MAJFichierCommandes($lesCommandes, $codeSource, $anneeSource);
 }
 $lesCommandes = '';
@@ -53,21 +53,21 @@ if (isset($_POST['lesFichiersBoutique']) ){
 	MAJFichierBoutique($lesFichiersBoutique, $codeSource, $anneeSource);
 }
 
-
-
 $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+
+// echo $monProjet->NomProjet . $monProjet->NomProjet . $monProjet->NomProjet;
 ?>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
-<head>
-    <title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
-	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
+	<head>
+		<title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
+		<link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+		<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
+		<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 
-	
+		
 
-</head>
+	</head>
 
 <body onload="EffacerChargement()">
 
@@ -102,7 +102,7 @@ if (!$MAJ){
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
 	
 	<div id="Entete">	
-		<div class="logo"><a href="<?php echo RetourEcranSources($monProjet->Annee); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
+		<div class="logo"><a href="<?php echo RetourEcranSources($monProjet->AnneeScolaire); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
 		</div>
 		
 		<div class="titreFichier">	
@@ -235,7 +235,7 @@ function ChercherSOURCESEcole($fichierCSV, $codeProjet, $anneeProjet){
 
 			$NbLignes=count($TabCSV);
 			for($i = 0; $i < $NbLignes; $i++){ 
-				if ($codeProjet == $TabCSV[$i]["Code"]  && $anneeProjet == $TabCSV[$i]["Annee"]){
+				if ($codeProjet == $TabCSV[$i]["Code"]  && $anneeProjet == $TabCSV[$i]["AnneeScolaire"]){
 					$Dossier = $TabCSV[$i]["DossierSources"];	
 					$Dossier = "../.." . urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
 					$monProjet = new CProjetSource($TabCSV[$i]["NomProjet"], 
@@ -250,7 +250,6 @@ function ChercherSOURCESEcole($fichierCSV, $codeProjet, $anneeProjet){
 	}
 	return $monProjet;
 }
-
 
 function AfficheSOURCESEcole($monProjet){ 
 	$dir = $monProjet->Dossier . '/*.*{jpg,jpeg}';
@@ -288,7 +287,7 @@ function AfficheSOURCESEcole($monProjet){
 		}
 
 
-		 $mesSources = new CImgSource($FichierSource, $Dossier, $monProjet->CodeEcole,$monProjet->Annee,$monProjet->ScriptsPS);
+		 $mesSources = new CImgSource($FichierSource, $Dossier, $monProjet->CodeEcole,$monProjet->AnneeScolaire,$monProjet->ScriptsPS);
 		 
 		
 		 if ($mesSources->isGroupe() && !$PrecedentEstGroupe){
@@ -315,20 +314,25 @@ function RetourEcranSources($ParamAnnee = ''){
 }	
 
 function ValidationCommandes($NomProjet, $ParamAnnee = ''){
-	//$RetourEcran = 'CMDImgSource.php'. ArgumentURL('&codeSource=' . $GLOBALS['codeSource'] . '&anneeSource=' . $GLOBALS['anneeSource']. '&MAJ=true') ;
-	
-	//$RetourEcran = 'CATSources.php' . ArgumentURL(($ParamAnnee != '')?'&AnneeScolaire='.$ParamAnnee :''); 
-
-	$fichierARBO = NomCorrectionARBO($NomProjet);
-
-	$CMDhttpLocal ='';			
 	//$NBPlanches = NBfichiersARBOWEB($fichier);
 	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
 	//$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
-	$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
 	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
-	$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode($fichierARBO));	
+	/*
+	if ($GLOBALS['lesFichiersBoutique'] != ''){
+
+	}
+	if ($GLOBALS['lesCommandes'] != ''){
+
+	}*/	
+
+		$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
+		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
+
+		$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
+		$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode(NomFichierLIBRE($NomProjet)));	
+
 	
 	$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
 
@@ -338,7 +342,11 @@ function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 function NomCorrectionARBO($NomProjet) {
 	//return 'ARBO-' . date("Y-m-d") . '-' . $NomProjet. '.web';
 	return 'CORR-' . $NomProjet. '.web';
-  }
+}
+
+function NomFichierLIBRE($NomProjet) {
+	return date("Y-m-d"). '-TIRAGES LIBRES-' . $NomProjet. '.lab';
+}
 
 function CreationDossier($nomDossier) {
 	if (!is_dir($nomDossier)) {

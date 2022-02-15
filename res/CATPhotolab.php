@@ -11,24 +11,32 @@ include_once 'CATFonctions.php';
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 
+$tabFichiersEnCoursDeCompilation = array();
+
 ?>
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
-<?php 
-if($isDebug){
-	header("Cache-Control: no-cache, must-revalidate");
-}
 
+<?php 
+if($isDebug){}
+	header("Cache-Control: no-cache, must-revalidate");
+
+	// ou header("Expires: -1");  ???
 
 ?>
-	<META HTTP-EQUIV="Refresh" CONTENT="<?php echo ($isDebug?'5':'10'); ?>; URL=<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>">
+	<!-- <META HTTP-EQUIV="Refresh" CONTENT="<?php // echo ($isDebug?'5':'10'); ?>; URL=<?php //echo 'CATPhotolab.php' . ArgumentURL(); ?>">-->
 	<title id="PHOTOLAB">Commandes en cours</title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
+	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
+	<script>
+		InitAfficheErreur();	
+		//alert('TEST ' ); 
+	</script>	
 </head>
 
 <body>
@@ -47,8 +55,7 @@ if($isDebug){
 	//$GLOBALS['repMINIATURES'] = $GLOBALS['repMINIATURES'];
 	
 /*
-	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$myfileName);
-	
+	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$myfileName);	
 	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
 */	
 
@@ -119,7 +126,7 @@ if($isDebug){
 		<th  style="width:90px;" ><H3>Envoyées au labo</H3></th>
 		<th  style="width:90px;" ><H3>Cartonnage en cours</H3></th>
 		<th  style="width:90px;" ><H3>Colis prêt</H3></th>
-		<th  style="width:40px;" ><H3>X</H3></th>
+		<th  style="width:40px;" ><H3>🗑</H3></th>
 	  </tr>  
 	<?php echo $affiche_Tableau; ?>
 	</table>
@@ -153,9 +160,23 @@ if($isDebug){
 	<p class="mention">	<?php echo VersionPhotoLab();?> </p>
 </div>
 
+<?php
+if($isDebug){
+	echo '<button type="button" onclick="MAJAffichageBarres()">Change Content</button>';
+}
+?> 
+<script>
+setInterval(MAJAffichageBarres, 1000);
 
+function MAJAffichageBarres() {
+	//alert('ID ' );
+	<?php // WEB /**/		
+		for($i = 0; $i < count($tabFichiersEnCoursDeCompilation); $i++){
+			echo "EtatBarreProgressionPour('". $tabFichiersEnCoursDeCompilation[$i] . "');";
+		}
+	?>  
+}
+</script>	
 
 </body>
 </html>
-
-

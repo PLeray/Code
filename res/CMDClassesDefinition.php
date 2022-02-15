@@ -1,5 +1,5 @@
 <?php
-
+$SeparateurInfoPlanche = '§';
 $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
 
@@ -11,6 +11,7 @@ class CGroupeCmdes {
 	var $tabCMDLabo;  
 	var $DateISOLEE;
 	var $colEColes;
+	var $DossierTirage;	
 	
     function __construct($myfileName){
 		$this->tabFICHIERLabo = $myfileName;
@@ -24,6 +25,7 @@ class CGroupeCmdes {
 			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
 		}
 		fclose($myfile);	
+
 		$this->DateISOLEE = substr($myfileName, strripos($myfileName, '/') + 1,10);		
 		$this->colEColes = array();
 		$this->tabCMDLabo = array();
@@ -32,7 +34,21 @@ class CGroupeCmdes {
 				$identifiant = substr($this->tabFICHIERLabo[$i],0,1);
 				//Si Commande pas vide , on ajoute la commande au tableau!
 				if ($identifiant == '@') {
-					$curEcole = new CEcole($this->tabFICHIERLabo[$i], $this->DateISOLEE);
+					if ($this->DossierTirage == ''){
+						if (stripos($this->tabFICHIERLabo[$i], '(ISOLEES)') !== false) { // C'est des ISOLEES
+							//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
+							$this->DossierTirage = $this->DateISOLEE . '-CMD-ISOLEES' ;
+						}	
+						elseif (stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== false) { // C'est des RECOs
+							$this->DossierTirage =  $GLOBALS['FichierDossierRECOMMANDE'] ;
+						}	
+						else{ // C'est des PAS des ISOLEES
+							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');
+							$this->DossierTirage = $curEcole->DateTirage . '-' .$curEcole->Nom ;
+						}	
+					}
+					//$curEcole = new CEcole($this->tabFICHIERLabo[$i], $this->DateISOLEE);
+					$curEcole = new CEcole($this->tabFICHIERLabo[$i], $this->DossierTirage);
 					array_push($this->colEColes,$curEcole);			
 				}
 				if ($identifiant == '#') {
@@ -135,9 +151,10 @@ class CEcole {
     var $Nom;
     var $Details;
 	var $colCMD;
-	var $DateISOLEE;
+	//var $DateISOLEE;
+	var $DossierTirage;
 
-    function __construct($str, $dateIsole){
+    function __construct($str, $DossierTirage){
         //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("@", "", $str)));
         $morceau = explode("_", str_replace("@", "", $str));
 		$this->DateTirage = $morceau[0];
@@ -145,9 +162,12 @@ class CEcole {
         $this->CodeEcole = $morceau[2];
 		$this->Details = $morceau[3];
 		$this->colCMD = array();
-		$this->DateISOLEE = $dateIsole;
+		//$this->DateISOLEE = $dateIsole;
+		$this->DossierTirage = $DossierTirage;
     }
+
     function RepTirage(){
+		/*
 		if (stripos($this->Nom, '(ISOLEES)') !== false) { // C'est des ISOLEES
 			//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
 			return $this->DateISOLEE . '-CMD-ISOLEES' ;
@@ -158,6 +178,10 @@ class CEcole {
 		else{
 			return $this->DateTirage . '-' .$this->Nom ;	
 		}	
+		*/
+		return $this->DossierTirage;		
+
+		
     }   
 	function AjoutCMD($uneCMD){
 		array_push($this->colCMD,$uneCMD);
@@ -352,7 +376,12 @@ class CPlanche {
 		if (substr($str,0,1) == 'P'){
 			$this->FichierPlanche = $str;		
 			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
-			$morceau = explode(".", $this->FichierPlanche);		
+
+			$morceau = explode($GLOBALS['SeparateurInfoPlanche'], $this->FichierPlanche);
+			//echo 'sdgsdgfd ' . count($morceau)	;
+			if (count($morceau)< 2) {
+				$morceau = explode(".", $this->FichierPlanche); // Comme avant
+			}
 			$this->IndexOrdre = $morceau[0];
 			$this->FichierSource = $morceau[1]. '.jpg';
 			$this->Type = $morceau[2];
@@ -381,7 +410,7 @@ class CPlanche {
 		$resultat .= '</span> ';
 		return $resultat;
 	}
-	function Ecrire($tabPlanche, &$isRecommande){
+	function RECOPIEREcrire($tabPlanche, &$isRecommande){
 		 $resultat ='';
 		if (in_array($this->FichierPlanche, $tabPlanche)) {
 			$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
@@ -414,9 +443,23 @@ class CPlanche {
 			return '';			
 		}	*/
 		return $resultat;				
-	}		
+	}
+	function Ecrire($tabPlanche, &$isRecommande){
+		$resultat ='';
+	   if (in_array($this->FichierPlanche, $tabPlanche)) {
+		   $isRecommande = in_array($this->FichierPlanche, $tabPlanche);
+		   //$resultat = $this->FichierPlanche . PHP_EOL;
+		   //fputs($Fichier, $lines[$i]);
+		   //(RECOMMANDES) EN COURS
+		   $resultat = $this->FichierSource;
+		   $resultat .= '_'. $this->Taille; 
+		   $resultat .= '_'. $this->Type;
+		   ///////////////////////////////////////////////////
+				
+		}
+		return $resultat;					
+	}
 }
-
 function RecopierPlanche($LienOrigine,$LienDestination){
 	$valReturn = copy($LienOrigine,$LienDestination);
 
@@ -437,14 +480,14 @@ class CProjetSource {
 	var $NomProjet;
 	var $Dossier;
 	var $CodeEcole;
-	var $Annee;
+	var $AnneeScolaire;
     var $ScriptsPS;
 	
-    function __construct($NomProjet,$Dossier,$CodeEcole,$Annee,$ScriptsPS){
+    function __construct($NomProjet,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){
 			$this->NomProjet = $NomProjet;
 			$this->Dossier = $Dossier;
 			$this->CodeEcole = $CodeEcole;
-			$this->Annee = $Annee;
+			$this->AnneeScolaire = $AnneeScolaire;
 			$this->ScriptsPS = $ScriptsPS;
 	}  
 }
@@ -455,15 +498,15 @@ class CImgSource {
 	var $Dossier;
 	var $CodeEcole;
     var $ScriptsPS;
-	var $Annee;
+	var $AnneeScolaire;
 
 	//var $Extension;
-    function __construct($Fichier,$Dossier,$CodeEcole,$Annee,$ScriptsPS){
+    function __construct($Fichier,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){
 			//$morceau = explode(".", $this->FichierPlanche);		
 			$this->Fichier = $Fichier;
 			$this->Dossier = $Dossier;
 			$this->CodeEcole = $CodeEcole;
-			$this->Annee = $Annee;
+			$this->AnneeScolaire = $AnneeScolaire;
 			$this->ScriptsPS = $ScriptsPS;
 	}   
 
@@ -487,7 +530,7 @@ class CImgSource {
 			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';		
 
 
-		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->Annee). '&urlImage=' . $LienBig;
+		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
 			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
 			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
 			<input type="hidden" name="lesCommandes" id="ZlesCommandes" value="0" /> 

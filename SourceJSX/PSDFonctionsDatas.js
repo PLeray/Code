@@ -1,6 +1,6 @@
-﻿////////////////////////////// LES FONCTIONS OUTILS //////////////////////////////////////////////
+////////////////////////////// LES FONCTIONS OUTILS //////////////////////////////////////////////
 //#include PSDCode.js
-#include PSDConnexionAPI.js
+#include PSDConnexionAPI.js;
 
 var sepNumLigne = '§';
 var sepRetourLigne = 'RCSL';
@@ -89,8 +89,9 @@ function Ecole(CodeLigne) {
     
     this.DateTirage = this.TableauInfo[0];
 	this.NomEcole = this.TableauInfo[1];
-	this.CodeRefEcole = this.TableauInfo[2];
-	this.Commentaire = this.TableauInfo[3];
+	this.CodeEcole = this.TableauInfo[2];
+	this.AnneeScolaire = this.TableauInfo[3];
+	this.Commentaire = this.TableauInfo[4];
 	//alert('lastIndexOf("Ecole web !") ' + (this.Commentaire.lastIndexOf("Ecole web !") > 0));
 	this.isEcoleWEB = function(){return (this.Commentaire.substr(0, 11) == "Ecole web !");};
 }

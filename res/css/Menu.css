@@ -10,19 +10,22 @@
   font-size: 16px;
   color: white;
   border-radius: 0 0 5px 5px;
-vertical-align: middle;
+  vertical-align: middle;
 
+  padding: 60px 30px 70px 30px;
 
-padding: 60px 30px 70px 30px;
-
-text-align: center;
-z-index:5;
-
+  text-align: center;
+  z-index:5;
 }
 
 #mySidenav a:hover {
   top: 0;
 }
+
+#selectionPage {
+  padding: 160px 30px 70px 30px;
+}
+
 #ajoutCommandeGroupee {
   background-image: url('../img/menuBouton0.png');
 }

@@ -91,9 +91,9 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 			$affiche_Tableau .= EcrireEcole($TabCSV[$i]["Nom de l'ecole"].'-'
 										. strtoupper($TabCSV[$i]["Ville ecole"]) .'_'
 										//. ($TabCSV[$i]["Code interne"] == ''?$TabCSV[$i]["Reference"]:$TabCSV[$i]["Code interne"]) . '_Ecole web !'
-										. $TabCSV[$i]["Reference école"] . '_Ecole web !'
+										. ReferenceECOLE($TabCSV[$i]["Reference école"], $TabCSV[$i]["Nom du projet"]) . '_Ecole web !'
 										, $PrefixeTirage);   
-		  
+										
 			$affiche_Tableau .= EcrireClient($TabCSV[$i]["Num de commande"] . '_' 
 										. $TabCSV[$i]["Num de facture"] . '_' 
 										. $TabCSV[$i]["Prenom"] . '_' 
@@ -103,8 +103,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 										. $TabCSV[$i]["Code postal"] . '_' 								
 										. $TabCSV[$i]["Ville"]);  
 										
-			if ($TabCSV[$i]['Nom de la photo'] != '[Pochettes]') {
-				//$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], 9, -7), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);		
+			if ($TabCSV[$i]['Nom de la photo'] != '[Pochettes]') {	
 				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], $colNomDeLaPhoto, $nbColonneCommnandes,true), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);				
 			}	
 		}
@@ -149,6 +148,11 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 	return $affiche_Tableau ;  
 }
 
+
+function ReferenceECOLE($CodeEcole , $NOMPROJETanneeScolaire)
+{	
+	return $CodeEcole . '_' . substr($NOMPROJETanneeScolaire, -9);
+}
 function EcrireBilanCMD( $NbCommandes)
 {
 	try {

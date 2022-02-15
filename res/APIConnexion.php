@@ -1,5 +1,5 @@
 <?php
-$VERSION = 0.838;
+$VERSION = 0.843;
 $ANNEE = '2021';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -46,7 +46,7 @@ class CConnexionAPI {
     } 
     function CallServeur($CMDLocal){
 		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod') . '&pageRetour=' . $this->PageRetour . '&serveurRetour=' . urlencode(ServeurLocal()) ;
-        return $this->URL .'/res/talkServeur.php' . $cmd . $CMDLocal;
+        return $this->URL .'/res/LOGTalkServeur.php' . $cmd . $CMDLocal;
     } 	
 }
 
@@ -91,9 +91,11 @@ function execInBackground($cmd) {
     
 	if (substr(php_uname(), 0, 7) == "Windows"){
         pclose(popen("start /B ". $cmd, "r")); 
+		echo "Sur OS Windows " . $cmd;
     }
     else {
         exec($cmd . " > /dev/null &");  
+		echo "Sur OS Autres " . $cmd;
     }
 /*	
  $last_line = system($cmd, $retval);
@@ -113,12 +115,18 @@ function IsLocalMachine() {
 function AfficheMenuPage($Page,$maConnexionAPI) {
 $menuPage = '<center>
 <div id="mySidenav" class="sidenav">';
+/*
 	if ($Page != "ajoutCommandeGroupee") {$menuPage .= '<a href="index.php' . ArgumentURL().'" id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';}
 	if ($Page != "sourcePhotos") {$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>';}
 	if ($Page != "commandesEnCours") {$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';}
 	if ($Page != "commandesExpediees") {$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>';}
 	if ($Page != "administration") {$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>';}
-   
+*/  
+	if ($Page != "ajoutCommandeGroupee") {$menuPage .= '<a href="index.php' . ArgumentURL().'" id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';}
+	if ($Page != "sourcePhotos") {$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>';}
+	if ($Page != "commandesEnCours") {$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';}
+	if ($Page != "commandesExpediees") {$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>';}
+	if ($Page != "administration") {$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>';}
 	$menuPage .= '</div>
 	</center>';
 

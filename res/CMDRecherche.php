@@ -12,28 +12,28 @@
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
 
-	
+	/*
 	$DefautNbCMDAffiche = 15;
 	$NbCMDAffiche = $DefautNbCMDAffiche;
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
+	*/
 ?>
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>
+	
 
 <?php 
 if($isDebug){
 	header("Cache-Control: no-cache, must-revalidate");
 }
 
-
 ?>
     <title id="PHOTOLAB"><?php echo substr($myfileName,0, -5) ?> : Préparation de commandes</title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDRecherche.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-
 	
 <?php
 	
@@ -117,7 +117,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 			<div id="myRecommandes" class="infoRecommandes">
 				Mes recommandes<br>
 				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>	
-				<form name="FormEnvoieRecos" method="post" action="'. RetourEcranFichier($myfileName).' >" enctype="multipart/form-data">	
+				<form name="FormEnvoieRecos" method="post" action="'. RetourEcranFichier($myfileName).'" enctype="multipart/form-data">	
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
 					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
 					<button type="submit">Enregistrer ces recommandes</button>

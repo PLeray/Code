@@ -1,54 +1,5 @@
-function RecupAvancementFichierLab1(texteFichier) {
-    var avancement = texteFichier.substring(texteFichier.indexOf('{'), texteFichier.indexOf('%%'));
-    avancement = avancement.substring(avancement.indexOf(':') + 1); // juste le float
-    var NBavancement = parseFloat(avancement);
-    NBavancement = (isNaN(NBavancement)?0:NBavancement);
- 
-    return NBavancement ;
-}
+alert('TEST2'); 
 
-function AffichageAvancementProgressBar(GroupeCMD, AVPourcentage, isErreurDetecter) {
-  var progressBAR = document.getElementById('AV' + GroupeCMD.slice(0, -5) + '.lab1');
-  AVPourcentage =  100 * AVPourcentage;
-
-  progressBAR.innerHTML = '→ ' + AVPourcentage.toFixed(1) + '%';
-  progressBAR.style.width = Math.round(AVPourcentage).toFixed(1) + '%';
-
-  //alert('AffichageAvancementProgressBar ' + GroupeCMD + ' AVPourcentage ' + AVPourcentage + ' isErreurDetecter ' + isErreurDetecter);  
-
-  if(!isErreurDetecter){
-    if(Math.round(AVPourcentage)>=100){
-      location.reload();
-    }
-  }
-  else{ // detection d'une nouvelle erreur : vérifier que l'erreur n'est pas dejà signalé
-    var isErreurAfficher = (document.getElementById(GroupeCMD.slice(0, -5) + '.Erreur').display == 'none');
-    if(isErreurAfficher){
-      location.reload();
-    }
-  }
-}
-
-function EtatBarreProgressionPour(GroupeCMD) {
-  //alert('ID2 ' +GroupeCMD.slice(0, -5) + '.Erreur');  
-  // var fichierErreur = GroupeCMD.replace('.lab1', '.Erreur');
-  var fichierErreur = GroupeCMD.slice(0, -5) + '.Erreur';
-  var isErrerur = isFichiereExiste('../../CMDLABO/' + fichierErreur);
- // if (isErrerur){alert('erreur ' + fichierErreur);}
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function() {
-    AffichageAvancementProgressBar(GroupeCMD, RecupAvancementFichierLab1(this.responseText), isErrerur);
-  }
-  xhttp.open("GET", '../../CMDLABO/' + GroupeCMD.slice(0, -1) + '.1');
-  xhttp.send();
-}
-
-function isFichiereExiste(url){
-    var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    return http.status!=404;
-}
 
 function VisuErreur(elementId) {
   /* 
@@ -63,11 +14,36 @@ function VisuErreur(elementId) {
         cmd[i].style.display = 'block';
         setCookie(cmd[i].id, 'affiche', 30);
     }else{
-      cmd[i].style.display = 'none';
+      cmd[i].style.display = "none";
       setCookie(cmd[i].id, 'cache', 30);      
     }
   }	  
 }
+
+/*
+	var ele = document.getElementById(elementId);
+	if(ele.style.display == "inline-block") {
+    ele.style.display = "block";	
+    setCookie(elementId, 'affiche', 30);
+	}*/
+
+/*
+function VisuErreur(elementId) {
+	var ele = document.getElementById(elementId);
+	
+
+	if(ele.style.display == "inline-block") {
+    alert('ID ' + elementId);
+		ele.style.display = "none";
+    setCookie(elementId, 'cache', 30);
+	}
+	else {
+		ele.style.display = "block";
+    setCookie(elementId, 'affiche', 30);	
+	}
+} 
+
+ */
 
 function setCookie(cname, cvalue, exdays) {
 	var d = new Date();

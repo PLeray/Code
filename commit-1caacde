@@ -34,10 +34,10 @@ index 3cca8eb..c696caa 100644
  		$identifiant = substr($tabFICHIERLabo[$curseur],0,1);
  		if (($identifiant != '@') && ($identifiant != '#') && ($identifiant != '<') && ($identifiant != '')) {
  			//$resultat .= '<img src="' . LienJPG($tabFICHIERLabo[$curseur]) . '" title="'. urldecode($tabFICHIERLabo[$curseur]) . '">';// . '">&nbsp;';
-diff --git a/res/CMDView.php b/res/CMDView.php
+diff --git a/res/CMDCartonnage.php b/res/CMDCartonnage.php
 index 0ab02c2..eb5878d 100644
---- a/res/CMDView.php
-+++ b/res/CMDView.php
+--- a/res/CMDCartonnage.php
++++ b/res/CMDCartonnage.php
 @@ -57,7 +57,7 @@
  
  	<div class="recherche">	
@@ -47,10 +47,10 @@ index 0ab02c2..eb5878d 100644
  	</div>
  	<div id="myDropdown" class="dropdown-content" onmouseout="myFunction()"	>
  	
-diff --git a/res/css/CMD-View.css b/res/css/CMD-View.css
+diff --git a/res/css/CMDCartonnage.css b/res/css/CMDCartonnage.css
 index 339506a..9349abf 100644
---- a/res/css/CMD-View.css
-+++ b/res/css/CMD-View.css
+--- a/res/css/CMDCartonnage.css
++++ b/res/css/CMDCartonnage.css
 @@ -308,43 +308,64 @@ p {/*Police D
      /*outline: 3px solid var(--FondLigneTabGrisFonce);
      background-color: #f6f6f6;
@@ -172,10 +172,10 @@ index 339506a..9349abf 100644
 +
   
 \ No newline at end of file
-diff --git a/res/js/CMD-View.js b/res/js/CMD-View.js
+diff --git a/res/js/CMDCartonnage.js b/res/js/CMDCartonnage.js
 index 6a4226d..a7f9e16 100644
---- a/res/js/CMD-View.js
-+++ b/res/js/CMD-View.js
+--- a/res/js/CMDCartonnage.js
++++ b/res/js/CMDCartonnage.js
 @@ -42,34 +42,17 @@ function VisuCMD(elementId) {
  	//alert('Cookie cmd : ' + elementId + ' val : ' + getCookie(elementId) );
  } 

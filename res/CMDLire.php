@@ -15,6 +15,15 @@ function RetourEcranFichier($myfileName){
 	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }
 
+function EnregistrerFichier($myfileName){
+	$Etat = substr($myfileName, -1);
+	$RetourEcran = 'CATPhotolab.php';	
+    if ($Etat > 4){
+		$RetourEcran = 'CATHistorique.php';
+	}
+	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+}
+
 function FormatNumCmd($strCMD){
 	//Ajoute toute la ligne commande / client A changer pour juste numéro!
 	$numCMD = trim(str_replace("#", "", $strCMD));
@@ -46,7 +55,7 @@ function AfficheEtatFichierLab($myfileName){
 		break;
 	case "3":  //. substr($myfileName,0,10)    strftime(" in French %A and",); $date = strftime("%d %B %Y", strtotime($date1));
 		//$retourMSG = "Les planches ont été envoyé au labo le " .date('l d B',strtotime(substr($myfileName,0,10)) ).    "."; 
-		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " .strftime("%A %d %B", strtotime(substr($myfileName,0,10)) ).    "."; 
+		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " . utf8_encode(strftime("%A %d %B", strtotime(substr($myfileName,0,10)) )).    "."; 
 		break;		
 	case "4":
 		$retourMSG = "Les planches de cette commande sont en cours d'empaquetage.";
@@ -115,6 +124,23 @@ function LienAffichePlusMoins($signe,$Commande){
 	$LienFichier = htmlspecialchars($_SERVER['PHP_SELF']) . $Environnement;
 	//echo $LienFichier;
 	return $LienFichier;
+}
+
+function LienAfficheToutesLesCommandes($TouteslesCommandes,$Commande){
+	//echo $Commande;
+	$NbCMD=$GLOBALS['NbCMDAffiche'];
+	$NbCMD=-1 * $NbCMD;
+	if ($TouteslesCommandes){
+		
+	} 
+
+	//
+	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') . '&nbCmd=' . $NbCMD;
+	$Environnement = $Environnement . $Commande;
+	
+	$LienFichier = htmlspecialchars($_SERVER['PHP_SELF']) . $Environnement;
+	return $LienFichier;
+	
 }
 
 function LienRecherche($Commande){

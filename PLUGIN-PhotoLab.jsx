@@ -5,9 +5,9 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 0.84;
+var g_NumVersion = 0.843;
 
-var is_PC = (File.fs !== "Windows") ? true : false ; 
+var is_PC = (File.fs == "Windows") ? true : false ; 
 
 var g_Rep_PHOTOLAB = Folder($.fileName).parent.parent + "/";
 var g_FichierSource = g_Rep_PHOTOLAB + 'SOURCES/Sources.csv';
@@ -114,7 +114,10 @@ doc.rename('TTTTES4');
 if (is_PC){	g_TypeUI =  'palette'} // PC	
 else{ g_TypeUI =  'dialog'} // MAC
 
+//TEST pour probleme de quitter process pendans compilation INTERRUPTION  COMMENT ?
+//g_TypeUI =  'dialog'  ;
 
+//alert('is_PC : ' + is_PC);
 //PHOTOLAB
 var PHOTOLAB = new Window (g_TypeUI, g_NomVersion + '     [' + g_CeCalculateur + ']', undefined); 
 PHOTOLAB.margins = 0;
@@ -230,8 +233,10 @@ var Zone1Entete = PHOTOLAB.add ("group");
 
 	Select_Generer.enabled = true;
 	Select_Generer.onClick = function () {
+		
 		g_IsPhotoLabON = true;
 		 GestionBoutonGenerer();
+
 		 //GenererLeFichierNOM(); //g_NomFichierEnCours
 		Auto();
 	}
@@ -251,7 +256,7 @@ var Zone1Entete = PHOTOLAB.add ("group");
 
 	var group = Zone131Action.add ("group {alignChildren: 'left', orientation: ’stack'}");	
 	
-	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,25], '0/0', {multiline: true});
+	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,35], '0/0', {multiline: true});
 	txtTraitement.graphics.font = ScriptUI.newFont ("Arial", 'BOLD', 14);	
 	
 
@@ -263,46 +268,42 @@ Zone2Progression.orientation = "column";
 
 
 if (is_PC) {
-	var listboxFichier = Zone2Progression.add ("listbox", undefined, g_TabListeCompilationFichier);
+	var listboxCommandes = Zone2Progression.add ("listbox", undefined, g_TabListeCompilationFichier);
 } else {
-	var listboxFichier = Zone2Progression.add ("listbox", undefined, g_TabListeCompilationFichier);
+	var listboxCommandes = Zone2Progression.add ("listbox", undefined, g_TabListeCompilationFichier);
 }
-//listboxFichier.size.height = 100;
-listboxFichier.preferredSize.height = 100;
-	//listboxFichier.graphics.foregroundColor = listboxFichier.graphics.newPen(listboxFichier.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
+//listboxCommandes.size.height = 100;
+listboxCommandes.preferredSize.height = 100;
+	//listboxCommandes.graphics.foregroundColor = listboxCommandes.graphics.newPen(listboxCommandes.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
 
 
 
 
 
-listboxFichier.selection = 0;
+listboxCommandes.selection = 0;
 g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 
 //e.text = g_NomFichierEnCours;
 //e.active = true;
-listboxFichier.preferredSize.width = 340;
+listboxCommandes.preferredSize.width = 340;
 //e.preferredSize.width = 220; e.preferredSize.height = 20;
 
 
-listboxFichier.onChange = function () {
-g_NomFichierEnCours = listboxFichier.selection.text;
+listboxCommandes.onChange = function () {
+g_NomFichierEnCours = listboxCommandes.selection.text;
 
 }	
 
-
 var fichierEnCours = Zone2Progression.add ('statictext {justify: "center"}'); //,  [0,0,g_LargeurUI,10]);
-
 
 var progressBar = Zone2Progression.add ('progressbar', [0,0,g_LargeurUI,10], 0, 15);
 
-
-
-	var Groupefermer = PHOTOLAB.add("group", undefined, {name: "Groupefermer"}); 
-	Groupefermer.alignment = ["center","top"]; 
-	var btnQuitter = Groupefermer.add("button", undefined, 'Quitter', {name: "btnQuitter"}); 	
-	btnQuitter.onClick = function () {	
-		PHOTOLAB.close();
-	}	
-
+var Groupefermer = PHOTOLAB.add("group", undefined, {name: "Groupefermer"}); 
+Groupefermer.alignment = ["center","top"]; 
+var btnQuitter = Groupefermer.add("button", undefined, 'Quitter', {name: "btnQuitter"}); 	
+btnQuitter.onClick = function () {	
+    //alert('PHOTOLAB.close()');
+    PHOTOLAB.close();
+}	
 
 
 PHOTOLAB.onDeactivate = function(){
@@ -310,8 +311,6 @@ PHOTOLAB.onDeactivate = function(){
     PHOTOLAB.update();
     Raffraichir();
 };
-
-
 
 PHOTOLAB.onClose = function(){
 	g_IsPhotoLabON = false;
@@ -328,15 +327,31 @@ PHOTOLAB.show();
 while(FermerPhotoLab == false){
    //app.refresh();
    Raffraichir();
-   
+
+
 };
 
 ////////////////////////////// LES FONCTIONS //////////////////////////////////////////////
 function Raffraichir() { 
-    app.refresh(); // or, alternatively, 
-    WaitForRedraw();
+	if(ScriptUI.environment.keyboardState.shiftKey == true){ 
+		//g_IsPhotoLabON = !QuestionInterruptionTraitement();
+		//alert('g_IsPhotoLabON ' + g_IsPhotoLabON);
+		GestionBoutonGenerer()
+	} 
 
-}
+
+    //NEW 02-01-2022 
+	RaffraichirOLD();
+	//PHOTOLAB.show();	
+	//PHOTOLAB.hide();
+
+
+
+
+
+	
+	
+} 
 
 function WaitForRedraw(){
     var eventWait = charIDToTypeID("Wait")
@@ -348,3 +363,11 @@ function WaitForRedraw(){
     executeAction(eventWait, desc, DialogModes.NO)
 }  
 
+function RaffraichirOLD() { 
+    // NEW 08-12-2021  
+	WaitForRedraw();
+	
+	app.refresh(); // or, alternatively, 
+	PHOTOLAB.update(); // NEW 08-12-2021
+
+} 

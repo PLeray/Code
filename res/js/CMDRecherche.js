@@ -44,8 +44,8 @@ function AfficheRechercheCMD(isAffiche) {
 		
 		var rech = document.getElementById("zoneRechercheCMD");
 		rech.style.display = '';
-		var list = document.getElementById("zoneListePageCMD");
-		list.style.display = 'none';			
+		//var list = document.getElementById("zoneListePageCMD");
+		//list.style.display = 'none';			
 		
 	}
 	else{
@@ -59,8 +59,8 @@ function AfficheRechercheCMD(isAffiche) {
 		
 		var rech = document.getElementById("zoneRechercheCMD");
 		rech.style.display = 'none';
-		var list = document.getElementById("zoneListePageCMD");
-		list.style.display = 'block';			
+		//var list = document.getElementById("zoneListePageCMD");
+		//list.style.display = 'block';			
 	}
 }
 	
@@ -225,7 +225,58 @@ function filterFunction() {
 	input = document.getElementById("zoneRecherche");
 	filter = input.value.toUpperCase();	
 	//var elementsRech = input.value.toUpperCase().split(' ');
-	RechercheMulti(filter);
+	//RechercheMulti(filter);
+	RecherchePlanche(filter);
+}
+
+function RecherchePlanche(strElementsRech) {
+	var tabElementsRech = strElementsRech.split(' ');
+    var cmd, i, e, listDrop  ;
+	var tabCMD = [];
+	var synthTabCMD = [];	
+	document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+	for (e = 0; e < tabElementsRech.length; e++) {
+		////////////////////////////////////////////////:
+		/* pour les num de commandes */
+		cmd = document.getElementsByClassName("commande");
+		for (i = 0; i < cmd.length; i++) {
+			cmd[i].style.display = "none";
+		}
+
+
+		for (i = 0; i < cmd.length; i++) {
+			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
+				cmd[i].style.display = "";
+
+			}
+			else{
+				cmd[i].style.display = "none";
+			}
+		}	
+
+
+
+
+
+
+		cmd = document.getElementsByClassName("produit");
+
+		cmd = document.getElementsByClassName("planche");
+		for (i = 0; i < cmd.length; i++) {
+			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
+				cmd[i].style.display = "";
+				cmd[i].parentNode.style.display = ""; // class produit
+				cmd[i].parentNode.parentNode.style.display = ""; // class Contenucommande
+				cmd[i].parentNode.parentNode.parentNode.style.display = ""; // class commande
+
+			}
+			else{
+				cmd[i].style.display = "none";
+				cmd[i].parentNode.style.display = "none";
+			}
+		}	
+
+	}
 }
 
 function RechercheMulti(strElementsRech) {
@@ -290,11 +341,11 @@ function RechercheMulti(strElementsRech) {
 		if(e == 0){
 			//synthTabCMD = [...new Set(tabCMD)]; // Pour Minify ...
 			synthTabCMD = tabCMD; // // Averifier .?? Pour Minify ...
-			//console.log("synthTabCMD0 '" + tabElementsRech[e] + "' : " + synthTabCMD);
+			console.log("synthTabCMD0 '" + tabElementsRech[e] + "' : " + synthTabCMD);
 		}
 		else{
 			synthTabCMD = intersect(synthTabCMD, tabCMD)
-			//console.log("synthTabCMDn '" + tabElementsRech[e] + "' : " + synthTabCMD);
+			console.log("synthTabCMDn '" + tabElementsRech[e] + "' : " + synthTabCMD);
 		}
 		tabCMD = [];
 		
@@ -304,8 +355,8 @@ function RechercheMulti(strElementsRech) {
 	listDrop = document.getElementById("listeRechercheCMD").getElementsByTagName("li");
     for (i = 0; i < listDrop.length; i++) {	
 		menu = listDrop[i].getElementsByTagName("a")[0];
-		//console.log("menu : " + menu.innerHTML.trim());	
-		//console.log("synthTabCMD : " + synthTabCMD);	
+		console.log("menu : " + menu.innerHTML.trim());	
+		console.log("synthTabCMD : " + synthTabCMD);	
         if (synthTabCMD.indexOf('C-' + menu.innerHTML.trim().toUpperCase()) > -1) { 		
             listDrop[i].style.display = "";
         } else {
@@ -318,7 +369,7 @@ function RechercheMulti(strElementsRech) {
 	
     for (i = 0; i < cmd.length; i++) {		
         if (synthTabCMD.indexOf(cmd[i].id.toUpperCase()) > -1) { 	
-			//console.log("cmd[i].id.toUpperCase() : " + cmd[i].id.toUpperCase());		
+			console.log("cmd[i].id.toUpperCase() : " + cmd[i].id.toUpperCase());		
             cmd[i].style.display = ""; // .parentNode effacer toute la commande, même le titre
         } else {
             cmd[i].style.display = "none";

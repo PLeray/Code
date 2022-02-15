@@ -217,6 +217,7 @@ img {
   position: relative;
   display: inline-block;
   /*border-bottom: 1px dotted black;*/
+  cursor: pointer;
 }
 
 .tooltip .tooltiptext {
@@ -262,7 +263,9 @@ img {
 	color: white;
 	white-space : nowrap;
 	position: relative;
-	background-image: linear-gradient(to right, var(--FondLigneTabGrisFonce) 0%, var(--boutonVert) 30%);
+	background-image: linear-gradient(to right, var(--FondLigneTabGrisFonce) 0%, var(--boutonVert) 30%);/**/
+
+
 }
 
 .containerCMDPLanche {
@@ -280,4 +283,43 @@ img {
 
 .mini {
   font-size: 10px;
+}
+
+
+.TitreErreur {
+	/*background-color: var(--FondLigneTabGrisClair);*/
+	position: relative;
+	/*display: inline-block;*/
+	border-bottom: 2px solid var(--boutonRouge);
+	cursor: pointer;
+	font-size: 14px;
+
+}
+
+ .ContenufichierErreur {
+	/*	*/
+	display: none;
+	background-color: white;
+	font-size: 14px;
+	font-family: "Courier New", Times, serif;
+	position: absolute;
+	top: 100px;
+	left: 5%;
+
+
+	margin-left: auto;
+	margin-right: auto;	
+
+	padding: 20px;
+
+	height: 80%;
+	width: 90%;
+
+
+	text-align: left;
+
+	border: 3px solid var(--boutonRouge);
+	z-index:50;
+	overflow: auto;
+	border-radius: 5px;
 }

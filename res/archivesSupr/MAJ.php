@@ -3,7 +3,7 @@ include_once 'APIConnexion.php';
 
 $codeMembre = '0';
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
-$isDebug = file_exists ('debug.txt');
+$isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'index');

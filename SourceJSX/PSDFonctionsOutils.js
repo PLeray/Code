@@ -1,5 +1,7 @@
-﻿////////////////////////////// LES FONCTIONS OUTILS //////////////////////////////////////////////
-#include PSDFonctionsDatas.js
+////////////////////////////// LES FONCTIONS OUTILS //////////////////////////////////////////////
+#include PSDFonctionsDatas.js;
+
+var scriptPoincon = 'POINCON-S²';
 
 function OuvrirFichierToTableauDeLigne(file) {
 	var tabPlanchesLabo = [];
@@ -243,7 +245,8 @@ function OuvrirPhotoSource(unFichierPhoto){
 		msg = '     PROBLEME : Ouverture de la photo : ' + unFichierPhoto;		
 		AjoutBilanGeneration(msg);
 		msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto + " existe bien dans le dossier SOURCE de l'ecole !";	
-		AjoutBilanGeneration(msg);		
+		msg = "                       dossier SOURCE de l'ecole : " + g_RepSOURCE;	
+				AjoutBilanGeneration(msg);		
 		AjoutBilanGeneration('');
 		g_Erreur = msg;
 		return null;
@@ -338,26 +341,58 @@ function Miniature_Reduction(pourcent){
 }
 
 function ImporterAutrePhoto(PathNomAutrePhoto){
-// ==============Importation Deuxieme image ======================================	
-	var idPlc = charIDToTypeID( "Plc " );
-	var desc2 = new ActionDescriptor();
-	var idnull = charIDToTypeID( "null" );
-	desc2.putPath( idnull, new File(PathNomAutrePhoto) );
-	var idFTcs = charIDToTypeID( "FTcs" );
-	var idQCSt = charIDToTypeID( "QCSt" );
-	var idQcsa = charIDToTypeID( "Qcsa" );
-	desc2.putEnumerated( idFTcs, idQCSt, idQcsa );
-	var idOfst = charIDToTypeID( "Ofst" );
-	var desc3 = new ActionDescriptor();
-	var idHrzn = charIDToTypeID( "Hrzn" );
-	var idRlt = charIDToTypeID( "#Rlt" );
-	desc3.putUnitDouble( idHrzn, idRlt, 0.000000 );
-	var idVrtc = charIDToTypeID( "Vrtc" );
-	var idRlt = charIDToTypeID( "#Rlt" );
-	desc3.putUnitDouble( idVrtc, idRlt, 0.000000 );
-	var idOfst = charIDToTypeID( "Ofst" );
-	desc2.putObject( idOfst, idOfst, desc3 );
-	executeAction( idPlc, desc2, DialogModes.NO );
+	try {
+		/**/
+        //if( isFichierExiste(PathNomAutrePhoto)){
+			// ==============Importation Deuxieme image ======================================	
+			var idPlc = charIDToTypeID( "Plc " );
+			var desc2 = new ActionDescriptor();
+			var idnull = charIDToTypeID( "null" );
+			desc2.putPath( idnull, new File(PathNomAutrePhoto) );
+			var idFTcs = charIDToTypeID( "FTcs" );
+			var idQCSt = charIDToTypeID( "QCSt" );
+			var idQcsa = charIDToTypeID( "Qcsa" );
+			desc2.putEnumerated( idFTcs, idQCSt, idQcsa );
+			var idOfst = charIDToTypeID( "Ofst" );
+			var desc3 = new ActionDescriptor();
+			var idHrzn = charIDToTypeID( "Hrzn" );
+			var idRlt = charIDToTypeID( "#Rlt" );
+			desc3.putUnitDouble( idHrzn, idRlt, 0.000000 );
+			var idVrtc = charIDToTypeID( "Vrtc" );
+			var idRlt = charIDToTypeID( "#Rlt" );
+			desc3.putUnitDouble( idVrtc, idRlt, 0.000000 );
+			var idOfst = charIDToTypeID( "Ofst" );
+			desc2.putObject( idOfst, idOfst, desc3 );
+			executeAction( idPlc, desc2, DialogModes.NO );
+		//}
+		return true;
+	}
+	catch(err) {
+		var msg = 'Ecole en cours : ' + g_CommandeECOLEEncours;
+		AjoutBilanGeneration(msg);
+		msg = '  Commande en cours : ' + g_CommandePDTEncours;
+		AjoutBilanGeneration(msg);
+		msg = "     PROBLEME : Pas de fichier Gabarit nommé : " + PathNomAutrePhoto.split('\\').pop().split('/').pop() + " dans : '" + g_Rep_GABARITS + "'";
+		AjoutBilanGeneration(msg);
+		msg = "     SOLUTION PROBABLE : Ajouter fichier Gabarit nommé : " + PathNomAutrePhoto.split('\\').pop().split('/').pop() + " dans : '" + g_Rep_GABARITS + "'";	
+		AjoutBilanGeneration(msg);
+		AjoutBilanGeneration('');		
+		g_Erreur = msg;
+		return false;			
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 function AjoutBilanGeneration(msg){
@@ -393,7 +428,9 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 
 		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 		var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
-		if(!isFichierExiste(unPathPlanche)){
+		//alert('TESTZ50 DEBUT CreerUnProduitPourLeLaboratoire : ' + isDEJAPlancheJPGDossierTirage(unNomdePlanche) + ' ' + unNomdePlanche);
+		if(!isDEJAPlancheJPGDossierTirage(unNomdePlanche)){
+		//if(!isFichierExiste(unPathPlanche)){
 			try {
 				//alert('CreerUnProduitPourLeLaboratoire \n Code de unProduit ' + unProduit.Code);
 
@@ -473,9 +510,8 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							Raffraichir(); 
 						}*/					
 						// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-						if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2021-Cadre-Studio²'){ // QQue pour Studio² !!!						
-							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
-							
+						if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);							
 						}
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
 						
@@ -539,7 +575,10 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 	var valRetour = unNomdePlanche;
 	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 	var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
-	if(!isFichierExiste(unPathPlanche)){
+	
+	//alert('TESsdfsd isDEJAPlancheJPGDossierTirage(unNomdePlanche) : ' + isDEJAPlancheJPGDossierTirage(unNomdePlanche) + ' ' + unNomdePlanche);
+	if(!isDEJAPlancheJPGDossierTirage(unNomdePlanche)){
+	//if(!isFichierExiste(unPathPlanche)){
 		try {
 			//alert('CreerUnProduitPourLeLaboratoire \n Code de unProduit ' + unProduit.Code);
 
@@ -587,11 +626,8 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');	
 					//HACK pour passer au quattro reel dans LR donc si taille >7204 (69cm) on rogne	à 61cm
 					//alert('myDocument.width : ' + myDocument.width );
-					if (myDocument.width > 7500) {reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('ROGNAGE-61CM');} 
-						
-						
-
-								
+					if (myDocument.width > 7300) {reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('ROGNAGE-61CM');} 
+														
 					
 					// CADRE-CARRE-ID !!!!!!!!!
 					if (unProduit.Type.indexOf('CADRE-CARRE-ID') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
@@ -615,7 +651,7 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					// IMPORT FOND D'ici
 					if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
 						//reussiteTraitement = reussiteTraitement && 
-						ImporterAutrePhoto(g_Rep_GABARITS + unProduit.Type + '.png');					
+						reussiteTraitement = reussiteTraitement && ImporterAutrePhoto(g_Rep_GABARITS + unProduit.Type + '.png');					
 					}
 
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
@@ -635,9 +671,8 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 						Raffraichir(); 
 					}*/					
 					// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio²'){ // QQue pour Studio² !!!						
-						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('POINCON-S²');
-						
+					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);						
 					}
 					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
 					
@@ -892,6 +927,40 @@ function NbJPGArborescence(theFolder, theNombre) {
    return theNombre
 }
 
+function strListeFichiersJPGDossierTirage(theFolder, strFichier) {	     
+	//alert('theFolder.exists :: ' + theFolder.exists );
+	if (theFolder.exists) {
+		var theContent = theFolder.getFiles();
+	
+		for (var n = 0; n < theContent.length; n++) {
+			var theObject = theContent[n];
+			if (theObject.constructor.name == "Folder") {
+				strFichier = strFichier + strListeFichiersJPGDossierTirage(theObject, strFichier)
+			}
+			else {
+				if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg" ){
+					strFichier = strFichier + decodeURI(theObject.name) + sepNumLigne;
+				}
+			}
+		}
+	};
+	//alert('strFichier :: ' + strFichier );
+   return strFichier
+}
+
+function isDEJAPlancheJPGDossierTirage(strFichier) {
+	var isDeja = false;
+	for (var n = 0; n < g_TabPlancheDEJAFaites.length; n++) {
+		if ( g_TabPlancheDEJAFaites[n] == strFichier) {
+			isDeja = true;
+			//return isDeja;
+			break;
+		}
+	}
+	//alert('isDEJAPlancheJPGDossierTirage :: ' + strFichier + '  :: ' + isDeja);
+	return isDeja;
+}
+
 function TestIndivPhotoDeGroupe(){
 	var msgTest = '';
 	var nomFichierGroupe = '';
@@ -1112,7 +1181,7 @@ function ErreurInfoMSG(err){
 }
 
 function TableauTOStr(unTableau){
-	var strTableau = 'Le tableau : ';
+	var strTableau = 'Le TableauTOStr : ';
 	for (var n = 0; n < unTableau.length; n++) {
 		strTableau = strTableau + "\n" + unTableau[n] ;
 	}	
@@ -1121,7 +1190,7 @@ function TableauTOStr(unTableau){
 }
 
 function TableauAssociatifTOStr(unTableau){
-	var strTableau = 'Le tableau : ' ;
+	var strTableau = 'Le TableauAssociatifTOStr : ' ;
 	
 	for(var valeur in unTableau){
 		 //document.write('<strong>'+valeur + ' : </strong>' + monTab[valeur] + '</br>');
@@ -1196,6 +1265,7 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 }
 
 function CreerQUATTROPresentationWEB(unfichier, extension, unDossier){
+	
 		var nomFichierPhoto = unfichier;
 		var unNomdePlancheWEBFiche = unfichier.slice(0,-4) + '-Fiche_nb.jpg';
 		
@@ -1224,56 +1294,61 @@ function CreerQUATTROPresentationWEB(unfichier, extension, unDossier){
 			(!isFichierExiste(unPathPlanche + unNomdePlancheDWEB)) || 
 			(!isFichierExiste(unPathPlanche + unNomdePlancheDWEBQuattro))
 			){
-				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 			
 				var reussiteTraitement = (laPhoto != null);
 				reussiteTraitement = reussiteTraitement && CreerUnDossier(unPathPlanche.slice(0,-1));
 				if (reussiteTraitement){
 
 					// Pour avoir des planches homogenes dans le viewer de commandes					
 					var myDocument = app.activeDocument; 	
-					
-					//HACK pour passer au quattro reel dans LR donc si taille >7204 (69cm) on rogne	à 61cm
-					//alert('myDocument.width : ' + myDocument.width );
-					if (myDocument.width > 7500) {reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('ROGNAGE-61CM');} 
-					
+					if (myDocument.width < 7000)  { // Pas un Quattro !!!!
+						reussiteTraitement = false;
+
+						MsgLOGInfo("Commande  : " + g_CommandePDTEncours + " ERREUR : L'image n'est pas assez grande pour un Quattro !!	CreerQUATTROPresentationWEB()", "TAILLE QUATTRO");
+					}else{
+						if (myDocument.width > 7300) {reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('ROGNAGE-61CM');} 
+											//HACK pour passer au quattro reel dans LR donc si taille >7204 (69cm) on rogne	à 61cm
+					//alert('myDocument.width : ' + myDocument.width );		
 
 
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Instantane');
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
-					//1
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheWEBFiche);	
-					
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');		
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-QUATTRO');
-					//2
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheAWEBQuattro);
-					//3
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheBWEBQuattro);
-					//4
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheCWEBQuattro);
-					//5
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheDWEBQuattro);	
-					
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-A');
-					//6
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheAWEB);		
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Instantane');
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-PRESENTATION-FICHE');
+						//1
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheWEBFiche);	
+						
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');		
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('WEB-QUATTRO');
+						//2
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheAWEBQuattro);
+						//3
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheBWEBQuattro);
+						//4
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheCWEBQuattro);
+						//5
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheDWEBQuattro);	
+						
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-A');
+						//6
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheAWEB);		
 
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-B');
-					//7
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheBWEB);	
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-B');
+						//7
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheBWEB);	
 
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-C');
-					//8
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheCWEB);	
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-C');
+						//8
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheCWEB);	
 
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
-					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-D');
-					//9
-					SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheDWEB);	
-					laPhoto.close(SaveOptions.DONOTSAVECHANGES);					
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('OUVERTURE-Retour');
+						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('Portrait-D');
+						//9
+						SauvegardeJPEG(laPhoto, unPathPlanche + unNomdePlancheDWEB);	
+						laPhoto.close(SaveOptions.DONOTSAVECHANGES);	
+					}
+		
 				}
 
 			}				
@@ -1284,7 +1359,7 @@ function CreerQUATTROPresentationWEB(unfichier, extension, unDossier){
 
 function CreerUnFichiersPresentationWEB(unfichier, extension, unDossier){
 	var isTransformQUATTRO = false;
-
+	//alert(' unfichier :  ' + unfichier + ' extension :  ' +  extension + ' unDossier :  ' +  unDossier);
 	if (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO'){
 		isTransformQUATTRO = isTransformQUATTRO || ((unDossier.indexOf('Fratrie') < 0) && (unfichier.length < g_MinimuNomClasse) && g_CONFIGisPhotosIndiv);	
 		//alert('isTransformQUATTRO ' + isTransformQUATTRO );		
@@ -1293,7 +1368,7 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, unDossier){
 		isTransformQUATTRO = isTransformQUATTRO || ((unfichier.length >= g_MinimuNomClasse) && g_CONFIGisPhotosGroupes);
 	}
 	
-	/*	alert('isTransformQUATTRO ' + isTransformQUATTRO 
+	/*alert('isTransformQUATTRO ' + isTransformQUATTRO 
 	+ ' isLesGroupe ' 	+ g_CONFIGisPhotosGroupes 
 	+ ' isLesfratrie ' 	+ g_CONFIGisPhotosFratrie 
 	+ ' unFichier ' + unfichier 

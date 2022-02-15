@@ -10,7 +10,7 @@ if (isset($_POST['codeMembre']) ){
 if (isset($_GET['codeMembre'])) { // Test connexion l'API
 	$codeMembre = $_GET['codeMembre'];
 }
-//DEBUG ?
+//DEBUG ?NBPlanchesFichierLab
 
 $isDebug = file_exists ('../debug.txt');
 if ($isDebug) echo 'MODE DEBUG';
@@ -82,7 +82,8 @@ elseif (isset($_GET['apiPhotoshop'])) {
 } 
 elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
-} 
+}
+
 
 else {
 	if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
@@ -132,7 +133,7 @@ function API_DropFILELAB() {//upload de fichier
 	$target_file = '../CMDLABO/' . $_FILES['fileToDrop']['name']."0";
 	move_uploaded_file($_FILES['fileToDrop']['tmp_name'], $target_file);	
 	
-	$NBPlanches = NBPlanchesFichierLab($target_file);
+	$NBPlanches = ($target_file);
 	//echo "Apres move_uploaded_file";
 	$CMDhttpLocal = '&CMDdate=' . substr($sFileName, 0, 10);	
 	$CMDhttpLocal = $CMDhttpLocal . '&CMDnbPlanches=' . $NBPlanches;

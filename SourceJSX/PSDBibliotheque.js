@@ -1,4 +1,4 @@
-﻿#include PSDSources.js
+#include PSDSources.js;
 
 var g_LesSources = [];
 
@@ -6,6 +6,7 @@ function LireFichierSource() {
 	g_LesSources = [];	
 	var file = new File(g_FichierSource);
 	if (file.exists){	
+		file.encoding='UTF-8';
 		file.open("r"); // open file with write access
 			file.readln(); // On Passe les entetes du csv
 			while(!file.eof){
@@ -32,9 +33,9 @@ function TRIERSource() {
 	  return 0;
 	});
 	/*g_LesSources.sort(function compareAnnee(a, b) {
-	  if (a.Annee < b.Annee)
+	  if (aAnneeScolaire< b.AnneeScolaire)
 		 return -1;
-	  if (a.Annee > b.Annee )
+	  if (a.AnneeScolaire > b.AnneeScolaire )
 		 return 1;
 	  return 0;
 	});		*/
@@ -46,7 +47,7 @@ function MAJFichierSource() {
 	var file = new File(g_FichierSource);
 	file.encoding='UTF-8';
 	file.open("w");	
-        file.writeln('Code;NomProjet;Annee;Rep Scripts PS;DossierSources;OrdrePlancheInverse;typeConfigWeb;isPhotosGroupes;isPhotosIndiv;isPhotosFratrie'); // On Ecrit les entetes du csv	
+        file.writeln('Code;NomProjet;AnneeScolaire;Rep Scripts PS;DossierSources;OrdrePlancheInverse;typeConfigWeb;isPhotosGroupes;isPhotosIndiv;isPhotosFratrie'); // On Ecrit les entetes du csv	
 		for (var n = 0; n < g_LesSources.length; n++) {
 			//test = test + g_LesSources[n].LigneCSV();
 			file.writeln(g_LesSources[n].LigneCSV());
@@ -57,42 +58,58 @@ function MAJFichierSource() {
 	file.close();			
 }
 
-function RecupSourceDepuisCode(leCode) {
+function RecupSourceDepuisobjEcole(uneEcole) {
     var laSource = null;
+	
 	for (var n = 0; n < g_LesSources.length; n++) {
-		if (g_LesSources[n].CodeEcole == leCode){	
-            laSource = g_LesSources[n];  
-			break;            
-		}
+		
+		if ((g_LesSources[n].CodeEcole == uneEcole.CodeEcole) && (g_LesSources[n].AnneeScolaire == uneEcole.AnneeScolaire)){	
+			laSource = g_LesSources[n];  
+			//alert("g_LesSources[n].CodeEcole : " + g_LesSources[n].CodeEcole +  "   "   + g_LesSources[n].AnneeScolaire);
+			break;   
+		}         
 	}	
+	//alert("laSource.CodeEcole : "+laSource.CodeEcole +  " laSource.AnneeScolaire " + laSource.AnneeScolaire);
 	return laSource;	
 }
 
-function SuprimerSourceDepuisCode(leCode) {
+function RecupSourceDepuisAnneeetCode(leCode, anneeScolaire) {
+		var laSource = null;
+		for (var n = 0; n < g_LesSources.length; n++) {
+			if ((g_LesSources[n].CodeEcole == leCode) && (g_LesSources[n].AnneeScolaire == anneeScolaire)){	
+				laSource = g_LesSources[n];  
+				break;            
+			}
+		}	
+		return laSource;	
+}
+
+function SuprimerSourceDepuiobjEcole(uneEcole) {
 	for (var n = 0; n < g_LesSources.length; n++) {
-		if (g_LesSources[n].CodeEcole == leCode){	
-		//alert('g_LesSources[n].CodeEcole ' + g_LesSources[n].CodeEcole);
+		if ((g_LesSources[n].CodeEcole == uneEcole.CodeEcole) && (g_LesSources[n].AnneeScolaire == CodeEcole.AnneeScolaire)){			
             g_LesSources.splice(n, 1);
 			break;            
 		}
 	}	
 }
 
-function TrouverRepSOURCEdansBibliotheque(leCode) {
+function TrouverRepSOURCEdansBibliotheque(uneEcole) {
 	var repSource = '';
+	//alert(" TrouverRepSOURCEda uneEcole.CodeEcole " + uneEcole.CodeEcole);
 	LireFichierSource();
-	var laSource = RecupSourceDepuisCode(leCode)
+	var laSource = RecupSourceDepuisobjEcole(uneEcole);
 	if (laSource){
 		repSource = laSource.DossierSources;
 	}
+	//alert(" TrouverRepSOURCEda uneEcole.CodeEcole " + uneEcole.CodeEcole + " REP :  " + repSource);
 	return repSource;
 	g_LesSources = [];
 }
 
-function TrouverRepScriptPSdansBibliotheque(leCode) {
+function TrouverRepScriptPSdansBibliotheque(uneEcole) {
 	var repSource = '';
 	LireFichierSource();
-	var laSource = RecupSourceDepuisCode(leCode)
+	var laSource = RecupSourceDepuisobjEcole(uneEcole);
 	if (laSource){
 		repSource = laSource.RepScriptPS;
 	}
@@ -105,7 +122,7 @@ function objSourceCSV(uneLigne) {
     
     this.CodeEcole = this.TableauInfo[0] || "";
 	this.NomProjet = this.TableauInfo[1] || "";
-	this.Annee = this.TableauInfo[2] || "";
+	this.AnneeScolaire = this.TableauInfo[2] || "";
 	this.RepScriptPS = this.TableauInfo[3] || "PHOTOLAB-Studio²";	
 	this.DossierSources = this.TableauInfo[4] || "";
 	
@@ -120,7 +137,7 @@ function objSourceCSV(uneLigne) {
 
 	this.LigneCSV = function(){
 		return this.CodeEcole + ';' + this.NomProjet + ';' + 
-		this.Annee + ';' + this.RepScriptPS + ';' + 
+		this.AnneeScolaire + ';' + this.RepScriptPS + ';' + 
 		this.DossierSources + ';'	+ this.OrdrePlancheInverse + ';' + 
 		this.typeConfigWeb + ';' + this.isPhotosGroupes + ';' + 
 		this.isPhotosIndiv  + ';' + this.isPhotosFratrie ;
@@ -130,17 +147,15 @@ function objSourceCSV(uneLigne) {
 		return 
 		this.CodeEcole + ';' + 
 		this.NomProjet + ';' + 
-		this.Annee  + ';' + 
+		this.AnneeScolaire  + ';' + 
 		this.RepScriptPS + ';' + 
 		this.DossierSources;
 	};	
 */
 	
 	this.isValide = function(){
-		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.Annee != '')&&(Folder(this.DossierSources).exists);		
+		return (this.CodeEcole != '')&&(this.NomProjet != '')&&(this.AnneeScolaire != '')&&(Folder(this.DossierSources).exists);		
 	};
-
-	
 }
 
 function AfficheListeSOURCE() {
@@ -177,26 +192,23 @@ function AfficheListeSOURCE() {
 	btnQuitter.onClick = function () {	
 		dlgListeSOURCE.close();
 	}				
-				
-				
                 
-		// GROUP2
+	// GROUP2
 	var group2 = dlgListeSOURCE.add ("group");
-		var listSOURCE = group2.add ('listbox', [0, 0, 800, 250]," ",{numberOfColumns: 5, showHeaders: true, columnTitles: ["Code", "Année", "Nom du projet", "Dossier Script PS", "Dossier source"]});
+		var listSOURCE = group2.add ('listbox', [0, 0, 800, 250]," ",{numberOfColumns: 5, showHeaders: true, columnTitles: ["Code", "AnneeScolaire", "Nom du projet", "Dossier Script PS", "Dossier source"]});
 		
 		Init = function () {//INIT	
 			TRIERSource();
 			listSOURCE.removeAll ();
 			for (var i = 0; i < g_LesSources.length; i++) {
 				with (listSOURCE.add ('item', g_LesSources[i].CodeEcole)){
-					subItems[0].text = g_LesSources[i].Annee;            
+					subItems[0].text = g_LesSources[i].AnneeScolaire;            
 					subItems[1].text = g_LesSources[i].NomProjet;
 					subItems[2].text = g_LesSources[i].RepScriptPS; 
 					subItems[3].text = decodeURI(g_LesSources[i].DossierSources);
 				}
 			}    
-		}
-		
+		}		
 		
 		btnNewProjet.onClick = function () {
 			var uneNouvelleSource = new objSourceCSV(); 
@@ -216,8 +228,7 @@ function AfficheListeSOURCE() {
 			//Pour compil Web :
 			//dlgListeSOURCE.close () ;
 		}		
-		
-		
+				
 		/*btnNewProjet.onClick = AfficheNouvelleSOURCE();	*/	
 		
 		rechTxtProjet.onChanging = function () {
@@ -226,7 +237,7 @@ function AfficheListeSOURCE() {
 			for (var i = 0; i < g_LesSources.length; i++) {
 				if (g_LesSources[i].NomProjet.toLowerCase().indexOf(temp) > -1) {
 					with (listSOURCE.add ('item', g_LesSources[i].CodeEcole)){
-					subItems[0].text = g_LesSources[i].Annee;            
+					subItems[0].text = g_LesSources[i].AnneeScolaire;            
 					subItems[1].text = g_LesSources[i].NomProjet;
 					subItems[2].text = g_LesSources[i].RepScriptPS; 
 					subItems[3].text = decodeURI(g_LesSources[i].DossierSources);
@@ -241,7 +252,9 @@ function AfficheListeSOURCE() {
 		//rechTxtProjet.onChanging();
 		listSOURCE.onChange = function(){
 			if(listSOURCE.selection != null){
-				valRetour = AfficheEditionSOURCE(RecupSourceDepuisCode(listSOURCE.selection.text));	
+				//alert('listSOURCE.selection.text ' + listSOURCE.selection.text );
+				//alert('listSOURCE.selection.text ' + listSOURCE.selection.text + ' subItems[0] ' + listSOURCE.selection.subItems[0]);
+				valRetour = AfficheEditionSOURCE(RecupSourceDepuisAnneeetCode(listSOURCE.selection.text,listSOURCE.selection.subItems[0]));	
 				if(valRetour > 0 ){				
 					MAJFichierSource();
 					Init(); 
@@ -250,19 +263,13 @@ function AfficheListeSOURCE() {
 						//alert('valRetour : ' + valRetour);
 						dlgListeSOURCE.close();
 						//return valRetour;
-					}						
-					
+					}											
 				}
 				listSOURCE.selection = null;	
 			}	
 		}	
 		Init();
 		listSOURCE.selection = null;
-
-
-		// We need the button to catch the Return/Enter key (CC and later)
-		//dlgListeSOURCE.add ('button', undefined, 'Ok', {name: 'ok'});
-        //dlgListeSOURCE.show () ;dlgListeSOURCE.close();
 		
 		if (dlgListeSOURCE.show () != 2){			//return listSOURCE.selection.text;
 			return valRetour;

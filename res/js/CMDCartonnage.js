@@ -5,7 +5,14 @@ window.onscroll = function() {scrollFunction()};
 rech.style.display = 'none';
 AfficheRechercheCMD(false);*/
 
+//var EtatCommande = 0; 
+
 //initPagination();
+function fxModeAffichage(ModeAffichage){ //-1 pliées // 0 cartonnage 1 : depliées
+	EtatCommande = ModeAffichage;
+	//alert('Onload :!! ' + EtatCommande);
+	InitCommandes(ModeAffichage);
+}
 
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
@@ -160,7 +167,7 @@ function CouleurBoutonPage(numPage) {
 }
 
 //function InitCommandes(referme = true) {
-function InitCommandes(referme) {
+/*function InitCommandes(referme) {
 	var referme = (typeof referme !== 'undefined') ? referme : true;	
     var cmd, i, etat;	
 	cmd = document.getElementsByClassName('Contenucommande');
@@ -171,6 +178,23 @@ function InitCommandes(referme) {
 			cmd[i].style.display = etat;						
 		}else{
 			cmd[i].style.display = 'block';			
+		}
+    }	
+	MAJPage();	
+}
+*/
+
+function InitCommandes(referme = 0) {
+	var referme = (typeof referme !== 'undefined') ? referme : 0;	
+    var cmd, i, etat;	
+	cmd = document.getElementsByClassName('Contenucommande');
+    for (i = 0; i < cmd.length; i++) {
+		if (referme == 0){
+			etat = 'block';
+			if (getCookie(cmd[i].id)=='cache'){	etat = 'none';}
+			cmd[i].style.display = etat;						
+		}else{
+			cmd[i].style.display = (referme == 1)?'block':'none';			
 		}
     }	
 	MAJPage();	

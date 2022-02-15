@@ -92,15 +92,34 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 			<p> Nombre de commandes par page</p>	
 				<a href="<?php echo LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">-</a><B> <?php if ($NbCMDAffiche<10000){echo $NbCMDAffiche;} ?> </B><a href="<?php echo LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD );?>" class="moinsplus">+</a>
 				<?php echo '<p>'. count($monGroupeCmdes->tabCMDLabo) . ' commandes au total</p>';?>
+				<p  title="Afficher toutes les commandes sur une seules page"> Afficher tout : 
+					
+				<label class="container">
+					<input type="checkbox" id="myCheck" onclick="myFunctionachanger()">
+					<span class="checkmark"></span>
+				</label>					
+			</p>	
+
 		</div> 	
 		
 		<div class="titreFichier">	
-			<?php 
-				
-				echo pathinfo(utf8_encode($myfileName))['filename']; ?>
-			<?php //echo urldecode(utf8_encode($myfileName)) .
-			//'    ' . $etatFichierLab ;?>
-			<?php echo  '<p>' . $etatFichierLab . '</p>';?>
+			<?php echo pathinfo(utf8_encode($myfileName))['filename'] ;?>
+			<?php echo '<p style="color:Green;"><b>' . $etatFichierLab . '</b></p>';?>
+			<br>
+			<p>Affichage commandes :	
+			<label class="contienLeBoutonRadio"  title="Afficher toutes les commandes ouverte ou plié selaon l'avancement de la mise en pochette">mise en pochette
+			<input type="radio" checked="checked" name="radio" id="modeCartonnage" onclick="fxModeCartonnage()">
+			<span class="boutonRadio"></span>
+			</label>
+			<label class="contienLeBoutonRadio">Toutes Dépliées
+			<input type="radio" name="radio" id="modeDeplie" onclick="fxModeDeplie()">
+			<span class="boutonRadio"></span>
+			</label>
+			<label class="contienLeBoutonRadio">Toutes Repliées
+			<input type="radio" name="radio" id="modeReplie" onclick="fxModeReplie()">
+			<span class="boutonRadio"></span>
+			</label>
+			</p>
 		</div>
 
 		

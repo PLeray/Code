@@ -7,7 +7,7 @@ $repCommandesLABO = "../../CMDLABO/";
 
 $codeMembre = 0;
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
-$isDebug = file_exists ('debug.txt');
+$isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
@@ -80,11 +80,9 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				}				
 			}
 			$CMDhttpLocal ='';
-			if ($uploadOk == 2) {
-
-				$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
+			if ($uploadOk == 2) {				
 				$retourMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin).</h3>';			
-				
+				$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
 				//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
 			
 				
@@ -100,7 +98,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
 				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename($target_file_seul)));	
 				
-				$retourMSG .= '<br>
+				$retourMSG .= '<br><br>
 					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
 					<br><br>';				
 			}		

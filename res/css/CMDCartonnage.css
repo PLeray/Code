@@ -98,53 +98,98 @@ p {/*Police Détails Fichier commande et commun  */
   position: absolute;
   left: 8px;
   Top: 0px;
+  line-height: 0px;
+  z-index: 10; 
+}
+.logo:hover{opacity: 0.7;}
 
+
+.titreFichier {
+  
+  margin-left: 95px;
+  margin-top: -25px;
+  margin-bottom: -5px;
+  text-align: left;
+  /*left: 230px;*/
+
+  width: 100%;
+  color: var(--texteGris);
+  font-family: "Courier New", Times, serif;
+  letter-spacing: 3px;	
+  line-height: 7px;
   z-index: 10; 
 }
 
-.titreFichier {
-margin-left: 125px;
-margin-top: -15px;
-	text-align: left;
-	/*left: 230px;*/
-
-	width: 100%;
-    color: var(--texteGris);
-	font-family: "Courier New", Times, serif;
-    letter-spacing: 3px;	
-}
-
 /* ////////////////////////   BOUTON + ET - ///////////////////// */
-.affichageNBPage {
+.affichageInfoCMD {
  /*    
 	right: 20px;
 
 	z-index: 1; 
+text-align: left;
 	*/
-	position: absolute;
-	top: -5px;
-	right: 150px;
-	text-align: center;
-	  margin: 0 auto;
-	
-	z-index: 10; 
+  position: absolute;
+  text-align: left;
+  top: 2px;
+  right: 10px;
+
+  padding-left: 10px ;
+
+  z-index: 5; 
+  line-height: 7px;
+  border-left: 1px solid var(--FondEnteteTableau); 
 }
 
 .moinsplus {
-    font-size: 14px;
-    font-weight: bold;
-    background-color: var(--boutonRouge);
-	    padding: 0px 16px;
-    color: white;
-	    text-decoration: none;
-    display: inline-block;
-	border-radius: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: var(--boutonRouge);
+  padding: 5px 10px;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 15px;
 }
 
 .moinsplus:hover {
-    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
+.caseCheckVide {
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 8px 6px;
+  border-radius: 3px;  
+  color: var(--FondLigneTabGrisClair);
+    text-decoration: none;
+  display: inline-block;
+  background-color: var(--FondLigneTabGrisClair);
+  border: 1px solid var(--FondEnteteTableau); 
+
+}
+
+.caseCheckVide:hover {
+  color: var(--FondEnteteTableau);
+  background-color: var(--FondEnteteTableau);
+}
+
+.caseCheckCoche {
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 8px 6px;
+  border-radius: 3px;  
+  color: white;
+    text-decoration: none;
+  display: inline-block;
+  background-color: var(--boutonRouge);
+}
+
+.caseCheckCoche:hover {
+  color: white;
+  background-color: var(--FondEnteteTableau);
+}
 
 #btnRemonter {
   display: none; /* Hidden by default */
@@ -154,7 +199,7 @@ margin-top: -15px;
   z-index: 9; /* Make sure it does not overlap */
   border: none; /* Remove borders */
   outline: none; /* Remove outline */
-  background-color: var(--boutonRouge); /* Set a background color */
+  background-color: var(--boutonVert); /* Set a background color */
   color: white; /* Text color */
   cursor: pointer; /* Add a mouse pointer on hover */
   padding: 15px; /* Some padding */
@@ -163,24 +208,24 @@ margin-top: -15px;
 }
 
 #btnRemonter:hover {
-  background-color: #555; /* Add a dark-grey background on hover */
+  background-color: var(--boutonRouge); /* Add a dark-grey background on hover */
 }
 
 /* The Loupe Button (x) <img src="img/search-more.png">*/ 
 #loupe {
   opacity: 0.5;
-    position: absolute;
-    right: 40px;
-    top:10px;
-    color: var(--FondLigneTabGrisSombre);
-line-height: 0;
-    cursor: pointer;
-	display:block;
-text-align: right;
+  position: absolute;
+  right: 240px;
+  top:0px;
+  color: var(--FondLigneTabGrisSombre);
+  line-height: 0;
+  cursor: pointer;
+  display:block;
+  text-align: right;
 
   font-size: 10px;
 
-z-index: 10; 
+  z-index: 10; 
 
 }
 
@@ -188,12 +233,12 @@ z-index: 10;
 
 
 /******************************/
-/*         CMD-VIEW           */
+/*         CMDCartonnage           */
 /******************************/
 
 
 .ecole {
-    text-align: center;
+  text-align: center;
 	font-size: 20px;
 	width: -10px;
 	
@@ -454,8 +499,7 @@ width: 100%;
   top: 0;
   
   z-index: 1;
-  
-	
+
 }
 
 .page_navigation ul { 
@@ -492,6 +536,7 @@ display: inline-block;
 cursor: pointer;
 
 	 background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
+   box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
 .page_navigation li.active_page {
@@ -793,3 +838,74 @@ top: 70px;
 }
 
 /*  FIN LOADER */
+
+
+
+
+/* The contienLeBoutonRadio (Bouton Radio) */
+.contienLeBoutonRadio {
+  display: inline-block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.contienLeBoutonRadio input {
+  position: absolute;
+  opacity: 0;
+  
+}
+
+/* Create a custom radio button */
+.boutonRadio {
+  position: absolute;
+  top: -7px;
+  left: 12px;
+  height: 18px;
+  width: 18px;
+  background-color: var(--FondLigneTabGrisClair);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+.contienLeBoutonRadio:hover input ~ .boutonRadio {
+  background-color: var(--FondEnteteTableau);
+}
+
+
+
+/* When the radio button is checked, add a blue background */
+.contienLeBoutonRadio input:checked ~ .boutonRadio {
+  background-color: var(--boutonRouge);
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.boutonRadio:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.contienLeBoutonRadio input:checked ~ .boutonRadio:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.contienLeBoutonRadio .boutonRadio:after {
+ 	top: 6px;
+	left: 6px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: white;
+}
+

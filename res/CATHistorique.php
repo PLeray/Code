@@ -59,7 +59,7 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 ?>
 
 <div class="recherche">	
-	<!-- <a href="<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a> -->
+	<!-- <a href="" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a> -->
 
 	<!-- RECHERCHE -->
 	<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tapez les premières lettres, pour rechercher une commande..." title="Tapez les premières lettres...">
