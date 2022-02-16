@@ -21,7 +21,8 @@ h1 { /*Police texte Ecole */
     text-align: center;
 	font-size: 20px;
   color: white;
-
+	margin-top: 10px;
+  margin-bottom: -5px;
 }
 
 h2 { /*Police texte Adresse */
@@ -38,27 +39,25 @@ h2 { /*Police texte Adresse */
 }
 
 h3 { 
-    letter-spacing: 3px;
+  letter-spacing: 3px;
 	padding: 0px;
 	
 	font-size: 12px;
 	font-family: "Courier New", Times, serif;
 	text-align: center;
-	
-	
 }
 
 h4 { /*Police texte produit */
-	display: inline-block; /**/
-    color: white;
-    letter-spacing: 2px;
-	padding-top: 0px;
-	margin-bottom: -30px;
-	
-	font-size: 11px;
-	font-family: "Courier New", Times, serif;
+  display: inline-block; /**/
+  color: var(--FondEnteteTableau);
+  letter-spacing: 2px;
+  padding-top: 0px;
+  margin-bottom: -300px;
 
-	
+  font-size: 11px;
+  font-family: "Courier New", Times, serif;
+
+
 	/*max-width: 180px;*/
 	
 }
@@ -73,12 +72,12 @@ h5 {/*Police Nom de Classe  */
 
 h6 {/*Police Nombre de planche  */
 	display: inline-block; 
-    color: var(--boutonVert);
+    color: var(--FondLigneTabGrisClair);
     /*letter-spacing: 2px;*/
-	padding-top: 0px;
-	margin-bottom: -30px;
+    margin-top: 5px;
+	margin-bottom: -100px;
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 12px;
 	font-family: "Courier New", Times, serif;
 	text-align: center;
 	
@@ -426,6 +425,8 @@ vertical-align: middle;
 margin-top: -40px;
 }
 
+
+
 /*DEBUT PAGINATOR*/
 .zonePagesCMD {
 	/*display: flex;
@@ -591,7 +592,16 @@ margin-left: 310px;
     color: var(--boutonRouge);
 
 }
+/* Style the search box */
+#zoneRecherchePlanche {
+  width: 240px;
 
+  font-size: 18px;
+  padding: 11px;
+  margin-left: 5px;
+  color: var(--boutonVert);
+
+}
 /* Style the search box */
 #zoneRecherche {
   width: 240px;
@@ -599,15 +609,11 @@ margin-left: 310px;
   font-size: 18px;
   padding: 11px;
   margin-left: 5px;
-  
+  color: var(--boutonRouge);
 
 }
 
-#zoneRecherche:hover,
-#zoneRecherche:focus {
-color: var(--boutonRouge);
 
-}
 
 #btnRechercher {
 background-image: url('../img/searchicon.png');

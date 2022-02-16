@@ -220,12 +220,13 @@ function filterFunction() {
 	document.getElementById("myDropdown").classList.toggle("show");
 }*/
 
-function filterFunction() {
+function filterPlanches() {
 	var input, filter;  
-	input = document.getElementById("zoneRecherche");
+	input = document.getElementById("zoneRecherchePlanche");
 	filter = input.value.toUpperCase();	
 	//var elementsRech = input.value.toUpperCase().split(' ');
 	//RechercheMulti(filter);
+	//alert('dsd');
 	RecherchePlanche(filter);
 }
 
@@ -254,12 +255,7 @@ function RecherchePlanche(strElementsRech) {
 			}
 		}	
 
-
-
-
-
-
-		cmd = document.getElementsByClassName("produit");
+		//cmd = document.getElementsByClassName("produit");
 
 		cmd = document.getElementsByClassName("planche");
 		for (i = 0; i < cmd.length; i++) {
@@ -275,6 +271,46 @@ function RecherchePlanche(strElementsRech) {
 				cmd[i].parentNode.style.display = "none";
 			}
 		}	
+
+	}
+}
+
+function filterCommandes() {
+	var input, filter;  
+	input = document.getElementById("zoneRecherche");
+	filter = input.value.toUpperCase();	
+	//var elementsRech = input.value.toUpperCase().split(' ');
+	//RechercheMulti(filter);
+	RechercheCommandes(filter);
+}
+
+function RechercheCommandes(strElementsRech) {
+	//alert(strElementsRech);
+	var tabElementsRech = strElementsRech.split(' ');
+    var cmd, i, e, listDrop  ;
+	var tabCMD = [];
+	var synthTabCMD = [];	
+	document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+	for (e = 0; e < tabElementsRech.length; e++) {
+		////////////////////////////////////////////////:
+		/* pour les num de commandes */
+		cmd = document.getElementsByClassName("commande");
+		for (i = 0; i < cmd.length; i++) {
+			cmd[i].style.display = "none";
+		}
+
+
+		for (i = 0; i < cmd.length; i++) {
+			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
+				cmd[i].style.display = "";
+
+			}
+			else{
+				cmd[i].style.display = "none";
+			}
+		}	
+
+
 
 	}
 }
