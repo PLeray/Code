@@ -19,9 +19,9 @@ STYLE DE BASE        */
 
 h1 { /*Police texte Ecole */
     text-align: center;
-	font-size: 14px;
+	font-size: 20px;
+  color: white;
 
-    color: var(--boutonVert);
 }
 
 h2 { /*Police texte Adresse */
@@ -50,14 +50,14 @@ h3 {
 
 h4 { /*Police texte produit */
 	display: inline-block; /**/
-    color: var(--FondLigneTabGrisSombre);
+    color: white;
     letter-spacing: 2px;
 	padding-top: 0px;
 	margin-bottom: -30px;
 	
 	font-size: 11px;
 	font-family: "Courier New", Times, serif;
-	text-align: center;
+
 	
 	/*max-width: 180px;*/
 	
@@ -148,11 +148,11 @@ p {/*Police Détails Fichier commande et commun  */
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
   bottom: 20px; /* Place the button at the bottom of the page */
-  right: 30px; /* Place the button 30px from the right */
+  right: 380px; /* Place the button 30px from the right */
   z-index: 9; /* Make sure it does not overlap */
   border: none; /* Remove borders */
   outline: none; /* Remove outline */
-  background-color: var(--boutonRouge); /* Set a background color */
+  background-color: var(--boutonVert); /* Set a background color */
   color: white; /* Text color */
   cursor: pointer; /* Add a mouse pointer on hover */
   padding: 15px; /* Some padding */
@@ -161,22 +161,41 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 #btnRemonter:hover {
+  background-color: var(--FondEnteteTableau); /* Add a dark-grey background on hover */
+}
+
+#btnEnregistrerCMD {
+  display: none; /* Hidden by default */
+  width: 285px;
+  z-index: 9; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: var(--boutonRouge); /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 16px; /* Increase font size */
+  margin: 15px; /* Some padding */
+}
+
+#btnEnregistrerCMD:hover {
   background-color: #555; /* Add a dark-grey background on hover */
 }
 
 /* The Loupe Button (x) <img src="img/search-more.png">*/ 
 #loupe {
-  opacity: 0.5;
+    opacity: 0.5;
     position: absolute;
     right: 40px;
     top:10px;
     color: var(--FondLigneTabGrisSombre);
-line-height: 0;
+    line-height: 0;
     cursor: pointer;
-	display:block;
-text-align: right;
+    display:block;
+    text-align: right;
 
-  font-size: 10px;
+    font-size: 10px;
 
 /*  z-index: 2;*/ 
 
@@ -417,15 +436,7 @@ margin-top: -40px;
 	align-items: center;
 }
 
-.item {
 
-	/*
-	width: 162px;
-	height: 100px;
-	padding: 10px;
-	margin: 10px;
-*/
-}
 
 .pageCMD {
 width: 100%;
@@ -526,7 +537,7 @@ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSomb
 /*  DEBUT BAR DROITE */
 
 .sidenav {
-  width: 0;
+  width: 335px;
     min-height: 100%;	
 	
 	  color: white;
@@ -542,7 +553,9 @@ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSomb
   transition: 0.5s;  
   /*   overflow: hidden; */
 
-  padding-top: 5px;
+  padding-top: -5px;
+  padding-left: 15px;
+  
 }
 
 .sidenav a {
@@ -566,7 +579,7 @@ background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSomb
   top: -10px;
   right: 15px;*/
   font-size: 36px;
-margin-left: 210px; 
+margin-left: 310px; 
   
     color: white;
 
@@ -601,7 +614,7 @@ background-image: url('../img/searchicon.png');
 
 }
 #zoneListePageCMD {
-	/* overflow-y: scroll; */cv 
+	/* overflow-y: scroll; */
 
   min-height: 100%;
 
@@ -648,7 +661,7 @@ top: 70px;
 #Entete {
   padding: 27px;  /* Défini la hauteur du Header !!z-index: 1;*/
   text-align: center;
-  
+  margin-Right : 350px;
   background-color: white;
 }
 
@@ -669,12 +682,12 @@ top: 70px;
 	Top:100px;
 	z-index: 1;   
 	padding: 20px;	
-		
+		  -ms-flex: 70%; 
+  flex: 100% - 350px;
 	*/
-  -ms-flex: 70%; /* IE10 */
-  flex: 70%;
-  background-color: white;
 
+  background-color: white;
+  margin-Right : 350px;
   
 	transition: margin-left .5s;
 
@@ -682,10 +695,7 @@ top: 70px;
 	transition: 0.5s;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
+
 
 /* Footer */
 .footer {
@@ -697,10 +707,8 @@ top: 70px;
 /*  FIN  BAR DROITE */
 
 /*  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER */
-#MSGChargement {
 
 
-}
 .cs-loader {
   position: absolute;
   top: 0;
@@ -796,3 +804,34 @@ top: 70px;
 }
 
 /*  FIN LOADER */
+
+.caseCheckVide {
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 8px 10px;
+  border-radius: 3px;  
+  color: var(--FondLigneTabGrisClair);
+    text-decoration: none;
+  display: inline-block;
+  background-color: var(--FondLigneTabGrisClair);
+  border: 1px solid var(--FondEnteteTableau); 
+
+}
+
+.caseCheckVide:hover {
+  color: var(--FondEnteteTableau);
+  background-color: white;
+}
+
+.caseCheckCoche {
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 8px 10px;
+  border-radius: 3px;  
+  color: white;
+    text-decoration: none;
+  display: inline-block;
+  background-color: var(--boutonRouge);
+}

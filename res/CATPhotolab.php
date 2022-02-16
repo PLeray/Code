@@ -14,41 +14,8 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 $tabFichiersEnCoursDeCompilation = array();
 
 ?>
-<!DOCTYPE html>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<html>
-<head>
-
-<?php 
-if($isDebug){}
-	header("Cache-Control: no-cache, must-revalidate");
-
-	// ou header("Expires: -1");  ???
-
-?>
-	<!-- <META HTTP-EQUIV="Refresh" CONTENT="<?php // echo ($isDebug?'5':'10'); ?>; URL=<?php //echo 'CATPhotolab.php' . ArgumentURL(); ?>">-->
-	<title id="PHOTOLAB">Commandes en cours</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
-	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
-	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
-	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
-	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
-	<script>
-		InitAfficheErreur();	
-		//alert('TEST ' ); 
-	</script>	
-</head>
-
-<body>
-<?php AfficheMenuPage('commandesEnCours',$maConnexionAPI); ?>
-<!-- 
-<p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
--->
-<div class="logo">
-	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
-</div>
-
 <?php
+	$RechargerPage = false;
 	$g_IsLocalMachine = IsLocalMachine();
 	//$GLOBALS['repTIRAGES'] = $GLOBALS['repTIRAGES'];
 	//$GLOBALS['repCMDLABO'] = $GLOBALS['repCMDLABO'];
@@ -63,6 +30,7 @@ if($isDebug){}
 
 	$lesRecommandes = '';
 	if (isset($_POST['lesRecommandes']) ){
+		$RechargerPage = true;
 		$lesRecommandes = $_POST['lesRecommandes'];
 		if ($isDebug){
 			echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $lesRecommandes;
@@ -71,6 +39,7 @@ if($isDebug){}
 	}
 
 	if (isset($_GET['OpenRep'])) { // OUVRIR REP !
+		$RechargerPage = true;
 		$leRep = str_replace("/","\\",$repTIRAGES. $_GET['OpenRep']);
 		if ($isDebug){
 			echo 'le rep  à ouvrir : explorer /select,"'.$leRep.'"' ;
@@ -78,19 +47,22 @@ if($isDebug){}
 		execInBackground('explorer /select,"'.$leRep.'"');
 	} 
 	if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
+		$RechargerPage = true;
 		if ($GLOBALS['isDebug']){
 			echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
 			}
 		BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 	} 
-
 	elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
+		$RechargerPage = true;
 		//echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 	}
 	elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) { 
+		$RechargerPage = true;
 		ChangeEtat($_GET['apiChgEtat'], $_GET['apiEtat']);
 	} 
 	elseif (isset($_GET['apiSupprimer'])) { 
+		$RechargerPage = true;
 		SuprimeFichier($_GET['apiSupprimer']);
 	} 
 	//else echo 'Y A RIEN';
@@ -98,6 +70,43 @@ if($isDebug){}
 	$nb_fichier = 0;
 	$affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true);
 ?>
+
+<?php 
+if($isDebug){ 
+	header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
+	header('Cache-Control: no-store, no-cache, must-revalidate');
+	header('Cache-Control: post-check=0, pre-check=0', FALSE);
+	header('Pragma: no-cache');	
+}
+	// ou header("Expires: -1");  ???
+
+if($RechargerPage){ echo '<META HTTP-EQUIV="Refresh" CONTENT=" '. ($isDebug?'5':'3') .'; URL=CATPhotolab.php' . ArgumentURL() .'">';}
+
+?>	
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<html>
+<head>
+	<META HTTP-EQUIV="Refresh" CONTENT="<?php echo ($isDebug?'5':'20'); ?>; URL=<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>">
+	
+	<title id="PHOTOLAB">Commandes en cours</title>
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
+	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
+</head>
+
+<body>
+<?php AfficheMenuPage('commandesEnCours',$maConnexionAPI); ?>
+<!-- 
+<p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
+-->
+<div class="logo">
+	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
+</div>
+
+
 
 
 
@@ -120,9 +129,12 @@ if($isDebug){}
 		<th style="width:110px;"><H3>Etat</H3></th>			  
 		<th style="width:110px;" onclick="sortTable(0)"><H3>Date</H3></th>
 
-		<th  onclick="sortTable(1)"><H3>Groupes de commandes de planches</H3></th>
+		<th  onclick="sortTable(1)"><H3>Groupes de commandes de produits photo</H3></th>
+	
 		<th  style="width:150px;" ><H3>Commandes<br><br>Planches</H3></th>	
-		<th  style="width:90px;" ><H3>Planches crées</H3></th>
+		<th  style="width:100px;" ><H3>Mise en pochette</H3></th>	
+		<th  style="width:100px;" ><H3>Rechercher dans la commande</H3></th>	
+		<th  style="width:90px;" ><H3>Produits crées</H3></th>
 		<th  style="width:90px;" ><H3>Envoyées au labo</H3></th>
 		<th  style="width:90px;" ><H3>Cartonnage en cours</H3></th>
 		<th  style="width:90px;" ><H3>Colis prêt</H3></th>
@@ -161,22 +173,33 @@ if($isDebug){}
 </div>
 
 <?php
+/*
 if($isDebug){
-	echo '<button type="button" onclick="MAJAffichageBarres()">Change Content</button>';
-}
+	echo '<button type="button" onclick="MAJAffichageBarres()">Raffraichir Barres progressions</button>';
+} */
 ?> 
+	<script>
+		InitAfficheErreur();	
+		//alert('TEST ' ); 
+	</script>	
+<!-- 
 <script>
-setInterval(MAJAffichageBarres, 1000);
+	// AJAX POUR BARRE DE DEFILEMENT 
+	
+	setInterval(MAJAffichageBarres, 1000);
 
 function MAJAffichageBarres() {
-	//alert('ID ' );
-	<?php // WEB /**/		
-		for($i = 0; $i < count($tabFichiersEnCoursDeCompilation); $i++){
+	//
+	console.log('MAJAffichageBarres() ');	
+	<?php // WEB
+	 /*		
+		for($i = 0; $i < count($tabFichiersEnCoursDeCompilation); $i++){ // Récupérer lors de l'affichage du tableau de commandes
 			echo "EtatBarreProgressionPour('". $tabFichiersEnCoursDeCompilation[$i] . "');";
-		}
+		}*/
 	?>  
 }
 </script>	
+-->
 
 </body>
 </html>

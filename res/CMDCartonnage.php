@@ -180,7 +180,7 @@ if($isDebug){
 	  return [...new Set(a)].filter(x => setB.has(x));
 	}
 	initPagination();
-	AfficheRechercheCMD(<?php echo $isRECOmmandes;?>);
+	//AfficheRechercheCMD(<?php //echo $isRECOmmandes;?>);
 	
 </script>
 

@@ -74,8 +74,11 @@ $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 		<th  style="width:110px;" ><H3>Etat</H3></th>  
 		<th style="width:127px;" onclick="sortTable(0)"><H3>Date</H3></th>
 
-		<th onclick="sortTable(1)"><H3>Groupes de commandes de planches</H3></th>
-		<th  style="width:100px;" ><H3>Commandes<br><br>Planches</H3></th>	
+		<th  onclick="sortTable(1)"><H3>Groupes de commandes de produits photo</H3></th>
+	
+		<th  style="width:150px;" ><H3>Commandes<br><br>Planches</H3></th>	
+		<th  style="width:100px;" ><H3>Mise en pochette</H3></th>	
+		<th  style="width:100px;" ><H3>Rechercher dans la commande</H3></th>	
 		<th  style="width:90px;" ><H3>Planches crées</H3></th>
 		<th  style="width:90px;" ><H3>Envoyées labo</H3></th>
 		<th  style="width:90px;" ><H3>Cartonnage en cours</H3></th>

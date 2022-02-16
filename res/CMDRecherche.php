@@ -85,7 +85,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 <div id="site"">
    <!-- Tout le site ici -->
 
-	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
+	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">↑ Remonter ↑</button>
 	
 	<div id="Entete">	
 		<div class="logo"><a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
@@ -108,19 +108,21 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		<span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p><?php echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?><img src="img/search-more.png"></p></span>	
 	</div>
 
-	  <div id="main">
+	  
 		<div id="mySidenav" class="sidenav">
 		<?php 
 			if (!$isRECOmmandes){
 				echo '
-			<a href="'.RetourEcranFichier($myfileName).'" class="closebtn">&times;</a>
+				<a href="'.RetourEcranFichier($myfileName).'" class="closebtn">&times;</a>
+				<H1>Passage de recommandes</H1>
 			<div id="myRecommandes" class="infoRecommandes">
-				Mes recommandes<br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Voir</a>	
+				
+				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide" > ✓ </a>  Afficher sélection des recommandes	
+
 				<form name="FormEnvoieRecos" method="post" action="'. RetourEcranFichier($myfileName).'" enctype="multipart/form-data">	
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
 					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
-					<button type="submit">Enregistrer ces recommandes</button>
+					<button type="submit" id="btnEnregistrerCMD" title="Enregistrer ces recommandes">Enregistrer ces recommandes</button>
 				</form> 	
 			</div>';
 			}
@@ -128,14 +130,14 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 
 
 
-			<img src="img/search-more.png"><STRONG>Recherche de commandes par critère</STRONG>
+		<H1>Recherche de planches par critère</STRONG></H1>
+			<h4>
 			Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, un nom de client, une adresse, un numéro de commande, ...
-			<p>Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'</p>
-			<p>> tapez juste 'P0006'</p>
+			</h4>
 			
 
 		<h3>il y a <?php echo count($monGroupeCmdes->tabCMDLabo);?> Commandes</h3>
-			<input type="text" id="zoneRecherche"  placeholder="Rechercher .." title="Taper le début d'un critère...">  
+			<input type="text" id="zoneRecherche"  placeholder="Rechercher .." title="Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'...">  
 		  <button onclick="filterFunction()" id="btnRechercher" title="Rechercher"><img src="img/searchicon.png"></button>
 		  
 		  
@@ -143,7 +145,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 				<?php echo $monGroupeCmdes->AfficheMenuCMD();?>	
 			</ul>
 		</div>
-	  
+		<div id="main">
 		<div id="zoneRechercheCMD">	
 		<br><br>
 			<?php 	echo $monGroupeCmdes->Affiche(0); ?>	
@@ -168,7 +170,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 	  var setA = new Set(a);
 	  return [...new Set(a)].filter(x => setB.has(x));
 	}
-	AfficheRechercheCMD(true);
+	//AfficheRechercheCMD(true);
 	openNav();
 </script>
 

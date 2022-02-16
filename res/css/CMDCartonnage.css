@@ -208,7 +208,7 @@ text-align: left;
 }
 
 #btnRemonter:hover {
-  background-color: var(--boutonRouge); /* Add a dark-grey background on hover */
+  background-color: var(--FondEnteteTableau); /* Add a dark-grey background on hover */
 }
 
 /* The Loupe Button (x) <img src="img/search-more.png">*/ 
@@ -448,10 +448,6 @@ vertical-align: middle;
 }
 
 
-/**/
-#zoneRechercheCMD{
-
-}
 
 /*DEBUT PAGINATOR*/
 .zonePagesCMD {
@@ -463,15 +459,7 @@ vertical-align: middle;
 	align-items: center;
 }
 
-.item {
 
-	/*
-	width: 162px;
-	height: 100px;
-	padding: 10px;
-	margin: 10px;
-*/
-}
 
 .pageCMD {
 width: 100%;
@@ -643,7 +631,7 @@ color: var(--boutonRouge);
 }
 
 #zoneListePageCMD {
-	/* overflow-y: scroll; */cv 
+	/* overflow-y: scroll; */
 
   min-height: 100%;
 
@@ -739,10 +727,7 @@ top: 70px;
 /*  FIN  BAR DROITE */
 
 /*  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER  DEBUT LOADER */
-#MSGChargement {
 
-
-}
 .cs-loader {
   position: absolute;
   top: 0;

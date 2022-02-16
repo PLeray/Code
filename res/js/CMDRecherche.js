@@ -3,7 +3,7 @@ window.onscroll = function() {scrollFunction()};
 
 /*var rech = document.getElementById("zoneRechercheCMD");
 rech.style.display = 'none';
-AfficheRechercheCMD(false);*/
+(false);*/
 
 //initPagination();
 
@@ -32,7 +32,7 @@ function initPagination() {
 		}
 	};
 }	
-*/
+/*
 function AfficheRechercheCMD(isAffiche) {
 	isRECOmmandes = isAffiche;
 	if (isAffiche){
@@ -63,7 +63,7 @@ function AfficheRechercheCMD(isAffiche) {
 		//list.style.display = 'block';			
 	}
 }
-	
+	*/
 /***********************************************************************************/
 /********************************/
 window.onload = function (){ 
@@ -402,7 +402,7 @@ function openNav() {
 
 
 
-AfficheRechercheCMD(true);	
+//AfficheRechercheCMD(true);	
 
 }
 
@@ -410,13 +410,14 @@ AfficheRechercheCMD(true);
 function closeNav() {  
 
 
-AfficheRechercheCMD(false);
+//AfficheRechercheCMD(false);
 InitCommandes();
 
 }
 
 function SelectionPhoto(x) {
-	if(x.classList.contains("planche") && isRECOmmandes){
+	//	if(x.classList.contains("planche") && isRECOmmandes){
+	if(x.classList.contains("planche") ){
 		x.classList.replace("planche", "plancheSELECTIONNER");
 		x.setAttribute('title',  'Planche en cours de recommande  ' + x.getAttribute('id'));					
 	}else {
@@ -426,21 +427,49 @@ function SelectionPhoto(x) {
 	mesRecommandes();
 }
 			
-function VoirPhotoSelection(x) {
+function VoirPhotoSelection() {
+	var ToutEstAfficher = (document.getElementById("CaseVoirCommandes").className == 'caseCheckVide');
+	var StatutAffiche = (ToutEstAfficher ? 'none' : 'inline-block' );
 	var mesPlanches = document.getElementsByClassName("planche");
-
 	for (i = 0; i < mesPlanches.length; i++) {
-	  if (mesPlanches[i].style.display === "none") {
-		mesPlanches[i].style.display = "inline-block";
-	  } else {
-		mesPlanches[i].style.display = "none";
-	  }
-	}	
+		mesPlanches[i].style.display = StatutAffiche;
+		mesPlanches[i].parentNode.style.display = StatutAffiche;		
+		mesPlanches[i].parentNode.parentNode.style.display = StatutAffiche;
+		mesPlanches[i].parentNode.parentNode.parentNode.style.display = StatutAffiche;
+	}
+	
+	if (ToutEstAfficher){
+		//alert('Seilement les ');
+		var mesPlanches = document.getElementsByClassName("plancheSELECTIONNER");
+
+		for (i = 0; i < mesPlanches.length; i++) {
+			mesPlanches[i].style.display = "inline-block";
+			mesPlanches[i].parentNode.style.display = "inline-block";
+			mesPlanches[i].parentNode.parentNode.style.display = "inline-block";
+			mesPlanches[i].parentNode.parentNode.parentNode.style.display = "inline-block";	
+		}	
+	}
+
+	/* */
+	
+
+	//Changement etat case a cocher
+	document.getElementById("CaseVoirCommandes").className = (ToutEstAfficher?'caseCheckCoche':'caseCheckVide');
+
+	
+
+	
+	
 }		
 
 function mesRecommandes() {
 	var mesReco ='';
 	var mesPlanches = document.getElementsByClassName("plancheSELECTIONNER");
+
+
+	document.getElementById("btnEnregistrerCMD").style.display = ((mesPlanches.length > 0)?'inline-block':'none');
+
+
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
 	  mesReco = mesReco + '%' + mesPlanches[i].getAttribute('id');

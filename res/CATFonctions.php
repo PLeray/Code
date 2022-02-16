@@ -337,9 +337,12 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 					<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>			
 			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
 			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
-				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>
-					
-			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>';		
+				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
+			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	
+			
+			<td>'. LienPochetteVoir($mesInfosFichier) . '</td>	
+			<td>'. LienRechercheVoir($mesInfosFichier) . '</td>';
+			
 		if($mesInfosFichier->EtatFichier < 2){
 			$affiche_Tableau .=	'
 			<td colspan=4>';
@@ -379,13 +382,13 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 			$affiche_Tableau .=	'
 			<div class="boiteProgressBar">			
 				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" >';
-				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '→ '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
+				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '→ Création : '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
 				$affiche_Tableau .=	'</div>
 			</div>';	
 			
-			//$tabFichiersEnCoursDeCompilation[] = $mesInfosFichier->Fichier;
-			if ($mesInfosFichier->EtatFichier == 1) {}
-			array_push($GLOBALS['tabFichiersEnCoursDeCompilation'], $mesInfosFichier->Fichier);
+			/* pour Ajax defilement Barres 
+			if ($mesInfosFichier->EtatFichier == 1) {array_push($GLOBALS['tabFichiersEnCoursDeCompilation'], $mesInfosFichier->Fichier);}
+			*/
 		}else {
 			$affiche_Tableau .=	'  
 				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '"  title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a></td>
@@ -445,10 +448,11 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 		else {
 			*/
 			// Un objet pour récupérer les infos Fichier !!! 
-			$mesInfosFichier = new CINFOfichierArbo($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 		
-				
+			$mesInfosFichier = new CINFOfichierArbo($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 	
+			
+			$laCouleur = ($mesInfosFichier->EtatFichier == 2)?'GreenYellow':'white';
 			$affiche_Tableau .=
-			'<tr>
+			'<tr style="background-color:'.$laCouleur.'">			
 				<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>				
 				<td class="titreCommande" >' . $mesInfosFichier->TypeArbo .'</td>	
 				<td  class="titreCommande" align="left"><div class="tooltip">' . $mesInfosFichier->AffichageNomSOURCE . '</a>
@@ -462,7 +466,7 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 				if (file_exists($mesInfosFichier->LienFichierERREUR())){
 					//echo $mesInfosFichier->LienFichierERREUR();
 					$affiche_Tableau .=	'			
-					<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR(). '" title="Afficher les erreurs">
+					<div class="tooltip" title="Afficher les erreurs">
 						<img src="img/ERREUR.png" alt="ERREUR">
 						
 						<font size="3" color="red">ATTENTION : Erreurs !</font></a>
@@ -471,12 +475,17 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 				}
 				$affiche_Tableau .=	'
 				<div class="boiteProgressBar">
-				<div class="progressBar" style="width:'.$mesInfosFichier->Avancement().'%;" >';
-				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '> '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
+				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" >';				
+				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '→ Création : ' . number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
 				$affiche_Tableau .=	'</div>
 					</div>';	
 				
-				array_push($GLOBALS['tabFichiersEnCoursDeCompilation'], $mesInfosFichier->Fichier);
+
+			/* pour Ajax defilement Barres 
+			if ($mesInfosFichier->EtatFichier == 1) {array_push($GLOBALS['tabFichiersEnCoursDeCompilation'], $mesInfosFichier->Fichier);}
+			*/
+
+
 			}else {
 				$affiche_Tableau .=	'
 				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '" title="'. TitleEtat(2) . '">' . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a>
@@ -635,6 +644,7 @@ function LienImageVoir($Etat){
 	return $Lien;  
 }
 
+
 function LienImageEtat($Etat){
 	return '<img src="img/' . $Etat . '-Etat.png">'; 
 }
@@ -651,7 +661,7 @@ function LienEtatLab($fichier, $Etat) {
 		return 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}
 }
-
+/* */
 function LienFichierLab($fichier) {
 	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 	$Extension = strrchr($fichier, '.');
@@ -667,6 +677,58 @@ function LienFichierLab($fichier) {
   
 //$isDebug = true;
 	return $LienFichier;
+}
+
+function LienPochetteVoir($infosFichier) {
+	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	$Extension = strrchr($infosFichier->Fichier, '.');
+	$Lien = "#";
+	switch ($Extension) {
+		case ".lab0":
+			$Lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
+			break;
+		default:
+			$Lien = "CMDCartonnage.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
+			break;		
+	}
+  
+//$isDebug = true;
+	//return $LienFichier;
+
+
+		$LienImage = '<img src="img/VisualisationKO.png" alt="Mise en pochette non disponible">';
+		if($infosFichier->EtatFichier) {
+			$LienImage = '<img src="img/MiseEnPochette.png" alt="Voir écran de mise en pochette">';
+		}
+
+		return '<a href="'. $Lien . '">'.$LienImage.'</a>';
+
+}
+
+function LienRechercheVoir($infosFichier) {
+	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	$Extension = strrchr($infosFichier->Fichier, '.');
+	$Lien = "#";
+	switch ($Extension) {
+		case ".lab0":
+			$Lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
+			break;
+		default:
+			$Lien = "CMDRecherche.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
+			break;		
+	}
+  
+//$isDebug = true;
+	//return $LienFichier;
+
+
+		$LienImage = '<img src="img/VisualisationKO.png" alt="Mise en pochette non disponible">';
+		if($infosFichier->EtatFichier) {
+			$LienImage = '<img src="img/searchicon.png" alt="Voir écran de mise en pochette">';
+		}
+
+		return '<a href="'. $Lien . '">'.$LienImage.'</a>';
+
 }
 
 
