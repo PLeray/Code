@@ -38,16 +38,11 @@ if (isset($_GET['version'])) {
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
 </head>
-<!-- <div class="logo">	
-		<img src="res/img/Logo.png" alt="Image de fichier">
-	</div> -->
 <body>
 <?php AfficheMenuPage('ajoutCommandeGroupee',$maConnexionAPI); ?>
 
 <div class="logo">
-	
-	<img src="img/Logo.png" alt="Image de fichier">
-	
+	<a href="<?php echo $maConnexionAPI->Demonstration(); ?>" title="Voir informations sur PhotoLab"><img src="img/Logo-mini.png" alt="Informations sur PhotoLab"></a>
 </div>
 
 

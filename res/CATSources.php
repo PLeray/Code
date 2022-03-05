@@ -37,7 +37,7 @@ $g_IsLocalMachine = IsLocalMachine();
 <?php AfficheMenuPage('sourcePhotos',$maConnexionAPI); ?>
 
 <div class="logo">
-	<a href="<?php echo 'index.php' . ArgumentURL(); ?>" title="Retour à l'acceuil"><img src="img/Logo.png" alt="Image de fichier"></a>
+	<a href="<?php echo $maConnexionAPI->Demonstration(); ?>" title="Voir informations sur PhotoLab"><img src="img/Logo-mini.png" alt="Informations sur PhotoLab"></a>
 </div>
 
 

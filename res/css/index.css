@@ -60,12 +60,6 @@ div.recherche {
 	text-align: center;
 }
 
-.logo {
-  position: absolute;
-  left: 8px;
-  Top: 0px;
-}
-
 p {/*Police D�tails Fichier commande et commun  */
     text-align: right;
 	letter-spacing: 1px;

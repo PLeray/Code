@@ -79,11 +79,7 @@ div.recherche {
 	border-bottom: 1px solid var(--FondLigneTabGrisFonce); 
 }
 
-.logo {
-  position: absolute;
-  left: 8px;
-  Top: 0px;
-}
+
 
 .majCache {
   position: absolute;

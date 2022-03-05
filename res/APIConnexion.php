@@ -23,7 +23,8 @@ class CConnexionAPI {
         $this->isDebug = $isDebug;
         $this->codeMembre = $codeMembre;
         $this->PageRetour = $PageRetour;	
-        $this->Service = '/res/LOGPhotoLab.php';		
+        $this->Service = '/res/LOGPhotoLab.php';	
+		$this->Demo = '/res/DEMOPhotoLab.php';	
 		if ($isDebug){
             //$this->Service = '/res/LOGPhotoLab.php';
             $this->URL = 'http://localhost/API_photolab';  //"http://localhost/online/res/drop.php" 
@@ -44,6 +45,13 @@ class CConnexionAPI {
 		}
         return $this->URL . $this->Service . $cmd;
     } 
+    function Demonstration($ParamGET = true){
+		$cmd = '';
+		if ($ParamGET){
+			$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod'). '&pageRetour=' . $this->PageRetour . '&serveurRetour=' . urlencode(ServeurLocal());
+		}
+        return $this->URL . $this->Demo . $cmd;
+    } 	
     function CallServeur($CMDLocal){
 		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod') . '&pageRetour=' . $this->PageRetour . '&serveurRetour=' . urlencode(ServeurLocal()) ;
         return $this->URL .'/res/LOGTalkServeur.php' . $cmd . $CMDLocal;
