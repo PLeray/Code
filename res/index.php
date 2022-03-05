@@ -21,11 +21,7 @@ if ($codeMembre == '' || $codeMembre == '0'){
 	header('Location: ' . $maConnexionAPI->URL . '/res/index.php?PourConnexionLOCAL=true'. '&serveurRetour=' . urlencode(ServeurLocal()));
 }
 
-if ($isDebug ) { 
-	echo "GLOBALS[VERSION] : " . $GLOBALS['VERSION'] . " GET[version]:  ";
-	if (isset($_GET['version'])) { 	echo $_GET['version'];} 
-	else { echo 'PAS DE VERSION';}
-}
+
 if (isset($_GET['version'])) { 
 	//MAJ PHOTOLAB !!!
 	if( $GLOBALS['VERSION'] < $_GET['version']){ MAJPhotoLab($_GET['version']);}
@@ -40,11 +36,13 @@ if (isset($_GET['version'])) {
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/index.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
 </head>
 <!-- <div class="logo">	
 		<img src="res/img/Logo.png" alt="Image de fichier">
 	</div> -->
 <body>
+<?php AfficheMenuPage('ajoutCommandeGroupee',$maConnexionAPI); ?>
 
 <div class="logo">
 	
@@ -54,10 +52,16 @@ if (isset($_GET['version'])) {
 
 
 	<center>
-		<div class="recherche">	
+	<h1>Phot<img src="img/Logo.png" width="20">Lab <?php echo $GLOBALS['ANNEE'] ?></h1>
+		
 		<?php 
-		if ($isDebug) { 
-			$localURL = 'http//'.$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ;	
+
+	if ($isDebug ) { 
+		echo "GLOBALS[VERSION] (Version actuelle) : " . $GLOBALS['VERSION'] . " >>>> GET[version]: (y a t il une version a recupérer ?)  ";
+		if (isset($_GET['version'])) { 	echo $_GET['version'];} 
+		else { echo 'PAS DE VERSION';}
+
+			$localURL =  '<br> http//'.$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ;	
 			echo $localURL;
 			echo '<br> ServeurLocal : ' . ServeurLocal();	
 
@@ -68,20 +72,11 @@ if (isset($_GET['version'])) {
 			
 		} 
 		?>
-		<h1>Phot<img src="img/Logo.png" width="20">Lab <?php echo $GLOBALS['ANNEE'] ?></h1>
 		
-		</div>
+		
+		
 
-		<?php 		
-echo '
-<div id="mySidenav" class="sidenav">
-  <a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>
-  <a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>
-  <a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>
-  <a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>
-</div>
-'	
-?>
+
 		
 <br><br>
 		<?php 

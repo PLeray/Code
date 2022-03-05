@@ -105,7 +105,7 @@ elseif (isset($_GET['apiSupprimer'])) {
 	<span class="mini"><br><a href="<?php echo 'CMDGenererCacheSource.php' . ArgumentURL(); ?>" title="Mettre à jour le cache des Photos"  target="_blank">Mettre à jour le cache</a></span>
 </div>
 
-
+<BR>
 <div class="zoneTable" >
 	<?php
 	$nb_fichier = 0;
@@ -343,14 +343,12 @@ function LienImageArbo($fichier, $CodeEcole, $nbFichier) {
 
 } 
 
-
 function isArboPrete($NomProjet) {
 	$DossierCMDLABO = $GLOBALS['repCMDLABO'];
 	$files = glob( $DossierCMDLABO . SUPRAccents(NomfichierARBO($NomProjet)) .'{2,3,4,5}',GLOB_BRACE);	
 
 	return (count($files) > 0)?true:false;
 }
-
 
 function SUPRAccents($str, $charset='utf-8' ) {
     $str = htmlentities( $str, ENT_NOQUOTES, $charset );

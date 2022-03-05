@@ -16,12 +16,9 @@ function RetourEcranFichier($myfileName){
 }
 
 function EnregistrerFichier($myfileName){
-	$Etat = substr($myfileName, -1);
-	$RetourEcran = 'CATPhotolab.php';	
-    if ($Etat > 4){
-		$RetourEcran = 'CATHistorique.php';
-	}
-	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+
+	
+	return 'API_Photolab.php' . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }
 
 function FormatNumCmd($strCMD){

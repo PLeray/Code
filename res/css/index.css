@@ -7,9 +7,9 @@ h1 { /*Police texte Ecole */
     letter-spacing: 3px;
 	padding: 0px;
 	line-height: 0;
-	font-size: 20px;
-	padding: 10px;
-	margin: 20px;
+	font-size: 28px;
+
+	margin: 10px;
 	font-family: "Courier New", Times, serif;
 	
 }
@@ -66,7 +66,7 @@ div.recherche {
   Top: 0px;
 }
 
-p {/*Police Détails Fichier commande et commun  */
+p {/*Police Dï¿½tails Fichier commande et commun  */
     text-align: right;
 	letter-spacing: 1px;
 	line-height: 1;
@@ -78,52 +78,4 @@ p {/*Police Détails Fichier commande et commun  */
 	line-height: 1;
 	font-size: 10px;
     text-align: right;	
-}
-
-#mySidenav a {
-  position: relative;
-  display:inline-block;
-  top: 0px;
-  transition: 0.3s;
-
-  height: 150px;
-  width: 150px;
-  text-decoration: none;
-  font-size: 80px;
-  color: var(--FondLigneTabGrisFonce);
-  border-radius: 0 0 5px 5px;
-vertical-align: middle;
-line-height: 150px;
-text-align: center;
-
-
-}
-
-#mySidenav a:hover {
-  top: 20px;
-}
-
-#sourcePhotos {
-
-  background-image: url('../img/menuBouton1.png');
-}
-
-#commandesEnCours {
-
-  background-image: url('../img/menuBouton2.png');
-}
-
-#commandesExpediees {
-
-  background-image: url('../img/menuBouton3.png');
-}
-
-#administration {
-
-  background-image: url('../img/menuBouton4.png');
-}
-
-.center-div {
-     margin: 0 auto;
-     width: 100px; 
 }

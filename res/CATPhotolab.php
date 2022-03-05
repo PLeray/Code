@@ -1,6 +1,8 @@
 <?php
 setlocale(LC_TIME, 'french');
 
+$TemporisationDebug = 10;
+
 $codeMembre = 0;
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');
@@ -14,21 +16,24 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 $tabFichiersEnCoursDeCompilation = array();
 
 ?>
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<html>
+<head>	
+	<title id="PHOTOLAB">Commandes en cours</title>
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
+	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
+</head>
 <?php
 	$RechargerPage = false;
 	$g_IsLocalMachine = IsLocalMachine();
-	//$GLOBALS['repTIRAGES'] = $GLOBALS['repTIRAGES'];
-	//$GLOBALS['repCMDLABO'] = $GLOBALS['repCMDLABO'];
-	//$GLOBALS['repMINIATURES'] = $GLOBALS['repMINIATURES'];
-	
-/*
-	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$myfileName);	
-	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
-*/	
 
-	$EcoleEnCours = new CEcole("___",'2020-07-07');
+	$EcoleEnCours = new CEcole("____",'2020-07-07');
 
-	$lesRecommandes = '';
+	$lesRecommandes = ''; // Mis dans API_
 	if (isset($_POST['lesRecommandes']) ){
 		$RechargerPage = true;
 		$lesRecommandes = $_POST['lesRecommandes'];
@@ -80,22 +85,13 @@ if($isDebug){
 }
 	// ou header("Expires: -1");  ???
 
-if($RechargerPage){ echo '<META HTTP-EQUIV="Refresh" CONTENT=" '. ($isDebug?'5':'3') .'; URL=CATPhotolab.php' . ArgumentURL() .'">';}
-
+if($RechargerPage){ 
+	echo '<META HTTP-EQUIV="Refresh" CONTENT=" '. ($isDebug?$TemporisationDebug:'3') .'; URL=CATPhotolab.php' . ArgumentURL() .'">';
+}else{
+	echo '<META HTTP-EQUIV="Refresh" CONTENT="5; URL=CATPhotolab.php' . ArgumentURL() .'">';
+}
 ?>	
-<!DOCTYPE html>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<html>
-<head>
-	<META HTTP-EQUIV="Refresh" CONTENT="<?php echo ($isDebug?'5':'20'); ?>; URL=<?php echo 'CATPhotolab.php' . ArgumentURL(); ?>">
-	
-	<title id="PHOTOLAB">Commandes en cours</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
-	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
-	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
-	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
-	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
-</head>
+
 
 <body>
 <?php AfficheMenuPage('commandesEnCours',$maConnexionAPI); ?>

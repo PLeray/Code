@@ -1,6 +1,6 @@
 <?php
-$VERSION = 0.843;
-$ANNEE = '2021';
+$VERSION = 0.850;
+$ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
 $repMINIATURES = "../../CMDLABO/MINIATURES/";
@@ -113,24 +113,17 @@ function IsLocalMachine() {
 }
 
 function AfficheMenuPage($Page,$maConnexionAPI) {
-$menuPage = '<center>
-<div id="mySidenav" class="sidenav">';
-/*
-	if ($Page != "ajoutCommandeGroupee") {$menuPage .= '<a href="index.php' . ArgumentURL().'" id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';}
-	if ($Page != "sourcePhotos") {$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>';}
-	if ($Page != "commandesEnCours") {$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';}
-	if ($Page != "commandesExpediees") {$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>';}
-	if ($Page != "administration") {$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>';}
-*/  
-	if ($Page != "ajoutCommandeGroupee") {$menuPage .= '<a href="index.php' . ArgumentURL().'" id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';}
-	if ($Page != "sourcePhotos") {$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" id="sourcePhotos" title="Sources des photos ..."></a>';}
-	if ($Page != "commandesEnCours") {$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';}
-	if ($Page != "commandesExpediees") {$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" id="commandesExpediees" title="Historique des commandes expediées ..."></a>';}
-	if ($Page != "administration") {$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" id="administration" title="Administration ..."></a>';}
-	$menuPage .= '</div>
-	</center>';
-
-	echo $menuPage;
+	$menuPage = '<center>
+	<div id="mySidenav">';
+		$menuPage .= '<a href="index.php' . ArgumentURL().'" ' . (($Page == "ajoutCommandeGroupee")?' class="actif" ':'') . '   id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';
+		$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" ' . (($Page == "sourcePhotos")?' class="actif" ':'') . '  id="sourcePhotos" title="Sources des photos ..."></a>';
+		$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" ' . (($Page == "commandesEnCours")?' class="actif" ':'') . '   id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';
+		$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" ' . (($Page == "commandesExpediees")?' class="actif" ':'') . '   id="commandesExpediees" title="Historique des commandes expediées ..."></a>';
+		$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" ' . (($Page == "administration")?' class="actif" ':'') . '   id="administration" title="Administration ..."></a>';
+		$menuPage .= '</div>
+		</center>';
+	
+		echo $menuPage;
 }
 
 function Mini($Nom) {

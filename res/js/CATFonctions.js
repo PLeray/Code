@@ -69,10 +69,6 @@ function isFichiereExiste(url){
 // FIN AJAX POUR BARRE DE DEFILEMENT */
 
 function VisuErreur(elementId) {
-  /* 
-  alert('ID ' + elementId);
-  
-  */
   cmd = document.getElementsByClassName('ContenufichierErreur');
   //alert('cmd.length : ' + cmd.length);  
   for (i = 0; i < cmd.length; i++) {

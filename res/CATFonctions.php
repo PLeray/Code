@@ -7,6 +7,7 @@ class CINFOfichierLab {
 	var $EtatFichier;  // 0, 1 , 2 , 3
 	var $PourcentageAvancement = 0;
 	var $SyntheseCMD;
+	var $SyntheseCodeCMD;
 	var $Compilateur;
 	//var $isOuvrable;
     var $NbPlanches = 0;
@@ -28,7 +29,8 @@ class CINFOfichierLab {
 				//echo $this->NbPlanches;
 			}else {
 				if ($identifiant == '{')  {
-					$this->SyntheseCMD = substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1);
+					$this->SyntheseCodeCMD = substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1);
+					$this->SyntheseCMD = $this->SyntheseCodeCMD;
 					$this->SyntheseCMD = str_replace("%", "<br>", $this->SyntheseCMD);
 					$this->SyntheseCMD = str_replace("{", "<br>", $this->SyntheseCMD) . "<br>";
 
@@ -65,7 +67,43 @@ class CINFOfichierLab {
 		}
 		return $leRepTirage;
     } 
-	
+	/*
+    function GenSyntheseCommande(){
+		try {
+			$unBilan = 'Le groupe de commandes comprend ' . $NbCommandes . ' commandes.%';
+			$unTab = array_count_values($GLOBALS['TabResumeProduit']);
+			
+			foreach ($unTab as $key => $row) {
+				$unBilan .= '- ' .$key . ': ' . $unTab[$key] . '%';
+			}
+			//echo "erreur avant " . error_get_last();
+			$unTab = array_count_values($GLOBALS['TabResumeFormat']);
+			//echo "erreur apres " . error_get_last();
+			//var_dump($GLOBALS['TabResumeFormat']);
+			//$unBilan .= '%%%Pour un total de ' . $NbCommandes . ' commandes individuelles%';
+			$unBilan .= '%%%Il y a ' . count($GLOBALS['TabResumeProduit']) . ' fichiers a creer au laboratoire.%';
+			foreach ($unTab as $key => $row) {
+				$unBilan .= '- Format ' .$key . ': ' . $unTab[$key] . '%';
+			}	
+			$unBilan .= '}';
+			//var_dump($unBilan);
+			
+			return $unBilan;
+			//return $TabCSV;
+		} catch (ErrorException $e) {
+			$unBilan ='';
+			return $unBilan;
+		}
+		$this->SyntheseCodeCMD =  $unBilan;
+    }
+    function TabFormats(){
+		$tabFormatsNombre = array();
+		return $tabFormatsNombre;
+    } 			
+    function TabProduits(){
+
+    } 	
+	*/
     function LienFichierERREUR(){
 		return $GLOBALS['repCMDLABO'] . $this->FichierERREUR;
     }	
@@ -691,18 +729,12 @@ function LienPochetteVoir($infosFichier) {
 			$Lien = "CMDCartonnage.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
 			break;		
 	}
-  
-//$isDebug = true;
-	//return $LienFichier;
 
-
-		$LienImage = '<img src="img/VisualisationKO.png" alt="Mise en pochette non disponible">';
-		if($infosFichier->EtatFichier) {
-			$LienImage = '<img src="img/MiseEnPochette.png" alt="Voir écran de mise en pochette">';
-		}
-
-		return '<a href="'. $Lien . '">'.$LienImage.'</a>';
-
+	$LienImage = '<img src="img/VisualisationKO.png" alt="Mise en pochette non disponible">';
+	if($infosFichier->EtatFichier) {
+		$LienImage = '<img src="img/MiseEnPochette.png" alt="Voir écran de mise en pochette">';
+	}
+	return '<a href="'. $Lien . '">'.$LienImage.'</a>';
 }
 
 function LienRechercheVoir($infosFichier) {
@@ -717,18 +749,12 @@ function LienRechercheVoir($infosFichier) {
 			$Lien = "CMDRecherche.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
 			break;		
 	}
-  
-//$isDebug = true;
-	//return $LienFichier;
 
-
-		$LienImage = '<img src="img/VisualisationKO.png" alt="Mise en pochette non disponible">';
-		if($infosFichier->EtatFichier) {
-			$LienImage = '<img src="img/searchicon.png" alt="Voir écran de mise en pochette">';
-		}
-
-		return '<a href="'. $Lien . '">'.$LienImage.'</a>';
-
+	$LienImage = '<img src="img/VisualisationKO.png" alt="Mise en pochette non disponible">';
+	if($infosFichier->EtatFichier) {
+		$LienImage = '<img src="img/searchicon.png" alt="Voir écran de mise en pochette">';
+	}
+	return '<a href="'. $Lien . '">'.$LienImage.'</a>';
 }
 
 
@@ -753,14 +779,14 @@ function TypeFichier($myfileName){
 
 // POUR LES RECOMMANDES !
 function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
-   $NewFichier = $GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'].".lab0" ;
+	$NewFichierSeul = $GLOBALS['FichierDossierRECOMMANDE'].".lab0" ;
+	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
 	if (!file_exists($NewFichier)){
 		$file = fopen($NewFichier, 'w');
 			fputs($file, '[Version : 2.0]'.PHP_EOL );
 			fputs($file, '{Etat : 0 : Non enregistre %%Nouvelle création de tirages dejà effectués}'.PHP_EOL );
 		fclose($file); 
 	}
-
 	$isRecommande = false; //true;
 	
 	$TabCMDReco = explode("%", $strTabCMDReco);
@@ -768,13 +794,9 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 	$resultat = $monGroupeCmdes->Ecrire($TabCMDReco, $isRecommande);
 
    //Ajouter commande au fichier de reco 
-   file_put_contents($NewFichier, $resultat, FILE_APPEND | LOCK_EX);
-	/*
-	$file = fopen($NewFichier, 'w');
-		//fputs($file, $resultat);	
-		
-	fclose($file);   
-   */
+   file_put_contents($NewFichier, $resultat."\n", FILE_APPEND | LOCK_EX);
+
+  return $NewFichierSeul;
 }
 
 function EnvoieLABORecommandes($FichierOriginal) {

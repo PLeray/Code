@@ -57,7 +57,7 @@ $nb_fichier = 0;
 $affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
 
 ?>
-
+<BR>
 <div class="recherche">	
 	<!-- <a href="" style="width:auto" class="BoutonVoirenCours" title="Voir les Commandes en cours">Voir les commandes en cours</a> -->
 

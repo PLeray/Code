@@ -83,6 +83,13 @@ elseif (isset($_GET['apiPhotoshop'])) {
 elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
 }
+elseif (isset($_POST['lesRecommandes']) ){
+	if ($isDebug){
+		echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $_POST['lesRecommandes'];
+	}	
+
+		echo API_EnregistrerCommandes();
+}
 
 
 else {
@@ -97,7 +104,7 @@ else {
 ///////////// Les Fonctions selon les cas ...  ////////////////
 ///////////////////////////////////////////////////////////////
 
-
+/* Supression LE 18 Fev 2022 
 function API_GetCMDLAB($strAPI_CMDLAB){
 	if ($strAPI_CMDLAB == "TEST"){
 		return "OK";
@@ -114,7 +121,7 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 		}		
 	}
 }
-
+*/
 function API_GetFILELAB($strAPI_FILELAB){
 	$GLOBALS['repCMDLABO'] = "CMDLABO/";
 	if (file_exists($GLOBALS['repCMDLABO'] . $strAPI_FILELAB)){
@@ -253,5 +260,84 @@ function API_Photoshop($strAPI_fichierLAB){
 </div>';	
 	return $retourMSG;
 }
+
+function API_EnregistrerCommandes() {// function API_PostFILELAB() upload de fichier par DROP (15 octobre)
+	//$RechargerPage = true;
+	$lesRecommandes = $_POST['lesRecommandes'];
+
+	
+
+	$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
+
+
+	$retourMSG = 
+		'<!DOCTYPE html>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<html>
+		<head>
+		<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
+		<link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
+		</head>
+		<body>
+		<body onload="document.getElementById(\'apiReponse\').style.display=\'block\'">';
+	
+	$retourMSG .= '	<div class="msgcontainer">';
+
+	$target_fichier = $GLOBALS['repCMDLABO'] . $target_file_seul;
+	// if everything is ok, try to upload file
+	$retourMSG .= '<h3>ENREGISTRER LA CMADES</h3>';			
+	$retourMSG .= '<img src="img/Logo.png" alt="Image de fichier" width="25%">';	
+	if (file_exists($target_fichier)){
+		$CMDhttpLocal ='';
+				
+		$retourMSG .= '<h4>ENcvxvxcvcx LA CMADES</h4>';	
+		$retourMSG .= ' <br>$target_fichier' . $target_fichier;	
+			//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
+		
+			
+			$mesInfosFichier = new CINFOfichierLab($target_fichier); 
+			//$CMDAvancement ='';
+			
+			//$Compilateur = '';				
+			$NBPlanches = $mesInfosFichier->NbPlanches;
+			$retourMSG .= '<br>->Fichier  ' . $mesInfosFichier->Fichier;
+			$retourMSG .= '<br>->NbPlanches  ' . $mesInfosFichier->NbPlanches;
+			//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
+			//echo "Apres move_uploaded_file";
+			$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
+			$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
+			$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !
+			
+			
+
+			$retourMSG .= '<br><br>
+				<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
+				<br><br>';				
+			
+	}
+	else{
+		$retourMSG = "APIPhotoProd : Erreur " . $target_fichier . " est manquant !";
+	}	
+	//echo "<br><br> Fermer la fenetre (faire un bouton!)";
+	$retourMSG .= '
+				</div>	  
+			</div>
+		</div>
+    </body>
+    </html>';
+/**/	
+	$retourMSG = 
+	'<div id="apiReponse" class="modal">
+		<div class="modal-content animate" >
+			<div class="imgcontainer">
+				<a href="'.$GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
+				<br>
+			</div>' . $retourMSG;
+	
+	return $retourMSG;	
+}
+
+
+
 	
 ?>

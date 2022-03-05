@@ -285,7 +285,7 @@ function MAJinfoEcole(uneEcole) {
 		
 	g_RepSOURCE = TrouverRepSOURCEdansBibliotheque(uneEcole);
 	g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole);
-	//alert("g_RepSOURCE " + g_RepSOURCE);	
+	//alert("TEST Z61 g_RepSOURCE " + g_RepSOURCE);	
     if (g_RepSOURCE == ''){
 		msg = "Ecole en cours : " + g_CommandeECOLEEncours
 		AjoutBilanGeneration(msg);
@@ -297,7 +297,6 @@ function MAJinfoEcole(uneEcole) {
 		AjoutBilanGeneration('');
 		MsgLOGInfo('Erreur de dossier /SOURCE !', msg);
 		g_Erreur = msg;
-		//alert("TEST Z61 ");	
 	}else{
 		if (isDossierExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
@@ -320,7 +319,7 @@ function MAJinfoEcole(uneEcole) {
 
 			//MsgLOGInfo('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
 			//MsgLOGInfo('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));	
-			
+			//alert("TEST Z6444 uneEcole.isEcoleWEB() :  " + uneEcole.isEcoleWEB());	
 			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
 			valRetour = true;		
 		}
@@ -350,7 +349,7 @@ function GenererFichiersLABO() {
 		var chronoDebut = new Date().getTime();
         var nbLigneFichier = g_CommandeLabo.NbLignes();
 		//var cmdReste = nbLigneFichier;	
-        //alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);	
+    	//alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);	
 		
 		// Definition du repertoire de tirage : unique par fichier de commande !!!
 		for (var m = 0; m < nbLigneFichier; m++) {
@@ -364,16 +363,24 @@ function GenererFichiersLABO() {
 						var ladate=new Date();
 						repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
 					}
-					else{
-						repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
-					}				
+					else {
+						if  (uneEcole.NomEcole.indexOf('(RECOMMANDES)') > -1) {
+							var ladate=new Date();
+							repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-RECOMMANDES de GROUPEES';
+						}
+						else{
+							repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
+						}	
+					}
+			
 					g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
 					g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
 					break;
-					//alert("TEST Z44440 g_RepTIRAGES_DateEcole : " + g_RepTIRAGES_DateEcole);	
+						
 				}
 			}  			
 		}
+		//alert("TEST Z44440 g_RepTIRAGES_DateEcole : " + g_RepTIRAGES_DateEcole);
 		//Initialisation du tableau de planche déja faites!
 		/*	*/
 
@@ -385,7 +392,7 @@ function GenererFichiersLABO() {
 			g_TabPlancheDEJAFaites = strListeFichier.split(sepNumLigne);
 		}
 		
-		//alert('TEST Z43 ' + TableauTOStr(g_TabPlancheDEJAFaites));
+		//alert('TEST Z43 g_TabPlancheDEJAFaites ' + TableauTOStr(g_TabPlancheDEJAFaites));
 		/*		*/
 		// Creation des planches du fichier de commande !!!
 		for (var m = 0; m < nbLigneFichier; m++) {
@@ -401,14 +408,16 @@ function GenererFichiersLABO() {
 					var uneEcole = new Ecole(g_CommandeECOLEEncours);  
 					//	
 					isEcoleOK = MAJinfoEcole(uneEcole);		
-					
+					//alert("TEST Z3955 uneEcole.NomEcole : " + uneEcole.NomEcole);
 				}  
 				else {
 					//UI			
 					if (isEcoleOK && ligne && CreerUnDossier(g_RepTIRAGES_DateEcole)){                
 					
 						g_CommandePDTEncours = ligne.substr(0,ligne.length-2);
-						var unProduit = new Produit(ligne);  					
+						var unProduit = new Produit(ligne);  	
+						
+						//alert("TEST Z39566 unProduit.isProduitLABO() : " + unProduit.isProduitLABO());
 						
 						if (unProduit.isProduitLABO()){
 							//SUPRIMMER CA POUR VOIR SI PREND DU TEMPS!
@@ -426,7 +435,7 @@ function GenererFichiersLABO() {
 				}
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
 				// Attention
-				//alert("TEST Z44 ");
+				//alert("TEST Z499 ");
 
 				// TOUT LES 10 SEULEMENT
 				/*

@@ -149,6 +149,7 @@ class CPage {
 class CEcole {
     var $DateTirage;
     var $Nom;
+	var $AnneeScolaire;
     var $Details;
 	var $colCMD;
 	//var $DateISOLEE;
@@ -157,10 +158,13 @@ class CEcole {
     function __construct($str, $DossierTirage){
         //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("@", "", $str)));
         $morceau = explode("_", str_replace("@", "", $str));
+
+		//echo '<br> $morceau ' . print_r ($morceau);
 		$this->DateTirage = $morceau[0];
         $this->Nom = $morceau[1];
         $this->CodeEcole = $morceau[2];
-		$this->Details = $morceau[3];
+		$this->AnneeScolaire = $morceau[3];
+		$this->Details = $morceau[4];
 		$this->colCMD = array();
 		//$this->DateISOLEE = $dateIsole;
 		$this->DossierTirage = $DossierTirage;
@@ -205,7 +209,7 @@ class CEcole {
 		return $resultat;
 	}	
 	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='@'. $this->DateTirage . '_(RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->Details .'@'.PHP_EOL; 
+		$resultat ='@'. $this->DateTirage . '_(RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
 		//@2020-12-03_(ISOLEES) Elementaire La Chateigneraie-HAUTE GOULAINE_ECOLE-1017_Ecole web !@ 
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$isEcris = false;

@@ -434,7 +434,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 			try {
 				//alert('CreerUnProduitPourLeLaboratoire \n Code de unProduit ' + unProduit.Code);
 
-				//alert('TESTZ50 DEBUT CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
+				//alert('TESTZ50 DEBUT CreerUnProduitPour : ' + nomFichierPhoto + ' // Code de unProduit ' + unProduit.Code); //////////////////////////////////////////////
 				if (unProduit.Code){
 					if (unProduit.FichierPhoto.length && unProduit.isNeedGroupeClasse()){//Ouvrir la bonne photo ? Groupe
 						//alert('sdsdsdsdur : ' + nomFichierPhoto ); //////////////////////////////////////////////
@@ -1018,7 +1018,7 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 				theFiles = InitGroupesClasseIndiv(theObject, theFiles);
 			}
 			if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
-				//ok alert("boucle : " + theObject.name + " taille : " + theObject.name.length);
+				//alert("boucle : " + theObject.name + " taille : " + theObject.name.length);
 				if (theObject.name.length >= g_MinimuNomClasse) { // C'est un petit nom de groupe !
 					//On ajoute le groupe à TabLesGroupesClasse
 					//alert("theObject.name : " + theObject.name + "    strNUMEROClasse :  " + strNUMEROClasse);

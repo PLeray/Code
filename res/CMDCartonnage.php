@@ -43,7 +43,7 @@ if($isDebug){
 	
 	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
 
-	$EcoleEnCours = new CEcole("___",'2020-07-07');
+	$EcoleEnCours = new CEcole("____",'2020-07-07');
 	
 	//$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 

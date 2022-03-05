@@ -45,7 +45,7 @@ if($isDebug){
 	$numeroCMD = (isset($_GET['numeroCMD'])) ? $_GET['numeroCMD'] :'1';
 	
 
-	$EcoleEnCours = new CEcole("___",'2020-07-07');
+	$EcoleEnCours = new CEcole("____",'2020-07-07');
 	
 	//$versionFichierLab = VersionFichierLab($tabFICHIERLabo);
 
@@ -120,7 +120,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 				
 				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide" > ✓ </a>  Afficher sélection des recommandes	
 
-				<form name="FormEnvoieRecos" method="post" action="'. RetourEcranFichier($myfileName).'" enctype="multipart/form-data">	
+				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier($myfileName).'" enctype="multipart/form-data">	
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
 					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
 					<button type="submit" id="btnEnregistrerCMD" title="Enregistrer ces recommandes">Enregistrer ces recommandes</button>
