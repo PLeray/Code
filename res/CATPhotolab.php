@@ -103,7 +103,13 @@ if($RechargerPage){
 
 
 <body>
-<?php AfficheMenuPage('commandesEnCours',$maConnexionAPI); ?>
+
+<?php 
+	if ($isDebug) {
+		echo "MarqueurDateCommande : " . MarqueurDateCommande('2022-03-04');
+	}
+	AfficheMenuPage('commandesEnCours',$maConnexionAPI); 
+?>
 <!-- 
 <p align="center"><iframe width="600" height="137" scrolling= 'no' src="http://localhost/API_photolab/res/drop.php" frameborder="0"></iframe></p>
 -->

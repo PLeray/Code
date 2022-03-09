@@ -167,4 +167,8 @@ function afficheTab($tabFICHIERLabo){
 		}
 	}
 }
+/**/
+
+	
+
 ?>

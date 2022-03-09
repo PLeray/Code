@@ -219,8 +219,23 @@ class CEcole {
 		}			
 		return $resultat;
 	}	
-	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='@9999-99-99'.  '_' .$this->DateTirage .' (RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
+//utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
+
+	function Ecrire($tabPlanche, &$isRecommande){	
+
+		$strDate = MarqueurDateCommande('2022-03-04');
+
+		//$date1 = date($this->DateTirage); // Date du jour
+		//setlocale(LC_TIME, "fr_FR");
+		//$strDate = strftime("%A %d %B %G", strtotime($date1)); //Mercredi 26 octobre 2016
+
+		//$date1 = date($strDtae); // Date du jour
+
+		//$strDate = strftime("%A %d %B %G", strtotime($date1)); //Mercredi 26 octobre 2016	
+		
+
+		//$strDate = MarqueurDateCommande($this->DateTirage);
+		$resultat ='@9999-99-99'.  '_' . $strDate .' (RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
 		//@2020-12-03_(ISOLEES) Elementaire La Chateigneraie-HAUTE GOULAINE_ECOLE-1017_Ecole web !@ 
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$isEcris = false;
@@ -628,6 +643,19 @@ function csv_to_array($filename='', $delimiter=';')
     return $data;
 }
 
+function MarqueurDateCommande($strDate) {
+	//date_default_timezone_set('Europe/Paris');
+	setlocale(LC_TIME, 'fr_FR');
+	
+	$date = new DateTime($strDate);
+	//echo $date->format('Y-m-d H:i:s');
 
+
+	//$date1 = date($strDate); // Date du jour
+
+	//return strftime("%A %d %B %G", strtotime($date1)); //Mercredi 26 octobre 2016	
+
+	return $date->format('d/m/Y');
+}
 
 ?>

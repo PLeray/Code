@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <?php
 	setlocale(LC_TIME, 'french');
+
+	
+
+
 	include_once 'APIConnexion.php';
 	include_once 'CMDLire.php';
 
@@ -64,6 +68,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 <div id="chargement" style="width:150px;height:50px;position:absolute;top:0;left:0;color:red;font-weight:bold;font-size:14px;background:white;">
    Chargement ...
 </div>-->
+
 <div id="MSGChargement" onclick="EffacerChargement()"> 
 	<div class="cs-loader">
 	
@@ -95,6 +100,11 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		
 		<div class="titreFichier">	
 			<?php 
+
+				if ($isDebug) {
+					echo "MarqueurDateCommande : " . MarqueurDateCommande('2022-03-04');
+				}
+
 				
 				echo pathinfo(utf8_encode($myfileName))['filename'];
 				//echo $isRECOmmandes?'true':'false'. " sgsfdgdfg" ; 				
