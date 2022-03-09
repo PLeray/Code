@@ -1,96 +1,19 @@
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
-/*var rech = document.getElementById("zoneRechercheCMD");
-rech.style.display = 'none';
-(false);*/
 
-//initPagination();
 
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
    document.getElementById('site').style.visibility='visible';
 }
 
-/*
-function initPagination() {
-	//console.log("document.onreadystatechange  : Avant" );	
-	document.onreadystatechange = function() {
-		//console.log("document.onreadystatechange  : OK" );	
-		if (document.readyState === "complete") {
-			var laZonePages = new purePajinate({ 
-				containerSelector: '.zonePagesCMD .items', 
-				itemSelector: '.zonePagesCMD .items .pageCMD', 
-				navigationSelector: '.zonePagesCMD .page_navigation',
-				wrapAround: false,
-				navLabelPrev: '<',
-				navLabelNext: '>',				
-				pageLinksToDisplay: 20,
-				itemsPerPage: 1,
-				startPage: 0
-			});
-		}
-	};
-}	
-/*
-function AfficheRechercheCMD(isAffiche) {
-	isRECOmmandes = isAffiche;
-	if (isAffiche){
-		
-		document.getElementById("mySidenav").style.width = "350px";
-		//document.getElementById("mySidenav").style.z-index = 2;  
-		document.getElementById("main").style.marginRight = "350px";
-		document.getElementById("Entete").style.marginRight = "350px";			
-		
-		var rech = document.getElementById("zoneRechercheCMD");
-		rech.style.display = '';
-		//var list = document.getElementById("zoneListePageCMD");
-		//list.style.display = 'none';			
-		
-	}
-	else{
-		document.getElementById("zoneRecherche").value ='';
-		RechercheMulti(' ');
-		document.getElementById("mySidenav").style.width = "0";
-		  //document.getElementById("mySidenav").style.z-index = -2;  
-		document.getElementById("main").style.marginRight = "0";
-		document.getElementById("Entete").style.marginRight = "0";		
-		
-		
-		var rech = document.getElementById("zoneRechercheCMD");
-		rech.style.display = 'none';
-		//var list = document.getElementById("zoneListePageCMD");
-		//list.style.display = 'block';			
-	}
-}
-	*/
-/***********************************************************************************/
 /********************************/
 window.onload = function (){ 
 //alert('Onload :!!');
 	InitCommandes();
 	EffacerChargement();
 };
-
-/*
-// New defil page
-function openPage(pageName,elmnt,color) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].style.backgroundColor = "";
-  }
-  document.getElementById(pageName).style.display = "block";
-  elmnt.style.backgroundColor = color;
-}
-
-// Get the element with id="defaultOpen" and click on it
-
-*/
 
 function scrollFunction() {
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -198,27 +121,6 @@ function getCookie(cname) {
 	}
 	return "";
 }
-
-/*function myFunction2() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-
-function filterFunction() {
-    var input, filter, ul, li, a, i;
-    input = document.getElementById("mySearch");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("myDropdown");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
-	document.getElementById("myDropdown").classList.toggle("show");
-}*/
 
 function filterPlanches() {
 	var input, filter;  

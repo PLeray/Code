@@ -34,7 +34,14 @@ $tabFichiersEnCoursDeCompilation = array();
 	$EcoleEnCours = new CEcole("____",'2020-07-07');
 
 	$lesRecommandes = ''; // Mis dans API_
-	if (isset($_POST['lesRecommandes']) ){
+	if (isset($_GET['ValideNomCommande']) ){
+		if ($isDebug){
+			echo 'apiNomCommande  pour : ' . $_GET['ValideNomCommande']  ;
+		}	
+		RemplacementRecomamndeTemporaire(substr( utf8_decode($_GET['ValideNomCommande']),0,-5)); // Sans L'extension
+
+	}
+	elseif (isset($_POST['lesRecommandes']) ){
 		$RechargerPage = true;
 		$lesRecommandes = $_POST['lesRecommandes'];
 		if ($isDebug){
@@ -42,8 +49,7 @@ $tabFichiersEnCoursDeCompilation = array();
 		}	
 		MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
 	}
-
-	if (isset($_GET['OpenRep'])) { // OUVRIR REP !
+	elseif (isset($_GET['OpenRep'])) { // OUVRIR REP !
 		$RechargerPage = true;
 		$leRep = str_replace("/","\\",$repTIRAGES. $_GET['OpenRep']);
 		if ($isDebug){
@@ -51,10 +57,13 @@ $tabFichiersEnCoursDeCompilation = array();
 		}
 		execInBackground('explorer /select,"'.$leRep.'"');
 	} 
-	if (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
+	elseif (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
 		$RechargerPage = true;
 		if ($GLOBALS['isDebug']){
 			echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
+			}
+			if (isset($_GET['apiNomCommande']) ){
+				echo 'RECOOOOOOO apiNomCommande  pour : ' . $_GET['apiNomCommande']  ;
 			}
 		BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 	} 
@@ -114,8 +123,6 @@ if($RechargerPage){
 -->
 <div class="zoneTable" >
 <h1>Groupes de commandes en cours de préparation : <?php echo $nb_fichier; ?></H1>    
-
-
 
 
 <!-- ////////// FIN de l'HTML Standard ////////// 

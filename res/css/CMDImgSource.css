@@ -6,7 +6,6 @@ body {
 
 }
 
-
 /******************************/
 /*       
 * {
@@ -396,25 +395,6 @@ font-size: 12px;
 }
 
 
-/*
-.GroupeSELECTION .textImageSource {
-	background: var(--FondLigneTabGrisClair);
-	z-index: 10;
-	position: absolute;
-	text-align: center;
-	font-family: "Courier New", Times, serif;
-	margin: 0 auto;
-	left: 0;
-	right: 0;
-  top: 50%; 
-  transform: translateY(-50%); 
-
-	width: 100%;
-	border-top: 1px solid var(--FondLigneTabGrisFonce);
-	border-bottom: 1px solid var(--FondLigneTabGrisFonce);
-  padding: 10px 0px 10px 0px ;
-}
-*/
 .ImageFichierWeb {
   display: none;
   position: absolute;

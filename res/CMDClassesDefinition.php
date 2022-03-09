@@ -35,13 +35,24 @@ class CGroupeCmdes {
 				//Si Commande pas vide , on ajoute la commande au tableau!
 				if ($identifiant == '@') {
 					if ($this->DossierTirage == ''){
+						/*if ($GLOBALS['FichierDossierRECOMMANDE'] == substr($myfileName, strripos($myfileName, '/') + 1,-5)) { // C'est des RECO TEMPORAIRE
+							$this->DossierTirage =  $GLOBALS['FichierDossierRECOMMANDE'] ;															
+						}	
+*/
+
+
 						if (stripos($this->tabFICHIERLabo[$i], '(ISOLEES)') !== false) { // C'est des ISOLEES
 							//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
 							$this->DossierTirage = $this->DateISOLEE . '-CMD-ISOLEES' ;
 						}	
+
 						elseif (stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== false) { // C'est des RECOs
-							$this->DossierTirage =  $GLOBALS['FichierDossierRECOMMANDE'] ;
+							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);	$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);
 						}	
+
+
+
+						
 						else{ // C'est des PAS des ISOLEES
 							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');
 							$this->DossierTirage = $curEcole->DateTirage . '-' .$curEcole->Nom ;
@@ -209,7 +220,7 @@ class CEcole {
 		return $resultat;
 	}	
 	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='@'. $this->DateTirage . '_(RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
+		$resultat ='@9999-99-99'.  '_' .$this->DateTirage .' (RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
 		//@2020-12-03_(ISOLEES) Elementaire La Chateigneraie-HAUTE GOULAINE_ECOLE-1017_Ecole web !@ 
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$isEcris = false;
@@ -307,7 +318,7 @@ class CCommande {
 		return $resultat;				
 	}
 	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'.PHP_EOL; 
+		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'. PHP_EOL; 
 	
 		for($i = 0; $i < count($this->colPDT); $i++){
 			$isEcris = false;
@@ -353,7 +364,7 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		return $resultat;
 	}	
 	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='<'. $this->Classe. '%' . $this->Nom .'>'.PHP_EOL;;
+		$resultat ='<'. $this->Classe. '%' . $this->Nom .'>'. PHP_EOL;
 		for($i = 0; $i < count($this->colPlanche); $i++){
 			$isEcris = false;
 			$resultat .= $this->colPlanche[$i]->Ecrire($tabPlanche, $isEcris);		
@@ -458,6 +469,7 @@ class CPlanche {
 		   $resultat = $this->FichierSource;
 		   $resultat .= '_'. $this->Taille; 
 		   $resultat .= '_'. $this->Type;
+		   $resultat .= PHP_EOL;
 		   ///////////////////////////////////////////////////
 				
 		}
@@ -520,7 +532,8 @@ class CImgSource {
 	
 	function Affiche(){
 		$resultat = '';
-			$Lien = $this->Dossier . 'Cache/' .  $this->Fichier;
+			//SUPRESSION DU CACHE $Lien = $this->Dossier . 'Cache/' .  $this->Fichier;
+			$Lien = $this->Dossier .  $this->Fichier;
 			$LienBig = $this->Dossier . $this->Fichier;			
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			if (strpos(strtolower($this->Fichier),'fratrie')){
@@ -540,8 +553,11 @@ class CImgSource {
 			<input type="hidden" name="lesCommandes" id="ZlesCommandes" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> 
 
-			<button type="submit" class="EnregistrerPhoto"><img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">';
-			$resultat .= '</button>';
+			<button type="submit" class="EnregistrerPhoto">
+					<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
+						src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '" 
+					loading="lazy" >
+			</button>';
 			$resultat .= '</form>';		
 			
 			

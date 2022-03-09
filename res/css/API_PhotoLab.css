@@ -43,10 +43,10 @@ h3 { /*Police texte produits */
 h4 { /*Police texte Erreur */
     letter-spacing: 2px;
 	padding: 0px;
-	line-height: 16px;
-	font-size: 16px;
+	line-height: 18px;
+	font-size: 18px;
 	font-family: "Courier New", Times, serif;
-	color: red;
+	color: var(--texteGris);
 }
 
 p {/*Police Détails Fichier commande et commun  */
@@ -87,6 +87,29 @@ button:hover {
 	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
 }
 
+
+#zoneTexteNomCommande {
+    width: 240px;
+    text-align: left;
+    font-size: 18px;
+    padding: 11px;
+    margin-left: 5px;
+    color: var(--boutonVert);
+    border: 1px solid #888;
+}
+
+table
+{
+margin: auto;
+}
+td
+{
+text-align :center;
+}
+
+
+
+
 /* Set a style for all buttons */
 .OK, .KO {
 	text-decoration:none; 
@@ -97,7 +120,7 @@ button:hover {
     margin: 8px 0 ;
     border: none;
     cursor: pointer;
-	width:100%;
+	width:100px;
 }
 
 .OK {
@@ -170,7 +193,7 @@ button:hover {
   /* background-color: rgb(0,0,0); Fallback color */
   /* background-color: rgba(0,0,0,0.4); Black w/ opacity */  
     
-    padding-top: 60px;
+
 }
 
 /* Modal Content/Box */

@@ -82,24 +82,6 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECCode']) && isset($_GET['
 }
 
 
-
-
-/*
-http://localhost/API_photolab/res/LOGTalkServeur.php?codeMembre=PSL&isDebug=Debug&pageRetour=CATSources&serveurRetour=http%3A%2F%2Flocalhost%2FPhotoLab-Dev&CMDdate=LUMYS-&CMDwebArbo=0&CodeEcole=2PLANCHES&BDDFileLab=ARBO-Source-Photos-Cmd-Max-Planck-2020-2021.web
-
-elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
-    //echo API_GetCMDLAB(($_GET['apiCMDLAB']));
-}
-elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) { 
-	ChangeEtat($_GET['apiChgEtat'], $_GET['apiEtat']);
-} 
-elseif (isset($_GET['apiSupprimer'])) { 
-	SuprimeFichier($_GET['apiSupprimer']);
-} 
-//else echo 'Y A RIEN';
-*/
-
-
 ?>
 <div class="majCache">
 	<span class="mini"><br><a href="<?php echo 'CMDGenererCacheSource.php' . ArgumentURL(); ?>" title="Mettre à jour le cache des Photos"  target="_blank">Mettre à jour le cache</a></span>

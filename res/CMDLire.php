@@ -16,8 +16,6 @@ function RetourEcranFichier($myfileName){
 }
 
 function EnregistrerFichier($myfileName){
-
-	
 	return 'API_Photolab.php' . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }
 

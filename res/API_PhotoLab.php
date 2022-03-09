@@ -53,8 +53,8 @@ $DebutMessageBox =
 '<div id="apiReponse" class="modal">
 	<div class="modal-content animate" >
 		<div class="imgcontainer">
-			<a href="../index.php" class="close" title="Annuler et retour écran général des commandes">&times;</a>
-			<img src="img/Logo-Go-PhotoLab.png" alt="Image de fichier" class="apiReponseIMG">
+			<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
+			<img src="img/Logo.png" alt="Image de fichier" class="apiReponseIMG">
 		</div>';
 		
 
@@ -79,6 +79,9 @@ elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) {
 } 
 elseif (isset($_GET['apiPhotoshop'])) { 
 	echo $EnteteHTML . API_Photoshop($_GET['apiPhotoshop']). $BotomHTML;	
+} 
+elseif (isset($_GET['apiDemandeNOMCommande'])) { 
+	echo $EnteteHTML . API_DemandeNOMComamnde(). $BotomHTML;	
 } 
 elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
@@ -337,7 +340,68 @@ function API_EnregistrerCommandes() {// function API_PostFILELAB() upload de fic
 	return $retourMSG;	
 }
 
+function API_DemandeNOMComamnde(){
+	$retourMSG = $GLOBALS['DebutMessageBox'];
+	$retourMSG .= '	<div class="msgcontainer">';
+	if ($GLOBALS['isDebug']){$retourMSG = $retourMSG . "<br><h3> (en Debug)<br><br></h3>";}
+	$retourMSG .=  "<h1>nom de votre commande</h1>";
+	$retourMSG .=  "<h3>Ajustez le nom de votre commande pour le laboratoire ci dessous :</h3>";
+	
+		
+	
+	//Enregistrement du fichier avec son nouveau nom
+	$leDossierTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
+	$leFichierLab = $leDossierTirage . '.lab2';
+	
+	$retourMSG .= ' <br>$target_fichier' . $leFichierLab;	
+	//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
 
+	
+	$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $leFichierLab); 
+	//$CMDAvancement ='';
+	
+	//$Compilateur = '';				
+	$NBPlanches = $mesInfosFichier->NbPlanches;
+	$retourMSG .= '<br>->Fichier  ' . $mesInfosFichier->Fichier;
+	$retourMSG .= '<br>->NbPlanches  ' . $mesInfosFichier->NbPlanches;
+	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
+	//echo "Apres move_uploaded_file";
+	$DateCommande = date('Y-m-d') ; 
+	$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
+	$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
+	$CMDhttpLocal .= '&BDDFileLab=RECOMMANDES' ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
+	
+	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) ;
+	echo $ActionServeur;
+	//$ActionServeur = 'CATPhotolab.php' . ArgumentURL() ;
+	
+	$retourMSG .= '<form  action="' . $ActionServeur .'" method="post">';
+
+	$retourMSG .= '<h4>'. $DateCommande .'-'; 
+
+	$retourMSG .= '<input type="text" id="zoneTexteNomCommande" placeholder="Nom de votre commande..." name="apiNomCommande" required>
+	</h4><br><br><br>
+	<table>
+		  <tr>
+			  <td><a href="CATPhotolab.php' . ArgumentURL() .'" class="KO" title="Valider et retour écran général des commandes">Annuler</a></td>
+			  <td><button type="submit" class="OK">OK</button></td>
+		  </tr>
+		</table>
+
+    </div>
+
+  </form>';
+
+
+	$retourMSG .= '<br><br>';
+
+	$retourMSG .= '
+		</div>	  
+	</div>
+</div>';	
+	return $retourMSG;
+	
+}
 
 	
 ?>

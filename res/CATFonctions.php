@@ -58,8 +58,9 @@ class CINFOfichierLab {
 			if (stripos($this->NomEcole, '(ISOLEES)') !== false) { // C'est des ISOLEES
 				$leRepTirage = substr($this->Fichier, strripos($this->Fichier, '/'),10) . '-CMD-ISOLEES' ;
 			}	
-			elseif (stripos($this->NomEcole, '(RECOMMANDES)') !== false) { // C'est des RECOs
-				$leRepTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
+			elseif (stripos($this->NomEcole, '$ActionServeur') !== false) { // C'est des RECOs
+				//$leRepTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
+				$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;
 			}	
 			else{
 					$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;	
@@ -210,39 +211,47 @@ class CINFOfichierArbo {
 
 /////////////////// Les Fonctions ... ///////////////////    
 function SuprimeFichier($strFILELAB){
-	if (file_exists($GLOBALS['repCMDLABO'] .  $strFILELAB)){
-		$fichier = $GLOBALS['repCMDLABO'] . $strFILELAB ;
-		if (file_exists($fichier)){ 
-			// NEW SUP ARBORESCENCE FICHIER		
-			if (substr($strFILELAB, -1, 1) == '1'){
-				if($GLOBALS['isDebug']){
-					Echo '<br>LAB1 : Là ON SUPPRIME ';
-				}
-				if (substr($strFILELAB, -5, 4) == '.lab'){
-					$mesInfosFichier = new CINFOfichierLab($fichier); 				
-					if ($mesInfosFichier->RepTirage() != '') {
-						SuprArborescenceDossier($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage());
-						SuprArborescenceDossier($GLOBALS['repMINIATURES'].$mesInfosFichier->RepTirage());
-					}
-				}
-				else{
-					$mesInfosFichier = new CINFOfichierArbo($fichier); 
-					if ($mesInfosFichier->RepTirage() != '') {
-						SuprArborescenceDossier($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage());
-					}
+	$fichier = $GLOBALS['repCMDLABO'] . $strFILELAB ;
+	if (file_exists($fichier)){ 
+		// NEW SUP ARBORESCENCE FICHIER		
+		if (substr($strFILELAB, -1, 1) == '1'){
+			if($GLOBALS['isDebug']){
+				Echo '<br>LAB1 : Là ON SUPPRIME ';
+			}
+			if (substr($strFILELAB, -5, 4) == '.lab'){
+				$mesInfosFichier = new CINFOfichierLab($fichier); 				
+				if ($mesInfosFichier->RepTirage() != '') {
+					SuprArborescenceDossier($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage());
+					SuprArborescenceDossier($GLOBALS['repMINIATURES'].$mesInfosFichier->RepTirage());
 				}
 			}
-
-			//Supression du .lab0
-			SuprFichier($fichier);
-			$Extension = '.' . TypeFichier($strFILELAB);
-			$strBaseName = substr($fichier, 0, strpos($fichier, $Extension));
-			if (file_exists($strBaseName . '.Erreur')){ 
-				//Supression du fichier erreur
-				SuprFichier($strBaseName . '.Erreur');
-			}				
+			else{
+				$mesInfosFichier = new CINFOfichierArbo($fichier); 
+				if ($mesInfosFichier->RepTirage() != '') {
+					SuprArborescenceDossier($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage());
+				}
+			}
 		}
-	} 	
+
+		//Supression du .lab0
+		SuprFichier($fichier);
+		$Extension = '.' . TypeFichier($strFILELAB);
+		$strBaseName = substr($fichier, 0, strpos($fichier, $Extension));
+		if (file_exists($strBaseName . '.Erreur')){ 
+			//Supression du fichier erreur
+			SuprFichier($strBaseName . '.Erreur');
+		}				
+	}
+}
+
+function RenommerFichierEtDossiers($nomFichierAncien, $nomFichierNouveau){
+	$fichier = $GLOBALS['repCMDLABO'] . $nomFichierAncien ;
+	if (file_exists($fichier)){ 
+
+		rename($fichier, $GLOBALS['repCMDLABO'] . $nomFichierNouveau);		
+		//+ Dossier !!!	
+	}
+
 }
 
 function LienIMGSuprFichierLab($fichier, $Etat) {
@@ -262,35 +271,59 @@ function LienIMGSuprFichierLab($fichier, $Etat) {
 	return $retour;
 }
 
-function ChangeEtat($strFILELAB, $Etat){
+function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 	$Extension = '.' . TypeFichier($strFILELAB);
 	
 	$strBaseName = substr($strFILELAB, 0, strpos($strFILELAB, $Extension));
-	if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB))){
-		rename($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB), $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) . $Extension . $Etat);
 
-		$fichierdeBase = $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) ;
-		if ($Etat > 2){
-			if (file_exists($fichierdeBase . $Extension . '0')){ 
-				//Supression du .lab0
-				SuprFichier($fichierdeBase . $Extension . '0');
-			}
-			if (file_exists($fichierdeBase . $Extension . '1')){ 
-				//Supression du .lab0
-				SuprFichier($fichierdeBase . $Extension . '1');
-			}			
-			if (file_exists($fichierdeBase . '.Erreur')){ 
-				//Supression du .lab0
-				SuprFichier($fichierdeBase . '.Erreur');
-			}
-		}
-		return 'OK';
-	} else {
-		return "APIPhotoLab : erreur 44";
+	if(($Etat == "3" )&& ($strBaseName == $GLOBALS['FichierDossierRECOMMANDE'])){
+		echo ' XXXXXXXXXXXXXXXXx   33 BaseName : ' .$strBaseName;		
+		// ON Verifie si le nom de Dossier est OK pour le Laboratoire et suivit !
+
+	
 	}
-	$CMDhttpLocal = '?apiChgEtat='. $strFILELAB .'&apiEtat=' . $Etat ;
-	echo $CMDhttpLocal;
+	else{
+		echo ' XXXXXXXXXXXXXXXXx  BaseName : ' .$strBaseName;	
+		if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB))){
+			rename($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB), $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) . $Extension . $Etat);
+
+			$fichierdeBase = $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) ;
+			if ($Etat > 2){
+				if (file_exists($fichierdeBase . $Extension . '0')){ 
+					//Supression du .lab0
+					SuprFichier($fichierdeBase . $Extension . '0');
+				}
+				if (file_exists($fichierdeBase . $Extension . '1')){ 
+					//Supression du .lab0
+					SuprFichier($fichierdeBase . $Extension . '1');
+				}			
+				if (file_exists($fichierdeBase . '.Erreur')){ 
+					//Supression du .lab0
+					SuprFichier($fichierdeBase . '.Erreur');
+				}
+			}
+			return 'OK';
+		} else {
+			return "APIPhotoLab : erreur 44";
+		}
+		$CMDhttpLocal = '?apiChgEtat='. $strFILELAB .'&apiEtat=' . $Etat ;
+		echo $CMDhttpLocal;		
+
+	}
+
 }
+
+function RemplacementRecomamndeTemporaire($NouveauNomDeFichier){ // Nouveau Nom SANS extendion
+	$NomTemporaire =utf8_decode($GLOBALS['FichierDossierRECOMMANDE']);
+
+	rename($GLOBALS['repCMDLABO'] . $NomTemporaire .'.lab2', $GLOBALS['repCMDLABO'] . utf8_decode($NouveauNomDeFichier).'.lab3');
+	rename($GLOBALS['repMINIATURES'] . $NomTemporaire , $GLOBALS['repMINIATURES'] . utf8_decode($NouveauNomDeFichier) );	
+	rename($GLOBALS['repTIRAGES'] . $NomTemporaire ,  $GLOBALS['repTIRAGES'] . utf8_decode($NouveauNomDeFichier) );	
+
+	SuprFichier($GLOBALS['repCMDLABO'] . $NomTemporaire .'.lab0');			
+	SuprFichier($GLOBALS['repCMDLABO'] . $NomTemporaire .'.lab1');
+}
+
 
 function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 	if ($GLOBALS['isDebug']){
@@ -378,8 +411,8 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
 			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	
 			
-			<td>'. LienPochetteVoir($mesInfosFichier) . '</td>	
-			<td>'. LienRechercheVoir($mesInfosFichier) . '</td>';
+			<td>'. LienVoirMiseEnPochette($mesInfosFichier) . '</td>	
+			<td>'. LienRecherchePlanche($mesInfosFichier) . '</td>';
 			
 		if($mesInfosFichier->EtatFichier < 2){
 			$affiche_Tableau .=	'
@@ -470,21 +503,7 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 	for($i = 0; $i < count($tabFichierLabo); $i++){
 			$nb_fichier++;	
 		$NomFichier = $tabFichierLabo[$i];	
-	
-		
-/*		
-		if(substr($NomFichier, -1, 1) == '0' ){
-			echo '<br> NomFichier = ' . $NomFichier ;	
-			$affiche_Tableau .=
-			'<tr>
-				<td>' . 'xcv' .'</td>				
-				<td align="left">' . $NomFichier . '</a></td>	
-				<td>'.'xcv'.'</a></td>		
-				<td>' . 'xcv'. '</a></td>';				
-			
-		}
-		else {
-			*/
+
 			// Un objet pour récupérer les infos Fichier !!! 
 			$mesInfosFichier = new CINFOfichierArbo($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 	
 			
@@ -693,11 +712,24 @@ function LienImageEtatWEB($Etat){
 
 function LienEtatLab($fichier, $Etat) {
 	if (strrchr($fichier, '.') != ".lab0"){
+
+		if (($Etat == "3" )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
+			//echo '<br>' . substr($fichier, 0, -5) . '<br>'.$GLOBALS['FichierDossierRECOMMANDE'];
+			return 'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMCommande=OUI' ;
+		}
+		else{
 		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
-		return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
+		return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);		
+		
+					
+		}
+
+
+
 	} else {
 		return 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}
+
 }
 /* */
 function LienFichierLab($fichier) {
@@ -717,7 +749,7 @@ function LienFichierLab($fichier) {
 	return $LienFichier;
 }
 
-function LienPochetteVoir($infosFichier) {
+function LienVoirMiseEnPochette($infosFichier) {
 	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 	$Extension = strrchr($infosFichier->Fichier, '.');
 	$Lien = "#";
@@ -737,7 +769,7 @@ function LienPochetteVoir($infosFichier) {
 	return '<a href="'. $Lien . '">'.$LienImage.'</a>';
 }
 
-function LienRechercheVoir($infosFichier) {
+function LienRecherchePlanche($infosFichier) {
 	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 	$Extension = strrchr($infosFichier->Fichier, '.');
 	$Lien = "#";
@@ -784,7 +816,7 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 	if (!file_exists($NewFichier)){
 		$file = fopen($NewFichier, 'w');
 			fputs($file, '[Version : 2.0]'.PHP_EOL );
-			fputs($file, '{Etat : 0 : Non enregistre %%Nouvelle création de tirages dejà effectués}'.PHP_EOL );
+			fputs($file, '{Etat : 0 : Non enregistre %%Recommandes de tirages dejà effectués}'.PHP_EOL );
 		fclose($file); 
 	}
 	$isRecommande = false; //true;

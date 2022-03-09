@@ -91,6 +91,7 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 </div> 
 
 <?php 
+/* */
 if (!$MAJ){
 	$RefSource = "&codeSource=" . urlencode($codeSource). "&anneeSource=" . urlencode($anneeSource);
 	
@@ -128,8 +129,7 @@ if (!$MAJ){
 				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour tirage</a>	
 				<div id="myListePhoto" class="ListeCommandes">		
 					<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
-				</div>	
-				
+				</div>					
 	
 				<div class="dropdown">
 					
@@ -255,7 +255,7 @@ function AfficheSOURCESEcole($monProjet){
 	$dir = $monProjet->Dossier . '/*.*{jpg,jpeg}';
 	$files = glob($dir,GLOB_BRACE);
 
-	CreationDossier($monProjet->Dossier . '/Cache');
+	// SUPPRESSION DU CACHE CreationDossier($monProjet->Dossier . '/Cache');
 
 	$affiche_Tableau = '<p>';
 
@@ -263,15 +263,18 @@ function AfficheSOURCESEcole($monProjet){
 		
 	//$affiche_Tableau .= '				<table>';	
 	foreach($files as $image){ 
-		$FichierARefaire = false;
+		// SUPPRESSION DU CACHE $FichierARefaire = false;
 		$posDernier = 1 + strripos($image, '/');
 		$FichierSource = substr($image, $posDernier);
-		$FichierCache = 'Cache/'. $FichierSource;
+		// SUPPRESSION DU CACHE $FichierCache = 'Cache/'. $FichierSource;
 		$Dossier = substr($image, 0, $posDernier);
 		
 
 		// Vérification que le fichier existe
 		// Vérification que le fichier existe
+
+		/* SUPPRESSION DU CACHE 
+
 		if(!file_exists($Dossier . $FichierCache)){
 			$FichierARefaire = true	;	
 		}
@@ -285,7 +288,7 @@ function AfficheSOURCESEcole($monProjet){
 		if($FichierARefaire){
 			resize_img($Dossier . $FichierSource, $Dossier . $FichierCache);	
 		}
-
+		*/
 
 		 $mesSources = new CImgSource($FichierSource, $Dossier, $monProjet->CodeEcole,$monProjet->AnneeScolaire,$monProjet->ScriptsPS);
 		 

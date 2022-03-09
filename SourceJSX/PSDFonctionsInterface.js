@@ -365,8 +365,10 @@ function GenererFichiersLABO() {
 					}
 					else {
 						if  (uneEcole.NomEcole.indexOf('(RECOMMANDES)') > -1) {
-							var ladate=new Date();
-							repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-RECOMMANDES de GROUPEES';
+							//var ladate=new Date();
+							//repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-RECOMMANDES de GROUPEES';
+							repTirage = '9999-99-99-(RECOMMANDES)-EN-COURS';
+							//alert('repTirage :' + repTirage);
 						}
 						else{
 							repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
