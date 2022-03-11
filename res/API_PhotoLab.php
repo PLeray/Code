@@ -268,10 +268,7 @@ function API_EnregistrerCommandes() {// function API_PostFILELAB() upload de fic
 	//$RechargerPage = true;
 	$lesRecommandes = $_POST['lesRecommandes'];
 
-	
-
 	$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
-
 
 	$retourMSG = 
 		'<!DOCTYPE html>
@@ -288,34 +285,30 @@ function API_EnregistrerCommandes() {// function API_PostFILELAB() upload de fic
 
 	$target_fichier = $GLOBALS['repCMDLABO'] . $target_file_seul;
 	// if everything is ok, try to upload file
-	$retourMSG .= '<h3>ENREGISTRER LA CMADES</h3>';			
+	$retourMSG .= '<h4>ENREGISTRER LA RECOMMANDE</h4>';			
 	$retourMSG .= '<img src="img/Logo.png" alt="Image de fichier" width="25%">';	
 	if (file_exists($target_fichier)){
 		$CMDhttpLocal ='';
-				
-		$retourMSG .= '<h4>ENcvxvxcvcx LA CMADES</h4>';	
-		$retourMSG .= ' <br>$target_fichier' . $target_fichier;	
-			//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
 		
-			
-			$mesInfosFichier = new CINFOfichierLab($target_fichier); 
-			//$CMDAvancement ='';
-			
-			//$Compilateur = '';				
-			$NBPlanches = $mesInfosFichier->NbPlanches;
-			$retourMSG .= '<br>->Fichier  ' . $mesInfosFichier->Fichier;
-			$retourMSG .= '<br>->NbPlanches  ' . $mesInfosFichier->NbPlanches;
-			//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
-			//echo "Apres move_uploaded_file";
-			$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
-			$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
-			$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !
-			
-			
+		$mesInfosFichier = new CINFOfichierLab($target_fichier); 
+		//$CMDAvancement ='';
+		
+		//$Compilateur = '';				
+		$NBPlanches = $mesInfosFichier->NbPlanches;
+		$retourMSG .= '<h3><br>Il y a : '. $mesInfosFichier->NbPlanches . ' planches a créer.<br><br>';				
+		$retourMSG .= 'Les comamndes sont reregistrées dans : <br><br>' . $mesInfosFichier->Fichier;
+		$retourMSG .= '</h3>';	
+		//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
+		//echo "Apres move_uploaded_file";
+		$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
+		$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
+		$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !
+		
+		
 
-			$retourMSG .= '<br><br>
-				<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
-				<br><br>';				
+		$retourMSG .= '<br><br>
+			<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
+			<br><br>';				
 			
 	}
 	else{
@@ -352,28 +345,23 @@ function API_DemandeNOMComamnde(){
 	//Enregistrement du fichier avec son nouveau nom
 	$leDossierTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
 	$leFichierLab = $leDossierTirage . '.lab2';
-	
-	$retourMSG .= ' <br>$target_fichier' . $leFichierLab;	
-	//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
 
 	
-	$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $leFichierLab); 
-	//$CMDAvancement ='';
-	
-	//$Compilateur = '';				
-	$NBPlanches = $mesInfosFichier->NbPlanches;
-	$retourMSG .= '<br>->Fichier  ' . $mesInfosFichier->Fichier;
-	$retourMSG .= '<br>->NbPlanches  ' . $mesInfosFichier->NbPlanches;
-	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
-	//echo "Apres move_uploaded_file";
+	$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $leFichierLab); 		
+	$NBPlanches = $mesInfosFichier->NbPlanches;	
 	$DateCommande = date('Y-m-d') ; 
 	$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
 	$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
 	$CMDhttpLocal .= '&BDDFileLab=RECOMMANDES' ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
 	
-	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) ;
-	echo $ActionServeur;
-	//$ActionServeur = 'CATPhotolab.php' . ArgumentURL() ;
+	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) ;	
+
+	if ($GLOBALS['isDebug']){
+		$retourMSG .= ' <br>$target_fichier' . $leFichierLab;	
+		$retourMSG .= '<br>->Fichier  ' . $mesInfosFichier->Fichier;
+		$retourMSG .= '<br>->NbPlanches  ' . $mesInfosFichier->NbPlanches;		//echo 'sdf ';
+		echo $ActionServeur;
+	}		
 	
 	$retourMSG .= '<form  action="' . $ActionServeur .'" method="post">';
 

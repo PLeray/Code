@@ -1,11 +1,12 @@
 ﻿// Pierre S Mac Leray Jr
 //#target photoshop-60.064 // Pour cs6 direct
+//#target photoshop-130.064 // Pour CC2019 direct
 #target photoshop
 
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 0.843;
+var g_NumVersion = 0.844;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
