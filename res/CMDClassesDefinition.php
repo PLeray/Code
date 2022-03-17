@@ -238,13 +238,13 @@ class CEcole {
 
 		/**/$resultat .= '<div class="StyleEcole">';	
 		$resultat .= $this->Nom ;  
-			
+		$resultat .= '</div>';				
 		$resultat .= '<table class="TablePlanche">';	
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$resultat .= $this->colCMD[$i]->AffichePlancheAProduire();	
 		}	
 		$resultat .= '</table>';
-		$resultat .= '</div>';		
+	
 		return $resultat;
 	}	
 //utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
