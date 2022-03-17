@@ -20,6 +20,7 @@ h1 { /*Police texte Ecole */
     color: var(--texteGris);
     letter-spacing: 2px;
 	padding: 0px;
+	vertical-align:middle;
 
 	font-family: "Courier New", Times, serif;
 }
@@ -81,7 +82,7 @@ STRONG {/*Police Détails Fichier commande et commun  */
 .StyleFichier {/*Police Détails Fichier commande et commun  */
     text-align: left;
     font-size: 10px;
-    color: var(--boutonVert);
+    color: var(--texteGris);
     padding-left: 10px;
 }
 .StyleTaille {/*Police Détails Fichier commande et commun  */
@@ -92,7 +93,7 @@ STRONG {/*Police Détails Fichier commande et commun  */
 .StyleProduit {/*Police Détails Fichier commande et commun  */
     text-align: left;
     font-size: 10px;
-    color: var(--texteGris);
+    color: var(--boutonVert);
 }
 
 
@@ -216,6 +217,9 @@ Set a style for all buttons */
 .Selectbtn {
     background-color: var(--boutonRouge);
 }
+img {
+    vertical-align:middle;
+  }
 
 /* Center the image and position the close button */
 .imgcontainer {

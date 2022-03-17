@@ -115,8 +115,30 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		<div id="mySidenav" class="sidenav">
 		<?php 
 			if (!$isRECOmmandes){
+
+				$LePannier = '	<div class="Planchecontainer">
+					<div class="titreFichier">Pannier des commandes en cours</div>
+					<table class="TablePlanche"><tr>
+					<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
+					</tr></table>';
+
+
+					if (file_exists($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'] . '.lab0')){
+						$monPanierDeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'] . '.lab0');		
+						//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
+						$LePannier .= $monPanierDeCmdes->AffichePlancheAProduire(); }
+
+				$LePannier .= '</div>';				
+
 				echo '
 				<a href="'.RetourEcranFichier($myfileName).'" class="closebtn">&times;</a>
+				<a href=javascript:void(0); id ="Pannier" onclick=VoirPannier() > <img src="img/Pannier.png" alt="Voir pannier de commandes">
+        		<span >Voir Pannier</span ></a>
+				<br><br>
+				<div id="monDetailPannier" >'. $LePannier .'</div>
+
+
+
 				<H1>Passage de recommandes</H1>
 				<br>
 			<div id="myRecommandes" class="infoRecommandes">

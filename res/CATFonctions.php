@@ -44,7 +44,12 @@ class CINFOfichierLab {
 			//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
 					$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
 					$this->DateTirage = $morceau[0];
-					$this->NomEcole = $morceau[1];			
+					$this->NomEcole = $morceau[1];		
+					
+					$this->DateTirage = substr($this->Fichier,0,10);
+					$this->NomEcole = substr($this->Fichier,11,-5);
+
+
 				}
 				if ($identifiant == '#')  {
 					$this->NbCommandes = $this->NbCommandes + 1 ;		
@@ -56,9 +61,10 @@ class CINFOfichierLab {
 		$leRepTirage = '';
 		if ($this->EtatFichier){
 			if (stripos($this->NomEcole, '(ISOLEES)') !== false) { // C'est des ISOLEES
-				$leRepTirage = substr($this->Fichier, strripos($this->Fichier, '/'),10) . '-CMD-ISOLEES' ;
+				//$leRepTirage = substr($this->Fichier, strripos($this->Fichier, '/'),10) . '-CMD-ISOLEES' ;
+				$leRepTirage = substr($this->Fichier, 0, -5);
 			}	
-			elseif (stripos($this->NomEcole, '$ActionServeur') !== false) { // C'est des RECOs
+			elseif (stripos($this->NomEcole,  '(RECOMMANDES)') !== false) { // C'est des RECOs
 				//$leRepTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
 				//$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;
 				$leRepTirage = substr($this->Fichier, 0, -5);

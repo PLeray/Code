@@ -42,21 +42,25 @@ class CGroupeCmdes {
 							$this->DossierTirage =  $GLOBALS['FichierDossierRECOMMANDE'] ;															
 						}	
 */
-
-
 						if (stripos($this->tabFICHIERLabo[$i], '(ISOLEES)') !== false) { // C'est des ISOLEES
-							//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
-							$this->DossierTirage = $this->DateISOLEE . '-CMD-ISOLEES' ;
+							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
+							//echo '$this->DossierTirage : ' .$this->DossierTirage;
+							if (!file_exists($GLOBALS['repMINIATURES'].$this->DossierTirage)) {
+								if (file_exists($GLOBALS['repMINIATURES'].$this->DateISOLEE . '-CMD-ISOLEES')) {
+									$this->DossierTirage = $this->DateISOLEE . '-CMD-ISOLEES' ;
+								} 								
+							} 
+							
 						}	
 
 						elseif (stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== false) { // C'est des RECOs
-							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);	
+							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
 
 						}	
 			
 						else{ // C'est des PAS des ISOLEES
 							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');							
-							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);	
+							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
 							//$this->DossierTirage = $curEcole->DateTirage . '-' .$curEcole->Nom ;
 						}	
 					}
@@ -204,21 +208,7 @@ class CEcole {
     }
 
     function RepTirage(){
-		/*
-		if (stripos($this->Nom, '(ISOLEES)') !== false) { // C'est des ISOLEES
-			//return $GLOBALS['DateISOLEE'] . '-CMD-ISOLEES' ;
-			return $this->DateISOLEE . '-CMD-ISOLEES' ;
-		}	
-		elseif (stripos($this->Nom, '(RECOMMANDES)') !== false) { // C'est des RECOs
-			return $GLOBALS['FichierDossierRECOMMANDE'] ;
-		}		
-		else{
-			return $this->DateTirage . '-' .$this->Nom ;	
-		}	
-		*/
 		return $this->DossierTirage;		
-
-		
     }   
 	function AjoutCMD($uneCMD){
 		array_push($this->colCMD,$uneCMD);

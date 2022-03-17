@@ -15,6 +15,17 @@ window.onload = function (){
 	EffacerChargement();
 };
 
+function VoirPannier() {
+	var ele = document.getElementById('monDetailPannier');
+	if(ele.style.display == "none") {
+		ele.style.display = "block";		
+	}
+	else {
+		ele.style.display = "none";
+
+	}
+}
+
 function scrollFunction() {
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 		document.getElementById("btnRemonter").style.display = "block";

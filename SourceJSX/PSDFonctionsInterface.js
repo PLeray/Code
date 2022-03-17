@@ -301,25 +301,8 @@ function MAJinfoEcole(uneEcole) {
 		if (isDossierExiste(g_RepSOURCE)){
 			if (g_IsPlancheSiteWEB){
 				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + uneEcole.DateTirage + "-" + uneEcole.NomEcole;
-			} /* Dtermination du dossier de tirage en amont du script : à l'ouverture du fichier
-			else {					
-				//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
-				if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
-					var ladate=new Date();
-					repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
-				}
-				else{
-					repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
-				}				
-				g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
-				g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
-			}*/
-			//nbFichiers = 0;
-			//nbFichiers = NbJPGArborescence(Folder(g_RepSOURCE),nbFichiers) ;
+			} 
 
-			//MsgLOGInfo('Rep SOURCE : (Nb de fichiers exploitables : ' + nbFichiers + ')', decodeURI(g_RepSOURCE));
-			//MsgLOGInfo('Rep TIRAGE : (Nb de planches à générer : ' + g_CommandeLabo.NbPlanchesACreer() + ')', decodeURI(g_RepTIRAGES_DateEcole));	
-			//alert("TEST Z6444 uneEcole.isEcoleWEB() :  " + uneEcole.isEcoleWEB());	
 			if (!uneEcole.isEcoleWEB()){InitGroupesClasseIndiv(Folder(g_RepSOURCE), []); }
 			valRetour = true;		
 		}
@@ -361,7 +344,8 @@ function GenererFichiersLABO() {
 					//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
 					if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
 						var ladate=new Date();
-						repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
+						//repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
+						repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-Commandes Isolees';
 					}
 					else {
 						if  (uneEcole.NomEcole.indexOf('(RECOMMANDES)') > -1) {

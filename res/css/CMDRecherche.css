@@ -112,36 +112,75 @@ p {/*Police Détails Fichier commande et commun  */
     letter-spacing: 3px;	
 }
 
-/* ////////////////////////   BOUTON + ET - ///////////////////// */
-.affichageNBPage {
- /*    
-	right: 20px;
+#Pannier {
+  position: fixed; /* Fixed/sticky position */
+top: 10px;
+right: 200px;
 
-	z-index: 1; 
-	*/
-	position: absolute;
-	top: -5px;
-	text-align: center;
-	  margin: 0 auto;
-	width: 100%;
-	
 }
 
-.moinsplus {
-    font-size: 14px;
-    font-weight: bold;
-    background-color: var(--boutonRouge);
-	    padding: 0px 16px;
-    color: white;
-	    text-decoration: none;
-    display: inline-block;
-	border-radius: 15px;
+#monDetailPannier {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  top: 0px; /* Place the button at the bottom of the page */
+  right: 358px; /* Place the button 30px from the right */
+  z-index: 9; /* Make sure it does not overlap */
+
+  background-color: var(--FondEnteteTableau);
+  color: white; /* Text color */
+
+  padding: 3px; /* Some padding */
+
+
+  width: 50%;
 }
 
-.moinsplus:hover {
-    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+.StyleEcole {/*Police Détails Fichier commande et commun  */
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  background-color:var(--texteGris);
+
+}
+.StyleFichier {/*Police Détails Fichier commande et commun  */
+  text-align: left;
+  font-size: 10px;
+  color: var(--texteGris);
+  padding-left: 10px;
+}
+.StyleTaille {/*Police Détails Fichier commande et commun  */
+  text-align: left;
+  font-size: 10px;
+  color: var(--boutonRouge);
+}
+.StyleProduit {/*Police Détails Fichier commande et commun  */
+  text-align: left;
+  font-size: 10px;
+  color: var(--boutonVert);
 }
 
+.Planchecontainer {
+  height: 500px; 
+  overflow: auto;
+
+  border: 1px solid var(--FondLigneTabGrisFonce);  
+  background-color: white;
+}
+
+.TablePlanche
+{
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    /* border: 1px solid blue;*/
+
+}
+
+.TablePlanche td
+{
+    /* border: 1px solid rgb(115, 250, 126);*/
+    
+}
 
 #btnRemonter {
   display: none; /* Hidden by default */
@@ -310,8 +349,8 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 .produit {
-  background-color: cyan;
-  max-width: 400px;
+  	/*  background-color: cyan;*/
+width: 380px;
 	
 	display: inline-block;
 
@@ -322,12 +361,14 @@ p {/*Police Détails Fichier commande et commun  */
 	
 }
 
-.planche {background-color: red;
+.planche {
+  
+  /*  background-color: red;*/
   display: inline-block;	 
   
 
 	/*max-width: 50%;
-  transform: scale(0.7);*/
+  */
 	
 	/*margin: 10px 10px 10px 10px;*/
 }
@@ -340,8 +381,14 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 #ImgPlanche {
-	/* 	*/height: 30%;
-  width: 30%; 
+
+ /* height:30%;
+  width: 30%;
+  object-fit: scale-down;*/
+  transform: scale(0.7);
+  transform-origin: center;
+	margin-top: -7%;
+  margin-bottom: -7%;
 
 
 	cursor: pointer;
@@ -400,21 +447,9 @@ padding: 10px;
 border: 1px solid var(--FondLigneTabGrisSombre);*/
 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
 }
-.maFacture {
-animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-  animation-iteration-count: 3;
-  /*	  margin-top: 20px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
- 
- */
-}
-.maFacture:hover {opacity: 0.7;
 
 
-}
+
 .nbPanches {
 	display: inline-block; 
 	/*padding-top: -140px;margin-top: 100px;margin: 0px;

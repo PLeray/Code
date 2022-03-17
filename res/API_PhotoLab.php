@@ -198,91 +198,7 @@ function ETAPE_01() {// Function Pour Enregistrer les recomamndes
 	$retourMSG .= '
 		</div>
 	</div>';	
-	return $retourMSG;
-
-
-
-	/*$retourMSG = 
-		'<!DOCTYPE html>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<html>
-		<head>
-		<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
-		<link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
-		</head>
-		<body>';
-*/
-/*    </html>';
-		$retourMSG='';
-		$retourMSG .= '<table>
-		<tr>
-			<td>';	
-			$monGroupeCmdes = new CGroupeCmdes($target_fichier);
-			$retourMSG .= '	<div class="Planchecontainer">';
-			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-			$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-			$retourMSG .= '</div>';
-		$retourMSG .= '</td>
-						<td>';	
-
-		$retourMSG .= '	<div class="msgcontainer">';
-
-		
-		// if everything is ok, try to upload file
-		$retourMSG .= '<h4>ENREGISTRER LA RECOMMANDE</h4>';			
-		$retourMSG .= '<img src="img/Logo.png" alt="Image de fichier" width="25%">';	
-		if (file_exists($target_fichier)){
-			$CMDhttpLocal ='';
-			
-			$mesInfosFichier = new CINFOfichierLab($target_fichier); 
-			//$CMDAvancement ='';
-			
-			//$Compilateur = '';				
-			$NBPlanches = $mesInfosFichier->NbPlanches;
-	
-			$retourMSG .= '<h3><br>Il y a : '. $mesInfosFichier->NbPlanches . ' planches a créer.<br><br>';				
-			$retourMSG .= 'Les comamndes sont reregistrées dans : <br><br>' . $mesInfosFichier->Fichier;
-			$retourMSG .= '</h3>';	
-			//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
-			//echo "Apres move_uploaded_file";
-			$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
-			$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
-			$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !
-			
-			
-	
-			$retourMSG .= '<br><br>
-				<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
-				<br><br>';				
-				
-		}
-		else{
-			$retourMSG = "APIPhotoProd : Erreur " . $target_fichier . " est manquant !";
-		}	
-		//echo "<br><br> Fermer la fenetre (faire un bouton!)";
-		$retourMSG .= '
-					</div>	  
-				</div>
-			</div>	';					
-
-
-
-		$retourMSG .= '</td>
-		</tr>
-	 	</table>	';	
-
-	
-		 $retourMSG .= '</body>
-
-	$retourMSG = 
-	'<div id="apiReponse" class="modal">
-		<div class="modal-content animate" >
-			<div class="imgcontainer">
-				<a href="'.$GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
-				<br>
-			</div>' . $retourMSG;
-	
-	return $retourMSG;	*/	
+	return $retourMSG;	
 }
 
 function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
@@ -380,8 +296,7 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 	}
 	//$AncienNom = ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' )? substr($leFichierLab,11,-5) :'';
 
-	$DateCommande = date('Y-m-d') ; 
-	$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
+	
 	$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
 	$CMDhttpLocal .= '&BDDFileLab='. $leFichierLab ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
 	
