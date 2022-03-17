@@ -220,15 +220,16 @@ class CEcole {
 		
 		$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
 		/**/$resultat .= '<div class="ecole">';	
-		$resultat .= $this->Nom ;  
-		$resultat .= '</div>';	
+		//$resultat .= '<span class ="Titreecole">'.$this->Nom .'</span>';  
+		$resultat .= '<h1>'.$this->Nom .'</h1>';  	
 		
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
 
 			$resultat .= $this->colCMD[$i]->Affiche($gestionPage);	
 			$resultat .= $gestionPage->AfficheFinPage();
-		}			
+		}
+		$resultat .= '</div>';			
 		return $resultat;
 	}	
     function AffichePlancheAProduire(){
@@ -237,12 +238,13 @@ class CEcole {
 
 		/**/$resultat .= '<div class="StyleEcole">';	
 		$resultat .= $this->Nom ;  
-		$resultat .= '</div>';	
+			
 		$resultat .= '<table class="TablePlanche">';	
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$resultat .= $this->colCMD[$i]->AffichePlancheAProduire();	
 		}	
-		$resultat .= '</table>';			
+		$resultat .= '</table>';
+		$resultat .= '</div>';		
 		return $resultat;
 	}	
 //utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));

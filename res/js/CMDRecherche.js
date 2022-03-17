@@ -145,28 +145,43 @@ function filterPlanches() {
 
 function RecherchePlanche(strElementsRech) {
 	var tabElementsRech = strElementsRech.split(' ');
-    var cmd, i, e, listDrop  ;
-	var tabCMD = [];
-	var synthTabCMD = [];	
-	document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+    var cmd, i, e;
+	var isVisible;
+	//var listDrop  ;
+	//var tabCMD = [];
+	//var synthTabCMD = [];	
+	//document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
 	for (e = 0; e < tabElementsRech.length; e++) {
 		////////////////////////////////////////////////:
-		/* pour les num de commandes */
+		// pour les num de commandes 
+			/*
 		cmd = document.getElementsByClassName("commande");
 		for (i = 0; i < cmd.length; i++) {
+			//cmd[i].style.display = "none";
 			cmd[i].style.display = "none";
-		}
+			cmd[i].parentNode.style.display = "none";		
+			cmd[i].parentNode.parentNode.style.display = "none";
+			cmd[i].parentNode.parentNode.parentNode.style.display = "none";
+			cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = "none"; // Les ecoles 
 
+		}*/
+/*
 
 		for (i = 0; i < cmd.length; i++) {
 			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				cmd[i].style.display = "";
-
+				isVisible = "";
+				//cmd[i].style.display = "";
 			}
 			else{
-				cmd[i].style.display = "none";
+				isVisible = "none";
+				//cmd[i].style.display = "none";
 			}
-		}	
+			cmd[i].style.display = isVisible;
+			cmd[i].parentNode.style.display = isVisible;
+			cmd[i].parentNode.parentNode.style.display = isVisible;
+			cmd[i].parentNode.parentNode.parentNode.style.display = isVisible;
+			cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = isVisible; // Les ecoles		
+		}	*/	
 
 		//cmd = document.getElementsByClassName("produit");
 
@@ -177,11 +192,15 @@ function RecherchePlanche(strElementsRech) {
 				cmd[i].parentNode.style.display = ""; // class produit
 				cmd[i].parentNode.parentNode.style.display = ""; // class Contenucommande
 				cmd[i].parentNode.parentNode.parentNode.style.display = ""; // class commande
+				cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = ""; // class ecole
 
 			}
 			else{
 				cmd[i].style.display = "none";
-				cmd[i].parentNode.style.display = "none";
+				cmd[i].parentNode.style.display = "none";// class produit
+				cmd[i].parentNode.parentNode.style.display = "none"; // class Contenucommande
+				cmd[i].parentNode.parentNode.parentNode.style.display = "none"; // class commande
+				cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = "none"; // class ecole				
 			}
 		}	
 
@@ -200,10 +219,11 @@ function filterCommandes() {
 function RechercheCommandes(strElementsRech) {
 	//alert(strElementsRech);
 	var tabElementsRech = strElementsRech.split(' ');
-    var cmd, i, e, listDrop  ;
-	var tabCMD = [];
-	var synthTabCMD = [];	
-	document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+    var cmd, i, e;
+	//var listDrop  ;
+	//var tabCMD = [];
+	//var synthTabCMD = [];	
+	//document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
 	for (e = 0; e < tabElementsRech.length; e++) {
 		////////////////////////////////////////////////:
 		/* pour les num de commandes */
@@ -382,17 +402,35 @@ function SelectionnerCommandesAffiche() {
 	var ToutSelectionner = (document.getElementById("CaseSelectionnerCommandesAffiche").className == 'caseCheckVide');
 	if (ToutSelectionner){
 		var mesPlanches = document.getElementsByClassName("planche");
-		mesPlanches = document.getElementsByClassName("planche");
 		while(mesPlanches.length >0){
-			mesPlanches[0].classList.replace("planche", "plancheSELECTIONNER");
-
+			if ( mesPlanches[i].offsetHeight > 0 ) {
+				mesPlanches[0].classList.replace("planche", "plancheSELECTIONNER");
+			}
+			else{
+				mesPlanches[0].classList.replace("planche", "plancheNONVisible");
+			}			
+		}	
+			/*
+		for (i = 0; i < mesPlanches.length; i++) {			
+			if ( mesPlanches[i].offsetHeight > 0 ) {
+				mesPlanches[i].className = "plancheSELECTIONNER";
+			}
+				
+			if (window.getComputedStyle(mesPlanches[i]).display != "none") {
+				mesPlanches[i].className = "plancheSELECTIONNER";}
+		}	*/
+		/*
+		*/
+		var mesPlanches = document.getElementsByClassName("plancheNONVisible");
+		while(mesPlanches.length >0){
+			mesPlanches[0].classList.replace("plancheNONVisible", "planche");
 		}
+
 	}else{
 		var mesPlanches = document.getElementsByClassName("plancheSELECTIONNER");
 		while(mesPlanches.length >0){
 			mesPlanches[0].classList.replace("plancheSELECTIONNER", "planche");	
 		}
-
 	}
 	document.getElementById("CaseSelectionnerCommandesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
 	mesRecommandes();
@@ -407,6 +445,7 @@ function VoirPhotoSelection() {
 		mesPlanches[i].parentNode.style.display = StatutAffiche;		
 		mesPlanches[i].parentNode.parentNode.style.display = StatutAffiche;
 		mesPlanches[i].parentNode.parentNode.parentNode.style.display = StatutAffiche;
+		mesPlanches[i].parentNode.parentNode.parentNode.parentNode.style.display = StatutAffiche; // Les ecoles
 	}
 	
 	if (ToutEstAfficher){
@@ -418,6 +457,7 @@ function VoirPhotoSelection() {
 			mesPlanches[i].parentNode.style.display = "inline-block";
 			mesPlanches[i].parentNode.parentNode.style.display = "inline-block";
 			mesPlanches[i].parentNode.parentNode.parentNode.style.display = "inline-block";	
+			mesPlanches[i].parentNode.parentNode.parentNode.parentNode.style.display = "inline-block"; // Les ecoles
 		}	
 	}
 

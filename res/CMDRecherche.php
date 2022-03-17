@@ -98,16 +98,14 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 			<?php 	
 				echo pathinfo(utf8_encode($myfileName))['filename'];
 				//echo $isRECOmmandes?'true':'false'. " sgsfdgdfg" ; 				
-					?>
-			<?php //echo urldecode(utf8_encode($myfileName)) .
-			//'    ' . $etatFichierLab ;?>
+			?>
 			
 		</div>
 		<?php echo  '<p>' . $etatFichierLab . '</p>';?>
 
 		<span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p><?php echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?><img src="img/search-more.png"></p></span>	
 		<div>
-			<span >Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+			<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
 		</div>
 	</div>
 
@@ -123,27 +121,28 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 					</tr></table>';
 
 
-					if (file_exists($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'] . '.lab0')){
-						$monPanierDeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'] . '.lab0');		
-						//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-						$LePannier .= $monPanierDeCmdes->AffichePlancheAProduire(); }
+				if (file_exists($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'] . '.lab0')){
+					$monPanierDeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'] . '.lab0');		
+					//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
+					$LePannier .= $monPanierDeCmdes->AffichePlancheAProduire(); }
 
 				$LePannier .= '</div>';				
 
 				echo '
 				<a href="'.RetourEcranFichier($myfileName).'" class="closebtn">&times;</a>
 				<a href=javascript:void(0); id ="Pannier" onclick=VoirPannier() > <img src="img/Pannier.png" alt="Voir pannier de commandes">
-        		<span >Voir Pannier</span ></a>
-				<br><br>
-				<div id="monDetailPannier" >'. $LePannier .'</div>
+        		</a><br><br><span id ="txtPannier">Voir le pannier en cours</span >
+				
+				<br><div id="monDetailPannier" >'. $LePannier .'</div>
 
 
-
+				<br>
 				<H1>Passage de recommandes</H1>
 				<br>
 			<div id="myRecommandes" class="infoRecommandes">
 				
-				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide" > ✓ </a>  <span id ="txtAfficherSelection">Afficher sélection des recommandes</span >
+				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide"> ✓ </a> 
+				<span id ="txtAfficherSelection">Afficher sélection des recommandes</span >
 
 				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier($myfileName).'" enctype="multipart/form-data">	
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
