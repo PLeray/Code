@@ -20,10 +20,10 @@ $tabFichiersEnCoursDeCompilation = array();
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <html>
 <head>	
-	<title id="PHOTOLAB">Commandes en cours</title>
+	<title id="PHOTOLAB">Commandes en cours de préparation</title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
-	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
+	<link rel="shortcut icon" type="image/png" href="img/Favicon.png">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
 	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>
 </head>
@@ -34,11 +34,28 @@ $tabFichiersEnCoursDeCompilation = array();
 	$EcoleEnCours = new CEcole("____",'2020-07-07');
 
 	$lesRecommandes = ''; // Mis dans API_
-	if (isset($_GET['ValideNomCommande']) ){
+	if (isset($_GET['apiSupprimer'])) { 
+		$RechargerPage = true;
 		if ($isDebug){
-			echo 'apiNomCommande  pour : ' . $_GET['ValideNomCommande']  ;
+			echo '<br>apiSupprimer   : ' . $_GET['apiSupprimer']  ;
+		}			
+		SuprimeFichier($_GET['apiSupprimer']);
+	}
+	elseif (isset($_GET['ValideNomCommande']) ){
+		if ($isDebug){
+			echo 'ValideNomCommande   : ' . $_GET['ValideNomCommande']  ;
 		}	
-		RemplacementRecomamndeTemporaire(substr( utf8_decode($_GET['ValideNomCommande']),0,-5)); // Sans L'extension
+		/*if (isset($_GET['apiChgEtat'])){
+			$AncienNomFichier = $_GET['apiChgEtat'];
+		}else{
+			$AncienNomFichier = utf8_decode($GLOBALS['FichierDossierRECOMMANDE']) . 'lab2';
+		}*/
+		$AncienNomFichier = $_GET['BDDFileLab'];
+		if ($isDebug){
+			echo '    -    AncienNomFichier =  : ' . $_GET['BDDFileLab']  ;
+		}		
+
+		RemplacementNomCommande($AncienNomFichier, $_GET['ValideNomCommande']); // Sans L'extension
 
 	}
 	elseif (isset($_POST['lesRecommandes']) ){
@@ -47,7 +64,11 @@ $tabFichiersEnCoursDeCompilation = array();
 		if ($isDebug){
 			echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $lesRecommandes;
 		}	
-		MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
+		//MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
+		$FichierOriginal = $_POST['leFichierOriginal'];
+		$strTabCMDReco = $_POST['lesRecommandes'];
+		unset($_POST);		
+		MAJRecommandes($FichierOriginal, $strTabCMDReco);
 	}
 	elseif (isset($_GET['OpenRep'])) { // OUVRIR REP !
 		$RechargerPage = true;
@@ -75,14 +96,13 @@ $tabFichiersEnCoursDeCompilation = array();
 		$RechargerPage = true;
 		ChangeEtat($_GET['apiChgEtat'], $_GET['apiEtat']);
 	} 
-	elseif (isset($_GET['apiSupprimer'])) { 
-		$RechargerPage = true;
-		SuprimeFichier($_GET['apiSupprimer']);
-	} 
+
 	//else echo 'Y A RIEN';
 
 	$nb_fichier = 0;
-	$affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true);
+	//$affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true); // A supprimer !!!
+
+	$affiche_TableauCommandes = AfficheTableauCommandeEnCours($nb_fichier, true);
 ?>
 
 <?php 
@@ -105,9 +125,6 @@ if($RechargerPage){
 <body>
 
 <?php 
-	if ($isDebug) {
-		echo "MarqueurDateCommande : " . MarqueurDateCommande('2022-03-04');
-	}
 	AfficheMenuPage('commandesEnCours',$maConnexionAPI); 
 ?>
 <!-- 
@@ -128,8 +145,32 @@ if($RechargerPage){
 </div>
 -->
 <div class="zoneTable" >
-<h1>Groupes de commandes en cours de préparation : <?php echo $nb_fichier; ?></H1>    
+<h1>Groupes de commandes en cours : <?php echo $nb_fichier; ?></H1>    
+<!-- ////////// FIN de l'HTML Standard ////////// 
+	<table class="Tableau" id="myTableLAB">-->
+	<table id="commandes">
+	  <tr class="header">
+			  
+		<th style="width:110px;" onclick="sortTable(0)"><H3>Date</H3></th>
 
+		<th  onclick="sortTable(1)"><H3>Groupes de commandes de produits photo</H3></th>
+	
+		<th  style="width:150px;" ><H3>Commandes<br><br>Planches</H3></th>	
+		<th class="HeaderAction"  style="width:150px;" ><H3>Création des planches</H3></th>
+		<th class="HeaderAction"  style="width:150px;" ><H3>Imprimer planches</H3></th>
+		<th class="HeaderAction"  style="width:150px;" ><H3>Mettre en pochette</H3></th>
+		<th class="HeaderAction" style="width:150px;" ><H3>Livrer les commandes</H3></th>
+		<th  style="width:40px;" ><H3>🗑</H3></th>
+	  </tr>  
+	<?php echo $affiche_TableauCommandes; ?>
+	</table>
+
+	<BR>
+	<?php // WEB
+	$nb_fichier = 0;
+	//$affiche_Tableau = AfficheTableauCMDWEB($nb_fichier, true);
+	?>
+<!-- ////////// FIN de l'HTML Standard 	////////// -->
 
 <!-- ////////// FIN de l'HTML Standard ////////// 
 	<table class="Tableau" id="myTableLAB">-->
@@ -149,7 +190,7 @@ if($RechargerPage){
 		<th  style="width:90px;" ><H3>Colis prêt</H3></th>
 		<th  style="width:40px;" ><H3>🗑</H3></th>
 	  </tr>  
-	<?php echo $affiche_Tableau; ?>
+	<?php //echo $affiche_Tableau; ?>
 	</table>
 
 	<BR>

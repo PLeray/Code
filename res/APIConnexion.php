@@ -1,5 +1,5 @@
 <?php
-$VERSION = 0.852;
+$VERSION = 0.855;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -163,14 +163,26 @@ function SuprArborescenceDossier($nomDossier) {
 }
 
 function SuprFichier($fichier) {
-	//chmod($fichier,0777);
-	unlink($fichier);
+	if (file_exists($fichier)){ 
+		//chmod($fichier,0777);
+		unlink($fichier);
+	}	
 }	
 
 function SuprDossier($Dossier) {
-	//chmod($Dossier,0777);
+	if (file_exists($Dossier)){ 
+		//chmod($Dossier,0777);
+		
+	}	
 	return rmdir($Dossier);
 }	
 
+function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou Dossier
+	//is_dir($AncienNom)
+	
+	if (file_exists($AncienNom)){ 
+		rename($AncienNom, $NouveauNom);
+	}	
+}	
 
 ?>

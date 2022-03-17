@@ -83,10 +83,12 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECCode']) && isset($_GET['
 
 
 ?>
-<div class="majCache">
-	<span class="mini"><br><a href="<?php echo 'CMDGenererCacheSource.php' . ArgumentURL(); ?>" title="Mettre à jour le cache des Photos"  target="_blank">Mettre à jour le cache</a></span>
-</div>
 
+<!-- CMDGenererCacheSource
+<div class="majCache">
+	<span class="mini"><br><a href="<?php //echo 'CMDGenererCacheSource.php' . ArgumentURL(); ?>" title="Mettre à jour le cache des Photos"  target="_blank">Mettre à jour le cache</a></span>
+</div>
+ -->
 <BR>
 <div class="zoneTable" >
 	<?php
@@ -128,6 +130,7 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECCode']) && isset($_GET['
 </html>
 
 <?php
+
 function RecuptTableauAnneeSOURCES($fichierCSV, $SelectSaison){ 
 	//$AnneeScolaire ='';
 	$affiche_Tableau = '';
@@ -230,7 +233,7 @@ function LienImgSource($codeProjet, $anneeProjet) {
 
 	$LienFichier = "#";
 
-	$LienFichier = "CMDImgSource.php". $Environnement . "&codeSource=" . urlencode($codeProjet). "&anneeSource=" . urlencode($anneeProjet);
+	$LienFichier = "CMDAfficheSource.php". $Environnement . "&codeSource=" . urlencode($codeProjet). "&anneeSource=" . urlencode($anneeProjet);
 	//$isDebug = true;
 	return $LienFichier;
 }

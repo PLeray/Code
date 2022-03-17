@@ -38,7 +38,7 @@ if($isDebug){
 <head>
     <title id="PHOTOLAB">Mise à jour du cache des photos</title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDAfficheSource.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 </head>
 
@@ -95,7 +95,7 @@ if (!$MAJ){
  
 </div>
 
-<script type="text/javascript" src="<?php Mini('js/CMDImgSource.js');?>"></script>
+<script type="text/javascript" src="<?php Mini('js/CMDAfficheSource.js');?>"></script>
 <script>
 <?php 
 	if ($MAJ){	

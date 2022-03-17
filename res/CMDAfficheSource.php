@@ -62,7 +62,7 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 	<head>
 		<title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
 		<link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
-		<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDImgSource.css');?>">
+		<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDAfficheSource.css');?>">
 		<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 
 		
@@ -95,7 +95,7 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 if (!$MAJ){
 	$RefSource = "&codeSource=" . urlencode($codeSource). "&anneeSource=" . urlencode($anneeSource);
 	
-	echo '<meta http-equiv="refresh" content="0; URL=CMDImgSource.php' . ArgumentURL($RefSource.'&MAJ=true') .'"> ';
+	echo '<meta http-equiv="refresh" content="0; URL=CMDAfficheSource.php' . ArgumentURL($RefSource.'&MAJ=true') .'"> ';
 }
 ?>
 <div id="site"">
@@ -187,7 +187,7 @@ if (!$MAJ){
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php Mini('js/CMDImgSource.js');?>"></script>
+<script type="text/javascript" src="<?php Mini('js/CMDAfficheSource.js');?>"></script>
 <script>
 <?php 
 if ($MAJ){	

@@ -338,6 +338,7 @@ text-align: left;
 }
 
 .planche {background-color: white;
+  max-width : 400px;
 	display: inline-block;	 
 
 	margin: 10px 10px 10px 10px;

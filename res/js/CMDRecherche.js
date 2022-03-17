@@ -361,9 +361,31 @@ function SelectionPhoto(x) {
 	}else {
 		x.classList.replace("plancheSELECTIONNER", "planche");
 		x.setAttribute('title',  x.getAttribute('id'));
+		document.getElementById("CaseSelectionnerCommandesAffiche").className = 'caseCheckVide';
 	}  
+	
 	mesRecommandes();
 }
+
+function SelectionnerCommandesAffiche() {
+	var ToutSelectionner = (document.getElementById("CaseSelectionnerCommandesAffiche").className == 'caseCheckVide');
+	if (ToutSelectionner){
+		var mesPlanches = document.getElementsByClassName("planche");
+		mesPlanches = document.getElementsByClassName("planche");
+		while(mesPlanches.length >0){
+			mesPlanches[0].classList.replace("planche", "plancheSELECTIONNER");
+
+		}
+	}else{
+		var mesPlanches = document.getElementsByClassName("plancheSELECTIONNER");
+		while(mesPlanches.length >0){
+			mesPlanches[0].classList.replace("plancheSELECTIONNER", "planche");	
+		}
+
+	}
+	document.getElementById("CaseSelectionnerCommandesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
+	mesRecommandes();
+}		
 			
 function VoirPhotoSelection() {
 	var ToutEstAfficher = (document.getElementById("CaseVoirCommandes").className == 'caseCheckVide');
@@ -406,6 +428,8 @@ function mesRecommandes() {
 
 
 	document.getElementById("btnEnregistrerCMD").style.display = ((mesPlanches.length > 0)?'inline-block':'none');
+	document.getElementById("txtAfficherSelection").innerHTML = '            Afficher sélection des recommandes : <br>' + mesPlanches.length + ' Planches';
+	//document.getElementById("txtAfficherSelection").innerHTML = "Afficher dsfsdfsdn des recommandes : ";
 
 
 	//console.log(' Nombre Page : ' + BoutonPage.length );	

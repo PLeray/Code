@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <?php
 	setlocale(LC_TIME, 'french');
-
-	
-
-
 	include_once 'APIConnexion.php';
 	include_once 'CMDLire.php';
 
@@ -99,13 +95,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 
 		
 		<div class="titreFichier">	
-			<?php 
-
-				if ($isDebug) {
-					echo "MarqueurDateCommande : " . MarqueurDateCommande('2022-03-04');
-				}
-
-				
+			<?php 	
 				echo pathinfo(utf8_encode($myfileName))['filename'];
 				//echo $isRECOmmandes?'true':'false'. " sgsfdgdfg" ; 				
 					?>
@@ -116,6 +106,9 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		<?php echo  '<p>' . $etatFichierLab . '</p>';?>
 
 		<span id="loupe" style="font-size:30px;cursor:pointer" onclick="openNav()"><p><?php echo count($monGroupeCmdes->tabCMDLabo) . ' commandes au total';?><img src="img/search-more.png"></p></span>	
+		<div>
+			<span >Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+		</div>
 	</div>
 
 	  
@@ -128,7 +121,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 				<br>
 			<div id="myRecommandes" class="infoRecommandes">
 				
-				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide" > ✓ </a>  Afficher sélection des recommandes	
+				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide" > ✓ </a>  <span id ="txtAfficherSelection">Afficher sélection des recommandes</span >
 
 				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier($myfileName).'" enctype="multipart/form-data">	
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
@@ -177,7 +170,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 
 
 <script type="text/javascript" src="<?php Mini('js/CMDRecherche.js');?>"></script>
-<!--<script type="text/javascript" src="<?php Mini('js/purePajinate.js');?>"></script>-->
+<!--<script type="text/javascript" src="<?php //Mini('js/purePajinate.js');?>"></script>-->
 
 <script>
 	function intersect(a, b) {

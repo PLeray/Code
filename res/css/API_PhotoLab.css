@@ -2,7 +2,12 @@
 
 * {
   box-sizing: border-box;
+
 }
+body{
+    box-sizing: border-box;
+    background-color: var(--texteGris);
+  }
 /******************************/
 /*       STYLE DE BASE        */
 /******************************/
@@ -33,7 +38,7 @@ h2 { /*Police texte Adresse */
 
 h3 { /*Police texte produits */
     letter-spacing: 2px;
-	padding: 0px;
+	padding: 0% 10%;
 	line-height: 12px;
 	font-size: 12px;
 	font-family: "Courier New", Times, serif;
@@ -55,6 +60,40 @@ p {/*Police Détails Fichier commande et commun  */
 	font-size: 10px;
 }
 
+STRONG {/*Police Détails Fichier commande et commun  */
+    letter-spacing: 2px;
+	padding: 0px;
+	line-height: 12px;
+	font-size: 16px;
+	font-family: "Courier New", Times, serif;
+
+    font-weight: bold;
+    color: var(--boutonVert);
+}
+
+.StyleEcole {/*Police Détails Fichier commande et commun  */
+    text-align: center;
+    font-size: 12px;
+    color: white;
+    background-color:var(--texteGris);
+
+}
+.StyleFichier {/*Police Détails Fichier commande et commun  */
+    text-align: left;
+    font-size: 10px;
+    color: var(--boutonVert);
+    padding-left: 10px;
+}
+.StyleTaille {/*Police Détails Fichier commande et commun  */
+    text-align: left;
+    font-size: 10px;
+    color: var(--boutonRouge);
+}
+.StyleProduit {/*Police Détails Fichier commande et commun  */
+    text-align: left;
+    font-size: 10px;
+    color: var(--texteGris);
+}
 
 
 /**********************************************/
@@ -89,28 +128,49 @@ button:hover {
 
 
 #zoneTexteNomCommande {
-    width: 240px;
+    width: 300px;
     text-align: left;
     font-size: 18px;
     padding: 11px;
-    margin-left: 5px;
+    margin-left: -3px;
     color: var(--boutonVert);
     border: 1px solid #888;
 }
 
 table
 {
-margin: auto;
+  /*Tableau initial
+  border: 1px solid red;*/
 }
 td
-{
-text-align :center;
+{     
+    vertical-align: top;  
+    /*border: 1px solid rgb(220, 6, 240); */
+   
 }
 
+.TablePlanche
+{
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    /* border: 1px solid blue;*/
+
+}
+
+.TablePlanche td
+{
+    /* border: 1px solid rgb(115, 250, 126);*/
+    
+}
+
+/* 
 
 
 
-/* Set a style for all buttons */
+
+
+Set a style for all buttons */
 .OK, .KO {
 	text-decoration:none; 
     color: white;
@@ -168,7 +228,19 @@ text-align :center;
     margin: 24px 0 12px 0;
     position: relative;
 }
+.Planchecontainer {
+    height: 500px; 
+    overflow: auto;
+    margin: 10px 0 0 24px;
+    border: 1px solid var(--FondLigneTabGrisFonce);  
+  /*   text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+ REvoir dimensin de base du tableau
+    vertical-align: top;
 
+    */
+}
 .container {
     padding: 50px;
 }
@@ -202,7 +274,7 @@ text-align :center;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
 	
     border: 1px solid #888;
-    width: 500px; /* PASSAGE 0 50% Could be more or less, depending on screen size */
+     width: 75%; /*PASSAGE 0 50% Could be more or less, depending on screen size */
 }
 
 /* Add Zoom Animation */

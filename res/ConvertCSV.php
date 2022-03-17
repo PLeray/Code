@@ -36,16 +36,16 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 	
 	if ($isCMDUnique){
 		$NumCMD = substr($target_file ,-11,-5) ;
-		$target_file = date("Y-m-d") . '-SOLO-WEB-Commande(' . $NumCMD . ').lab0';
+		$target_file = date("Y-m-d") . '-SOLO-Commande(' . $NumCMD . ').lab0';
 		$PrefixeTirage = '(CMD-' . $NumCMD . ') ';
 	}
 	else{
 		if ($TabCSV[0]["Type"] == 'groupee'){
-			$target_file = date("Y-m-d") . '-L2-WEB-' . SUPRAccents($TabCSV[0]["Nom de l'ecole"]) . '-' . $TabCSV[0]["Ville ecole"] . '.lab0';	
+			$target_file = date("Y-m-d") . '-L2-' . SUPRAccents($TabCSV[0]["Nom de l'ecole"]) . '-' . $TabCSV[0]["Ville ecole"] . '.lab0';	
 			$PrefixeTirage = 'L2-';			
 		}else { 
 			if ($TabCSV[0]["Type"] == 'isolee'){
-				$target_file = date("Y-m-d") . '-WEB-Commandes Isolees'. '.lab0';
+				$target_file = date("Y-m-d") . '-Commandes Isolees'. '.lab0';
 				$PrefixeTirage = '(ISOLEES) ';		
 			}
 			else{
@@ -91,7 +91,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 			$affiche_Tableau .= EcrireEcole($TabCSV[$i]["Nom de l'ecole"].'-'
 										. strtoupper($TabCSV[$i]["Ville ecole"]) .'_'
 										//. ($TabCSV[$i]["Code interne"] == ''?$TabCSV[$i]["Reference"]:$TabCSV[$i]["Code interne"]) . '_Ecole web !'
-										. ReferenceECOLE($TabCSV[$i]["Reference école"], $TabCSV[$i]["Nom du projet"]) . '_Ecole web !'
+										. ReferenceECOLE($TabCSV[$i]["Reference école"], $TabCSV[$i]["Nom du projet"]) . '_Ecole web Lumys!'
 										, $PrefixeTirage);   
 										
 			$affiche_Tableau .= EcrireClient($TabCSV[$i]["Num de commande"] . '_' 

@@ -1,5 +1,6 @@
 <?php
 $SeparateurInfoPlanche = '§';
+$SeparateurInfoPlancheLab0 = '_';
 $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
 
@@ -20,7 +21,7 @@ class CGroupeCmdes {
 		// Output one line until end-of-file
 		
 		//$GLOBALS['DateISOLEE'] = substr($myfileName, strripos($myfileName, '/') + 1,10);
-				
+				//echo '$myfileName : '. substr($myfileName, -1);
 		while(!feof($myfile)) {
 			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
 		}
@@ -30,9 +31,11 @@ class CGroupeCmdes {
 		$this->colEColes = array();
 		$this->tabCMDLabo = array();
 		if ($this->tabFICHIERLabo){
-			for($i = 0; $i < count($this->tabFICHIERLabo); $i++){
+			//On demarre à 2 pour sauter les 2 premieres lignes du fichier
+			for($i = 2; $i < count($this->tabFICHIERLabo); $i++){
 				$identifiant = substr($this->tabFICHIERLabo[$i],0,1);
 				//Si Commande pas vide , on ajoute la commande au tableau!
+				//echo $this->tabFICHIERLabo[$i];
 				if ($identifiant == '@') {
 					if ($this->DossierTirage == ''){
 						/*if ($GLOBALS['FichierDossierRECOMMANDE'] == substr($myfileName, strripos($myfileName, '/') + 1,-5)) { // C'est des RECO TEMPORAIRE
@@ -47,34 +50,40 @@ class CGroupeCmdes {
 						}	
 
 						elseif (stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== false) { // C'est des RECOs
-							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);	$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);
+							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);	
+
 						}	
-
-
-
-						
+			
 						else{ // C'est des PAS des ISOLEES
-							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');
-							$this->DossierTirage = $curEcole->DateTirage . '-' .$curEcole->Nom ;
+							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');							
+							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-4);	
+							//$this->DossierTirage = $curEcole->DateTirage . '-' .$curEcole->Nom ;
 						}	
 					}
 					//$curEcole = new CEcole($this->tabFICHIERLabo[$i], $this->DateISOLEE);
 					$curEcole = new CEcole($this->tabFICHIERLabo[$i], $this->DossierTirage);
 					array_push($this->colEColes,$curEcole);			
 				}
-				if ($identifiant == '#') {
+				elseif ($identifiant == '#') {
 					$curCommande = new CCommande($this->tabFICHIERLabo[$i]);
 					$curEcole->AjoutCMD($curCommande);
 					array_push($this->tabCMDLabo,$curCommande);
 				}				
-				if ($identifiant == '<') {
+				elseif ($identifiant == '<') {
 					$curProduit = new CProduit($this->tabFICHIERLabo[$i]);
 					$curCommande->AjoutPDT($curProduit);
 				}	
-				if ($identifiant == 'P') {
+				elseif ($identifiant == 'P') {
 					$curPlanche = new CPlanche($this->tabFICHIERLabo[$i]);
 					$curProduit->AjoutPlanche($curPlanche);
-				}				
+				}	
+				/**/
+				elseif (substr($myfileName, -1) == '0') {
+					if(strlen($this->tabFICHIERLabo[$i]) > 7) {
+						$curPlanche = new CPlanche($this->tabFICHIERLabo[$i]);
+						$curProduit->AjoutPlanche($curPlanche);
+					}				
+				}		
 			}
 		}  
     } 
@@ -99,6 +108,19 @@ class CGroupeCmdes {
 		$gestionPage->AfficheFinPage(true);
 		return $resultat;
 	}	
+	function AffichePlancheAProduire(){
+		$resultat = '';
+		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
+		for($i = 0; $i < count($this->colEColes); $i++){
+			global $EcoleEnCours;
+			$EcoleEnCours = $this->colEColes[$i];
+			$resultat .= $this->colEColes[$i]->AffichePlancheAProduire();			
+		}
+
+		return $resultat;
+	}	
+
+
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat =''; 
 
@@ -219,6 +241,20 @@ class CEcole {
 		}			
 		return $resultat;
 	}	
+    function AffichePlancheAProduire(){
+		//$isParPage = ($numeroPage>0);
+		$resultat = '';
+
+		/**/$resultat .= '<div class="StyleEcole">';	
+		$resultat .= $this->Nom ;  
+		$resultat .= '</div>';	
+		$resultat .= '<table class="TablePlanche">';	
+		for($i = 0; $i < count($this->colCMD); $i++){
+			$resultat .= $this->colCMD[$i]->AffichePlancheAProduire();	
+		}	
+		$resultat .= '</table>';			
+		return $resultat;
+	}	
 //utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
 
 	function Ecrire($tabPlanche, &$isRecommande){	
@@ -332,6 +368,15 @@ class CCommande {
 		}
 		return $resultat;				
 	}
+	function AffichePlancheAProduire(){
+		$resultat = '';
+
+		for($i = 0; $i < count($this->colPDT); $i++){
+			$resultat .= $this->colPDT[$i]->AffichePlancheAProduire();			
+		}
+
+		return $resultat;				
+	}
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'. PHP_EOL; 
 	
@@ -366,8 +411,10 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
     }   
 	function AjoutPlanche($unePlanche){
 		array_push($this->colPlanche,$unePlanche);
+		
     } 	
-    function Affiche(){
+    
+	function Affiche(){
 		$resultat = '';
 		$resultat .= '<span id="'. $this->Classe. ' ' . $this->Nom .'" class="produit">'; //Debut du produit
 		$resultat .= '<h5>'.$this->Classe.'</h5>'  ;
@@ -378,6 +425,17 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		$resultat .= '</span>';
 		return $resultat;
 	}	
+    function AffichePlancheAProduire(){
+		$resultat = '';
+		$resultat .= '<span >'; //Debut du produit
+
+		//$resultat .= '<h3>'. $this->Nom.count($this->colPlanche).'</h3>'  ;
+		for($i = 0; $i < count($this->colPlanche); $i++){
+			$resultat .= '<tr>' .$this->colPlanche[$i]->AffichePlancheAProduire(). '</tr>' ;			
+		}
+		$resultat .= '</span>';
+		return $resultat;
+	}		
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat ='<'. $this->Classe. '%' . $this->Nom .'>'. PHP_EOL;
 		for($i = 0; $i < count($this->colPlanche); $i++){
@@ -402,11 +460,13 @@ class CPlanche {
 	var $Type;
 	var $Teinte;
 	//var $Extension;
-    function __construct($str){
-		if (substr($str,0,1) == 'P'){
-			$this->FichierPlanche = $str;		
-			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
+    function __construct($str){		
+		$this->FichierPlanche = $str;	
+		//echo '<br><br><br> fsd : ' . $this->FichierPlanche;		
 
+		if (substr($str,0,1) == 'P'){	
+			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
+			
 			$morceau = explode($GLOBALS['SeparateurInfoPlanche'], $this->FichierPlanche);
 			//echo 'sdgsdgfd ' . count($morceau)	;
 			if (count($morceau)< 2) {
@@ -416,6 +476,14 @@ class CPlanche {
 			$this->FichierSource = $morceau[1]. '.jpg';
 			$this->Type = $morceau[2];
 			$this->Taille = $morceau[3]; 
+		}else{
+			//echo "<br>XX SeparateurInfoPlancheLab0 : " . $GLOBALS['SeparateurInfoPlancheLab0']. "  <br>// FichierPlanche " .  $this->FichierPlanche	;
+			$morceau = explode($GLOBALS['SeparateurInfoPlancheLab0'], $this->FichierPlanche);
+			
+			$this->FichierSource = $morceau[0];
+			$this->Taille = $morceau[1];
+			$this->Type = $morceau[2];
+			//var_dump($morceau) ;
 		}
     }   	
 	function Affiche(){
@@ -440,6 +508,15 @@ class CPlanche {
 		$resultat .= '</span> ';
 		return $resultat;
 	}
+	function AffichePlancheAProduire(){
+		//$resultat = 'qsdqsdqsddq';
+		$resultat = 	'<td width="40%" class ="StyleFichier">'.urldecode($this->FichierSource) . 
+							'</td><td width="20%" class ="StyleTaille">' . $this->Taille . 
+								'</td><td width="40%" class ="StyleProduit">' . $this->Type .'</td>';
+
+		return $resultat;
+	}
+
 	function RECOPIEREcrire($tabPlanche, &$isRecommande){
 		 $resultat ='';
 		if (in_array($this->FichierPlanche, $tabPlanche)) {

@@ -55,7 +55,7 @@
 
 
 
-<form name="RetourSourceEcole" method="post" action="CMDImgSource.php<?php echo ArgumentURL('&codeSource=' . urlencode($codeSource)
+<form name="RetourSourceEcole" method="post" action="CMDAfficheSource.php<?php echo ArgumentURL('&codeSource=' . urlencode($codeSource)
 												. '&anneeSource=' . urlencode($anneeSource)
 												.'&MAJ=true'
 												.'#' . substr($_GET['urlImage'], 1+strripos($_GET['urlImage'], '/'))

@@ -60,10 +60,12 @@ class CINFOfichierLab {
 			}	
 			elseif (stripos($this->NomEcole, '$ActionServeur') !== false) { // C'est des RECOs
 				//$leRepTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
-				$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;
+				//$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;
+				$leRepTirage = substr($this->Fichier, 0, -5);
 			}	
 			else{
-					$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;	
+					//$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;	
+					$leRepTirage = substr($this->Fichier, 0, -5);
 			}	
 		}
 		return $leRepTirage;
@@ -214,13 +216,16 @@ function SuprimeFichier($strFILELAB){
 	$fichier = $GLOBALS['repCMDLABO'] . $strFILELAB ;
 	if (file_exists($fichier)){ 
 		// NEW SUP ARBORESCENCE FICHIER		
-		if (substr($strFILELAB, -1, 1) == '1'){
+		//if (substr($strFILELAB, -1, 1) == '1'){
 			if($GLOBALS['isDebug']){
-				Echo '<br>LAB1 : Là ON SUPPRIME ';
+				echo '<br>LAB1 : Là ON SUPPRIME ';
 			}
 			if (substr($strFILELAB, -5, 4) == '.lab'){
 				$mesInfosFichier = new CINFOfichierLab($fichier); 				
 				if ($mesInfosFichier->RepTirage() != '') {
+					if($GLOBALS['isDebug']){
+						Echo '<br>Le dossier Arbo a supprimer est  ' . $mesInfosFichier->RepTirage();
+					}
 					SuprArborescenceDossier($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage());
 					SuprArborescenceDossier($GLOBALS['repMINIATURES'].$mesInfosFichier->RepTirage());
 				}
@@ -231,27 +236,19 @@ function SuprimeFichier($strFILELAB){
 					SuprArborescenceDossier($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage());
 				}
 			}
-		}
+		//}
 
 		//Supression du .lab0
 		SuprFichier($fichier);
 		$Extension = '.' . TypeFichier($strFILELAB);
 		$strBaseName = substr($fichier, 0, strpos($fichier, $Extension));
-		if (file_exists($strBaseName . '.Erreur')){ 
-			//Supression du fichier erreur
-			SuprFichier($strBaseName . '.Erreur');
-		}				
+		SuprFichier($strBaseName . '.Erreur');			
 	}
 }
 
 function RenommerFichierEtDossiers($nomFichierAncien, $nomFichierNouveau){
 	$fichier = $GLOBALS['repCMDLABO'] . $nomFichierAncien ;
-	if (file_exists($fichier)){ 
-
-		rename($fichier, $GLOBALS['repCMDLABO'] . $nomFichierNouveau);		
-		//+ Dossier !!!	
-	}
-
+	RenommerFichierOuDossier($fichier, $GLOBALS['repCMDLABO'] . $nomFichierNouveau);		
 }
 
 function LienIMGSuprFichierLab($fichier, $Etat) {
@@ -284,28 +281,17 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 	}
 	else{
 		echo ' XXXXXXXXXXXXXXXXx  BaseName : ' .$strBaseName;	
-		if (file_exists($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB))){
-			rename($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB), $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) . $Extension . $Etat);
+
+		RenommerFichierOuDossier($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB), $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) . $Extension . $Etat);
 
 			$fichierdeBase = $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) ;
 			if ($Etat > 2){
-				if (file_exists($fichierdeBase . $Extension . '0')){ 
-					//Supression du .lab0
-					SuprFichier($fichierdeBase . $Extension . '0');
-				}
-				if (file_exists($fichierdeBase . $Extension . '1')){ 
-					//Supression du .lab0
-					SuprFichier($fichierdeBase . $Extension . '1');
-				}			
-				if (file_exists($fichierdeBase . '.Erreur')){ 
-					//Supression du .lab0
-					SuprFichier($fichierdeBase . '.Erreur');
-				}
+				SuprFichier($fichierdeBase . $Extension . '0');
+				SuprFichier($fichierdeBase . $Extension . '1');
+				SuprFichier($fichierdeBase . '.Erreur');
 			}
 			return 'OK';
-		} else {
-			return "APIPhotoLab : erreur 44";
-		}
+
 		$CMDhttpLocal = '?apiChgEtat='. $strFILELAB .'&apiEtat=' . $Etat ;
 		echo $CMDhttpLocal;		
 
@@ -313,15 +299,26 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 
 }
 
-function RemplacementRecomamndeTemporaire($NouveauNomDeFichier){ // Nouveau Nom SANS extendion
-	$NomTemporaire =utf8_decode($GLOBALS['FichierDossierRECOMMANDE']);
+function RemplacementNomCommande($AncienNomDeFichier, $NouveauNomDeFichier){ // Nouveau Nom SANS extention
+	//$NomTemporaire =utf8_decode($GLOBALS['FichierDossierRECOMMANDE']);
+	$AncienNomDeDossier =  substr(utf8_decode($AncienNomDeFichier),0,-5);
+	$NouveauNomDeDossier =  substr(utf8_decode($NouveauNomDeFichier),0,-5);
+	if ($GLOBALS['isDebug']){
 
-	rename($GLOBALS['repCMDLABO'] . $NomTemporaire .'.lab2', $GLOBALS['repCMDLABO'] . utf8_decode($NouveauNomDeFichier).'.lab3');
-	rename($GLOBALS['repMINIATURES'] . $NomTemporaire , $GLOBALS['repMINIATURES'] . utf8_decode($NouveauNomDeFichier) );	
-	rename($GLOBALS['repTIRAGES'] . $NomTemporaire ,  $GLOBALS['repTIRAGES'] . utf8_decode($NouveauNomDeFichier) );	
+		echo '<br><br><br>$Ancien NomDeFichier     : ' . $AncienNomDeFichier;
+		echo '<br>$Nouveau NomDeFichier     : ' . $NouveauNomDeFichier;		
 
-	SuprFichier($GLOBALS['repCMDLABO'] . $NomTemporaire .'.lab0');			
-	SuprFichier($GLOBALS['repCMDLABO'] . $NomTemporaire .'.lab1');
+		echo '<br><br><br>$Ancien NomDeDossier     : ' . $AncienNomDeDossier;
+		echo '<br>$Nouveau NomDeDossier     : ' . $NouveauNomDeDossier;				
+	}
+	//substr(    ,0,-5)
+
+	RenommerFichierOuDossier($GLOBALS['repCMDLABO'] . utf8_decode($AncienNomDeFichier) , $GLOBALS['repCMDLABO'] . utf8_decode($NouveauNomDeFichier));
+	RenommerFichierOuDossier($GLOBALS['repMINIATURES'] . $AncienNomDeDossier , $GLOBALS['repMINIATURES'] .  $NouveauNomDeDossier);	
+	RenommerFichierOuDossier($GLOBALS['repTIRAGES'] . $AncienNomDeDossier,  $GLOBALS['repTIRAGES'] . $NouveauNomDeDossier);	
+
+	SuprFichier($GLOBALS['repCMDLABO'] . $AncienNomDeDossier .'.lab0');			
+	SuprFichier($GLOBALS['repCMDLABO'] . $AncienNomDeDossier .'.lab1');
 }
 
 
@@ -388,6 +385,93 @@ function RECFileLab($strRECFileLab){
 
 function SetCatalog($strTRANSFileLab){
 	return 'le transformer ' . $strTRANSFileLab;
+}
+
+function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
+	//echo '$cmd = ' . ($GLOBALS['isDebug']?'':($ParamGET ?'?apiAMP=OK':''));
+	//setlocale(LC_TIME, 'french');
+	$affiche_Tableau = '';
+	$tabFichierLabo = TableauRepFichier('.lab', $isEnCours);
+	rsort($tabFichierLabo);
+	for($i = 0; $i < count($tabFichierLabo); $i++){
+		// Un objet pour récupérer les infos Fichier !!! 
+		$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 
+		$nb_fichier++;
+
+		$laCouleur = ($mesInfosFichier->EtatFichier == 2)?'GreenYellow':'white';
+		$affiche_Tableau .=
+		'<tr style="background-color:'.$laCouleur.'">
+		
+			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
+			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
+				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
+			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
+
+			/*
+			$affiche_Tableau .='			
+			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">
+			<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>';
+			*/
+			
+		if(($mesInfosFichier->EtatFichier < 2)&&($mesInfosFichier->EtatFichier > 0)){
+			$affiche_Tableau .=	'
+			<td colspan=4>';
+						
+			if (file_exists($mesInfosFichier->LienFichierERREUR())){	
+			/*$affiche_Tableau .=	'			
+				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR() . '" title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
+					<img src="img/ERREUR.png" alt="ERREUR">
+					<font size="3" color="red">ATTENTION : il y a des erreurs !</font></a>
+					' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
+					</div>			
+				</div>';*/
+
+				/* NEW */
+				$affiche_Tableau .=	'			
+				<div class="TitreErreur" onclick="VisuErreur(\''. $mesInfosFichier->FichierERREUR . '\');" title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
+					<img src="img/ERREUR.png" alt="ERREUR">
+					<font size="3" color="red">ATTENTION : Erreurs !</font>' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '								
+				</div>';	
+
+				$affiche_Tableau .=	
+				'<div id="'. $mesInfosFichier->FichierERREUR .'" class="ContenufichierErreur">';
+				$affiche_Tableau .=	'<div class="TitreErreur" onclick="VisuErreur(\''. $mesInfosFichier->FichierERREUR . '\');" title="Fermer les erreurs sur '.$mesInfosFichier->NomEcole . '">
+					<img src="img/KO.png" alt="FERMER">
+					<font size="5">   '.$mesInfosFichier->NomEcole . '</font>
+					<br>
+					<font size="3" color="red"style="text-align: right;">CORRIGEZ les erreurs listée(s) ci-dessous, puis relancez le plugin PhotoLab </font>'
+					. LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
+				</div>
+				<br>';				
+				
+				$affiche_Tableau .=	LireFichierErreur($mesInfosFichier->LienFichierERREUR());
+				$affiche_Tableau .=	'</div>';				
+
+			}
+			$affiche_Tableau .=	'
+			<div class="boiteProgressBar">			
+				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" >';
+				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '→ Création des planches : '. number_format($mesInfosFichier->Avancement(), 0).' %</font>';			
+				$affiche_Tableau .=	'</div>
+			</div>';
+
+			/* pour Ajax defilement Barres 
+			if ($mesInfosFichier->EtatFichier == 1) {array_push($GLOBALS['tabFichiersEnCoursDeCompilation'], $mesInfosFichier->Fichier);}
+			*/
+		}else {
+			$affiche_Tableau .=	'  
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . '"  title="'. TitleEtat(2) . '">' . LienImageProgression($mesInfosFichier->EtatFichier,2) . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . '"  title="'. TitleEtat(3) . '">' . LienImageProgression($mesInfosFichier->EtatFichier,3) . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,4) . '"  title="'. TitleEtat(4) . '">' . LienImageProgression($mesInfosFichier->EtatFichier,4) . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,5) . '"  title="'. TitleEtat(5) . '">' . LienImageProgression($mesInfosFichier->EtatFichier,5) . '</a></td>'	
+			;				
+		}
+		if ($isEnCours){
+			$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
+		}
+	}
+	$affiche_Tableau .=	'</tr>';
+	return $affiche_Tableau;
 }
 
 function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
@@ -594,18 +678,9 @@ function TableauRepFichier($ExtFichier, $isEnCours){
 			if (substr($Extension,-1) > 2){  // dernier charactere de la chaine
 				$fichierdeBase = $GLOBALS['repCMDLABO'] . substr($fichier, 0, -5) . $ExtFichier;
 				//echo $GLOBALS['repCMDLABO'] . substr($fichier, 0, -5) . $ExtFichier;
-				if (file_exists($fichierdeBase . '0')){  //voir fichier de base
-					//Supression du .lab0
-					SuprFichier($fichierdeBase . '0');
-				}
-				if (file_exists($fichierdeBase . '1')){ 
-					//Supression du .lab0
-					SuprFichier($fichierdeBase . '1');
-				}			
-				if (file_exists($fichierdeBase . '.Erreur')){ 
-					//Supression du .lab0
-					SuprFichier($fichierdeBase . '.Erreur');
-				}
+				SuprFichier($fichierdeBase . '0');
+				SuprFichier($fichierdeBase . '1');
+				SuprFichier($fichierdeBase . '.Erreur');
 			}			
 		} 
 		closedir($dossier);
@@ -693,6 +768,19 @@ function LienImageOKKO($isOK){
 	return '<img ' . $Lien . '>';
 } 
 
+function LienImageProgression($EtatActuel,$Etat){
+	if (($EtatActuel == 0 ) && ($Etat < 3)){
+		return '<img class= "OK" src="img/0-Etat.png">';
+	}else{
+		$Laclasse = (($EtatActuel<$Etat)?'KO':'OK');
+		//return $Lien;
+		//$Lien = '<img class= "'.$Laclasse.'" src="img/' . $Etat . '-Etat.png">'
+		return '<img class= "'.$Laclasse.'" src="img/' . $Etat . '-Etat.png">';		
+
+
+	}
+} 
+
 function LienImageVoir($Etat){
 	$Lien = '<img src="img/VisualisationKO.png" alt="Voir les planches">';
 	if($Etat) {
@@ -700,7 +788,6 @@ function LienImageVoir($Etat){
 	}
 	return $Lien;  
 }
-
 
 function LienImageEtat($Etat){
 	return '<img src="img/' . $Etat . '-Etat.png">'; 
@@ -713,19 +800,43 @@ function LienImageEtatWEB($Etat){
 function LienEtatLab($fichier, $Etat) {
 	if (strrchr($fichier, '.') != ".lab0"){
 
-		if (($Etat == "3" )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
-			//echo '<br>' . substr($fichier, 0, -5) . '<br>'.$GLOBALS['FichierDossierRECOMMANDE'];
-			return 'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMCommande=OUI' ;
+		//LienVoirMiseEnPochette($mesInfosFichier) ;	
+		 //LienRecherchePlanche($mesInfosFichier) ;
+
+
+		if ($Etat == "2" ){//
+			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			//return 'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+
+
+			return  "CMDRecherche.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
+		}		
+
+
+
+
+		//if (($Etat == "3" )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
+		if ($Etat == "3" ){//
+			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			return 'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+		}
+		elseif ($Etat == "4" ){//
+			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			if (substr($fichier, -1) == $Etat){
+				return  "CMDCartonnage.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
+			}else{
+				return 'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			}			
+		}
+		elseif ($Etat == "5" ){//
+			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			return 'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 		}
 		else{
 		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
-		return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);		
+			return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);		
 		
-					
 		}
-
-
-
 	} else {
 		return 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}

@@ -91,6 +91,16 @@ div.recherche {
   /*border: 1px solid var(--boutonRouge);*/
 }
 
+
+.OK {opacity: 1;}
+.KO {
+	transition: 0.3s;
+	opacity: 0.1;
+}
+
+.KO:hover {opacity: 1}
+
+
 img.OKKOIMG {
     width: 30px;
 	margin: 3%;
@@ -199,6 +209,14 @@ img {
   background-color: var(--FondEnteteTableau);
   color: white;
 }
+
+#commandes .HeaderAction {
+	padding-top: 25px;
+
+	background-image: url('../img/Enchainement.png');
+	background-repeat: no-repeat;
+	background-position: top;
+  }
 
 .titreCommande { /*Police texte produits */
 	/*padding-left: 30px;*/
