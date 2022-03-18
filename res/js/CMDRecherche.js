@@ -145,65 +145,45 @@ function filterPlanches() {
 
 function RecherchePlanche(strElementsRech) {
 	var tabElementsRech = strElementsRech.split(' ');
-    var cmd, i, e;
-	var isVisible;
+    var lesPlanches, i, e;
+	var isVisible = "none";
 	//var listDrop  ;
 	//var tabCMD = [];
 	//var synthTabCMD = [];	
 	//document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+	
+	lesPlanches = document.getElementsByClassName("planche");
+
+		for (i = 0; i < lesPlanches.length; i++) {
+			lesPlanches[i].style.display = "none";
+			lesPlanches[i].parentNode.style.display = "none";		
+			lesPlanches[i].parentNode.parentNode.style.display = "none";
+			lesPlanches[i].parentNode.parentNode.parentNode.style.display = "none";
+			lesPlanches[i].parentNode.parentNode.parentNode.parentNode.style.display = "none"; // Les ecoles 
+
+		}
+
 	for (e = 0; e < tabElementsRech.length; e++) {
 		////////////////////////////////////////////////:
 		// pour les num de commandes 
-			/*
-		cmd = document.getElementsByClassName("commande");
-		for (i = 0; i < cmd.length; i++) {
-			//cmd[i].style.display = "none";
-			cmd[i].style.display = "none";
-			cmd[i].parentNode.style.display = "none";		
-			cmd[i].parentNode.parentNode.style.display = "none";
-			cmd[i].parentNode.parentNode.parentNode.style.display = "none";
-			cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = "none"; // Les ecoles 
+		/*	*/
 
-		}*/
-/*
 
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				isVisible = "";
-				//cmd[i].style.display = "";
+		
+		for (i = 0; i < lesPlanches.length; i++) {
+			//alert('id : ' + lesPlanches[i].id + ' is dans champ : ' + (lesPlanches[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1));
+			if (lesPlanches[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
+				isVisible = "inline-block";
+				//lesPlanches[i].style.display = "";
+
+			lesPlanches[i].style.display = isVisible;
+			lesPlanches[i].parentNode.style.display = isVisible;
+			lesPlanches[i].parentNode.parentNode.style.display = isVisible;
+			lesPlanches[i].parentNode.parentNode.parentNode.style.display = isVisible;
+			lesPlanches[i].parentNode.parentNode.parentNode.parentNode.style.display = isVisible; // Les ecoles	
+				
 			}
-			else{
-				isVisible = "none";
-				//cmd[i].style.display = "none";
-			}
-			cmd[i].style.display = isVisible;
-			cmd[i].parentNode.style.display = isVisible;
-			cmd[i].parentNode.parentNode.style.display = isVisible;
-			cmd[i].parentNode.parentNode.parentNode.style.display = isVisible;
-			cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = isVisible; // Les ecoles		
-		}	*/	
-
-		//cmd = document.getElementsByClassName("produit");
-
-		cmd = document.getElementsByClassName("planche");
-		for (i = 0; i < cmd.length; i++) {
-			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				cmd[i].style.display = "";
-				cmd[i].parentNode.style.display = ""; // class produit
-				cmd[i].parentNode.parentNode.style.display = ""; // class Contenucommande
-				cmd[i].parentNode.parentNode.parentNode.style.display = ""; // class commande
-				cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = ""; // class ecole
-
-			}
-			else{
-				cmd[i].style.display = "none";
-				cmd[i].parentNode.style.display = "none";// class produit
-				cmd[i].parentNode.parentNode.style.display = "none"; // class Contenucommande
-				cmd[i].parentNode.parentNode.parentNode.style.display = "none"; // class commande
-				cmd[i].parentNode.parentNode.parentNode.parentNode.style.display = "none"; // class ecole				
-			}
-		}	
-
+		}		
 	}
 }
 
@@ -224,27 +204,26 @@ function RechercheCommandes(strElementsRech) {
 	//var tabCMD = [];
 	//var synthTabCMD = [];	
 	//document.getElementById("zoneRechercheCMD").removeAttribute("mark"); 
+	cmd = document.getElementsByClassName("commande"); 
 	for (e = 0; e < tabElementsRech.length; e++) {
 		////////////////////////////////////////////////:
 		/* pour les num de commandes */
-		cmd = document.getElementsByClassName("commande");
+		
 		for (i = 0; i < cmd.length; i++) {
 			cmd[i].style.display = "none";
+			cmd[i].parentNode.style.display = "none";	
 		}
-
 
 		for (i = 0; i < cmd.length; i++) {
 			if (cmd[i].id.toUpperCase().indexOf(tabElementsRech[e]) > -1) {	
-				cmd[i].style.display = "";
+				cmd[i].style.display = "inline-block";
+				cmd[i].parentNode.style.display = "inline-block";
 
-			}
+			}/*
 			else{
 				cmd[i].style.display = "none";
-			}
+			}*/
 		}	
-
-
-
 	}
 }
 

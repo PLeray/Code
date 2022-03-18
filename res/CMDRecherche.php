@@ -152,6 +152,18 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 			</div>';
 			}
 		?>	
+
+	  
+		<br><br><br>
+		<H1>Recherche de planches par critère</H1>
+		<h6>
+		Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, ...
+		</h6>			
+
+		<!--<input type="text" id="zoneRecherche"  placeholder="Rechercher .." title="Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'...">  
+		<button onclick="filterFunction()" id="btnRechercher" title="Rechercher"><img src="img/searchicon.png"></button>-->
+		<input type="text" id="zoneRecherchePlanche" onkeyup="filterPlanches()" placeholder="Rechercher .." title="Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'...">
+
 		<br><br><br>
 		<H1>Recherche par n° Commandes</H1>
 		<h6>il y a <?php echo count($monGroupeCmdes->tabCMDLabo);?> commandes,<br>  indiquez un numéro de commande : </h6>
@@ -161,17 +173,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		<h6>il y a <?php echo count($monGroupeCmdes->tabCMDLabo);?> commandes : </h6>		
 		<ul id="listeRechercheCMD">
 			<?php echo $monGroupeCmdes->AfficheMenuCMD();?>	
-		</ul>		  
-		<br><br><br>
-		<H1>Recherche de planches par critère</H1>
-		<h6>
-		Indiquez un produit, un nom de fichier (visible au dos de la photo), une classe, ...
-		</h6>			
-
-		<!--<input type="text" id="zoneRecherche"  placeholder="Rechercher .." title="Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'...">  
-		<button onclick="filterFunction()" id="btnRechercher" title="Rechercher"><img src="img/searchicon.png"></button>-->
-		<input type="text" id="zoneRecherchePlanche" onkeyup="filterPlanches()" placeholder="Rechercher .." title="Commencer à taper... par exemple pour savoir dans quelle commande se trouve la planche 'P0006.-CADR-CM2(...).jpg', tapez juste 'P0006'...">  		  
-		  
+		</ul>			  
 
 		</div>
 		<div id="main">
