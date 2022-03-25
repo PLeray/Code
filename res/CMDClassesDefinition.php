@@ -123,7 +123,17 @@ class CGroupeCmdes {
 
 		return $resultat;
 	}	
+	function AfficheCommandesAProduire(){
+		$resultat = '';
+		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
+		for($i = 0; $i < count($this->colEColes); $i++){
+			global $EcoleEnCours;
+			$EcoleEnCours = $this->colEColes[$i];
+			$resultat .= $this->colEColes[$i]->AfficheCommandesAProduire();			
+		}
 
+		return $resultat;
+	}	
 
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat =''; 
@@ -158,7 +168,8 @@ class CPage {
 		$this->isPage = ($NbCMDAffiche > 0);
 		$this->numeroPage = 0; //($this->isPage?1:0);	// On met le numero de page a 1 si on initialise l'objet page avec un nb de page	
     } 
-    function AfficheDebutPage($unNomEcole){
+    //function AfficheDebutPage($unNomEcole){
+	function AfficheDebutPage(){
 		$resultat = '';
 		if ($this->isPage && !$this->isPageOuverte){
 			if (($this->compteurCMD % $this->NbCMDAffiche) == 0){	
@@ -216,23 +227,39 @@ class CEcole {
     function Affiche(&$gestionPage){
 		//$isParPage = ($numeroPage>0);
 		$resultat = '';
-		$numPage = 0;
+		//$numPage = 0;
 		
-		$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
+		//$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
+		$resultat .= $gestionPage->AfficheDebutPage();
 		/**/$resultat .= '<div class="ecole">';	
 		//$resultat .= '<span class ="Titreecole">'.$this->Nom .'</span>';  
 		$resultat .= '<h1>'.$this->Nom .'</h1>';  	
-		
+		$resultat .= '</div>';
 		for($i = 0; $i < count($this->colCMD); $i++){
-			$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
-
+			//$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
+			$resultat .= $gestionPage->AfficheDebutPage();
 			$resultat .= $this->colCMD[$i]->Affiche($gestionPage);	
 			$resultat .= $gestionPage->AfficheFinPage();
 		}
-		$resultat .= '</div>';			
+		//$resultat .= '</div>';	/////////////////////////////		
 		return $resultat;
 	}	
-    function AffichePlancheAProduire(){
+    function AfficheCommandesAProduire(){
+		//$isParPage = ($numeroPage>0);
+		$resultat = '';
+
+		/**/$resultat .= '<div class="StyleEcole">';	
+		$resultat .= $this->Nom ;  
+		$resultat .= '</div>';				
+		$resultat .= '<table class="TableCommandes">';	
+		for($i = 0; $i < count($this->colCMD); $i++){
+			$resultat .= $this->colCMD[$i]->AfficheCommandesAProduire();	
+		}	
+		$resultat .= '</table>';
+	
+		return $resultat;
+	}	
+	function AffichePlancheAProduire(){
 		//$isParPage = ($numeroPage>0);
 		$resultat = '';
 
@@ -246,7 +273,8 @@ class CEcole {
 		$resultat .= '</table>';
 	
 		return $resultat;
-	}	
+	}
+
 //utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
 
 	function Ecrire($tabPlanche, &$isRecommande){	
@@ -278,7 +306,6 @@ class CEcole {
 		}				
 	}		
 }
-
 class CCommande {
     var $Numero;
     var $CmdClient;
@@ -360,6 +387,19 @@ class CCommande {
 		}
 		return $resultat;				
 	}
+	function AfficheCommandesAProduire(){
+		$resultat = '';
+		//for($i = 0; $i < count($this->colPDT); $i++){
+			$resultat .= '<tr>
+			<td width="15%" class ="StyleNumCommande">'. $this->FormatNumCmd() . '</td>
+			<td width="85%" class ="StyleInfoClient"><b>' . $this->Prenom . ' ' . $this->Nom . '</b>, ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .'</td>
+			</tr>';
+;			
+		//}
+//' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')
+		return $resultat;		
+
+	}	
 	function AffichePlancheAProduire(){
 		$resultat = '';
 
@@ -369,6 +409,7 @@ class CCommande {
 
 		return $resultat;				
 	}
+
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'. PHP_EOL; 
 	
@@ -418,6 +459,17 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		return $resultat;
 	}	
     function AffichePlancheAProduire(){
+		$resultat = '';
+		$resultat .= '<span >'; //Debut du produit
+
+		//$resultat .= '<h3>'. $this->Nom.count($this->colPlanche).'</h3>'  ;
+		for($i = 0; $i < count($this->colPlanche); $i++){
+			$resultat .= '<tr>' .$this->colPlanche[$i]->AffichePlancheAProduire(). '</tr>' ;			
+		}
+		$resultat .= '</span>';
+		return $resultat;
+	}	
+	function AfficheCommandesAProduire(){
 		$resultat = '';
 		$resultat .= '<span >'; //Debut du produit
 

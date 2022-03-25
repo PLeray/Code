@@ -229,8 +229,9 @@ img {
 .tooltip {
   position: relative;
   display: inline-block;
-  /*border-bottom: 1px dotted black;*/
-  cursor: pointer;
+  /*border-bottom: 1px dotted black;
+  cursor: pointer;*/
+  cursor: default;
 }
 
 .tooltip .tooltiptext {

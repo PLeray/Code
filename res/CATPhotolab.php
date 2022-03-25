@@ -160,7 +160,7 @@ if($RechargerPage){
 		<th class="HeaderAction"  style="width:150px;" ><H3>Imprimer planches</H3></th>
 		<th class="HeaderAction"  style="width:150px;" ><H3>Mettre en pochette</H3></th>
 		<th class="HeaderAction" style="width:150px;" ><H3>Livrer les commandes</H3></th>
-		<th  style="width:40px;" ><H3>🗑</H3></th>
+		<th  style="width:40px;" ><H3><font size="+3">🗑</font></H3></th>
 	  </tr>  
 	<?php echo $affiche_TableauCommandes; ?>
 	</table>
@@ -173,7 +173,7 @@ if($RechargerPage){
 <!-- ////////// FIN de l'HTML Standard 	////////// -->
 
 <!-- ////////// FIN de l'HTML Standard ////////// 
-	<table class="Tableau" id="myTableLAB">-->
+	<table class="Tableau" id="myTableLAB">
 	<table id="commandes">
 	  <tr class="header">
 		<th style="width:110px;"><H3>Etat</H3></th>			  
@@ -191,7 +191,7 @@ if($RechargerPage){
 		<th  style="width:40px;" ><H3>🗑</H3></th>
 	  </tr>  
 	<?php //echo $affiche_Tableau; ?>
-	</table>
+	</table>-->
 
 	<BR>
 	<?php // WEB
@@ -213,7 +213,7 @@ if($RechargerPage){
 		<th  style="width:122px;" ><H3>Fichiers Web crées</H3></th>		
 		<th style="width:122px;" onclick="sortTable(2)"><H3>Déposés sur LUMYS</H3></th>
 		<th style="width:122px;" onclick="sortTable(2)"><H3>Ventes en cours</H3></th>
-		<th  style="width:40px;" ><H3>X</H3></th>		
+		<th  style="width:40px;" ><H3><font size="+3">🗑</font></H3></th>	
 	  </tr>  
 	<?php echo $affiche_Tableau; 
 	//echo "isDebug " . $isDebug;

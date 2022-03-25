@@ -353,7 +353,7 @@ function Etape_40($leFichierLab){ // API information Mise en cartonange sauve US
 				
 			</div>
 
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 4 : mise en pochette des commandes en cours';
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 4 : mise en pochette des commandes en cours</h1>';
 	
 			$retourMSG .= '<table>
 			<tr>
@@ -361,13 +361,13 @@ function Etape_40($leFichierLab){ // API information Mise en cartonange sauve US
 
 		$retourMSG .= '	<div class="Planchecontainer">
 		<h1>COMMANDES EN COURS</h1>
-		<table class="TablePlanche"><tr>
-		<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
+		<table class="TableCommandes"><tr>
+		<td  width="15%" class ="StyleNumCommande">Identifiant</td><td  width="85%" class ="StyleInfoClient"><center>Informations client</center></td>
 		</tr></table>';
 		$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $leFichierLab);
 
 		//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-		$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+		$retourMSG .= $monGroupeCmdes->AfficheCommandesAProduire(); 
 		$retourMSG .= '</div>';
 	$retourMSG .= '</td>
 					<td>';	
@@ -375,11 +375,11 @@ function Etape_40($leFichierLab){ // API information Mise en cartonange sauve US
 	$retourMSG .= '	<div class="msgcontainer">';
 	$retourMSG .= '<h4>'. substr($leFichierLab,0,-5) .'</h4>';
 	//$retourMSG .=  "<h1>Mise en pochette des photos</h1>";	
-	$retourMSG .=  '<h3>Notez que vous pouvez enregistrer la page de mise en pochette. 
+	$retourMSG .=  '<h3>Vous pouvez enregistrer la page de mise en pochette. 
 	<br><br><img src="img/4-Etat.png" alt="Mise en pochette" ><br><br>
 	Pour enregistrer la page de mise en pochette, allez sur la page de mise en pochette, faites  <STRONG>Ctrl + s</STRONG> 
 	et choisissez de l\'enregistrer sur un clé USB par exemple...<br><br>
-	Cela vous permettra de faire le cartonnage avec n\'importe quel autre ordinateur.</h3>';	
+	Cela vous permettra de faire le cartonnage avec n\'importe quel autre ordinateur...</h3>';	
 	
 	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($leFichierLab) .'&apiEtat=4' ) ;	
 
@@ -429,14 +429,14 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 				<td width="50%">';	
 
 		$retourMSG .= '	<div class="Planchecontainer">
-		<h1>COMMANDES EN COURS</h1>
-		<table class="TablePlanche"><tr>
-		<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
+		<h1>Liste des commandes prêtes à expédier</h1>
+		<table class="TableCommandes"><tr>
+		<td  width="15%" class ="StyleNumCommande">Identifiant</td><td  width="85%" class ="StyleInfoClient"><center>Informations client</center></td>
 		</tr></table>';
 		$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $leFichierLab);
 
 		//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-		$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+		$retourMSG .= $monGroupeCmdes->AfficheCommandesAProduire(); 
 		$retourMSG .= '</div>';
 	$retourMSG .= '</td>
 					<td>';	
@@ -485,7 +485,6 @@ $retourMSG .= '</td>
 	return $retourMSG;
 	
 }
-
 
 function API_GetFILELAB($strAPI_FILELAB){
 	$GLOBALS['repCMDLABO'] = "CMDLABO/";

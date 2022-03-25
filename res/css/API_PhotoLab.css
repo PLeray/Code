@@ -72,6 +72,20 @@ STRONG {/*Police Détails Fichier commande et commun  */
     color: var(--boutonVert);
 }
 
+.StyleNumCommande {/*Police Détails Fichier commande et commun  */
+    vertical-align: middle;
+    text-align: center;
+    font-size: 14px;
+    color: var(--boutonRouge);
+}
+.StyleInfoClient {/*Police Détails Fichier commande et commun  */
+    text-align: left;
+    text-transform: none;
+    vertical-align: middle;
+    font-size: 10px;
+    color: var(--texteGris);
+}
+
 .StyleEcole {/*Police Détails Fichier commande et commun  */
     text-align: center;
     font-size: 12px;
@@ -95,6 +109,7 @@ STRONG {/*Police Détails Fichier commande et commun  */
     font-size: 10px;
     color: var(--boutonVert);
 }
+
 
 
 /**********************************************/
@@ -162,6 +177,21 @@ td
 .TablePlanche td
 {
     /* border: 1px solid rgb(115, 250, 126);*/
+    
+}
+
+.TableCommandes
+{
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    /* border: 1px solid blue;*/
+
+}
+
+.TableCommandes td
+{
+    /**/ border-bottom: 1px solid var(--texteGris);
     
 }
 

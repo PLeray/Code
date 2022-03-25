@@ -409,8 +409,7 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 		'<tr style="background-color:'.$laCouleur.'">
 		
 			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
-			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
-				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
+			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD . '<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
 			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
 
 			/*
@@ -660,20 +659,20 @@ function TitleEtat($fichier, $Etat){
 			$retourMSG = "Les planches sont en cours de création.";
 			break;			
 		case "2":
-			$retourMSG = "Les planches sont toutes crées.";
+			$retourMSG = "Les planches sont toutes crées : cliquez pour voir les commandes, rechercher une planche ou une commande.";
 			break;		
 		case "3":
-			$retourMSG = "Déclarer que les planches ont été envoyés au laboratoire ?";
+			$retourMSG = "Ajustez le nom de votre groupe de commandes avant de l'envoyer à imprimer.";
 			break;
 		case "4":
-			$retourMSG = "Déclarer que les photos sont tirées au laboratoire ?";
+			$retourMSG = "Accédez à l'interface de mise en pochette rapide de vos commandes et préparer l'expédition à vos clients.";
 			break;		
 		case "5":
-			$retourMSG = "Déclarer que les photos sont mise en carton. Fin";
+			$retourMSG = "Vous avez expédié vos commandes ? Cliquez ici pour archiver votre groupe de comamndes.";
 			break;	
 		}
 	}else{
-		$retourMSG = "Les planches sont à créer avec le plugin PhotoLab pour Photoshop.";
+		$retourMSG = "Lancez le plugin PhotoLab pour Photoshop pour créer les planches commandées...";
 
 	}	
 
