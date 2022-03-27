@@ -670,7 +670,10 @@ class CImgSource {
 		$resultat = '';
 			//SUPRESSION DU CACHE $Lien = $this->Dossier . 'Cache/' .  $this->Fichier;
 			$Lien = $this->Dossier .  $this->Fichier;
-			$LienBig = $this->Dossier . $this->Fichier;			
+			$LienBig = $this->Dossier . $this->Fichier;		
+			$Lien = 'SRCImage.php?fichierImage='.$Lien;	
+			//$Lien = 'couchersoleil.jpg';	
+			
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			if (strpos(strtolower($this->Fichier),'fratrie')){
 				$Lien = '../../Code/res/img/Fratries.png';
@@ -694,6 +697,9 @@ class CImgSource {
 						src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '" 
 					loading="lazy" >
 			</button>';
+
+
+
 			$resultat .= '</form>';		
 			
 			
@@ -716,6 +722,7 @@ class CImgSource {
 		
 		return $resultat;
 	}
+	/*
 	function Ecrire($tabPlanche, &$isRecommande){
 		 $resultat ='';
 		if (in_array($this->FichierPlanche, $tabPlanche)) {
@@ -739,7 +746,8 @@ class CImgSource {
 		}
 
 		return $resultat;				
-	}		
+	}
+	*/		
 }
 
 function csv_to_array($filename='', $delimiter=';')

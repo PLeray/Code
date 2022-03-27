@@ -343,7 +343,6 @@ function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 }	
 
 function NomCorrectionARBO($NomProjet) {
-	//return 'ARBO-' . date("Y-m-d") . '-' . $NomProjet. '.web';
 	return 'CORR-' . $NomProjet. '.web';
 }
 
@@ -387,7 +386,7 @@ function NomClasseDepuisNomGroupe($strNOMdeClasse){
  *                             'no_img' => le fichier n'est pas une image
  *                             'resize_error' => le redimensionnement a échoué
  */
-
+/*
 function resize_img($image_path,$image_dest,$max_size = 300,$qualite = 100,$type = 'auto',$upload = false){
 
   // Vérification que le fichier existe
@@ -502,6 +501,6 @@ function resize_img($image_path,$image_dest,$max_size = 300,$qualite = 100,$type
     return 'no_img';
   endif;
 }
-
+*/
 
 ?>
