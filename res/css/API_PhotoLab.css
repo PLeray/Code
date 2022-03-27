@@ -191,7 +191,7 @@ td
 
 .TableCommandes td
 {
-    /**/ border-bottom: 1px solid var(--texteGris);
+    /**/ border-bottom: 1px solid var(--FondLigneTabGrisFonce);  
     
 }
 

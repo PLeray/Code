@@ -30,10 +30,10 @@ $EnteteHTML =
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <html>
     <head>
-	<title id="PHOTOLAB">QUESTION</title>
+	<title id="PHOTOLAB">PhotoLab étape suivante ...</title>
 	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
     <link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
-	<link rel="shortcut icon" type="image/png" href="img/Bibliotheque.png">
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
     <body>
 	';
