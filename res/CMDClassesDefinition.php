@@ -694,8 +694,7 @@ class CImgSource {
 
 			<button type="submit" class="EnregistrerPhoto">
 					<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
-						src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '" 
-					loading="lazy" >
+						src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">
 			</button>';
 
 
