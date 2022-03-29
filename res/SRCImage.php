@@ -1,4 +1,5 @@
 <?php
+
 // Le fichier
 $filename = '';//'SOURCES/test.jpg';
 $MaxTaille = 300;

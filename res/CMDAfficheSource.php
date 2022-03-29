@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+
 	setlocale(LC_TIME, 'french');
 	include_once 'APIConnexion.php';
 	include_once 'CMDClassesDefinition.php';
@@ -91,6 +92,7 @@ $monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $ann
 </div> 
 
 <?php 
+
 /* */
 if (!$MAJ){
 	$RefSource = "&codeSource=" . urlencode($codeSource). "&anneeSource=" . urlencode($anneeSource);
@@ -186,7 +188,30 @@ if (!$MAJ){
 		</div>	
 	</div>
 </div>
+<?php 
 
+if (!extension_loaded('gd')) {
+    echo '<!-- The Modal -->
+<div id="myModal" class="modal-PBgd">
+
+  <!-- Modal content -->
+  <div class="modal-content-PBgd">
+ Ce module permet l\'affichage de vos jpg sources qui sont en haute résolution.
+ <br> <br> <br>
+ Cependant pour fonctionner, il nécessaire que la librairie "gd" soit activée sur votre serveur local pour fonctionner.
+ <br> <br> <br>
+ Pour activer simplement la librairie "gd" , cliquez sur l\'icône ci-dessous et suivez les instructions?
+ <br> <br> 
+ <a href="'.$maConnexionAPI->URL .'/installation/PROCEDURE-PC-Installation-PhotoLab.pdf" title="Afficher les instruction"><img src="img/AIDE.png" alt="Afficher les instruction"></a>
+
+
+  </div>
+
+</div>';}
+
+
+
+?>
 <script type="text/javascript" src="<?php Mini('js/CMDAfficheSource.js');?>"></script>
 <script>
 <?php 
@@ -204,6 +229,11 @@ if ($MAJ){
 		echo 'AfficheRechercheCMD(false);';
 	}
 }
+
+
+
+
+
 ?>
 	/*EffacerChargement();
 	AfficheRechercheCMD(true);
