@@ -373,10 +373,15 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire, $s
 		if ($strListeFichiers != ''){
 			//Les commande existantes
 			for($i = 3; $i < count($Tabl) ; $i++){		
-				if ($Tabl[$i] != '' ) {fputs($file, $Tabl[$i]);}				
+				if ($Tabl[$i] != '' ) {
+					//str_replace("§","<br>",$Tabl[$i])
+					//fputs($file, str_replace("§","§\n",$Tabl[$i]));
+					fputs($file, $Tabl[$i]);
+				}				
 			}	
 			for($i = 0; $i < count($listeFichiers); $i++){		
-				fputs($file, $listeFichiers[$i] . "\n");
+				//fputs($file, $listeFichiers[$i] . "\n");
+				fputs($file, str_replace("§","§\n",$listeFichiers[$i]) . "\n");
 			}
 			//fputs($file, 'nb S ' . count($listeFichiers) . '  0 : ' .  $listeFichiers[0]);
 		}

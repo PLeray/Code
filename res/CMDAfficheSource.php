@@ -125,7 +125,7 @@ if (!$MAJ){
 		<div id="mySidenav" class="sidenav">
 		
 		
-		<a href="javascript:void(0)" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
+		<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
 			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
 
 				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour tirage</a>	
@@ -336,8 +336,8 @@ function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 	}
 	if ($GLOBALS['lesCommandes'] != ''){
 
-	}*/	
-
+	}	
+*/
 		$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
 		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
 

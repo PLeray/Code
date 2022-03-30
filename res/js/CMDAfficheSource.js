@@ -28,6 +28,9 @@ function AfficheRechercheCMD(isAffiche) {
 		//document.getElementById("mySidenav").style.z-index = 2;  
 		document.getElementById("main").style.marginRight = "350px";
 		document.getElementById("Entete").style.marginRight = "350px";	
+		document.getElementById("btnRemonter").style.right = "380px";	
+		document.getElementById("closeSidenav").textContent = ">>";
+		//right: 380px;	
 		
 		//document.getElementById("myListeCommandes").innerHTML = 'kjhkjh';	
 	}
@@ -38,6 +41,8 @@ function AfficheRechercheCMD(isAffiche) {
 		  //document.getElementById("mySidenav").style.z-index = -2;  
 		document.getElementById("main").style.marginRight = "50px";
 		document.getElementById("Entete").style.marginRight = "50px";
+		document.getElementById("btnRemonter").style.right = "80px";	
+		document.getElementById("closeSidenav").textContent = "<<"; //= >>		
 
 		//alert('AfficheRechercheCMD()! : ' + isAffiche);			
 	}
@@ -284,7 +289,7 @@ function NbPlanchePLUS(element) {
 function TransfererCMD() {
 	var TableauSelectionPhotos = document.getElementById('lesPhotoSelection').value.split(sepFinLigne);
 	if (TableauSelectionPhotos.length > 1 ) {
-		alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
+		//alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
 		for (i = 0; i < TableauSelectionPhotos.length  ; i++) {
 			
 			if(TableauSelectionPhotos[i].trim()!=''){
