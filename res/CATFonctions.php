@@ -479,6 +479,8 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 	return $affiche_Tableau;
 }
 
+
+//Pour l'historique a changer !!!!!
 function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 	//echo '$cmd = ' . ($GLOBALS['isDebug']?'':($ParamGET ?'?apiAMP=OK':''));
 	//setlocale(LC_TIME, 'french');
@@ -808,43 +810,45 @@ function LienImageEtatWEB($Etat){
 	return '<img src="img/' . $Etat . '-Etat.png">';  
 }
 
-function LienEtatLab($fichier, $Etat) {
-	//echo '<br>' .  'Etat  : ' . $Etat ;
-	if (strrchr($fichier, '.') != ".lab0"){
-		if ($Etat == 2 ){//
-			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-			//$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+function LienEtatLab($fichier, $EtatFutur) {
+	$EtatActuel = substr($fichier,-1);
+	$lien = '#';
+	if ($EtatActuel != 0){
+		if ($EtatFutur == $EtatActuel + 1){
+			if ($EtatFutur == 2 ){//
+				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 
-			$lien =   "CMDRecherche.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
-		}		
-		//if (($Etat == 3 )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
-		elseif  ($Etat == 3 ){//
-			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-			$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				$lien =   "CMDRecherche.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
+			}		
+			//if (($EtatFutur == 3 )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
+			elseif  ($EtatFutur == 3 ){//
+				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			}
+			elseif ($EtatFutur == 4 ){//
+				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				if (substr($fichier, -1) == $EtatFutur){
+					$lien =   "CMDCartonnage.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
+				}else{
+					$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				}			
+			}
+			elseif ($EtatFutur == 5 ){//
+				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			}
+			else{
+			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatFutur);
+			$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $EtatFutur);		
+			
+			}
 		}
-		elseif ($Etat == 4 ){//
-			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-			if (substr($fichier, -1) == $Etat){
-				$lien =   "CMDCartonnage.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
-			}else{
-				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-			}			
-		}
-		elseif ($Etat == 5 ){//
-			//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-			$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-		}
-		else{
-		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
-		$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);		
-		
-		}
-	} else {
+
+	}else {
 		$lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}
-	return $lien . '"  title="'. TitleEtat($fichier, $Etat) . '">';
-
-
+	return $lien . '"  title="'. TitleEtat($fichier, $EtatFutur) . '">';
 }
 /* */
 function LienFichierLab($fichier) {

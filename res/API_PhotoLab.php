@@ -173,7 +173,7 @@ function ETAPE_01() {// Function Pour Enregistrer les recomamndes
 				$NBPlanches = $mesInfosFichier->NbPlanches;
 		
 				$retourMSG .= '<h3><br>Il y a : '. $mesInfosFichier->NbPlanches . ' planches a créer.<br><br>';				
-				$retourMSG .= 'Les comamndes sont enregistrées dans : <br><br>' . substr($mesInfosFichier->Fichier, 0,-5);	 $mesInfosFichier->Fichier;
+				$retourMSG .= 'Les commandes sont enregistrées dans : <br><br>' . substr($mesInfosFichier->Fichier, 0,-5);	 $mesInfosFichier->Fichier;
 				$retourMSG .= '</h3>';	
 				//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 				//echo "Apres move_uploaded_file";

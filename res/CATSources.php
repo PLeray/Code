@@ -55,13 +55,14 @@ $AnneeScolaire = '2021-2022';
 if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 
-/**/
+/*
+
 if (isset($_GET['BDDRECFileLab']) && !isset($_GET['BDDRECCode']) && !isset($_GET['CodeEcole']) ) { // Transformation de l'état d'un fichier lab 
 	if ($GLOBALS['isDebug']){
 		echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
 		}
 	BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
-}else 
+}else */
 
 if (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
 	$CMDwebArbo = '';
@@ -76,7 +77,7 @@ if (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fi
 
 if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECCode']) && isset($_GET['CodeEcole']) ) { // Transformation de l'état d'un fichier lab 
 	if ($GLOBALS['isDebug']){
-		echo 'le fichier avec ces commandes : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
+		echo 'le fichier LIBRE avec ces commandes : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
 		}
 	BDDLibreRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode'], $_GET['CodeEcole'], isset($_GET['AnneeScolaire']), $CMDwebArbo);
 }

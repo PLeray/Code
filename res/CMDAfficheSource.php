@@ -202,7 +202,7 @@ if (!extension_loaded('gd')) {
  <br> <br> <br>
  Pour activer simplement la librairie "gd" , cliquez sur l\'icône ci-dessous et suivez les instructions?
  <br> <br> 
- <a href="'.$maConnexionAPI->URL .'/installation/PROCEDURE-PC-Installation-PhotoLab.pdf" title="Afficher les instruction"><img src="img/AIDE.png" alt="Afficher les instruction"></a>
+ <a href="'.$maConnexionAPI->URL .'/installation/PROCEDURE-Activez-la-librairie-gd-pour-la-gestion-des-images.pdf" title="Afficher les instruction"><img src="img/AIDE.png" alt="Afficher les instruction"></a>
 
 
   </div>
@@ -324,7 +324,8 @@ function RetourEcranSources($ParamAnnee = ''){
 	return $RetourEcran . '&AnneeScolaire=' . $ParamAnnee ;
 }	
 
-function ValidationCommandes($NomProjet, $ParamAnnee = ''){
+//function ValidationCommandes($NomProjet, $ParamAnnee = ''){
+function ValidationCommandes($NomProjet){
 	//$NBPlanches = NBfichiersARBOWEB($fichier);
 	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
