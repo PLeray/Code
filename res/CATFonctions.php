@@ -810,37 +810,38 @@ function LienImageEtatWEB($Etat){
 	return '<img src="img/' . $Etat . '-Etat.png">';  
 }
 
-function LienEtatLab($fichier, $EtatFutur) {
+function LienEtatLab($fichier, $EtatVise) {
 	$EtatActuel = substr($fichier,-1);
 	$lien = '#';
-	if ($EtatActuel != 0){
-		if ($EtatFutur == $EtatActuel + 1){
-			if ($EtatFutur == 2 ){//
+	if ($EtatActuel > 0){
+		if ($EtatVise <= $EtatActuel + 1){	
+			if ($EtatVise == 2 ){//
 				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 				//$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 
 				$lien =   "CMDRecherche.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
-			}		
-			//if (($EtatFutur == 3 )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
-			elseif  ($EtatFutur == 3 ){//
+			}			
+
+			//if (($EtatVise == 3 )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
+			elseif  ($EtatVise == 3 ){//
 				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 			}
-			elseif ($EtatFutur == 4 ){//
+			elseif ($EtatVise == 4 ){//
 				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				if (substr($fichier, -1) == $EtatFutur){
+				if (substr($fichier, -1) == $EtatVise){
 					$lien =   "CMDCartonnage.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
 				}else{
 					$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 				}			
 			}
-			elseif ($EtatFutur == 5 ){//
+			elseif ($EtatVise == 5 ){//
 				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 			}
 			else{
-			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatFutur);
-			$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $EtatFutur);		
+			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatVise);
+			$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $EtatVise);		
 			
 			}
 		}
@@ -848,7 +849,7 @@ function LienEtatLab($fichier, $EtatFutur) {
 	}else {
 		$lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}
-	return $lien . '"  title="'. TitleEtat($fichier, $EtatFutur) . '">';
+	return $lien . '"  title="'. TitleEtat($fichier, $EtatVise) . '">';
 }
 /* */
 function LienFichierLab($fichier) {
