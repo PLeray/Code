@@ -39,13 +39,13 @@ $lesPhotoSelection = '';
 if (isset($_POST['lesPhotoSelection']) ){
 	$lesPhotoSelection = $_POST['lesPhotoSelection'];
 	if ($isDebug){echo 'VOILA LES PHOTOS SELECTIONNEES  pour ' . $lesPhotoSelection;}	
-	///MAJFichierCommandes($LesCmdesLibres, $codeSource, $anneeSource);
+	///MAJFichierCommandes($lesCmdesLibres, $codeSource, $anneeSource);
 }
-$LesCmdesLibres = '';
-if (isset($_POST['LesCmdesLibres']) ){
-	$LesCmdesLibres = $_POST['LesCmdesLibres'];
-	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $LesCmdesLibres;}	
-	MAJFichierCommandes($LesCmdesLibres, $codeSource, $anneeSource);
+$lesCmdesLibres = '';
+if (isset($_POST['lesCmdesLibres']) ){
+	$lesCmdesLibres = $_POST['lesCmdesLibres'];
+	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesCmdesLibres;}	
+	MAJFichierCommandes($lesCmdesLibres, $codeSource, $anneeSource);
 }
 $lesFichiersBoutique = '';
 if (isset($_POST['lesFichiersBoutique']) ){
@@ -128,7 +128,7 @@ if (!$MAJ){
 		<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
 			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
 
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour tirage</a>	
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	
 				<div id="myListePhoto" class="ListeCommandes">		
 					<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
 				</div>					
@@ -146,30 +146,29 @@ if (!$MAJ){
 					</div>
 				</div>
 
-				<br><br>	
-				<a href="javascript:void(0)" class="btnAjouterTirages" onclick="TransfererCMD()">Ajouter tirages</a><span id="SelectProduit" >Agrandissement  20x20cm</span>		 
 				<br><br>
+				<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="TransfererCMD()" disabled>Ajouter tirages</button>
+																	<span id="SelectProduit" >Agrandissement  20x20cm</span>		 
+				<br>
 				<div id="myListeCommandes" class="ListeCommandes">		
-					<?php echo str_replace($sepFinLigne, "<br>", $LesCmdesLibres); ?>      
+					<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      
 				</div>	
 				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesLIBRES($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
 					<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
-					<input type="hidden" name="LesCmdesLibres" id="LesCmdesLibres" value="<?php echo $LesCmdesLibres; ?>" /> 					
+					<input type="hidden" name="lesCmdesLibres" id="lesCmdesLibres" value="<?php echo $lesCmdesLibres; ?>" /> 					
 
-					<button type="submit" class="btnEnregistrer">Quitter et enregistrer ces commandes LIBRES</button>
+					<button type="submit" id="btnCmdesLibres" class="btnEnregistrer" disabled >Quitter et enregistrer ces commandes LIBRES</button>
 				</form> 
-
+				<br><br>
 				<!-- FICHIERBOUTIQUES ici -->
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour fichiers boutiques</a>	
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	
 				<div id="myListeFichiersBoutique" class="ListeCommandes">
 					<?php echo str_replace($sepFinLigne, "<br>", $lesFichiersBoutique); ?>
-				</div>
-				
-				<br><br><br>				
+				</div>				
 				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesFICHIERBOUTIQUES($monProjet->NomProjet); ?>" enctype="multipart/form-data">					
 					<input type="hidden" name="lesFichiersBoutique" id="lesFichiersBoutique" value="<?php echo $lesFichiersBoutique; ?>" /> 
 	
-					<button type="submit" class="btnEnregistrer">Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
+					<button type="submit" id="btnFichiersBoutique" class="btnEnregistrer" disabled>Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
 				</form> 	
 					
 			</div>		
@@ -227,7 +226,7 @@ if ($MAJ){
 	echo 'MAJAffichageSelectionPhotos(true);';
 	
 	//echo 'MAJEnregistrementSelectionPhotos();';
-	if(($lesPhotoSelection != '') || ($LesCmdesLibres != '') || ($lesFichiersBoutique != '')) {$AffichePanneau  = true; }
+	if(($lesPhotoSelection != '') || ($lesCmdesLibres != '') || ($lesFichiersBoutique != '')) {$AffichePanneau  = true; }
 	echo 'EffacerChargement();';
 	if($AffichePanneau) {
 		echo 'AfficheRechercheCMD(true);';
@@ -341,7 +340,7 @@ function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 	if ($GLOBALS['lesFichiersBoutique'] != ''){
 
 	}
-	if ($GLOBALS['LesCmdesLibres'] != ''){
+	if ($GLOBALS['lesCmdesLibres'] != ''){
 
 	}	
 */
@@ -363,17 +362,15 @@ function ValidationCommandesLIBRES($NomProjet){
 	if ($GLOBALS['lesFichiersBoutique'] != ''){
 
 	}
-	if ($GLOBALS['LesCmdesLibres'] != ''){
+	if ($GLOBALS['lesCmdesLibres'] != ''){
 
 	}	
 */
 		$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
-		$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode(NomFichierLIBRE($NomProjet)));	
+		$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
 
 	
-	$retourMSG = 'API_Photolab.php' 
-			. '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod')
-		    .$CMDhttpLocal ;
+	$retourMSG = 'API_Photolab.php?codeMembre=' . $GLOBALS['codeMembre'] .$CMDhttpLocal . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 
 
 	return $retourMSG ;
@@ -382,10 +379,10 @@ function ValidationCommandesLIBRES($NomProjet){
 function NomCorrectionARBO($NomProjet) {
 	return 'CORR-' . $NomProjet. '.web';
 }
-
-function NomFichierLIBRE($NomProjet) {
+/*function NomFichierLIBRE($NomProjet) {
 	return date("Y-m-d"). '-TIRAGES LIBRES-' . $NomProjet. '.lab';
-}
+} */
+
 
 function CreationDossier($nomDossier) {
 	if (!is_dir($nomDossier)) {

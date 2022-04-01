@@ -24,10 +24,10 @@
 		$lesPhotoSelection = $_POST['lesPhotoSelection'];
 		if ($isDebug){echo 'VOILA LES lesPhotoSelection  : ' . $lesPhotoSelection;}	
 	}
-	$LesCmdesLibres = '';
-	if (isset($_POST['LesCmdesLibres']) ){
-		$LesCmdesLibres = $_POST['LesCmdesLibres'];
-		if ($isDebug){echo 'VOILA LES RECOMMANDES   : ' . $LesCmdesLibres;}	
+	$lesCmdesLibres = '';
+	if (isset($_POST['lesCmdesLibres']) ){
+		$lesCmdesLibres = $_POST['lesCmdesLibres'];
+		if ($isDebug){echo 'VOILA LES RECOMMANDES   : ' . $lesCmdesLibres;}	
 	}
 	$lesFichiersBoutique = '';
 	if (isset($_POST['lesFichiersBoutique']) ){
@@ -61,7 +61,7 @@
 												.'#' . substr($_GET['urlImage'], 1+strripos($_GET['urlImage'], '/'))
 												) ?>" enctype="multipart/form-data">	
 	<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?> " /> 
-	<input type="hidden" name="LesCmdesLibres" id="LesCmdesLibres" value="<?php echo $LesCmdesLibres; ?> " /> 
+	<input type="hidden" name="lesCmdesLibres" id="lesCmdesLibres" value="<?php echo $lesCmdesLibres; ?> " /> 
 	<input type="hidden" name="lesFichiersBoutique" id="lesFichiersBoutique" value="<?php echo $lesFichiersBoutique; ?> " />		
 
 	

@@ -223,7 +223,7 @@ function isFichierErreur(unFichier) {
 }
 
 function SelectionnerFichierLabo() { 
-	g_SelectFichierLab = File.openDialog("selection de le fichier de la ou y a XXXXXXXX les photos qui n'en faut imprimer");
+	g_SelectFichierLab = File.openDialog("selection de le fichier de la ou y a x les photos qui n'en faut imprimer");
 	return OuvrirFichierLabo();
 }
 
@@ -707,7 +707,7 @@ function GenererFichiersWEB() {
 				g_CommandeAVANCEMENT = Number( ( i + 1)  / (leSousGroupeDeFichier.length - 1) ); //g_CommandeLabo.NbPlanchesACreer()
 				g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
 				txtTraitement.text = String ( i + 1 ) + " / " +  String (leSousGroupeDeFichier.length);				
-				//alert("ZXXDXDXD 01 : g_CommandeAVANCEMENT : " + g_CommandeAVANCEMENT );
+				//alert("ZXDXDXD 01 : g_CommandeAVANCEMENT : " + g_CommandeAVANCEMENT );
 			//}    
 			
 		}			

@@ -150,7 +150,7 @@ p {/*Police Détails Fichier commande et commun  */
   z-index: 9; /* Make sure it does not overlap */
   border: none; /* Remove borders */
   outline: none; /* Remove outline */
-  background-color: var(--boutonRouge); /* Set a background color */
+  background-color: var(--boutonVert); /* Set a background color */
   color: white; /* Text color */
   cursor: pointer; /* Add a mouse pointer on hover */
   padding: 10px; /* Some padding */
@@ -161,6 +161,10 @@ p {/*Police Détails Fichier commande et commun  */
 .btnAjouterTirages:hover { 
   box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
+.btnAjouterTirages:disabled{ 
+  color: white;
+  background-color: var( --FondLigneTabGrisFonce);
+}
 
 .btnEnregistrer {
   all: unset;
@@ -168,7 +172,7 @@ p {/*Police Détails Fichier commande et commun  */
   z-index: 9; /* Make sure it does not overlap */
   border: none; /* Remove borders */
   outline: none; /* Remove outline */
-  background-color: var(--boutonVert); /* Set a background color */
+  background-color: var(--boutonRouge); /* Set a background color */
   color: white; /* Text color */
   cursor: pointer; /* Add a mouse pointer on hover */
   padding: 15px; /* Some padding */
@@ -180,6 +184,13 @@ p {/*Police Détails Fichier commande et commun  */
   box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 
 }
+
+.btnEnregistrer:disabled{ 
+  color: white;
+  background-color: var( --FondLigneTabGrisFonce);
+}
+
+
 #btnRemonter {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */

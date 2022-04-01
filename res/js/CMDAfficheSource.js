@@ -3,11 +3,49 @@ var sepFinLigne = '§';
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
-/*var rech = document.getElementById("zoneAffichagePhotoEcole");
-rech.style.display = 'none';
-AfficheRechercheCMD(false);*/
+/*
+let input = document.querySelector(".input");
+let button = document.querySelector(".button");
+*/
+let ZoneListePhotos = document.getElementById("myListePhoto");
+//let ZoneListeCommandes = document.getElementById("myListeCommandes");
+//let ZoneListeFichiersBoutique = document.getElementById("myListeFichiersBoutique");
 
-//initPagination();
+ZoneListePhotos.addEventListener("change", stateHandle);
+//ZoneListeCommandes.addEventListener("change", stateHandle);
+//ZoneListeFichiersBoutique.addEventListener("change", stateHandle);
+
+function stateHandle() {
+  /*
+   if (document.querySelector(".input").value === "") {
+    button.disabled = true; 
+  } else {
+    button.disabled = false;
+  } 
+ 
+  */
+
+  document.getElementById("btnAjouterTirages").disabled = (document.getElementById("myListePhoto").value === "");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
@@ -141,13 +179,13 @@ function closeNav() {
 }
 
 function CopierCommandes(x) {
-	//alert('LesCmdesLibres generales : ' + document.getElementById("LesCmdesLibres").value + ' lesFichiersBoutique generales : ' + document.getElementById("lesFichiersBoutique").value); 
+	//alert('lesCmdesLibres generales : ' + document.getElementById("lesCmdesLibres").value + ' lesFichiersBoutique generales : ' + document.getElementById("lesFichiersBoutique").value); 
 	//alert('etzrte : '); 	
 	x.querySelector("#ZlesPhotoSelection").value = document.getElementById("lesPhotoSelection").value;
-	x.querySelector("#ZLesCmdesLibres").value = document.getElementById("LesCmdesLibres").value;
+	x.querySelector("#ZlesCmdesLibres").value = document.getElementById("lesCmdesLibres").value;
 	x.querySelector("#ZlesFichiersBoutique").value = document.getElementById("lesFichiersBoutique").value;
 	//x.setAttribute('name',  document.getElementById("lesFichiersBoutique").value);
-	//alert('ZLesCmdesLibres : ' + x.querySelector("#ZLesCmdesLibres").value + ' ZlesFichiersBoutique : ' +  x.querySelector("#ZlesFichiersBoutique").value); 
+	//alert('ZlesCmdesLibres : ' + x.querySelector("#ZlesCmdesLibres").value + ' ZlesFichiersBoutique : ' +  x.querySelector("#ZlesFichiersBoutique").value); 
 
 }
 
@@ -205,7 +243,11 @@ function MAJEnregistrementSelectionPhotos() {
 	}	
 
 	document.getElementById('lesPhotoSelection').value =  mesRecoInfo;
-	document.getElementById("myListePhoto").innerHTML =  AfficherCMDparLigne(mesRecoInfo);
+
+	var maListePhotos = document.getElementById("myListePhoto");
+	maListePhotos.innerHTML =  AfficherCMDparLigne(mesRecoInfo);
+
+	document.getElementById("btnAjouterTirages").disabled = (maListePhotos.innerHTML === "");
 
 	MAJAffichageSelectionPhotos();
 	
@@ -255,8 +297,12 @@ function AjoutFichierBoutique(element) {
 		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";
 	
 	}
-	document.getElementById("myListeFichiersBoutique").innerHTML = AfficherCMDparLigne( document.getElementById("lesFichiersBoutique").value); 
-	//MAJAffichageSelectionPhotos();
+	var maListeFichiersBoutique = document.getElementById("myListeFichiersBoutique");
+	maListeFichiersBoutique.innerHTML = AfficherCMDparLigne( document.getElementById("lesFichiersBoutique").value); 
+	
+	document.getElementById("btnFichiersBoutique").disabled = (maListeFichiersBoutique.innerHTML === "");
+
+
 }
 
 function AfficherCMDparLigne(str) {
@@ -265,7 +311,7 @@ function AfficherCMDparLigne(str) {
 }
 /* 
 function MAJCommandes() {
-	document.getElementById("myListeCommandes").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("LesCmdesLibres").value); 
+	document.getElementById("myListeCommandes").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("lesCmdesLibres").value); 
 	document.getElementById("myListeFichiersBoutique").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("lesFichiersBoutique").value); 
 }
 */
@@ -299,35 +345,56 @@ function TransfererCMD() {
 				maPhoto.setAttribute('Nb', '0');
 			}
 		}
-		document.getElementById('LesCmdesLibres').value = document.getElementById('LesCmdesLibres').value							
-												+ '<xx%20 cm>'+ sepFinLigne;									
-		document.getElementById('LesCmdesLibres').value = document.getElementById('LesCmdesLibres').value
+		document.getElementById('lesPhotoSelection').value =  '';
+		var maListePhotos = document.getElementById("myListePhoto").innerHTML;
+		var LeProduitSelection = document.getElementById('SelectProduit').innerHTML;
+				
+		// '&#60;' et '&#62;' pour remplacer les '<' et '>'
+		document.getElementById("myListeCommandes").innerHTML += '&#60;' + LeProduitSelection + '&#62;' + '<br>' 
+														+ RecupPhotosProduits(maListePhotos, LeProduitSelection);																		
+		document.getElementById('lesCmdesLibres').value += '<' + LeProduitSelection + '>' + sepFinLigne
+														+ CMDPhotosProduits(maListePhotos, LeProduitSelection);
+														
+		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");														
+		/*
+		document.getElementById('lesCmdesLibres').value = document.getElementById('lesCmdesLibres').value							
+												+ '<Voir a quoi correspond ceci ... %20 cm>'+ sepFinLigne;									
+		document.getElementById('lesCmdesLibres').value = document.getElementById('lesCmdesLibres').value
 												+ CMDPhotosProduits(document.getElementById('lesPhotoSelection').value, 
 																	document.getElementById('SelectProduit').innerHTML);
-		document.getElementById('lesPhotoSelection').value =  '';
+
 		document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML				
 		+ '&#60;' + document.getElementById("SelectProduit").innerHTML + '&#62;' + '<br>';	// '&#60;' et '&#62;' pour remplacer les '<' et '>'
 		document.getElementById("myListeCommandes").innerHTML =  document.getElementById("myListeCommandes").innerHTML
-																+ AFFPhotosProduits(document.getElementById("myListePhoto").innerHTML,
-																		document.getElementById('SelectProduit').innerHTML);															
-		document.getElementById("myListePhoto").innerHTML =  '';
-
+																+ RecupPhotosProduits(document.getElementById("myListePhoto").innerHTML,
+																		document.getElementById('SelectProduit').innerHTML);
+				
+		document.getElementById('lesCmdesLibres').value = document.getElementById('lesCmdesLibres').value
+										+ '<' + document.getElementById("SelectProduit").innerHTML + '>' + sepFinLigne;
+		document.getElementById('lesCmdesLibres').value = document.getElementById('lesCmdesLibres').value 
+										+ RecupPhotosProduits(document.getElementById("myListePhoto").innerHTML,
+										document.getElementById('SelectProduit').innerHTML);
+*/
 	}
 }
 
-function CMDPhotosProduits(PhotoNombre, Produits) {
-
-	return PhotoNombre.replaceAll('____', '_' + Produits + '_');
+function CMDPhotosProduits(ListedePhoto, LeProduitSelection) {
+	
+	ListedePhoto = RecupPhotosProduits(ListedePhoto, LeProduitSelection);
+	return ListedePhoto.replaceAll('<br>', sepFinLigne );
 
 }
 
-function AFFPhotosProduits(PhotoNombre, Produits) {
+function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 
-	return PhotoNombre.replaceAll('____', '_' + CodeProduit(Produits) + '_');
+	return ListedePhoto.replaceAll('____', '_' + CodeProduit(LeProduitSelection) + '_');
 }
 
 function CodeProduit(Produits) {
-	return '20x20cm__';
+	Produits =  '20x20cm__';
+
+
+	return Produits;
 }
 
 function SelectionProduit() {

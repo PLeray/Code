@@ -147,7 +147,7 @@ class CGroupeCmdes {
 			$isRecommande = $isRecommande || $isEcris;				
 		}
 		if ($isRecommande) {
-			return $resultat;;
+			return $resultat;
 		}	
 		else{
 			return '';			
@@ -690,7 +690,7 @@ class CImgSource {
 		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
 			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
 			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
-			<input type="hidden" name="LesCmdesLibres" id="ZLesCmdesLibres" value="0" /> 
+			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> 
 
 			<button type="submit" class="EnregistrerPhoto">

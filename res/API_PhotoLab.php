@@ -92,17 +92,20 @@ elseif (isset($_POST['lesRecommandes']) ){
 	echo $EnteteHTML . ETAPE_01(true) . $BotomHTML;	
 
 }
-elseif (isset($_POST['LesCmdesLibres']) ){
+elseif (isset($_POST['lesCmdesLibres']) ){
 	if ($isDebug){
-		echo 'VOILA LES COMAMNDES LIBRES  pour : '  . $_POST['LesCmdesLibres'];
+		echo 'VOILA LES COMAMNDES LIBRES  pour : '  . $_POST['lesCmdesLibres'];
 	}	
 	echo $EnteteHTML . ETAPE_01(false) . $BotomHTML;	
 
 }
-elseif(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
-		echo $EnteteHTML . API_PostFILELAB() . $BotomHTML;
-	} 
-else echo 'Rien à Afficher pas de parametres ?! !';		
+elseif (isset($_FILES["myfile"]["tmp_name"]) ){
+	if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
+			echo $EnteteHTML . API_PostFILELAB() . $BotomHTML;
+		} 	
+}
+
+else echo '<br>Rien à Afficher pas de parametres ?! !';		
 
 ///////////////////////////////////////////////////////////////
 ///////////// Les Fonctions selon les cas ...  ////////////////
@@ -131,17 +134,22 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
-function ETAPE_01($isReco = true) {// Function Pour Enregistrer les recomamndes
+function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 	//$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);	
-	if ($isReco){
+	if ($isRecommandes){
 		$FichierOriginal = $_POST['leFichierOriginal'];
 		$strTabCMD = $_POST['lesRecommandes'];
 		$target_file_seul = MAJRecommandes($FichierOriginal, $strTabCMD);
 		$Titre ='ENREGISTRER LA RECOMMANDE';
 	}
 	else{
+		$InfoSource ='@8888-88-88_' .$_GET['BDDRECFileLab']. '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+
 		$strTabCMD = $_POST['lesCmdesLibres'];
-		$target_file_seul = MAJCommandesLibres($strTabCMD);
+		if($GLOBALS['isDebug']){
+				echo 'VOILA LES COMAMNDES LIBRES  pour : '  . $strTabCMD;
+			}	
+		$target_file_seul = MAJCommandesLibres($InfoSource, $strTabCMD);
 		$Titre ='ENREGISTRER LA COMMANDE LIBRE';
 	}
 
@@ -160,14 +168,29 @@ function ETAPE_01($isReco = true) {// Function Pour Enregistrer les recomamndes
 			$retourMSG .= '<table>
 			<tr>
 				<td width="50%">';	
+				
+
+
+				// A REMETTRE !!! 
 				$monGroupeCmdes = new CGroupeCmdes($target_fichier);
+
+
+				
 				$retourMSG .= '	<div class="Planchecontainer">
 				<h1>COMMANDES EN COURS</h1>
 				<table class="TablePlanche"><tr>
 				<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
 				</tr></table>';
 				//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
+
+
+
+				// A REMETTRE !!! 
 				$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+
+
+
+
 				$retourMSG .= '</div>';
 			$retourMSG .= '</td>
 							<td width="50%">';	

@@ -280,13 +280,13 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 	$strBaseName = substr($strFILELAB, 0, strpos($strFILELAB, $Extension));
 
 	if(($Etat == "3" )&& ($strBaseName == $GLOBALS['FichierDossierRECOMMANDE'])){
-		echo ' XXXXXXXXXXXXXXXXx   33 BaseName : ' .$strBaseName;		
+		if ($GLOBALS['isDebug']) echo ' X chgt etat   BaseName : ' .$strBaseName;		
 		// ON Verifie si le nom de Dossier est OK pour le Laboratoire et suivit !
 
 	
 	}
 	else{
-		echo ' XXXXXXXXXXXXXXXXx  BaseName : ' .$strBaseName;	
+		if ($GLOBALS['isDebug']) echo ' X chgt etat   BaseName : ' .$strBaseName;	
 
 		RenommerFichierOuDossier($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB), $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) . $Extension . $Etat);
 
@@ -951,7 +951,7 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 }
 
 // POUR LES COMMANDES LIBRES  ! A REVOIR
-function MAJCommandesLibres($strTabCMDLibre) {
+function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
 	$NewFichierSeul = $GLOBALS['FichierDossierCMDESLIBRE'].".lab0" ;
 	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
 	if (!file_exists($NewFichier)){
@@ -960,25 +960,30 @@ function MAJCommandesLibres($strTabCMDLibre) {
 			fputs($file, '{Etat : 0 : Non enregistre %%Commandes de tirages Libres }'.PHP_EOL );
 		fclose($file); 
 	}
+	/*
 	$isRecommande = false; //true;
-	
 	$TabCMDLibre = explode("%", $strTabCMDLibre);
+
+	if($GLOBALS['isDebug']){
+		var_dump($TabCMDLibre);
+	}	
+	*/	
+	$resultat = $SourceDesCMD ."\n";
+
+	$resultat .= '#805814__Laurent_M’BOTA_28 rue du Jamet _44100_Nantes#' ."\n";
+
+	$resultat .= str_replace($GLOBALS['SeparateurInfoPlanche'] , "\n", $strTabCMDLibre);
+	/*
 	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO']. $NewFichierSeul);
 	//// ????
 	$resultat = $monGroupeCmdes->Ecrire($TabCMDLibre, $isRecommande);
 	//// ????
+	*/
 
    //Ajouter commande au fichier de commande Libres 
    file_put_contents($NewFichier, $resultat."\n", FILE_APPEND | LOCK_EX);
 
   return $NewFichierSeul;
-}
-
-function EnvoieLABORecommandes($FichierOriginal) {
-   // changer nom
-   // changer Dossier    
-      // Activer lien vers Dossier
-
 }
 
 function CreationDossier($nomDossier) {
@@ -987,8 +992,6 @@ function CreationDossier($nomDossier) {
 	}
 	return $nomDossier;
 }
-
-
 
 function CodeLienImageDossier($mesInfosFichier){	
 

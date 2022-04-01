@@ -212,9 +212,7 @@ function EcrireCommande($CMD, $NomPhoto, $Classe)
 	$valRetour = '';
 	foreach ($CMD as $key => $value) {
 		if ($value > 0) {
-			$valRetour .= '&#60;' . $Classe . '%' . $key . '&#62;<br>';
-			//$valRetour .= 'XXXX' . $Classe . ' ' . $key . 'YYYY<br>';
-			//XXX a la place de < et YYY a la place de > sinon ca bug !!!
+			$valRetour .= '&#60;' . $Classe . '%' . $key . '&#62;<br>'; // on peut pas mettre <> !!
 			for($i = 0; $i < $value; $i++)
 			{ 			
 				$valRetour .= EcrireProduitPhoto($NomPhoto, $key);

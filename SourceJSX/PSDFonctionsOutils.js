@@ -1243,7 +1243,7 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 							//TabLesGroupesClasse.length = 0; // = [];
 							strNUMEROClasse = NumeroClasseDepuisNomGroupe(theObject.name);							
 							strNOMClasse = NomClasseDepuisNomGroupe(theObject.name);
-							//alert("XXXXXXX strNOMClasse.name : " + strNOMClasse);
+							//alert("X234 strNOMClasse.name : " + strNOMClasse);
 							g_TabListeNomsClasses[strNUMEROClasse] = strNOMClasse;	
 					}					
 					// Même pour les groupe classes
