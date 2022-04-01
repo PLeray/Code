@@ -89,18 +89,20 @@ elseif (isset($_POST['lesRecommandes']) ){
 	if ($isDebug){
 		echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $_POST['lesRecommandes'];
 	}	
-	echo $EnteteHTML . ETAPE_01() . $BotomHTML;	
+	echo $EnteteHTML . ETAPE_01(true) . $BotomHTML;	
 
 }
+elseif (isset($_POST['LesCmdesLibres']) ){
+	if ($isDebug){
+		echo 'VOILA LES COMAMNDES LIBRES  pour : '  . $_POST['LesCmdesLibres'];
+	}	
+	echo $EnteteHTML . ETAPE_01(false) . $BotomHTML;	
 
-
-else {
-	if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
+}
+elseif(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
 		echo $EnteteHTML . API_PostFILELAB() . $BotomHTML;
 	} 
-	else echo 'Rien à Afficher pas de parametres ?! !';		
-
-}
+else echo 'Rien à Afficher pas de parametres ?! !';		
 
 ///////////////////////////////////////////////////////////////
 ///////////// Les Fonctions selon les cas ...  ////////////////
@@ -129,12 +131,22 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
-function ETAPE_01() {// Function Pour Enregistrer les recomamndes
-	//$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);
-	$FichierOriginal = $_POST['leFichierOriginal'];
-	$strTabCMDReco = $_POST['lesRecommandes'];
+function ETAPE_01($isReco = true) {// Function Pour Enregistrer les recomamndes
+	//$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);	
+	if ($isReco){
+		$FichierOriginal = $_POST['leFichierOriginal'];
+		$strTabCMD = $_POST['lesRecommandes'];
+		$target_file_seul = MAJRecommandes($FichierOriginal, $strTabCMD);
+		$Titre ='ENREGISTRER LA RECOMMANDE';
+	}
+	else{
+		$strTabCMD = $_POST['lesCmdesLibres'];
+		$target_file_seul = MAJCommandesLibres($strTabCMD);
+		$Titre ='ENREGISTRER LA COMMANDE LIBRE';
+	}
+
 	unset($_POST);	
-	$target_file_seul = MAJRecommandes($FichierOriginal, $strTabCMDReco);
+	
 	$target_fichier = $GLOBALS['repCMDLABO'] . $target_file_seul;
 
 	$retourMSG = 
@@ -143,7 +155,7 @@ function ETAPE_01() {// Function Pour Enregistrer les recomamndes
 			<div class="imgcontainer">
 				<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
 			</div>
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Enregistrer les fichier "produits" à Créer.</h1>';
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Enregistrer les fichiers "produits" à Créer.</h1>';
 	
 			$retourMSG .= '<table>
 			<tr>
@@ -161,7 +173,7 @@ function ETAPE_01() {// Function Pour Enregistrer les recomamndes
 							<td width="50%">';	
 			$retourMSG .= '	<div class="msgcontainer">';
 			
-			$retourMSG .= '<h4>ENREGISTRER LA RECOMMANDE</h4>';			
+			$retourMSG .= '<h4>'.$Titre.'</h4>';			
 			$retourMSG .= '<img src="img/Logo.png" alt="Image de fichier" width="25%">';	
 			if (file_exists($target_fichier)){
 				$CMDhttpLocal ='';
@@ -173,7 +185,7 @@ function ETAPE_01() {// Function Pour Enregistrer les recomamndes
 				$NBPlanches = $mesInfosFichier->NbPlanches;
 		
 				$retourMSG .= '<h3><br>Il y a : '. $mesInfosFichier->NbPlanches . ' planches a créer.<br><br>';				
-				$retourMSG .= 'Les commandes sont enregistrées dans : <br><br>' . substr($mesInfosFichier->Fichier, 0,-5);	 $mesInfosFichier->Fichier;
+				$retourMSG .= 'Les commandes sont sauvegardées dans : <br><br>' . substr($mesInfosFichier->Fichier, 0,-5);	 $mesInfosFichier->Fichier;
 				$retourMSG .= '</h3>';	
 				//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 				//echo "Apres move_uploaded_file";

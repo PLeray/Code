@@ -3,6 +3,7 @@ $SeparateurInfoPlanche = '§';
 $SeparateurInfoPlancheLab0 = '_';
 $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
+$FichierDossierCMDESLIBRE = "8888-88-88-(CMDESLIBRES)-EN-COURS";
 
 class CGroupeCmdes {
     var $ListePromoteurs;
@@ -212,7 +213,7 @@ class CEcole {
         $this->Nom = $morceau[1];
         $this->CodeEcole = $morceau[2];
 		$this->AnneeScolaire = $morceau[3];
-		$this->Details = $morceau[4];
+		if (count($morceau) > 4){$this->Details = $morceau[4];} 		
 		$this->colCMD = array();
 		//$this->DateISOLEE = $dateIsole;
 		$this->DossierTirage = $DossierTirage;
@@ -689,7 +690,7 @@ class CImgSource {
 		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
 			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
 			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
-			<input type="hidden" name="lesCommandes" id="ZlesCommandes" value="0" /> 
+			<input type="hidden" name="LesCmdesLibres" id="ZLesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> 
 
 			<button type="submit" class="EnregistrerPhoto">

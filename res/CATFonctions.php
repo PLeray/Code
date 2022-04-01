@@ -302,7 +302,6 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 		echo $CMDhttpLocal;		
 
 	}
-
 }
 
 function RemplacementNomCommande($AncienNomDeFichier, $NouveauNomDeFichier){ // Nouveau Nom SANS extention
@@ -946,6 +945,30 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 	$resultat = $monGroupeCmdes->Ecrire($TabCMDReco, $isRecommande);
 
    //Ajouter commande au fichier de reco 
+   file_put_contents($NewFichier, $resultat."\n", FILE_APPEND | LOCK_EX);
+
+  return $NewFichierSeul;
+}
+
+// POUR LES COMMANDES LIBRES  ! A REVOIR
+function MAJCommandesLibres($strTabCMDLibre) {
+	$NewFichierSeul = $GLOBALS['FichierDossierCMDESLIBRE'].".lab0" ;
+	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
+	if (!file_exists($NewFichier)){
+		$file = fopen($NewFichier, 'w');
+			fputs($file, '[Version : 2.0]'.PHP_EOL );
+			fputs($file, '{Etat : 0 : Non enregistre %%Commandes de tirages Libres }'.PHP_EOL );
+		fclose($file); 
+	}
+	$isRecommande = false; //true;
+	
+	$TabCMDLibre = explode("%", $strTabCMDLibre);
+	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO']. $NewFichierSeul);
+	//// ????
+	$resultat = $monGroupeCmdes->Ecrire($TabCMDLibre, $isRecommande);
+	//// ????
+
+   //Ajouter commande au fichier de commande Libres 
    file_put_contents($NewFichier, $resultat."\n", FILE_APPEND | LOCK_EX);
 
   return $NewFichierSeul;

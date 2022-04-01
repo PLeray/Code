@@ -144,7 +144,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide"> ✓ </a> 
 				<span id ="txtAfficherSelection">Afficher sélection des recommandes</span >
 
-				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier($myfileName).'" enctype="multipart/form-data">	
+				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier().'" enctype="multipart/form-data">	
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
 					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
 					<button type="submit" id="btnEnregistrerCMD" title="Enregistrer ces recommandes">Enregistrer ces recommandes</button>

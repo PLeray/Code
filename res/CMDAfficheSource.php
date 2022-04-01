@@ -39,13 +39,13 @@ $lesPhotoSelection = '';
 if (isset($_POST['lesPhotoSelection']) ){
 	$lesPhotoSelection = $_POST['lesPhotoSelection'];
 	if ($isDebug){echo 'VOILA LES PHOTOS SELECTIONNEES  pour ' . $lesPhotoSelection;}	
-	///MAJFichierCommandes($lesCommandes, $codeSource, $anneeSource);
+	///MAJFichierCommandes($LesCmdesLibres, $codeSource, $anneeSource);
 }
-$lesCommandes = '';
-if (isset($_POST['lesCommandes']) ){
-	$lesCommandes = $_POST['lesCommandes'];
-	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesCommandes;}	
-	MAJFichierCommandes($lesCommandes, $codeSource, $anneeSource);
+$LesCmdesLibres = '';
+if (isset($_POST['LesCmdesLibres']) ){
+	$LesCmdesLibres = $_POST['LesCmdesLibres'];
+	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $LesCmdesLibres;}	
+	MAJFichierCommandes($LesCmdesLibres, $codeSource, $anneeSource);
 }
 $lesFichiersBoutique = '';
 if (isset($_POST['lesFichiersBoutique']) ){
@@ -150,20 +150,26 @@ if (!$MAJ){
 				<a href="javascript:void(0)" class="btnAjouterTirages" onclick="TransfererCMD()">Ajouter tirages</a><span id="SelectProduit" >Agrandissement  20x20cm</span>		 
 				<br><br>
 				<div id="myListeCommandes" class="ListeCommandes">		
-					<?php echo str_replace($sepFinLigne, "<br>", $lesCommandes); ?>      
+					<?php echo str_replace($sepFinLigne, "<br>", $LesCmdesLibres); ?>      
 				</div>	
+				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesLIBRES($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
+					<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
+					<input type="hidden" name="LesCmdesLibres" id="LesCmdesLibres" value="<?php echo $LesCmdesLibres; ?>" /> 					
+
+					<button type="submit" class="btnEnregistrer">Quitter et enregistrer ces commandes LIBRES</button>
+				</form> 
+
+				<!-- FICHIERBOUTIQUES ici -->
 				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher sélection pour fichiers boutiques</a>	
 				<div id="myListeFichiersBoutique" class="ListeCommandes">
 					<?php echo str_replace($sepFinLigne, "<br>", $lesFichiersBoutique); ?>
 				</div>
 				
 				<br><br><br>				
-				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandes($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
-					<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
-					<input type="hidden" name="lesCommandes" id="lesCommandes" value="<?php echo $lesCommandes; ?>" /> 					
+				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesFICHIERBOUTIQUES($monProjet->NomProjet); ?>" enctype="multipart/form-data">					
 					<input type="hidden" name="lesFichiersBoutique" id="lesFichiersBoutique" value="<?php echo $lesFichiersBoutique; ?>" /> 
 	
-					<button type="submit" class="btnEnregistrer">Quitter et enregistrer ces commandes</button>
+					<button type="submit" class="btnEnregistrer">Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
 				</form> 	
 					
 			</div>		
@@ -221,7 +227,7 @@ if ($MAJ){
 	echo 'MAJAffichageSelectionPhotos(true);';
 	
 	//echo 'MAJEnregistrementSelectionPhotos();';
-	if(($lesPhotoSelection != '') || ($lesCommandes != '') || ($lesFichiersBoutique != '')) {$AffichePanneau  = true; }
+	if(($lesPhotoSelection != '') || ($LesCmdesLibres != '') || ($lesFichiersBoutique != '')) {$AffichePanneau  = true; }
 	echo 'EffacerChargement();';
 	if($AffichePanneau) {
 		echo 'AfficheRechercheCMD(true);';
@@ -325,7 +331,7 @@ function RetourEcranSources($ParamAnnee = ''){
 }	
 
 //function ValidationCommandes($NomProjet, $ParamAnnee = ''){
-function ValidationCommandes($NomProjet){
+function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 	//$NBPlanches = NBfichiersARBOWEB($fichier);
 	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
@@ -335,18 +341,40 @@ function ValidationCommandes($NomProjet){
 	if ($GLOBALS['lesFichiersBoutique'] != ''){
 
 	}
-	if ($GLOBALS['lesCommandes'] != ''){
+	if ($GLOBALS['LesCmdesLibres'] != ''){
 
 	}	
 */
 		$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
 		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
 
+	
+	$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
+	return $retourMSG ;
+}	
+
+function ValidationCommandesLIBRES($NomProjet){
+	//$NBPlanches = NBfichiersARBOWEB($fichier);
+	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
+	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
+	//$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
+	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
+	/*
+	if ($GLOBALS['lesFichiersBoutique'] != ''){
+
+	}
+	if ($GLOBALS['LesCmdesLibres'] != ''){
+
+	}	
+*/
 		$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
 		$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode(NomFichierLIBRE($NomProjet)));	
 
 	
-	$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
+	$retourMSG = 'API_Photolab.php' 
+			. '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod')
+		    .$CMDhttpLocal ;
+
 
 	return $retourMSG ;
 }	

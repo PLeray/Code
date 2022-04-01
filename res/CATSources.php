@@ -75,11 +75,11 @@ if (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fi
 	BDDARBOwebfile($_GET['BDDARBOwebfile'], $_GET['BDDRECCode'], $_GET['CodeEcole'], $_GET['AnneeScolaire'], $CMDwebArbo);
 }
 
-if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECCode']) && isset($_GET['CodeEcole']) ) { // Transformation de l'état d'un fichier lab 
+if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECLibreCode']) && isset($_GET['CodeEcole']) ) { // Transformation de l'état d'un fichier lab 
 	if ($GLOBALS['isDebug']){
 		echo 'le fichier LIBRE avec ces commandes : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
 		}
-	BDDLibreRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode'], $_GET['CodeEcole'], isset($_GET['AnneeScolaire']), $CMDwebArbo);
+	BDDLibreRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECLibreCode'], $_GET['CodeEcole'], isset($_GET['AnneeScolaire']), $CMDwebArbo);
 }
 
 

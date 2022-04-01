@@ -141,13 +141,13 @@ function closeNav() {
 }
 
 function CopierCommandes(x) {
-	//alert('lesCommandes generales : ' + document.getElementById("lesCommandes").value + ' lesFichiersBoutique generales : ' + document.getElementById("lesFichiersBoutique").value); 
+	//alert('LesCmdesLibres generales : ' + document.getElementById("LesCmdesLibres").value + ' lesFichiersBoutique generales : ' + document.getElementById("lesFichiersBoutique").value); 
 	//alert('etzrte : '); 	
 	x.querySelector("#ZlesPhotoSelection").value = document.getElementById("lesPhotoSelection").value;
-	x.querySelector("#ZlesCommandes").value = document.getElementById("lesCommandes").value;
+	x.querySelector("#ZLesCmdesLibres").value = document.getElementById("LesCmdesLibres").value;
 	x.querySelector("#ZlesFichiersBoutique").value = document.getElementById("lesFichiersBoutique").value;
 	//x.setAttribute('name',  document.getElementById("lesFichiersBoutique").value);
-	//alert('ZlesCommandes : ' + x.querySelector("#ZlesCommandes").value + ' ZlesFichiersBoutique : ' +  x.querySelector("#ZlesFichiersBoutique").value); 
+	//alert('ZLesCmdesLibres : ' + x.querySelector("#ZLesCmdesLibres").value + ' ZlesFichiersBoutique : ' +  x.querySelector("#ZlesFichiersBoutique").value); 
 
 }
 
@@ -265,7 +265,7 @@ function AfficherCMDparLigne(str) {
 }
 /* 
 function MAJCommandes() {
-	document.getElementById("myListeCommandes").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("lesCommandes").value); 
+	document.getElementById("myListeCommandes").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("LesCmdesLibres").value); 
 	document.getElementById("myListeFichiersBoutique").innerHTML = 'jghkjhhj'; //AfficherCMDUnderscore(document.getElementById("lesFichiersBoutique").value); 
 }
 */
@@ -299,9 +299,9 @@ function TransfererCMD() {
 				maPhoto.setAttribute('Nb', '0');
 			}
 		}
-		document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value							
+		document.getElementById('LesCmdesLibres').value = document.getElementById('LesCmdesLibres').value							
 												+ '<xx%20 cm>'+ sepFinLigne;									
-		document.getElementById('lesCommandes').value = document.getElementById('lesCommandes').value
+		document.getElementById('LesCmdesLibres').value = document.getElementById('LesCmdesLibres').value
 												+ CMDPhotosProduits(document.getElementById('lesPhotoSelection').value, 
 																	document.getElementById('SelectProduit').innerHTML);
 		document.getElementById('lesPhotoSelection').value =  '';
