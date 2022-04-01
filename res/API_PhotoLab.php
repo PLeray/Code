@@ -143,7 +143,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 		$Titre ='ENREGISTRER LA RECOMMANDE';
 	}
 	else{
-		$InfoSource ='@8888-88-88_' .$_GET['BDDRECFileLab']. '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+		$InfoSource ='@8888-88-88_(COMMANDES LIBRES) ' .$_GET['BDDRECFileLab']. '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
 
 		$strTabCMD = $_POST['lesCmdesLibres'];
 		if($GLOBALS['isDebug']){
@@ -321,12 +321,18 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 
 	$AncienNom = ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' )? substr($leFichierLab,11,-5) :'';
 	if ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' ){
-		$AncienNom = substr($leFichierLab,11,-5);
-		$DateCommande = substr($leFichierLab,0,10); ; 
-		$CMDhttpLocal = '&CMDdate=' . $DateCommande;
-	}else{
 		$AncienNom = '';
 		$DateCommande = date('Y-m-d') ; 
+		$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
+	}
+	elseif ($leFichierLab != $GLOBALS['FichierDossierCMDESLIBRE'] . '.lab2' ){
+		$AncienNom = '';
+		$DateCommande = date('Y-m-d') ; 
+		$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
+	}
+	else{
+		$AncienNom = substr($leFichierLab,11,-5);
+		$DateCommande = substr($leFichierLab,0,10); ; 
 		$CMDhttpLocal = '&CMDdate=' . $DateCommande;		
 	}
 	//$AncienNom = ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' )? substr($leFichierLab,11,-5) :'';

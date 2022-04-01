@@ -3,7 +3,7 @@ $SeparateurInfoPlanche = '§';
 $SeparateurInfoPlancheLab0 = '_';
 $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
-$FichierDossierCMDESLIBRE = "8888-88-88-(CMDESLIBRES)-EN-COURS";
+$FichierDossierCMDESLIBRE = "8888-88-88-(COMMANDES LIBRES)-EN-COURS";
 
 class CGroupeCmdes {
     var $ListePromoteurs;

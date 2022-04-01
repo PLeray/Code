@@ -1,4 +1,5 @@
 <?php
+setlocale(LC_TIME, 'fr_FR');
 include_once 'CMDClassesDefinition.php';
 
 class CINFOfichierLab {
@@ -969,8 +970,9 @@ function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
 	}	
 	*/	
 	$resultat = $SourceDesCMD ."\n";
-
-	$resultat .= '#805814__Laurent_M’BOTA_28 rue du Jamet _44100_Nantes#' ."\n";
+	//date("j, n, Y"); 
+	//date("Y-m-d")
+	$resultat .= '#Tirages d\'exemples du ' . date("d / F") ."#\n";
 
 	$resultat .= str_replace($GLOBALS['SeparateurInfoPlanche'] , "\n", $strTabCMDLibre);
 	/*

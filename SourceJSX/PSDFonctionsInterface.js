@@ -355,10 +355,18 @@ function GenererFichiersLABO() {
 							//alert('repTirage :' + repTirage);
 						}
 						else{
-							repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
-						}	
+							if  (uneEcole.NomEcole.indexOf('(COMMANDES LIBRES)') > -1) {
+								//var ladate=new Date();
+								//repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-RECOMMANDES de GROUPEES';
+								repTirage = '8888-88-88-(COMMANDES LIBRES)-EN-COURS';
+								//alert('repTirage :' + repTirage);
+							}	
+							else{
+								repTirage = uneEcole.DateTirage + "-" + uneEcole.NomEcole;				
+							}											
+						}				
 					}
-			
+					
 					g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
 					g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
 					break;
