@@ -533,7 +533,7 @@ class CPlanche {
     }   	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span onclick="SelectionPhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
+		$resultat .= '<span onclick="SelectionnerCliquePhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
 
 			global $EcoleEnCours;
 			//echo $GLOBALS['repTIRAGES'] . '<br>';
@@ -550,6 +550,7 @@ class CPlanche {
 
 			
 			$resultat .= '<p>'. $this->FichierPlanche .'</p>';
+			
 		$resultat .= '</span> ';
 		return $resultat;
 	}
@@ -679,13 +680,26 @@ class CImgSource {
 			if (strpos(strtolower($this->Fichier),'fratrie')){
 				$Lien = '../../Code/res/img/Fratries.png';
 			}		
+			/* 	
 			$resultat .= '   
 			<span oncontextmenu="return monMenuContextuel(this)"
 			  onclick="CopierCommandes(this)" 
 			  id="'. urldecode($this->Fichier) . '" 
 			  Nb="0" 
-			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';		
+			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
+		  */					  
+			$resultat .= '   
+				<span  onclick="CopierCommandes(this)" 
+				id="'. urldecode($this->Fichier) . '" 
+				Nb="0" 
+				class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
 
+			  
+			  
+			$resultat .= '<button class="EnregistrerPhoto" onclick="SelectionnerCliquePhoto(this.parentElement)" >
+			<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
+				src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">
+			</button>';
 
 		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
 			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
@@ -693,31 +707,35 @@ class CImgSource {
 			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> 
 
-			<button type="submit" class="EnregistrerPhoto">
-					<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
-						src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">
+			<button type="submit" class="NomPhotoZoom">
+			<p>'. substr($this->Fichier, 0, -4)  .'</p>
 			</button>';
 
+$resultat .= '</form>';
+
+										
+				$resultat .= '<span class="textImageSource">';					
+				$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
+							  <span class="NombrePhoto"> 0 </span>
+							  <span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';			
+				$resultat .= '</span>';	
+
+			$resultat .= ($this->isGroupe()?'<span>':'');			
+			$resultat .= ($this->isGroupe()?'</span>':'');			
+			
+			//$resultat .= '<p>'. substr($this->Fichier, 0, -4)  .'</p>';
+
+			$Argument = '&urlImage=' . $LienBig;
+			$Argument .= '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire);
+			
+			//$resultat .= '<p><a href="CMDAffichePlanche.php'.ArgumentURL($Argument) . '" class = "NomPhotoZoom">'. substr($this->Fichier, 0, -4)  .'</a></p>';	
+			
 
 
-			$resultat .= '</form>';		
-			
-			
-			$resultat .= '<span class="textImageSource">';	
-			
-			$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
-						<span class="NombrePhoto"> 0 </span>
-						<span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';
-		
-			$resultat .= '</span>';	
-
-			$resultat .= ($this->isGroupe()?'<span>':'');
-			
-			$resultat .= ($this->isGroupe()?'</span>':'');
-			$resultat .= '<p>'. substr($this->Fichier, 0, -4)  .'</p>';
 
 			$resultat .= '<div class="ImageFichierWeb"></div>';		
-		
+			
+
 		$resultat .= '</span> ';
 		
 		return $resultat;

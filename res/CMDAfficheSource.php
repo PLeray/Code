@@ -119,6 +119,10 @@ if (!$MAJ){
 			<span id="idAfficheIndivs" onclick=AfficheIndivs()>|Seulement les individuelles|</span>
 			
 		</div>		
+
+		<div>
+				<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+		</div>		
 	</div>
 
 	  <div id="main">
@@ -128,10 +132,7 @@ if (!$MAJ){
 		<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
 			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
 
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	
-				<div id="myListePhoto" class="ListeCommandes">		
-					<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
-				</div>					
+				
 	
 				<div class="dropdown">
 					
@@ -147,6 +148,16 @@ if (!$MAJ){
 				</div>
 
 				<br><br>
+				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	
+				<div id="myListePhoto" class="ListeCommandes">		
+					<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
+				</div>	
+
+
+
+
+
+
 				<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="TransfererCMD()" disabled>Ajouter tirages</button>
 																	<span id="SelectProduit" >Agrandissement  20x20cm</span>		 
 				<br>
@@ -175,7 +186,6 @@ if (!$MAJ){
 		</div>
 	  
 		<div id="zoneAffichagePhotoEcole">	
-			<br><br>
 			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
 		
 			<?php  
@@ -244,7 +254,7 @@ if ($MAJ){
 	AfficheRechercheCMD(true);
 	openNav();*/
 </script>
-<script type="text/javascript" src="<?php Mini('js/ClickDroit.js');?>"></script>
+
 </body>
 </html>
 

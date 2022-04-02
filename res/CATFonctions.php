@@ -931,6 +931,7 @@ function TypeFichier($myfileName){
 
 // POUR LES RECOMMANDES !
 function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
+	SuprFichier($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'].".lab2");	
 	$NewFichierSeul = $GLOBALS['FichierDossierRECOMMANDE'].".lab0" ;
 	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
 	if (!file_exists($NewFichier)){
@@ -953,6 +954,7 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 
 // POUR LES COMMANDES LIBRES  ! A REVOIR
 function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
+	SuprFichier($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierCMDESLIBRE'].".lab2");
 	$NewFichierSeul = $GLOBALS['FichierDossierCMDESLIBRE'].".lab0" ;
 	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
 	if (!file_exists($NewFichier)){

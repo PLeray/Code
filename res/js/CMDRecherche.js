@@ -363,7 +363,7 @@ InitCommandes();
 
 }
 
-function SelectionPhoto(x) {
+function SelectionnerCliquePhoto(x) {
 	//	if(x.classList.contains("planche") && isRECOmmandes){
 	if(x.classList.contains("planche") ){
 		x.classList.replace("planche", "plancheSELECTIONNER");

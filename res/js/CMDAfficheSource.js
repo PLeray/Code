@@ -3,50 +3,6 @@ var sepFinLigne = '§';
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
-/*
-let input = document.querySelector(".input");
-let button = document.querySelector(".button");
-*/
-let ZoneListePhotos = document.getElementById("myListePhoto");
-//let ZoneListeCommandes = document.getElementById("myListeCommandes");
-//let ZoneListeFichiersBoutique = document.getElementById("myListeFichiersBoutique");
-
-ZoneListePhotos.addEventListener("change", stateHandle);
-//ZoneListeCommandes.addEventListener("change", stateHandle);
-//ZoneListeFichiersBoutique.addEventListener("change", stateHandle);
-
-function stateHandle() {
-  /*
-   if (document.querySelector(".input").value === "") {
-    button.disabled = true; 
-  } else {
-    button.disabled = false;
-  } 
- 
-  */
-
-  document.getElementById("btnAjouterTirages").disabled = (document.getElementById("myListePhoto").value === "");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
    document.getElementById('site').style.display='block';
@@ -68,21 +24,15 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("Entete").style.marginRight = "350px";	
 		document.getElementById("btnRemonter").style.right = "380px";	
 		document.getElementById("closeSidenav").textContent = ">>";
-		//right: 380px;	
-		
-		//document.getElementById("myListeCommandes").innerHTML = 'kjhkjh';	
 	}
 	else{
-		//alert('AfficheRechercheCMD()! : ' + isAffiche);	
-
 		document.getElementById("mySidenav").style.width = "50px";
+		document.getElementById("mySidenav").style.height = "50px";
 		  //document.getElementById("mySidenav").style.z-index = -2;  
 		document.getElementById("main").style.marginRight = "50px";
 		document.getElementById("Entete").style.marginRight = "50px";
 		document.getElementById("btnRemonter").style.right = "80px";	
-		document.getElementById("closeSidenav").textContent = "<<"; //= >>		
-
-		//alert('AfficheRechercheCMD()! : ' + isAffiche);			
+		document.getElementById("closeSidenav").textContent = "<<"; //= >>				
 	}
 }
 	
@@ -95,15 +45,22 @@ window.onload = function (){
 };
 
 function AfficheGroupe() {
-	//alert('AfficheGroupe :!!');
 	listPhoto = document.getElementsByClassName('PlancheGroupe');
+	
+	//alert('AfficheGroupe : ' + listPhoto[0].getAttribute('id'));
+	
     for (i = 0; i < listPhoto.length; i++) {	
-		listPhoto[i].style.display = "inline";
+		//listPhoto[i].style.display = "inline";
+		listPhoto[i].style.display = (listPhoto[i].getAttribute('id').indexOf('FRATRIES')>-1)?"none":"inline";
     }	
 	listPhoto = document.getElementsByClassName('PlancheIndiv');
     for (i = 0; i < listPhoto.length; i++) {	
 		listPhoto[i].style.display = "none";
     }	
+	listPhoto = document.getElementsByClassName('IndivSELECTION');
+    for (i = 0; i < listPhoto.length; i++) {	
+		listPhoto[i].style.display = "none";
+    }		
 	listPhoto = document.getElementsByClassName('ligne_classe');
     for (i = 0; i < listPhoto.length; i++) {	
 		listPhoto[i].style.display = "none";
@@ -122,6 +79,10 @@ function AfficheIndivs() {
     for (i = 0; i < listPhoto.length; i++) {	
 		listPhoto[i].style.display = "inline-block";
     }	
+	listPhoto = document.getElementsByClassName('GroupeSELECTION');
+    for (i = 0; i < listPhoto.length; i++) {	
+		listPhoto[i].style.display = "none";
+    }		
 	listPhoto = document.getElementsByClassName('ligne_classe');
     for (i = 0; i < listPhoto.length; i++) {	
 		listPhoto[i].style.display = "flex";
@@ -132,23 +93,32 @@ function AfficheIndivs() {
 }
 
 function AfficheTout() {
-	listPhoto = document.getElementsByClassName('PlancheGroupe');
-    for (i = 0; i < listPhoto.length; i++) {	
-		listPhoto[i].style.display = "inline";
-    }	
 	listPhoto = document.getElementsByClassName('PlancheIndiv');
     for (i = 0; i < listPhoto.length; i++) {	
 		listPhoto[i].style.display = "inline-block";
     }	
+	listPhoto = document.getElementsByClassName('IndivSELECTION');
+    for (i = 0; i < listPhoto.length; i++) {	
+		listPhoto[i].style.display = "inline-block";
+    }	
+	
+	listPhoto = document.getElementsByClassName('PlancheGroupe');
+    for (i = 0; i < listPhoto.length; i++) {	
+		listPhoto[i].style.display = "inline";
+    }	
+	listPhoto = document.getElementsByClassName('GroupeSELECTION');
+    for (i = 0; i < listPhoto.length; i++) {	
+		listPhoto[i].style.display = "inline";
+    }		
 	listPhoto = document.getElementsByClassName('ligne_classe');
     for (i = 0; i < listPhoto.length; i++) {	
 		listPhoto[i].style.display = "flex";
     }		
+	
 	document.getElementById("idAfficheGroupe").style.display = "inline";
 	document.getElementById("idAfficheIndivs").style.display = "inline";
 	document.getElementById("idAfficheTout").style.display = "none";	
 }
-
 
 function scrollFunction() {
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -189,21 +159,28 @@ function CopierCommandes(x) {
 
 }
 
-function SelectionPhoto(x) {
-/* */	
-	if (parseInt(x.getAttribute('Nb')) == 0){
+function SelectionnerCliquePhoto(x) {
+/* */
+	var nbPhotos = parseInt(x.getAttribute('Nb'));
+
+	if (nbPhotos < 1){
+		CopierCommandes(x);
+		if (!(x.getAttribute('id').indexOf('FRATRIES')>-1)) {
+			SelectionSurPhoto(x);
+		}
+		openNav();
+	}		
+
+}
+
+function SelectionSurPhoto(x) {
+	var nbPhotos = parseInt(x.getAttribute('Nb'));
+	if (nbPhotos == 0){
 		x.setAttribute('Nb',  ' 1 ');
 	}else{
 		x.setAttribute('Nb',  ' 0 ');
-	}
+	}		
 	RemplacementClassSelection(x);
-
-/** 
-	if(x.classList.contains("PlancheIndiv")){x.classList.replace("PlancheIndiv", "IndivSELECTION");}
-	else if(x.classList.contains("IndivSELECTION")){x.classList.replace("IndivSELECTION", "PlancheIndiv");}
-	else if(x.classList.contains("PlancheGroupe")){x.classList.replace("PlancheGroupe", "GroupeSELECTION");
-	}else if(x.classList.contains("GroupeSELECTION")){x.classList.replace("GroupeSELECTION", "PlancheGroupe");}  	
-	*/
 	MAJEnregistrementSelectionPhotos();
 }
 
@@ -213,7 +190,63 @@ function RemplacementClassSelection(x) {
 	else if(x.classList.contains("PlancheGroupe")){x.classList.replace("PlancheGroupe", "GroupeSELECTION");
 	}else if(x.classList.contains("GroupeSELECTION")){x.classList.replace("GroupeSELECTION", "PlancheGroupe");}  	
 }
-			
+
+
+function SelectionnerCommandesAffiche() {
+	var ToutSelectionner = (document.getElementById("CaseSelectionnerCommandesAffiche").className == 'caseCheckVide');
+	if (ToutSelectionner){
+		// INDIV  
+		var mesPlanches = document.getElementsByClassName("PlancheIndiv");
+		while(mesPlanches.length >0){
+			if ( mesPlanches[0].offsetHeight > 0 ) {
+				SelectionSurPhoto(mesPlanches[0]);
+			}
+			else{
+				mesPlanches[0].classList.replace("PlancheIndiv", "plancheNONVisibleIndiv");
+			}			
+		}	
+		var mesPlanches = document.getElementsByClassName("plancheNONVisibleIndiv");
+		while(mesPlanches.length > 0){
+			mesPlanches[0].classList.replace("plancheNONVisibleIndiv", "PlancheIndiv");
+		}
+		// GROUPE
+		var mesPlanches = document.getElementsByClassName("PlancheGroupe");
+		while(mesPlanches.length > 0){
+			if ( mesPlanches[0].offsetHeight > 0 ) {
+				if (!(mesPlanches[0].getAttribute('id').indexOf('FRATRIES')>-1)) {
+					SelectionSurPhoto(mesPlanches[0]);
+				}else{
+					mesPlanches[0].classList.replace("PlancheGroupe", "plancheNONVisibleGroupe");
+				}
+
+			}	
+			else{
+				mesPlanches[0].classList.replace("PlancheGroupe", "plancheNONVisibleGroupe");
+			}			
+		}
+		var mesPlanches = document.getElementsByClassName("plancheNONVisibleGroupe");
+		while(mesPlanches.length > 0){
+			mesPlanches[0].classList.replace("plancheNONVisibleGroupe", "PlancheGroupe");
+		}		
+		openNav();
+	}else{
+		// INDIV
+		var mesPlanches = document.getElementsByClassName("IndivSELECTION");
+		while(mesPlanches.length >0){
+			mesPlanches[0].classList.replace("IndivSELECTION", "PlancheIndiv");	
+		}
+		// GROUPE
+		var mesPlanches = document.getElementsByClassName("GroupeSELECTION");
+		while(mesPlanches.length >0){
+			//mesPlanches[0].classList.replace("GroupeSELECTION", "PlancheGroupe");	
+			SelectionSurPhoto(mesPlanches[0]);
+		}		
+	}
+	document.getElementById("CaseSelectionnerCommandesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
+	mesRecommandes();
+}	
+
+
 function VoirPhotoSelection(x) {
 	var mesPlanches = document.getElementsByClassName("planche");
 
@@ -233,13 +266,13 @@ function MAJEnregistrementSelectionPhotos() {
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
 		mesRecoInfo = mesRecoInfo  + mesPlanches[i].getAttribute('id') + '____'
-								+ mesPlanches[i].getAttribute('Nb') + sepFinLigne;
+								+ mesPlanches[i].getAttribute('Nb').trim() + sepFinLigne;
 	}	
 	var mesPlanches = document.getElementsByClassName("IndivSELECTION");
 	//console.log(' Nombre Page : ' + BoutonPage.length );	
 	for (i = 0; i < mesPlanches.length; i++) {
 	  mesRecoInfo = mesRecoInfo  + mesPlanches[i].getAttribute('id') + '____'
-	 							 + mesPlanches[i].getAttribute('Nb') + sepFinLigne;
+	 							 + mesPlanches[i].getAttribute('Nb').trim() + sepFinLigne;
 	}	
 
 	document.getElementById('lesPhotoSelection').value =  mesRecoInfo;
@@ -316,15 +349,22 @@ function MAJCommandes() {
 }
 */
 function NbPlancheMOINS(element) {
+	//alert('NbPlancheMOINS');
 	var nombre = parseInt( element.parentElement.parentElement.getAttribute('Nb'));
 	nombre = nombre -1;
+	
+	//if (nombre < 1) {SelectionSurPhoto(element.parentElement.parentElement);}
+	if (nombre < 1) {RemplacementClassSelection(element.parentElement.parentElement);}
+
+	
+
 	element.parentElement.parentElement.setAttribute('Nb',  ' ' + nombre +  ' ');
-	if (nombre < 1) {SelectionPhoto(element.parentElement.parentElement);}
 	MAJEnregistrementSelectionPhotos();
 	//alert('Moins : ' + element.parentElement.parentElement.getAttribute('id') +  '  x' + element.parentElement.parentElement.getAttribute('Nb')); 
 
 }
 function NbPlanchePLUS(element) {
+	//alert('NbPlanchePLUS');
 	var nombre = parseInt( element.parentElement.parentElement.getAttribute('Nb'));
 	nombre = nombre + 1;
 	element.parentElement.parentElement.setAttribute('Nb', ' ' + nombre +  ' ');	
