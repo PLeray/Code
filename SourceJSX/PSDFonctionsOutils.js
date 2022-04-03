@@ -417,15 +417,15 @@ function SuiteERREURGenerer() {
 
 function CreerUnProduitPourLeLaboratoire(unProduit){
 	var nomFichierPhoto = unProduit.FichierPhoto;
-	var valRetour = unNomdePlanche;	
+	var valRetour = nomFichierPhoto;	
 	//alert('QQQ001 nomFichierPhoto.substr(4, 6) == "-QCoin"  :' + nomFichierPhoto.substr(4, 6));
-
+	alert('QQQ003 nouveau  nomFichierPhoto ' + nomFichierPhoto);
 	if (nomFichierPhoto.substr(4, 6) == '-QCoin'){   //2012-QCoinD-WEB.jpg	
 		valRetour = CreerUnProduitQUATTROPourLeLaboratoire(unProduit);
 	}
 	else{
 		var unNomdePlanche = NomPlancheLabo(unProduit, nomFichierPhoto);
-
+		alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
 		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 		var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 		//alert('TESTZ50 DEBUT CreerUnProduitPourLeLaboratoire : ' + isDEJAPlancheJPGDossierTirage(unNomdePlanche) + ' ' + unNomdePlanche);
@@ -570,8 +570,9 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 	//alert('QQQ000  : ' + leRECADRAGE +  ' pour le nom photo : ' + nomFichierPhoto);
 
 	var nomFichierPhoto = nomFichierPhoto.substr(0,4) + '.jpg';
-	//alert('QQQ003 nouveau nom de photo ' + nomFichierPhoto);
+	
 	var unNomdePlanche = NomPlancheLabo(unProduit, unProduit.FichierPhoto);
+	alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
 	var valRetour = unNomdePlanche;
 	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 	var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
@@ -965,7 +966,7 @@ function TestIndivPhotoDeGroupe(){
 	var msgTest = '';
 	var nomFichierGroupe = '';
 	for (var m = 0; m < g_CommandeLabo.NbPlanchesACreer() ; m++) {
-		var unProduit = new Produit (g_CommandeLabo.ListePlanches[m]);
+		var unProduit = new Produit(g_CommandeLabo.ListePlanches[m]);
 		if (unProduit.FichierPhoto.length && unProduit.isNeedGroupeClasse()){//Ouvrir la bonne photo ? Groupe
 			nomFichierGroupe = GroupeClassePourIndiv(unProduit);
 			//msgTest = msgTest + "\n" + unProduit.FichierPhoto + " => " + g_GroupeIndiv[unProduit.FichierPhoto];
@@ -1500,8 +1501,6 @@ function TypeTraitement(unFichier, unDossier, isVariante){
 }
 
 function TypeTraitementOLD(unFichier, unDossier, isPlancheWEBVariante){
-	//var pasLesGroupe = (traitement.substr(0,1) == 'I');
-	//var pasLesFratries = (traitement.substr(1,1) != 'F');
 	var retourval = g_CONFIGtypeConfigWeb;
 	//var isQuattro = (g_CONFIGtypeConfigWeb == 'WEB-QUATTRO');
 	var numFichierIndiv = 0;

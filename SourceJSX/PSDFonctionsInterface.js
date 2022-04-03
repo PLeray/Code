@@ -172,13 +172,13 @@ function ChercherFichierLab(avecErreur) {
 			leFichier = g_TabFichierATraiter[n];
 			
 			strExtension = (leFichier.slice(-5) == ".lab0")? '.lab' : '.web';
-			strBaseName = leFichier.substring(0, leFichier.lastIndexOf(strExtension));  
+			strBaseName = leFichier.substr(0, leFichier.lastIndexOf(strExtension));  
 
 			if (!isFichierErreur(leFichier)) {	
 				YAutre = false;
 
 				for (var i = 0; i < g_TabFichierATraiter.length; i++) {
-					if (strBaseName == g_TabFichierATraiter[i].substring(0, g_TabFichierATraiter[i].lastIndexOf(strExtension))){								
+					if (strBaseName == g_TabFichierATraiter[i].substr(0, g_TabFichierATraiter[i].lastIndexOf(strExtension))){								
 						if(leFichier != g_TabFichierATraiter[i]){ //Fichier en cours de traitement								
 							if (g_TabFichierATraiter[i].substr(-1, 1) != '1'){
 								$YAutre = true;
@@ -325,14 +325,10 @@ function MAJinfoEcole(uneEcole) {
 function GenererFichiersLABO() { 
 	try {
 		var isEcoleOK = false;
-		// On met en gris au depart ...
-		//PSJ AOUT 21 
 		PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 
 		var chronoDebut = new Date().getTime();
         var nbLigneFichier = g_CommandeLabo.NbLignes();
-		//var cmdReste = nbLigneFichier;	
-    	//alert("TEST Z40 nbLigneFichier : " + nbLigneFichier);	
 		
 		// Definition du repertoire de tirage : unique par fichier de commande !!!
 		for (var m = 0; m < nbLigneFichier; m++) {
@@ -369,8 +365,7 @@ function GenererFichiersLABO() {
 					
 					g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'TIRAGES/' + repTirage;
 					g_RepMINIATURES_DateEcole = g_Rep_PHOTOLAB + 'CMDLABO/MINIATURES/' + repTirage;
-					break;
-						
+					break;						
 				}
 			}  			
 		}
@@ -409,13 +404,11 @@ function GenererFichiersLABO() {
 					if (isEcoleOK && ligne && CreerUnDossier(g_RepTIRAGES_DateEcole)){                
 					
 						g_CommandePDTEncours = ligne.substr(0,ligne.length-2);
-						var unProduit = new Produit(ligne);  	
-						
-						//alert("TEST Z39566 unProduit.isProduitLABO() : " + unProduit.isProduitLABO());
-						
+						var unProduit = new Produit(ligne);  						
 						if (unProduit.isProduitLABO()){
 							//SUPRIMMER CA POUR VOIR SI PREND DU TEMPS!
-							var plancheCree = CreerUnProduitPourLeLaboratoire(unProduit);
+							//alert("TEST Z39566 unProduit.Nombre : " + unProduit.Nombre);
+							var plancheCree = CreerUnProduitPourLeLaboratoire(unProduit);							
 						}else{
 							var plancheCree = unProduit.Type;
 							g_TabLigneOriginale[unProduit.indexOriginal] = plancheCree;

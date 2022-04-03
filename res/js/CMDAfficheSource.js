@@ -283,7 +283,6 @@ function MAJEnregistrementSelectionPhotos() {
 	document.getElementById("btnAjouterTirages").disabled = (maListePhotos.innerHTML === "");
 
 	MAJAffichageSelectionPhotos();
-	
 }	
 
 function MAJAffichageSelectionPhotos(chargement = false) {
@@ -307,11 +306,9 @@ function MAJAffichageSelectionPhotos(chargement = false) {
 		if(TableauFichierBoutique[i].trim()!=''){
 			var maPhoto = document.getElementById(TableauFichierBoutique[i]);
 			//alert('ImageFichierWeb : "'  + maPhoto.getElementsByClassName("ImageFichierWeb")[0].textContent + '"');	
-			maPhoto.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";
-			
+			maPhoto.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";			
 		}
 	}	
-
 }
 
 function AjoutFichierBoutique(element) {
@@ -395,8 +392,22 @@ function TransfererCMD() {
 		document.getElementById('lesCmdesLibres').value += '<' + LeProduitSelection + '>' + sepFinLigne
 														+ CMDPhotosProduits(maListePhotos, LeProduitSelection);
 														
-		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");														
-		/*
+		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");	
+		
+		/*		
+
+var strProduit = this.TableauLignes[i].substring(0,this.TableauLignes[i].indexOf(sepNumLigne));
+					var pos = strProduit.lastIndexOf('_');
+					var nbProduitAFaire = parseInt(strProduit.substring(pos+1));
+
+					alert( '444 Init Liste Planches : ' + strProduit);
+					
+					strProduit = strProduit.substring(0, pos+1) + '1';
+
+
+
+
+
 		document.getElementById('lesCmdesLibres').value = document.getElementById('lesCmdesLibres').value							
 												+ '<Voir a quoi correspond ceci ... %20 cm>'+ sepFinLigne;									
 		document.getElementById('lesCmdesLibres').value = document.getElementById('lesCmdesLibres').value

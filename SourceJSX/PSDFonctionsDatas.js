@@ -114,6 +114,7 @@ function isLigneEtat(ligne) {
 function Produit(CodeLigne) {
 // <(Nom) Numéro de la photo_<Taille>_< Produit>_<Teinte>_<Nombre>ex//.jpg
 	this.indexOriginal =  CodeLigne.substr(1 + CodeLigne.indexOf(sepNumLigne));
+	//alert('this.indexOriginal : '+this.indexOriginal);
 	
 	this.Code =  CodeLigne.substr(0,CodeLigne.indexOf(sepNumLigne));
 
@@ -216,9 +217,25 @@ function CommandesLabo(tableaudeLabo, FichierLab) {
 				(identifiant != '')) {
 
 				if (!isEcole(this.TableauLignes[i]) && (this.TableauLignes[i])) {
-					//this.ListePlanches.push(this.TableauLignes[i]);
 					//NEW 30-09-2021
-					this.ListePlanches.push(this.TableauLignes[i].substr(0,this.TableauLignes[i].indexOf(sepNumLigne)));					
+					this.ListePlanches.push(this.TableauLignes[i].substr(0,this.TableauLignes[i].indexOf(sepNumLigne)));																	
+										
+					/*
+					//Identification du nombre de planche !!!
+					var strProduit = this.TableauLignes[i].substr(0,this.TableauLignes[i].indexOf(sepNumLigne));
+					var pos = strProduit.lastIndexOf('_');
+					var nbProduitAFaire = parseInt(strProduit.substr(pos+1));
+
+					alert( '444 Init Liste Planches : ' + strProduit);
+
+					strProduit = strProduit.substr(0, pos+1) + '1';
+
+					alert( '444 Init Liste Planches : ' + strProduit);
+					for (var n = 0; n < nbProduitAFaire; n++){
+						//alert( '4444 Init Liste Planches : ' + strProduit );
+						this.ListePlanches.push(strProduit);
+					}
+				*/							
 				}
 			}				
 		} 		
@@ -261,7 +278,7 @@ function APIphotolab(Data){
 	var LaConnexion = new APIConnexionJS;
 	if (LaConnexion.isSocket){
 		try {
-			alert( 'Adresse + Data  : ' + LaConnexion.Adresse + Data );		
+			//alert( 'Adresse + Data  : ' + LaConnexion.Adresse + Data );		
 			var reponse;  
 			var socket = new Socket();  
 			// socket.encoding = "binary";  
@@ -277,7 +294,7 @@ function APIphotolab(Data){
 				return result;
 			}
 			else {
-				alert('socket.open false API');
+				//alert('socket.open false API');
 				return '';		
 			}
 		}
