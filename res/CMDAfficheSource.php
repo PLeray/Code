@@ -54,7 +54,7 @@ if (isset($_POST['lesFichiersBoutique']) ){
 	MAJFichierBoutique($lesFichiersBoutique, $codeSource, $anneeSource);
 }
 
-$monProjet = ChercherSOURCESEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
 
 // echo $monProjet->NomProjet . $monProjet->NomProjet . $monProjet->NomProjet;
 ?>
@@ -139,15 +139,9 @@ if (!$MAJ){
 						
 						<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
 						<div id="myDropdown" class="dropdown-content">
-							<a href="#about">Agrandissement  20x20cm</a>
-							<a href="#base">Quattro  20x20cm</a>
-							<a href="#about">Agrandissement  20x20cm</a>
-							<a href="#base">Quattro  20x20cm</a>
-							<a href="#about">Agrandissement 20x20cm</a>
-							<a href="#base">Quattro  20x20cm</a>
+							<?php echo RemplissageDropProduit($monProjet); ?>  
 						</div>
 					</div>
-
 					<br><br>
 					
 		
@@ -157,7 +151,7 @@ if (!$MAJ){
 					</div>	
 
 					<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="CreationCommandeProduitDepuisPhoto()" disabled>Ajouter tirages</button>
-																		<span id="SelectProduit" >Agrandissement  20x20cm</span>		 
+																		<span id="SelectProduit" Code="20x20cm MAT_PORTRAIT">Agrandissement  20x20cm</span>		 
 					<br>
 					<div id="myListeCommandes" class="ListeCommandes">		
 						<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      
@@ -270,7 +264,19 @@ function MAJFichierBoutique($ListeFichier, $codeSource, $anneeSource){
 }
 
 
-function ChercherSOURCESEcole($fichierCSV, $codeProjet, $anneeProjet){ 
+function RemplissageDropProduit($monProjet){ 
+	$str =  '';
+
+	$CataloguePdtWEB = csv_to_array('../../GABARITS/CatalogueProduits.csv', ';'); 
+
+	for($i = 0; $i < count($CataloguePdtWEB) ; $i++){
+		$str .= '<a href=javascript:void(0); Code="'.$CataloguePdtWEB[$i]['Code'].'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEB[$i]['Description'].'</a>';
+
+	} 
+	return $str;
+}
+
+function RecupProjetSourceEcole($fichierCSV, $codeProjet, $anneeProjet){ 
 	$monProjet = '';
 	if (file_exists($fichierCSV)){
 		$TabCSV = csv_to_array($fichierCSV, ';');

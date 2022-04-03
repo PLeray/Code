@@ -412,6 +412,7 @@ function NbPlanchePLUS(element) {
 }
 
 function CreationCommandeProduitDepuisPhoto() {
+	
 	var TableauSelectionPhotos = document.getElementById('lesPhotoSelection').value.split(sepFinLigne);
 	if (TableauSelectionPhotos.length > 1 ) {
 		//alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
@@ -425,38 +426,59 @@ function CreationCommandeProduitDepuisPhoto() {
 			}
 		}
 		var maListePhotos = document.getElementById('lesPhotoSelection').value;
-
+		
 		document.getElementById('lesPhotoSelection').value =  '';
-		
 		//var maListePhotos = document.getElementById("myListePhoto").innerHTML;
-		var LeProduitSelection = document.getElementById('SelectProduit').innerHTML;
-				
+		//var LeProduitSelection = document.getElementById('SelectProduit').innerHTML;	
 		
-		//Affichage  // '&#60;' et '&#62;' pour remplacer les '<' et '>'
-		document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos, LeProduitSelection);
-														
+		//Affichage  // '&#60;' et '&#62;' pour remplacer les '<' et '>'		
+		document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos,  document.getElementById('SelectProduit').innerHTML);		
+		
+		//Cequ on enregistre : 
+		//document.getElementById("myListeCommandes").innerHTML += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
 		//La commande Sauvée																																
-		document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos, LeProduitSelection);
+		document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
 														
 		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");	
 	}
 }
 
-function CMDPhotosProduits(ListedePhoto, LeProduitSelection) {
-	var maCMDPhotosProduits = '<' + LeProduitSelection + '>' + sepFinLigne;
+function CMDPhotosProduits(ListedePhoto, elementSelection) {
+	
+	var maCMDPhotosProduits = '<' + elementSelection.innerHTML + '>' + sepFinLigne;
 	var CMDSelectionPhoto = ListedePhoto.split(sepFinLigne);
-
+	
 	for (i = 0; i < CMDSelectionPhoto.length  ; i++) {
 		if ( CMDSelectionPhoto[i] !=''){
 			var CMDInfoPhoto = CMDSelectionPhoto[i].split('____');
 			
-			for (n = 0; n < parseInt(CMDInfoPhoto[1])  ; n++) {				
-				maCMDPhotosProduits += CMDInfoPhoto[0] + '_' + CodeProduit(LeProduitSelection) + '_1'+ sepFinLigne;
+			for (n = 0; n < parseInt(CMDInfoPhoto[1])  ; n++) {
+								
+				maCMDPhotosProduits += CMDInfoPhoto[0] + '_' + CodeProduit(elementSelection.getAttribute('Code')) + '_1'+ sepFinLigne;
 			}
 		}
 	}
 	return maCMDPhotosProduits;
+
+/*
+	this.TableauInfo = CodeLigne.substr(0,CodeLigne.indexOf(sepNumLigne)).split('_');
+
+	this.FichierPhoto = this.TableauInfo[0];	
+	this.Taille = this.TableauInfo[1] || "";	
+	this.Type = this.TableauInfo[2] || "";
+	this.Teinte = this.TableauInfo[3] || "";
+	this.Nombre = this.TableauInfo[4] || 1;
+*/
+
 }
+function CodeProduit(Produits) {
+	//alert(Produits);
+	var CMDInfoPhoto = Produits.split('_');
+	Produits =   (CMDInfoPhoto[0] || "") + '_' + (CMDInfoPhoto[1] || "") + '_' + (CMDInfoPhoto[2] || "");
+	return Produits;
+}
+
+
 
 function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 	var strAffichage = '';
@@ -468,16 +490,7 @@ function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 			strAffichage += CMDInfoPhoto[1] + 'ex ' +  CMDInfoPhoto[0] + ' : ' + LeProduitSelection + '<br>';
 		}
 	} 
-	//Cequ on enregistre : 
-	//strAffichage = CMDPhotosProduits(ListedePhoto, LeProduitSelection).replaceAll('<','&#60;').replaceAll('>','&#62;').replaceAll(sepFinLigne,'<br>');
 	return strAffichage;
-}
-
-function CodeProduit(Produits) {
-	Produits =  '20x20cm__';
-
-
-	return Produits;
 }
 
 function SelectionProduit() {
@@ -498,4 +511,15 @@ function filterProduits() {
 		a[i].style.display = "none";
 		}
 	}
+}
+
+function CliqueDropDown(element) {
+	document.getElementById("ZoneSaisie").value = element.innerText;
+	document.getElementById("SelectProduit").innerText = element.innerText;
+	//document.getElementById("SelectProduit").Code = element.Code;
+
+	document.getElementById("SelectProduit").setAttribute('Code', element.getAttribute('Code'));
+
+	filterProduits();
+
 }

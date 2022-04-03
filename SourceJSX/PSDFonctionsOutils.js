@@ -427,7 +427,6 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 		//alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
 		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 		var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
-		//alert('TESTZ50 DEBUT CreerUnProduitPourLeLaboratoire : ' + isDEJAPlancheJPGDossierTirage(unNomdePlanche) + ' ' + unNomdePlanche);
 		if(!isDEJAPlancheJPGDossierTirage(unNomdePlanche)){
 		//if(!isFichierExiste(unPathPlanche)){
 			try {
@@ -448,24 +447,23 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
 						nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
 					}					
-					
-					//alert('Avant OUverture CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
 					var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
 					var reussiteTraitement = (laPhoto != null);	
 					if (reussiteTraitement) {
-						var docName = laPhoto.name;
+						//var docName = laPhoto.name;
 						//var basename = docName.match(/(.*)\.[^\.]+$/)[1];
 						//var docPath = laPhoto.path;		SUPRESSION 17/11/2020 ??!!						
 						////////  Cas des fratrie ou Indiv en paysage =>> Portrait /////////
-						var isFratrie = false;
+						//var isFratrie = false;
 						var myDocument = app.activeDocument; 
-						if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {
+						var aRetourner = false;
+						//if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {
 							if (myDocument.width > myDocument.height) { 
 								//alert('rotateCanvas' ); 						
-								isFratrie = true;
+								aRetourner = true;
 								myDocument.rotateCanvas(90)  
 							}  
-						}	
+						//}	
 						//alert('TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
 						//////////////// VERIF-DPI //////////////////////
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');				
@@ -528,9 +526,15 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						if (reussiteTraitement){
 							// Pour avoir des planches homogenes dans le viewer de commandes					
 							myDocument = app.activeDocument; 
-							if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {  
-								if (myDocument.width > myDocument.height) { myDocument.rotateCanvas(-90);}  
+							//if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) { 
+							//
+							if (aRetourner) {
+								alert('aRetourner'); 
+								myDocument.rotateCanvas(-90);
 							} 
+								
+								//if (myDocument.width > myDocument.height) { myDocument.rotateCanvas(-90);}  
+							//} 
 							//La sauvegarde ...						
 							SauvegardeJPEG(laPhoto, unPathPlanche);
 							
