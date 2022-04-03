@@ -156,7 +156,7 @@ if (!$MAJ){
 						<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
 					</div>	
 
-					<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="TransfererCMD()" disabled>Ajouter tirages</button>
+					<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="CreationCommandeProduitDepuisPhoto()" disabled>Ajouter tirages</button>
 																		<span id="SelectProduit" >Agrandissement  20x20cm</span>		 
 					<br>
 					<div id="myListeCommandes" class="ListeCommandes">		

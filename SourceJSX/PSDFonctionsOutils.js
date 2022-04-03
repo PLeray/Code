@@ -418,14 +418,13 @@ function SuiteERREURGenerer() {
 function CreerUnProduitPourLeLaboratoire(unProduit){
 	var nomFichierPhoto = unProduit.FichierPhoto;
 	var valRetour = nomFichierPhoto;	
-	//alert('QQQ001 nomFichierPhoto.substr(4, 6) == "-QCoin"  :' + nomFichierPhoto.substr(4, 6));
-	alert('QQQ003 nouveau  nomFichierPhoto ' + nomFichierPhoto);
+	//alert('QQQ003 nouveau  nomFichierPhoto ' + nomFichierPhoto);
 	if (nomFichierPhoto.substr(4, 6) == '-QCoin'){   //2012-QCoinD-WEB.jpg	
 		valRetour = CreerUnProduitQUATTROPourLeLaboratoire(unProduit);
 	}
 	else{
 		var unNomdePlanche = NomPlancheLabo(unProduit, nomFichierPhoto);
-		alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
+		//alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
 		var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 		var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 		//alert('TESTZ50 DEBUT CreerUnProduitPourLeLaboratoire : ' + isDEJAPlancheJPGDossierTirage(unNomdePlanche) + ' ' + unNomdePlanche);
@@ -572,7 +571,7 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 	var nomFichierPhoto = nomFichierPhoto.substr(0,4) + '.jpg';
 	
 	var unNomdePlanche = NomPlancheLabo(unProduit, unProduit.FichierPhoto);
-	alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
+	//alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
 	var valRetour = unNomdePlanche;
 	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 	var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
