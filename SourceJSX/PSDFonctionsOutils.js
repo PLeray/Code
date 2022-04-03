@@ -529,7 +529,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							//if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) { 
 							//
 							if (aRetourner) {
-								alert('aRetourner'); 
+								//alert('aRetourner'); 
 								myDocument.rotateCanvas(-90);
 							} 
 								
