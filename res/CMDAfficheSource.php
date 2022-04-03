@@ -129,59 +129,60 @@ if (!$MAJ){
 		<div id="mySidenav" class="sidenav">
 		
 		
-		<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
+			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
+			
+			<a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a>	
+
 			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
-
-				
-	
-				<div class="dropdown">
-					
-					<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
-					<div id="myDropdown" class="dropdown-content">
-						<a href="#about">Agrandissement  20x20cm</a>
-						<a href="#base">Quattro  20x20cm</a>
-						<a href="#about">Agrandissement  20x20cm</a>
-						<a href="#base">Quattro  20x20cm</a>
-						<a href="#about">Agrandissement 20x20cm</a>
-						<a href="#base">Quattro  20x20cm</a>
+				<div id="ZoneCommandesTirages">		
+					<div class="dropdown">
+						
+						<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
+						<div id="myDropdown" class="dropdown-content">
+							<a href="#about">Agrandissement  20x20cm</a>
+							<a href="#base">Quattro  20x20cm</a>
+							<a href="#about">Agrandissement  20x20cm</a>
+							<a href="#base">Quattro  20x20cm</a>
+							<a href="#about">Agrandissement 20x20cm</a>
+							<a href="#base">Quattro  20x20cm</a>
+						</div>
 					</div>
-				</div>
 
-				<br><br>
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	
-				<div id="myListePhoto" class="ListeCommandes">		
-					<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
-				</div>	
-
-
-
-
-
-
-				<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="TransfererCMD()" disabled>Ajouter tirages</button>
-																	<span id="SelectProduit" >Agrandissement  20x20cm</span>		 
-				<br>
-				<div id="myListeCommandes" class="ListeCommandes">		
-					<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      
-				</div>	
-				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesLIBRES($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
-					<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
-					<input type="hidden" name="lesCmdesLibres" id="lesCmdesLibres" value="<?php echo $lesCmdesLibres; ?>" /> 					
-
-					<button type="submit" id="btnCmdesLibres" class="btnEnregistrer" disabled >Quitter et enregistrer ces commandes LIBRES</button>
-				</form> 
-				<br><br>
-				<!-- FICHIERBOUTIQUES ici -->
-				<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	
-				<div id="myListeFichiersBoutique" class="ListeCommandes">
-					<?php echo str_replace($sepFinLigne, "<br>", $lesFichiersBoutique); ?>
-				</div>				
-				<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesFICHIERBOUTIQUES($monProjet->NomProjet); ?>" enctype="multipart/form-data">					
-					<input type="hidden" name="lesFichiersBoutique" id="lesFichiersBoutique" value="<?php echo $lesFichiersBoutique; ?>" /> 
-	
-					<button type="submit" id="btnFichiersBoutique" class="btnEnregistrer" disabled>Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
-				</form> 	
+					<br><br>
 					
+		
+					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	
+					<div id="myListePhoto" class="ListeCommandes">		
+						<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
+					</div>	
+
+					<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="TransfererCMD()" disabled>Ajouter tirages</button>
+																		<span id="SelectProduit" >Agrandissement  20x20cm</span>		 
+					<br>
+					<div id="myListeCommandes" class="ListeCommandes">		
+						<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      
+					</div>	
+					<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesLIBRES($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
+						<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
+						<input type="hidden" name="lesCmdesLibres" id="lesCmdesLibres" value="<?php echo $lesCmdesLibres; ?>" /> 					
+
+						<button type="submit" id="btnCmdesLibres" class="btnEnregistrer" disabled >Quitter et enregistrer ces commandes LIBRES</button>
+					</form>     
+				</div>	
+				<br><br>
+
+				<div id="ZoneCommandesFichierBoutiques">		
+					<!-- FICHIERBOUTIQUES ici -->
+					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	
+					<div id="myListeFichiersBoutique" class="ListeCommandes">
+						<?php echo str_replace($sepFinLigne, "<br>", $lesFichiersBoutique); ?>
+					</div>				
+					<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesFICHIERBOUTIQUES($monProjet->NomProjet); ?>" enctype="multipart/form-data">					
+						<input type="hidden" name="lesFichiersBoutique" id="lesFichiersBoutique" value="<?php echo $lesFichiersBoutique; ?>" /> 
+		
+						<button type="submit" id="btnFichiersBoutique" class="btnEnregistrer" disabled>Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
+					</form>     
+				</div>							
 			</div>		
 		</div>
 	  

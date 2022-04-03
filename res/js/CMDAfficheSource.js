@@ -1,5 +1,7 @@
 var sepFinLigne = '§';
 
+var g_IsTirage;
+BasculeMode();BasculeMode();
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
 
@@ -24,6 +26,7 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("Entete").style.marginRight = "350px";	
 		document.getElementById("btnRemonter").style.right = "380px";	
 		document.getElementById("closeSidenav").textContent = ">>";
+		
 	}
 	else{
 		document.getElementById("mySidenav").style.width = "50px";
@@ -34,6 +37,7 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("btnRemonter").style.right = "80px";	
 		document.getElementById("closeSidenav").textContent = "<<"; //= >>				
 	}
+	//BasculeMode();
 }
 	
 /***********************************************************************************/
@@ -160,17 +164,23 @@ function CopierCommandes(x) {
 }
 
 function SelectionnerCliquePhoto(x) {
-/* */
-	var nbPhotos = parseInt(x.getAttribute('Nb'));
+/* alert('g_IsTirage : ' + g_IsTirage);*/
 
-	if (nbPhotos < 1){
-		CopierCommandes(x);
-		if (!(x.getAttribute('id').indexOf('FRATRIES')>-1)) {
-			SelectionSurPhoto(x);
-		}
+	if(g_IsTirage){
+		var nbPhotos = parseInt(x.getAttribute('Nb'));
+		if (nbPhotos < 1){
+			CopierCommandes(x);
+			if (!(x.getAttribute('id').indexOf('FRATRIES')>-1)) {
+				SelectionSurPhoto(x);
+			}
+			openNav();
+		}		
+	}else{
+		//
+		//CopierCommandes(x);
+		AjoutFichierBoutique(x);
 		openNav();
-	}		
-
+	}
 }
 
 function SelectionSurPhoto(x) {
@@ -245,6 +255,23 @@ function SelectionnerCommandesAffiche() {
 	document.getElementById("CaseSelectionnerCommandesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
 	mesRecommandes();
 }	
+
+function BasculeMode() {
+	//alert('isTirage ' + isTirage);
+	if (document.getElementById("ZoneCommandesFichierBoutiques").style.display == "inline-block") {
+		document.getElementById("ZoneCommandesTirages").style.display = "inline-block";
+		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "none";
+		
+		g_IsTirage = true;
+		document.getElementById("maBascule").innerHTML = "Tempo bascule Tirage : " + g_IsTirage;		
+	  } else {
+		document.getElementById("ZoneCommandesTirages").style.display = "none";
+		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "inline-block";		
+		
+		g_IsTirage = false;
+		document.getElementById("maBascule").innerHTML = "Tempo bascule Boutique : " + g_IsTirage;
+	  }
+}		
 
 
 function VoirPhotoSelection(x) {
@@ -324,8 +351,7 @@ function AjoutFichierBoutique(element) {
 	}else{//On l'ajoute
 		document.getElementById("lesFichiersBoutique").value = cmdfichierBoutique + leFichier + sepFinLigne;
 		//document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique +  leFichier + '<br>';	
-		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";
-	
+		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";	
 	}
 	var maListeFichiersBoutique = document.getElementById("myListeFichiersBoutique");
 	maListeFichiersBoutique.innerHTML = AfficherCMDparLigne( document.getElementById("lesFichiersBoutique").value); 
