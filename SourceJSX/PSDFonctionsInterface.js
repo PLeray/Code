@@ -442,8 +442,9 @@ function GenererFichiersLABO() {
 			progressBar.value = m + 1;
 			g_CommandeAVANCEMENT = Number( ( m + 1)  / (nbLigneFichier - 1) ); //g_CommandeLabo.NbPlanchesACreer()
 			g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
-			txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier) + "\n(Appuyer sur la touche MAJ pour stopper)";			
-			
+			txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier) 
+			+ "\n              pour stopper le traitement : \n       Appui long sur les touche MAJ + 'x'";	
+	
 		}
 		/////// Retour sur le temps Passé   //////////////
         if (!g_IsGenerationEnPause && g_IsPhotoLabON){ 
@@ -523,7 +524,6 @@ function BilanFinTraitement(chronoDebut, nbErreur) {
 	var VitesseMoy = nbSecondes / g_CommandeLabo.NbPlanchesACreer();
 	var bilan = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."
 	MsgLOGInfo(bilan, VitesseMoy + " secondes par planche");
-	//txtTraitement.text = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."; 
 	fichierEnCours.text = "Bilan : " + String (Minute) + " min et " + String (nbSecondes % 60) + " sec pour créeer " + String (nbPlanches - nbErreur) + " Planches."; 
 	/////////////////////////////////////////////////
 	if (nbErreur > 0){
@@ -691,8 +691,7 @@ function GenererFichiersWEB() {
 			//alert('leSousGroupeDeFichier[i] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
 			//if (leSousGroupeDeFichier.includes(fichier)){
 				//i = i + 1;
-				progressBar.value = i + 1 ;
-				txtTraitement.text = String (i) + " / " + String (leSousGroupeDeFichier.length);
+				progressBar.value = i ;
 				fichierEnCours.text = 'Création arborescence web pour : ' + decodeURIComponent(fichier);
 
 				//UI
@@ -707,7 +706,8 @@ function GenererFichiersWEB() {
 				
 				g_CommandeAVANCEMENT = Number( ( i + 1)  / (leSousGroupeDeFichier.length - 1) ); //g_CommandeLabo.NbPlanchesACreer()
 				g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
-				txtTraitement.text = String ( i + 1 ) + " / " +  String (leSousGroupeDeFichier.length);				
+				txtTraitement.text = String (i + 1) + " / " +  String (leSousGroupeDeFichier.length)
+				+ "\n              pour stopper le traitement : \n       Appui long sur les touche MAJ + 'x'";		
 				//alert("ZXDXDXD 01 : g_CommandeAVANCEMENT : " + g_CommandeAVANCEMENT );
 			//}    
 			

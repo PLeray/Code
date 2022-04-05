@@ -976,7 +976,7 @@ function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
 	//date("Y-m-d")
 	$resultat .= '#Tirages d\'exemples du ' . date("d / F") ."#\n";
 
-	$resultat .= str_replace($GLOBALS['SeparateurInfoPlanche'] , "\n", $strTabCMDLibre);
+	$resultat .= trim(str_replace($GLOBALS['SeparateurInfoPlanche'] , "\n", $strTabCMDLibre));
 	/*
 	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO']. $NewFichierSeul);
 	//// ????

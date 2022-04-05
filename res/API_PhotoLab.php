@@ -143,7 +143,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 		$Titre ='ENREGISTRER LA RECOMMANDE';
 	}
 	else{
-		$InfoSource ='@8888-88-88_(COMMANDES LIBRES) ' .$_GET['BDDRECFileLab']. '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+		$InfoSource ='@8888-88-88_(COMMANDES LIBRES) ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
 
 		$strTabCMD = $_POST['lesCmdesLibres'];
 		if($GLOBALS['isDebug']){

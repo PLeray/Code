@@ -3,6 +3,11 @@
 
 var scriptPoincon = 'POINCON-S²';
 
+function trimPSL (str) { // car leContenu.trim(); ne fonctionne sou pshp
+    return str.replace(/^\s+/,'').replace(/\s+$/,'');
+}
+
+
 function OuvrirFichierToTableauDeLigne(file) {
 	var tabPlanchesLabo = [];
 	if (file.open("r")){
@@ -13,7 +18,7 @@ function OuvrirFichierToTableauDeLigne(file) {
 			//alert('API CONTENU : \n' + leContenu.substr(0,2));
 			if (leContenu != ""){
 				if (leContenu.substr(0,2) != "//"){
-					g_TabLigneOriginale.push(leContenu);
+					g_TabLigneOriginale.push(trimPSL(leContenu));
 					//alert('API CONTENU IN : \n' + leContenu);	
 				}
 			}			

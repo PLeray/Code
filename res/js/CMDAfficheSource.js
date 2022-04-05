@@ -305,7 +305,8 @@ function MAJEnregistrementSelectionPhotos() {
 	var maListePhotos = document.getElementById("myListePhoto");
 	maListePhotos.innerHTML =  AfficherResumePhotoSelection(mesRecoInfo);
 
-	document.getElementById("btnAjouterTirages").disabled = (maListePhotos.innerHTML === "");
+	document.getElementById("btnAjouterTirages").disabled = ((maListePhotos.innerHTML === "")
+								||(document.getElementById("SelectProduit").innerHTML === ""));
 
 	MAJAffichageSelectionPhotos();
 }	
@@ -358,7 +359,6 @@ function AjoutFichierBoutique(element) {
 
 
 }
-
 
 function AfficherResumePhotoSelection(str) {
 	var strAffichage = '';
@@ -458,7 +458,7 @@ function CMDPhotosProduits(ListedePhoto, elementSelection) {
 			}
 		}
 	}
-	return maCMDPhotosProduits;
+	return maCMDPhotosProduits.trim();
 
 /*
 	this.TableauInfo = CodeLigne.substr(0,CodeLigne.indexOf(sepNumLigne)).split('_');
@@ -521,5 +521,20 @@ function CliqueDropDown(element) {
 	document.getElementById("SelectProduit").setAttribute('Code', element.getAttribute('Code'));
 
 	filterProduits();
+	document.getElementById("btnAjouterTirages").disabled = ((document.getElementById("myListePhoto").innerHTML === "")
+								||(document.getElementById("SelectProduit").innerHTML === ""));
+}
+
+function ZoomPhoto(element)
+{
+	var str = '<img src="' + element + '" >';
+	//alert(str);
+	document.getElementById("ZoneZoomPhoto").innerHTML = str;
+	document.getElementById("ZoneZoomPhoto").style.display= "inline-block";
+
+}
+function FermerZoom()
+{
+	document.getElementById("ZoneZoomPhoto").style.display= "none";
 
 }

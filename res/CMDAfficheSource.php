@@ -126,6 +126,20 @@ if (!$MAJ){
 	</div>
 
 	  <div id="main">
+	  <div id="zoneAffichagePhotoEcole">	
+			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
+			<div id="ZoneZoomPhoto" onclick="FermerZoom();">
+			  qsdqsdqsd
+			</div>			
+			<?php  
+			if ($MAJ){
+				set_time_limit(2000);		
+				echo AfficheSOURCESEcole($monProjet);
+			}
+			?>
+	
+		</div>
+
 		<div id="mySidenav" class="sidenav">
 		
 		
@@ -151,7 +165,7 @@ if (!$MAJ){
 					</div>	
 
 					<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="CreationCommandeProduitDepuisPhoto()" disabled>Ajouter tirages</button>
-																		<span id="SelectProduit" Code="20x20cm MAT_PORTRAIT">Agrandissement  20x20cm</span>		 
+																		<span id="SelectProduit" Code="20x20cm MAT_PORTRAIT"></span>		 
 					<br>
 					<div id="myListeCommandes" class="ListeCommandes">		
 						<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      
@@ -177,27 +191,23 @@ if (!$MAJ){
 						<button type="submit" id="btnFichiersBoutique" class="btnEnregistrer" disabled>Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
 					</form>     
 				</div>							
-			</div>		
+			</div>	
+			
+			<div class="footer">
+		<p>fdhfghcf<?php echo VersionPhotoLab();?> </p>
+	</div>					
+
 		</div>
 	  
-		<div id="zoneAffichagePhotoEcole">	
-			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
-		
-			<?php  
-			if ($MAJ){
-				set_time_limit(2000);		
-				echo AfficheSOURCESEcole($monProjet);
-			}
-			?>
-		
-			<div class="footer">
-			  <p class="mention"><?php echo VersionPhotoLab();?> </p>
-			</div>		
+
 		
 		
-		</div>	
 	</div>
+	
+
 </div>
+
+
 <?php 
 
 if (!extension_loaded('gd')) {

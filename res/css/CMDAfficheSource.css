@@ -190,8 +190,6 @@ p {/*Police Détails Fichier commande et commun  */
 .EnregistrerPhoto {
   /**/
   all: unset; 
-
-
 }
 .btnAjouterTirages {
 
@@ -408,7 +406,7 @@ font-size: 12px;
 .PlancheIndiv {
 	background-color: var(--FondLigneTabGrisClair);
 	display: inline-block;	 
-	margin: 0px 20px 10px 20px;
+	margin: 0px 0px 10px 15px;
   position: relative;
   cursor:pointer;
 }
@@ -508,12 +506,15 @@ font-size: 12px;
 }
 
 .NomPhotoZoom {
-  all: unset;
+
+  display: block;
+
+  border:none;
   cursor: url('../img/mini-Loupe.png'), pointer;
 
-text-align: center;
+  text-align: center;
   color: var(--boutonRouge);
-  width:100%
+  min-width:100%
   /*  text-decoration: none;  */
 }
 
@@ -522,9 +523,9 @@ text-align: center;
   /*  cursor: url('../img/mini-Loupe.png'), pointer;
   cursor: pointer;*/
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	width: 151px;
+	/*width: 151px;*/
 
-	/* width: 150px;*/
+	 width: 165px;
 }
 
 #ImgPlancheIndiv:hover {opacity: 0.7;}
@@ -534,7 +535,7 @@ text-align: center;
   cursor: pointer;*/
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-	width: 350px;
+	width: 327px;
 }
 #ImgPlancheGroupe:hover {opacity: 0.7;}
 
@@ -724,7 +725,7 @@ top: 70px;
 
 
 #main {
-  flex: 70%;	
+	
   -ms-flex: 70%; /* IE10 */
 
   background-color: white;
@@ -988,6 +989,32 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   border: 1px solid #888;
   width: 80%;
   text-align: center;
+
+}
+
+#ZoneZoomPhoto
+{
+  all: unset; 
+  display: none;
+  position:absolute;
+  overflow:hidden; /* or overflow:auto; if you want scrollbars */	
+  background-color: rgba(20, 20, 20, 0.9);
+	height: 100%;
+	width: 100%;
+text-align: center;
+background-image: url('../img/Logo.png');
+background-repeat: no-repeat;
+background-position: center;
+  z-index: 100;
+
+  position: fixed;
+	top:0px;
+	left: 0px;
+
 }
 
 
+img {
+	max-height: 100%;
+	width: auto;
+}

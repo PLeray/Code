@@ -257,7 +257,7 @@ var Zone1Entete = PHOTOLAB.add ("group");
 
 	var group = Zone131Action.add ("group {alignChildren: 'left', orientation: ’stack'}");	
 	
-	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,35], '0/0', {multiline: true});
+	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,45], '0/0', {multiline: true});
 	txtTraitement.graphics.font = ScriptUI.newFont ("Arial", 'BOLD', 14);	
 	
 
@@ -321,6 +321,8 @@ PHOTOLAB.onClose = function(){
     app.preferences.rulerUnits = g_OriginalRulerUnits; // Reset units to original settings     
     if(!isDebug){photoshop.quit();}
 };
+
+
 // keep palette opened until user click button or close window
 var FermerPhotoLab = false;
 PHOTOLAB.show();	
@@ -334,7 +336,12 @@ while(FermerPhotoLab == false){
 
 ////////////////////////////// LES FONCTIONS //////////////////////////////////////////////
 function Raffraichir() { 
-	if(ScriptUI.environment.keyboardState.shiftKey == true){ 
+	//if(ScriptUI.environment.keyboardState.shiftKey == true){ 
+	if((ScriptUI.environment.keyboardState.shiftKey == true) && (ScriptUI.environment.keyboardState.keyName == 'X')){ 
+		//alert('g_IsPhotoLabON ' + g_IsPhotoLabON);
+		
+		//alert('Touche : ' + ScriptUI.environment.keyboardState.keyName + 'g_IsPhotoLabON ' + g_IsPhotoLabON); // "A"
+
 		//g_IsPhotoLabON = !QuestionInterruptionTraitement();
 		//alert('g_IsPhotoLabON ' + g_IsPhotoLabON);
 		GestionBoutonGenerer()

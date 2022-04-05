@@ -688,37 +688,54 @@ class CImgSource {
 			  Nb="0" 
 			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
 		  */					  
-			$resultat .= '   
-				<span  onclick="CopierCommandes(this)" 
-				id="'. urldecode($this->Fichier) . '" 
-				Nb="0" 
-				class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
+		$resultat .= '   
+			<span  onclick="CopierCommandes(this)" 
+			id="'. urldecode($this->Fichier) . '" 
+			Nb="0" 
+			class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
 
-			  
-			  
 			$resultat .= '<button class="EnregistrerPhoto" onclick="SelectionnerCliquePhoto(this.parentElement)" >
 			<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
 				src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">
 			</button>';
 
-		$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
+	/*
+			$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
+			
 			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
 			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
 			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
-			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> 
+			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
 
-			<button type="submit" class="NomPhotoZoom">
+			$resultat .='<button type="submit" class="NomPhotoZoom">
 			<p>'. substr($this->Fichier, 0, -4)  .'</p>
 			</button>';
 
-$resultat .= '</form>';
+			$resultat .= '</form>';*/
+/*
+	
+			$resultat .= '<br>';
+			$resultat .= '<form>';
+			$resultat .='<span class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')">
+			'. substr($this->Fichier, 0, -4)  .'
+			</span>';
+			$resultat .= '</form>';
+*/
+			//$resultat .= '<form>';
+			$resultat .= '<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
+			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
+			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
+			
+			$resultat .='<button class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')">
+			<p>'. $this->Fichier  .'</p>
+			</button>';
+			//$resultat .= '</form>';
 
-										
-				$resultat .= '<span class="textImageSource">';					
-				$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
-							  <span class="NombrePhoto"> 0 </span>
-							  <span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';			
-				$resultat .= '</span>';	
+			$resultat .= '<span class="textImageSource">';					
+			$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
+							<span class="NombrePhoto"> 0 </span>
+							<span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';			
+			$resultat .= '</span>';	
 
 			$resultat .= ($this->isGroupe()?'<span>':'');			
 			$resultat .= ($this->isGroupe()?'</span>':'');			
