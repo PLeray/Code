@@ -797,11 +797,14 @@ function CreerUnProduitPourLeSiteWEB(unProduit){
 	return valRetour;	
 }
 */
-function OrdreTirageIndex(unProduit){
+
+function IdentifiantOrdreTirage(unProduit){
 ////////// A CHANGER POUR ORDRE DE TIRAGE INVERSE ///////////
 	var Index = 0;
+	var IndexMAX = 9999;
 	if (g_OrdreInversePlanche){		
-		Index = (g_TabLigneOriginale.length - unProduit.indexOriginal);	
+		//Index = (g_TabLigneOriginale.length - unProduit.indexOriginal);	
+		Index = (IndexMAX - unProduit.indexOriginal);	
 	}
 	else{
 		Index = unProduit.indexOriginal;
@@ -825,7 +828,7 @@ function NomPlancheLabo(unProduit, fichierName){
 
 	
 	var leNomPlanche = (unProduit.Teinte)? '.' + unProduit.Teinte : '';
-	leNomPlanche = OrdreTirageIndex(unProduit) + "." + leNomFichier + "." + unProduit.Type + "." + unProduit.Taille + leNomPlanche + ".jpg";  
+	leNomPlanche = IdentifiantOrdreTirage(unProduit) + "." + leNomFichier + "." + unProduit.Type + "." + unProduit.Taille + leNomPlanche + ".jpg";  
 
 	g_TabLigneOriginale[unProduit.indexOriginal] = leNomPlanche;
 
