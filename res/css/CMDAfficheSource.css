@@ -113,11 +113,11 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 .SelectionToutePlanche {
-  position: fixed;
+  /*position: fixed;*/
   top : 35px;
   
-  /**/
-  right : 368px;
+  /*
+  right : 368px;*/
   border-radius: 3px; 
       letter-spacing: 1px;
       padding:5px;
@@ -127,6 +127,20 @@ p {/*Police Détails Fichier commande et commun  */
   background-color: white;
   border: 1px solid var(--FondLigneTabGrisFonce);
   z-index: 5;
+
+
+
+
+  box-sizing: border-box;
+
+  font-size: 12px;
+
+
+  border: 1px solid var(--FondLigneTabGrisFonce);
+
+  width:  270px;
+
+
 }
 
 .caseCheckVide {
@@ -637,7 +651,7 @@ margin-top: -10px;
 /*  DEBUT BAR DROITE */
 
 .sidenav {
-  width: 0;
+
   /*  min-height: 100%;	*/
 	
 	  color: var(--texteGris);
@@ -646,9 +660,10 @@ margin-top: -10px;
   /**/   z-index: 1;
   top: 0;
   right: 0;
+  height: 100%;
 
-  border-left: 10px solid var(--FondLigneTabGrisFonce); 
-  
+  border-left: 1px solid var(--FondLigneTabGrisFonce); 
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: white;
   transition: 0.5s;  
   /*   overflow: hidden; */
@@ -673,8 +688,9 @@ margin-top: -10px;
 .sidenav .closebtn {
 
   
-  top: 5px;
-  margin-left: 15px;/*315px;*/
+
+
+  margin-left: -40px;/*315px;*/
   font-size: 20px;
 
     color: var(--texteGris);

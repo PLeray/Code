@@ -120,18 +120,16 @@ if (!$MAJ){
 			
 		</div>		
 
-		<div>
-				<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
-		</div>		
+		
 	</div>
 
 	  <div id="main">
-	  <div id="zoneAffichagePhotoEcole">
-	  <?php echo RemplissageDropProduit($monProjet); ?>	
+	  <div id="zoneAffichagePhotoEcole">	
 			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
 			<div id="sdf" class="ZoneZoomPhoto" onclick="FermerZoom();">
 			
-			</div>			
+			</div>		
+	
 			<?php  
 			if ($MAJ){
 				set_time_limit(2000);		
@@ -145,11 +143,15 @@ if (!$MAJ){
 		
 		
 			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
-			
-			<a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a>	
+			<H1><a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a></H1><br>
+				
 
-			<div id="myRecommandes" class="infoRecommandes"><H1>Mes Commandes</H1><br>
-				<div id="ZoneCommandesTirages">		
+			<div id="myRecommandes" class="infoRecommandes">
+				<div>
+					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+				</div>				
+				<div id="ZoneCommandesTirages">
+				<H1>Mes Commandes</H1><br>	
 					<div class="dropdown">
 						
 						<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
@@ -178,9 +180,10 @@ if (!$MAJ){
 						<button type="submit" id="btnCmdesLibres" class="btnEnregistrer" disabled >Quitter et enregistrer ces commandes LIBRES</button>
 					</form>     
 				</div>	
-				<br><br>
+				
 
-				<div id="ZoneCommandesFichierBoutiques">		
+				<div id="ZoneCommandesFichierBoutiques">
+				<H1>Mes FichiersBoutique</H1><br>		
 					<!-- FICHIERBOUTIQUES ici -->
 					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	
 					<div id="myListeFichiersBoutique" class="ListeCommandes">
@@ -280,22 +283,25 @@ function RemplissageDropProduit($monProjet){
 	$CataloguePdtWEB = array();
 	$CataloguePdtWEB = csv_to_array('../../GABARITS/CatalogueProduits.csv', ';'); 
 
-	//$CataloguePdtWEBFinal =$CataloguePdtWEB;
-	//var_dump($CataloguePdtWEB);
+	//Supression des doublons !
+	
+	$CataloguePdtWEBFinal=$CataloguePdtWEB  ; 
 
-	//Supression des doublons !
-	//Supression des doublons !
-	//Supression des doublons !
-	$CataloguePdtWEBFinal = array();
-	for($i = 0; $i < count($CataloguePdtWEB) ; $i++){
-		array_push($CataloguePdtWEBFinal,$CataloguePdtWEB[$i]['Code']);		
-	} 	
+	$columns = array_column($CataloguePdtWEBFinal, 'Description');
+	array_multisort($columns, SORT_ASC, $CataloguePdtWEBFinal);
+
+	$ListeUniqueProduit = array();
+	$ListeUniqueProduit = array_column($CataloguePdtWEBFinal, 'Code');
+	
 	for($i = 0; $i < count($CataloguePdtWEBFinal) ; $i++){
-		$str .= '<a href=javascript:void(0); Code="'.'code'.'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEBFinal[$i].'</a>';
-
+		if((in_array($CataloguePdtWEBFinal[$i]['Code'],$ListeUniqueProduit))&&($CataloguePdtWEBFinal[$i]['Description']!='')){
+			$str .= '<a href=javascript:void(0); Code="'.$CataloguePdtWEBFinal[$i]['Code'].'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEBFinal[$i]['Description'].'</a>';
+		}
 	} 
 	return $str;
 }
+
+
 
 
 

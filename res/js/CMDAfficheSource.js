@@ -26,16 +26,20 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("Entete").style.marginRight = "350px";	
 		document.getElementById("btnRemonter").style.right = "380px";	
 		document.getElementById("closeSidenav").textContent = ">>";
+		document.getElementsByClassName("SelectionToutePlanche")[0].style.display='block';;
+		
 		
 	}
 	else{
-		document.getElementById("mySidenav").style.width = "50px";
-		document.getElementById("mySidenav").style.height = "50px";
+		document.getElementById("mySidenav").style.width = "0px";
+		//document.getElementById("mySidenav").style.height = "0px";
 		  //document.getElementById("mySidenav").style.z-index = -2;  
-		document.getElementById("main").style.marginRight = "50px";
-		document.getElementById("Entete").style.marginRight = "50px";
+		document.getElementById("main").style.marginRight = "0px";
+		document.getElementById("Entete").style.marginRight = "0px";
 		document.getElementById("btnRemonter").style.right = "80px";	
-		document.getElementById("closeSidenav").textContent = "<<"; //= >>				
+		document.getElementById("closeSidenav").textContent = "<<"; //= >>	
+		document.getElementsByClassName("SelectionToutePlanche")[0].style.display='none';
+					
 	}
 	//BasculeMode();
 }
@@ -529,8 +533,6 @@ function ZoomPhoto(element)
 {
 	/**/
 
-		
-	
 	var idElement = element.substring(1+element.lastIndexOf('/'));
 	var x = document.getElementById(idElement).getElementsByClassName("ZoneMoinsPlus")[0];	
 	if(x.classList.contains("ZoneMoinsPlus")){x.classList.replace("ZoneMoinsPlus", "ZoneMoinsPlusZoom");}
