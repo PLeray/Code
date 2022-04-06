@@ -711,7 +711,8 @@ class CImgSource {
 			<p>'. substr($this->Fichier, 0, -4)  .'</p>
 			</button>';
 
-			$resultat .= '</form>';*/
+			$resultat .= '</form>';
+			*/
 /*
 	
 			$resultat .= '<br>';
@@ -731,7 +732,7 @@ class CImgSource {
 			</button>';
 			//$resultat .= '</form>';
 
-			$resultat .= '<span class="textImageSource">';					
+			$resultat .= '<span class="ZoneMoinsPlus">';					
 			$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
 							<span class="NombrePhoto"> 0 </span>
 							<span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';			

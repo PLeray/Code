@@ -261,13 +261,13 @@ function BasculeMode() {
 		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "none";
 		
 		g_IsTirage = true;
-		document.getElementById("maBascule").innerHTML = "Tempo bascule Tirage : " + g_IsTirage;		
+		document.getElementById("maBascule").innerHTML = "Commandes de tirages";		
 	  } else {
 		document.getElementById("ZoneCommandesTirages").style.display = "none";
 		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "inline-block";		
 		
 		g_IsTirage = false;
-		document.getElementById("maBascule").innerHTML = "Tempo bascule Boutique : " + g_IsTirage;
+		document.getElementById("maBascule").innerHTML = "Création fichiers boutique";	
 	  }
 }		
 
@@ -527,14 +527,27 @@ function CliqueDropDown(element) {
 
 function ZoomPhoto(element)
 {
+	/**/
+
+		
+	
+	var idElement = element.substring(1+element.lastIndexOf('/'));
+	var x = document.getElementById(idElement).getElementsByClassName("ZoneMoinsPlus")[0];	
+	if(x.classList.contains("ZoneMoinsPlus")){x.classList.replace("ZoneMoinsPlus", "ZoneMoinsPlusZoom");}
+	
 	var str = '<img src="' + element + '" >';
 	//alert(str);
-	document.getElementById("ZoneZoomPhoto").innerHTML = str;
-	document.getElementById("ZoneZoomPhoto").style.display= "inline-block";
-
+	var maZone = document.getElementsByClassName("ZoneZoomPhoto")[0];
+	maZone.innerHTML = str;
+	maZone.style.display= "inline-block";
+	maZone.id = 'Zoom'+idElement;
 }
 function FermerZoom()
 {
-	document.getElementById("ZoneZoomPhoto").style.display= "none";
+	var maZone = document.getElementsByClassName("ZoneZoomPhoto")[0];
+	maZone.style.display= "none";
 
+	// Changer le Plus Moins:
+	var x = document.getElementById(maZone.id.substring(4)).getElementsByClassName("ZoneMoinsPlusZoom")[0];	
+	if(x.classList.contains("ZoneMoinsPlusZoom")){x.classList.replace("ZoneMoinsPlusZoom", "ZoneMoinsPlus");}
 }

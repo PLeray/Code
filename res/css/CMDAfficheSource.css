@@ -126,7 +126,7 @@ p {/*Police Détails Fichier commande et commun  */
 	color: var(--FondLigneTabGrisSombre);
   background-color: white;
   border: 1px solid var(--FondLigneTabGrisFonce);
-  z-index: 100;
+  z-index: 5;
 }
 
 .caseCheckVide {
@@ -437,15 +437,52 @@ font-size: 12px;
   cursor:default;
 }
 
-.PlancheIndiv .textImageSource,
-.PlancheGroupe .textImageSource {
+.PlancheIndiv .ZoneMoinsPlus,
+.PlancheGroupe .ZoneMoinsPlus {
 	display: none;
+  z-index: 5;
 }
 
-.IndivSELECTION .textImageSource,
-.GroupeSELECTION .textImageSource {
+.PlancheIndiv .ZoneMoinsPlusZoom,
+.PlancheGroupe .ZoneMoinsPlusZoom {
+	display: none;
+  z-index: 5;
+}
+
+.IndivSELECTION .ZoneMoinsPlusZoom,
+.GroupeSELECTION .ZoneMoinsPlusZoom {
+  /*
+  position:absolute;
+  display: inline-block;	 
+	background-color: #04AA6D;
+  top:0;
+  left: 0;
+width: 500px;
+  z-index: 20;
+  zoom: 200%*/
+  zoom: 200%;
 	background: var(--FondLigneTabGrisClair);
 	z-index: 10;
+	position: fixed;
+	text-align: center;
+	font-family: "Courier New", Times, serif;
+
+	
+	right: 5px;
+  top: 50%; /* poussé de la moitié de hauteur du référent */
+  transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+	width: 150px;
+	border: 1px solid var(--FondLigneTabGrisFonce);
+  border-radius: 5px;
+
+  padding: 10px 0px 10px 0px ;  
+ 
+}
+
+.IndivSELECTION .ZoneMoinsPlus,
+.GroupeSELECTION .ZoneMoinsPlus {
+	background: var(--FondLigneTabGrisClair);
+	z-index: 1;
 	position: absolute;
 	text-align: center;
 	font-family: "Courier New", Times, serif;
@@ -555,19 +592,19 @@ font-size: 12px;
 }
 
 .ResumeCMD {
-margin: 10px 10px 10px 10px;
+  margin: 10px 10px 10px 10px;
 
-padding: 10px;
+  padding: 10px;
 
-	width: auto; 
-	display: inline-block;
+  width: auto; 
+  display: inline-block;
 
-	text-align: center;
-	vertical-align: top;
+  text-align: center;
+  vertical-align: top;
 	/*	margin: 10px;
 
-border: 1px solid var(--FondLigneTabGrisSombre);*/
-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
+  border: 1px solid var(--FondLigneTabGrisSombre);*/
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
 }
 
 @keyframes shake {
@@ -906,7 +943,7 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 } 
 
 
-/*         DROP LISTE //////////////////////////*/
+/*         DROP LISTE //////////////////////////
 .dropbtn {
   background-color: #04AA6D;
   color: white;
@@ -919,15 +956,16 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 .dropbtn:hover, .dropbtn:focus {
   background-color: #3e8e41;
 }
-
+*/
 #ZoneSaisie {
   box-sizing: border-box;
   background-image: url('../img/searchicon.png');
-  background-position: 14px 12px;
+  background-position: 14px 6px;
   background-repeat: no-repeat;
   font-size: 12px;
   padding: 14px 20px 12px 60px;
-  border: none;
+
+  border: 1px solid var(--FondLigneTabGrisFonce);
 
   width:  270px;
 }
@@ -957,7 +995,7 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   display: block;
 }
 
-.dropdown a:hover {background-color: #ddd;}
+.dropdown a:hover {background-color: var(--boutonVert);}
 
 .show {display: block;}
 
@@ -992,7 +1030,7 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 
 }
 
-#ZoneZoomPhoto
+.ZoneZoomPhoto
 {
   all: unset; 
   display: none;
@@ -1005,7 +1043,7 @@ text-align: center;
 background-image: url('../img/Logo.png');
 background-repeat: no-repeat;
 background-position: center;
-  z-index: 100;
+  z-index: 10;
 
   position: fixed;
 	top:0px;
@@ -1015,6 +1053,8 @@ background-position: center;
 
 
 img {
-	max-height: 100%;
+
+  padding-top :10px ;
+	max-height: calc(100% - 20px); /*100%;*/
 	width: auto;
 }

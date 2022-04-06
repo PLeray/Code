@@ -126,10 +126,11 @@ if (!$MAJ){
 	</div>
 
 	  <div id="main">
-	  <div id="zoneAffichagePhotoEcole">	
+	  <div id="zoneAffichagePhotoEcole">
+	  <?php echo RemplissageDropProduit($monProjet); ?>	
 			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
-			<div id="ZoneZoomPhoto" onclick="FermerZoom();">
-			  qsdqsdqsd
+			<div id="sdf" class="ZoneZoomPhoto" onclick="FermerZoom();">
+			
 			</div>			
 			<?php  
 			if ($MAJ){
@@ -194,7 +195,7 @@ if (!$MAJ){
 			</div>	
 			
 			<div class="footer">
-		<p>fdhfghcf<?php echo VersionPhotoLab();?> </p>
+		<p><?php echo VersionPhotoLab();?> </p>
 	</div>					
 
 		</div>
@@ -276,15 +277,29 @@ function MAJFichierBoutique($ListeFichier, $codeSource, $anneeSource){
 
 function RemplissageDropProduit($monProjet){ 
 	$str =  '';
-
+	$CataloguePdtWEB = array();
 	$CataloguePdtWEB = csv_to_array('../../GABARITS/CatalogueProduits.csv', ';'); 
 
+	//$CataloguePdtWEBFinal =$CataloguePdtWEB;
+	//var_dump($CataloguePdtWEB);
+
+	//Supression des doublons !
+	//Supression des doublons !
+	//Supression des doublons !
+	$CataloguePdtWEBFinal = array();
 	for($i = 0; $i < count($CataloguePdtWEB) ; $i++){
-		$str .= '<a href=javascript:void(0); Code="'.$CataloguePdtWEB[$i]['Code'].'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEB[$i]['Description'].'</a>';
+		array_push($CataloguePdtWEBFinal,$CataloguePdtWEB[$i]['Code']);		
+	} 	
+	for($i = 0; $i < count($CataloguePdtWEBFinal) ; $i++){
+		$str .= '<a href=javascript:void(0); Code="'.'code'.'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEBFinal[$i].'</a>';
 
 	} 
 	return $str;
 }
+
+
+
+
 
 function RecupProjetSourceEcole($fichierCSV, $codeProjet, $anneeProjet){ 
 	$monProjet = '';
