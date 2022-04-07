@@ -39,7 +39,7 @@ $tabFichiersEnCoursDeCompilation = array();
 		if ($isDebug){
 			echo '<br>apiSupprimer   : ' . $_GET['apiSupprimer']  ;
 		}			
-		SuprimeFichier($_GET['apiSupprimer']);
+		SuprimeFichierCMDetDossier($_GET['apiSupprimer']);
 	}
 	elseif (isset($_GET['ValideNomCommande']) ){
 		if ($isDebug){
@@ -72,12 +72,12 @@ $tabFichiersEnCoursDeCompilation = array();
 	}
 	elseif (isset($_GET['OpenRep'])) { // OUVRIR REP !
 		$RechargerPage = true;
-		$leRep = str_replace("/","\\",$repTIRAGES. $_GET['OpenRep']);
+		$leRep = str_replace("/","\\", $_GET['OpenRep']);
 		if ($isDebug){
 			echo 'le rep  à ouvrir : explorer /select,"'.$leRep.'"' ;
 		}
 		execInBackground('explorer /select,"'.$leRep.'"');
-	} 
+	} 	
 	elseif (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
 		$RechargerPage = true;
 		if ($GLOBALS['isDebug']){
@@ -100,8 +100,6 @@ $tabFichiersEnCoursDeCompilation = array();
 	//else echo 'Y A RIEN';
 
 	$nb_fichier = 0;
-	//$affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, true); // A supprimer !!!
-
 	$affiche_TableauCommandes = AfficheTableauCommandeEnCours($nb_fichier, true);
 ?>
 

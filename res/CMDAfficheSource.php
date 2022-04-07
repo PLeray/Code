@@ -418,7 +418,7 @@ function ValidationCommandesLIBRES($NomProjet){
 		$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
 
 	
-	$retourMSG = 'API_Photolab.php?codeMembre=' . $GLOBALS['codeMembre'] .$CMDhttpLocal . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	$retourMSG = 'APIDialogue.php?codeMembre=' . $GLOBALS['codeMembre'] .$CMDhttpLocal . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
 
 
 	return $retourMSG ;

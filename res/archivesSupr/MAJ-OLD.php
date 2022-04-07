@@ -57,7 +57,7 @@ else
 // Lit une page web dans un tableau.
 //$lines = file('https://photolab-site.fr/installation/PhotoLab/Code/installationFICHIERS.txt');
 $lines = file( 'http://localhost/API_photolab/installation/PhotoLab/Code/installationFICHIERS.txt');
-//$lines = file( 'http://localhost/API_photolab/installation/PhotoLab/Code/res/API_PhotoLab.php');
+//$lines = file( 'http://localhost/API_photolab/installation/PhotoLab/Code/res/APIDialogue.php');
 //$lines = file( 'http://localhost/API_photolab/installation/PhotoLab/Code/res/css/API_PhotoLab.css');
 // Affiche toutes les lignes du tableau comme code HTML, avec les numéros de ligne
 foreach ($lines as $line_num => $line) {

@@ -16,7 +16,7 @@ function RetourEcranFichier($myfileName){
 }
 
 function EnregistrerFichier(){
-	return 'API_Photolab.php' . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+	return 'APIDialogue.php' . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }
 
 function FormatNumCmd($strCMD){
@@ -50,7 +50,7 @@ function AfficheEtatFichierLab($myfileName){
 		break;
 	case "3":  //. substr($myfileName,0,10)    strftime(" in French %A and",); $date = strftime("%d %B %Y", strtotime($date1));
 		//$retourMSG = "Les planches ont été envoyé au labo le " .date('l d B',strtotime(substr($myfileName,0,10)) ).    "."; 
-		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " . utf8_encode(strftime("%A %d %B", strtotime(substr($myfileName,0,10)) )).    "."; 
+		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " . utf8_encode(date("d / m / Y", strtotime(substr($myfileName,0,10)) )).    "."; 
 		break;		
 	case "4":
 		$retourMSG = "Les planches de cette commande sont en cours d'empaquetage.";

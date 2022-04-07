@@ -278,7 +278,7 @@ img {
 	white-space : nowrap;
 	position: relative;
 	background-image: linear-gradient(to right, var(--FondLigneTabGrisFonce) 0%, var(--boutonVert) 30%);/**/
-
+	cursor: default;
 
 }
 

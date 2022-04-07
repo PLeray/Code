@@ -3,15 +3,15 @@
 	var isDebug = 0;
 	if (isDebug){
 		this.isSocket = true;
-		this.Service = '/API_photolab/API_photolab.php';
+		this.Service = '/API_photolab/APIDialogue.php';
 		this.URL = 'http://localhost:80';
 		this.Domaine = 'localhost:80';  
 	}
 	else
-	{//https://photoprod.000webhostapp.com/API_photolab.php?apiTEST=TEST
-	//https://photoprod.000webhostapp.com/API_photolab/API_photolab.php?apiTEST=TEST
+	{//https://photoprod.000webhostapp.com/APIDialogue.php?apiTEST=TEST
+	//https://photoprod.000webhostapp.com/API_photolab/APIDialogue.php?apiTEST=TEST
 		this.isSocket = false;
-		this.Service = '/API_photolab.php';
+		this.Service = '/APIDialogue.php';
 		this.URL = 'http://photoprod.000webhostapp.com';
 		this.Domaine = 'photoprod.000webhostapp.com:80';  
 		
@@ -29,8 +29,8 @@ function APIConnexionJS() {
 		this.Domaine = 'localhost:80';  
 	}
 	else
-	{//https://photoprod.000webhostapp.com/API_photolab.php?apiTEST=TEST
-	//https://photoprod.000webhostapp.com/API_photolab/API_photolab.php?apiTEST=TEST
+	{//https://photoprod.000webhostapp.com/APIDialogue.php?apiTEST=TEST
+	//https://photoprod.000webhostapp.com/API_photolab/APIDialogue.php?apiTEST=TEST
 		this.isSocket = false;
 		this.Service = '/res/PSDSocket.php';
 		this.URL = 'http://amp-serveur.local:999';

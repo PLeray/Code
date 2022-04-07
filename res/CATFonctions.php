@@ -66,8 +66,6 @@ class CINFOfichierLab {
 				$leRepTirage = substr($this->Fichier, 0, -5);
 			}	
 			elseif (stripos($this->NomEcole,  '(RECOMMANDES)') !== false) { // C'est des RECOs
-				//$leRepTirage = $GLOBALS['FichierDossierRECOMMANDE'] ;
-				//$leRepTirage = $this->DateTirage . '-' .$this->NomEcole ;
 				$leRepTirage = substr($this->Fichier, 0, -5);
 			}	
 			else{
@@ -178,12 +176,14 @@ class CINFOfichierArbo {
 			}
 		}
 	}
-	function NBfichiersARBOWEB() {
+	function NBfichiersARBOWEB(&$NbClasse) {
 		$Dossier = $GLOBALS['repWEBARBO'] . $this->RepTirage();
 		$NbFicher = 0;
+		$NbClasse = 0;
 		$files = glob($Dossier . '/*',GLOB_BRACE);	
 		foreach($files as $SousDossier) {
 			$NbFicher = $NbFicher + count(glob($Dossier . '/'.  $SousDossier . '/*.*{jpg,jpeg}',GLOB_BRACE));
+			$NbClasse += 1;
 		}
 		return $NbFicher;
 	}
@@ -219,7 +219,7 @@ class CINFOfichierArbo {
 }
 
 /////////////////// Les Fonctions ... ///////////////////    
-function SuprimeFichier($strFILELAB){
+function SuprimeFichierCMDetDossier($strFILELAB){
 	$fichier = $GLOBALS['repCMDLABO'] . $strFILELAB ;
 	if (file_exists($fichier)){ 
 		// NEW SUP ARBORESCENCE FICHIER		
@@ -231,7 +231,7 @@ function SuprimeFichier($strFILELAB){
 				$mesInfosFichier = new CINFOfichierLab($fichier); 				
 				if ($mesInfosFichier->RepTirage() != '') {
 					if($GLOBALS['isDebug']){
-						Echo '<br>Le dossier Arbo a supprimer est  ' . $mesInfosFichier->RepTirage();
+						Echo '<br>Le dossier de TIRAGES a supprimer est  ' . $mesInfosFichier->RepTirage();
 					}
 					SuprArborescenceDossier($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage());
 					SuprArborescenceDossier($GLOBALS['repMINIATURES'].$mesInfosFichier->RepTirage());
@@ -240,6 +240,9 @@ function SuprimeFichier($strFILELAB){
 			else{
 				$mesInfosFichier = new CINFOfichierArbo($fichier); 
 				if ($mesInfosFichier->RepTirage() != '') {
+					if($GLOBALS['isDebug']){
+						Echo '<br>Le dossier WEB-ARBO a supprimer est  ' . $mesInfosFichier->RepTirage();
+					}					
 					SuprArborescenceDossier($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage());
 				}
 			}
@@ -479,9 +482,9 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 	return $affiche_Tableau;
 }
 
-
+///////////////////////////////////
 //Pour l'historique a changer !!!!!
-function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
+function AfficheTableauHistoriqueCMDLAB(&$nb_fichier, $isEnCours){
 	//echo '$cmd = ' . ($GLOBALS['isDebug']?'':($ParamGET ?'?apiAMP=OK':''));
 	//setlocale(LC_TIME, 'french');
 	$affiche_Tableau = '';
@@ -505,60 +508,12 @@ function AfficheTableauCMDLAB(&$nb_fichier, $isEnCours){
 			<td>'. LienVoirMiseEnPochette($mesInfosFichier) . '</td>	
 			<td>'. LienRecherchePlanche($mesInfosFichier) . '</td>';
 			
-		if($mesInfosFichier->EtatFichier < 2){
-			$affiche_Tableau .=	'
-			<td colspan=4>';
-						
-			if (file_exists($mesInfosFichier->LienFichierERREUR())){	
-			/*$affiche_Tableau .=	'			
-				<div class="tooltip"><a href="'. $mesInfosFichier->LienFichierERREUR() . '" title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
-					<img src="img/ERREUR.png" alt="ERREUR">
-					<font size="3" color="red">ATTENTION : il y a des erreurs !</font></a>
-					' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
-					</div>			
-				</div>';*/
-
-				/* NEW */
-				$affiche_Tableau .=	'			
-				<div class="TitreErreur" onclick="VisuErreur(\''. $mesInfosFichier->FichierERREUR . '\');" title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
-					<img src="img/ERREUR.png" alt="ERREUR">
-					<font size="3" color="red">ATTENTION : Erreurs !</font>' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '								
-				</div>';	
-
-				$affiche_Tableau .=	
-				'<div id="'. $mesInfosFichier->FichierERREUR .'" class="ContenufichierErreur">';
-				$affiche_Tableau .=	'<div class="TitreErreur" onclick="VisuErreur(\''. $mesInfosFichier->FichierERREUR . '\');" title="Fermer les erreurs sur '.$mesInfosFichier->NomEcole . '">
-					<img src="img/KO.png" alt="FERMER">
-					<font size="5">   '.$mesInfosFichier->NomEcole . '</font>
-					<br>
-					<font size="3" color="red"style="text-align: right;">CORRIGEZ les erreurs listée(s) ci-dessous, puis relancez le plugin PhotoLab </font>'
-					. LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
-				</div>
-				<br>';				
-				
-				$affiche_Tableau .=	LireFichierErreur($mesInfosFichier->LienFichierERREUR());
-				$affiche_Tableau .=	'</div>';				
-
-			}
-			//echo $mesInfosFichier->Avancement();   
-			$affiche_Tableau .=	'
-			<div class="boiteProgressBar">			
-				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" >';
-				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '→ Création : '. number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
-				$affiche_Tableau .=	'</div>
-			</div>';	
-			
-			/* pour Ajax defilement Barres 
-			if ($mesInfosFichier->EtatFichier == 1) {array_push($GLOBALS['tabFichiersEnCoursDeCompilation'], $mesInfosFichier->Fichier);}
-			*/
-		}else {
 			$affiche_Tableau .=	'  
-				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a></td>
+				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,1) . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a></td>
 				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a></td>
 				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,4) . LienImageOKKO($mesInfosFichier->EtatFichier >= "4") . '</a></td>
 				<td><a href="' . LienEtatLab($mesInfosFichier->Fichier,5) . LienImageOKKO($mesInfosFichier->EtatFichier >= "5") . '</a></td>'	
-			;				
-		}
+			;	
 		if ($isEnCours){
 			$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
 		}
@@ -593,7 +548,7 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 	
 	for($i = 0; $i < count($tabFichierLabo); $i++){
 			$nb_fichier++;	
-		$NomFichier = $tabFichierLabo[$i];	
+			//$NomFichier = $tabFichierLabo[$i];	
 
 			// Un objet pour récupérer les infos Fichier !!! 
 			$mesInfosFichier = new CINFOfichierArbo($GLOBALS['repCMDLABO'] . $tabFichierLabo[$i]); 	
@@ -603,11 +558,12 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 			'<tr style="background-color:'.$laCouleur.'">			
 				<td>'.LienImageEtatWEB($mesInfosFichier->EtatFichier).'</a></td>				
 				<td class="titreCommande" >' . $mesInfosFichier->TypeArbo .'</td>	
-				<td  class="titreCommande" align="left"><div class="tooltip">' . $mesInfosFichier->AffichageNomSOURCE . '</a>
+				<td  class="titreCommande" align="left"><div class="tooltip">' . $mesInfosFichier->AffichageNomSOURCE . '
 					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
-				<td>' . $mesInfosFichier->NBfichiersARBOWEB() . '</a></td>';
+					<td>'. CodeLienImageWebArboDossier($mesInfosFichier) . '</td>';
+				
 
-			if($mesInfosFichier->EtatFichier < 2){
+			if($mesInfosFichier->EtatFichier < 2){ //<td>' . $mesInfosFichier->NBfichiersARBOWEB() . '</td>';
 				$affiche_Tableau .=	'
 				<td colspan=3>';
 				
@@ -617,13 +573,13 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 					<div class="tooltip" title="Afficher les erreurs">
 						<img src="img/ERREUR.png" alt="ERREUR">
 						
-						<font size="3" color="red">ATTENTION : Erreurs !</font></a>
+						<font size="3" color="red">ATTENTION : Erreurs !</font>
 						' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
 						</div>			';					
-				}
+				}//
 				$affiche_Tableau .=	'
 				<div class="boiteProgressBar">
-				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" >';				
+				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" title="'. TitleEtatTirage($mesInfosFichier->Fichier,1) . '">';				
 				$affiche_Tableau .=	'<font size="2" >'. $mesInfosFichier->Compilateur . '→ Création : ' . number_format($mesInfosFichier->Avancement(), 1).'%</font>';			
 				$affiche_Tableau .=	'</div>
 					</div>';	
@@ -636,12 +592,9 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 
 			}else {
 				$affiche_Tableau .=	'
-				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,2) . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a>
-					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>					
-				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,3) . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a>
-					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>	
-				<td><div class="tooltip"><a href="' . LienEtatLab($mesInfosFichier->Fichier,4) . LienImageOKKO($mesInfosFichier->EtatFichier >= "4") . '</a>
-					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>'						
+				<td><a href="' . LienEtatCMDWEB($mesInfosFichier->Fichier,2) . LienImageOKKO($mesInfosFichier->EtatFichier >= "2") . '</a></td>					
+				<td><a href="' . LienEtatCMDWEB($mesInfosFichier->Fichier,3) . LienImageOKKO($mesInfosFichier->EtatFichier >= "3") . '</a></td>	
+				<td><a href="' . LienEtatCMDWEB($mesInfosFichier->Fichier,4) . LienImageOKKO($mesInfosFichier->EtatFichier >= "4") . '</a></td>'						
 				;				
 			}		
 			$affiche_Tableau .=	'<td>' . LienIMGSuprFichierLab($mesInfosFichier->Fichier, $mesInfosFichier->EtatFichier) . '</td>';
@@ -654,7 +607,7 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 	return $affiche_Tableau;
 }
 
-function TitleEtat($fichier, $Etat){
+function TitleEtatTirage($fichier, $Etat){
 	if (strrchr($fichier, '.') != ".lab0"){
 		switch ($Etat) {
 		case "1":
@@ -672,6 +625,30 @@ function TitleEtat($fichier, $Etat){
 		case "5":
 			$retourMSG = "Vous avez expédié vos commandes ? Cliquez ici pour archiver votre groupe de comamndes.";
 			break;	
+		}
+	}else{
+		$retourMSG = "Lancez le plugin PhotoLab pour Photoshop pour créer les planches commandées...";
+
+	}	
+
+	return $retourMSG;
+}
+
+function TitleEtatCMDWEB($fichier, $Etat){
+	if (strrchr($fichier, '.') != ".lab0"){
+		switch ($Etat) {
+		case "1":
+			$retourMSG = "Les fichiers sont en cours de création.";
+			break;			
+		case "2":
+			$retourMSG = "Les fichiers et dossiers sont touts crées.";
+			break;		
+		case "3":
+			$retourMSG = "Déclarer les fichiers comme transférer sur la boutique en ligne";
+			break;
+		case "4":
+			$retourMSG = "Les ventes sont en cours, suprimer les fichiers...";
+			break;		
 		}
 	}else{
 		$retourMSG = "Lancez le plugin PhotoLab pour Photoshop pour créer les planches commandées...";
@@ -811,33 +788,37 @@ function LienImageEtatWEB($Etat){
 }
 
 function LienEtatLab($fichier, $EtatVise) {
+
+
 	$EtatActuel = substr($fichier,-1);
 	$lien = '#';
 	if ($EtatActuel > 0){
 		if ($EtatVise <= $EtatActuel + 1){	
-			if ($EtatVise == 2 ){//
-				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				//$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+			if ($EtatVise == 1 ){// Hack pour Historique pour pouvoir revenir sur commande en cours
+				$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=2','CATPhotolab');	
+			}				
+			elseif ($EtatVise == 2 ){//
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//$lien =  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 
 				$lien =   "CMDRecherche.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
-			}			
-
+			}	
 			//if (($EtatVise == 3 )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
 			elseif  ($EtatVise == 3 ){//
-				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 			}
 			elseif ($EtatVise == 4 ){//
-				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 				if (substr($fichier, -1) == $EtatVise){
 					$lien =   "CMDCartonnage.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
 				}else{
-					$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+					$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 				}			
 			}
 			elseif ($EtatVise == 5 ){//
-				//echo '<br>' .  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				$lien =  'API_Photolab.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
 			}
 			else{
 			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatVise);
@@ -847,10 +828,24 @@ function LienEtatLab($fichier, $EtatVise) {
 		}
 
 	}else {
-		$lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
+		$lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}
-	return $lien . '"  title="'. TitleEtat($fichier, $EtatVise) . '">';
+	return $lien . '"  title="'. TitleEtatTirage($fichier, $EtatVise) . '">';
 }
+
+function LienEtatCMDWEB($fichier, $Etat) {
+	$EtatActuel = substr($fichier,-1);
+	$lien = '#';
+	if ($EtatActuel > 0){
+		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
+		$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
+	} else {
+		$lien =  'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
+	}
+	return $lien . '"  title="'. TitleEtatCMDWEB($fichier, $Etat) . '">';
+}
+
+
 /* */
 function LienFichierLab($fichier) {
 	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
@@ -858,7 +853,7 @@ function LienFichierLab($fichier) {
 	$LienFichier = "#";
 	switch ($Extension) {
 		case ".lab0":
-			$LienFichier = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
+			$LienFichier = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 			break;
 		default:
 			$LienFichier = "CMDCartonnage.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
@@ -875,7 +870,7 @@ function LienVoirMiseEnPochette($infosFichier) {
 	$Lien = "#";
 	switch ($Extension) {
 		case ".lab0":
-			$Lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
+			$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
 			break;
 		default:
 			$Lien = "CMDCartonnage.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
@@ -895,7 +890,7 @@ function LienRecherchePlanche($infosFichier) {
 	$Lien = "#";
 	switch ($Extension) {
 		case ".lab0":
-			$Lien = 'API_Photolab.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
+			$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
 			break;
 		default:
 			$Lien = "CMDRecherche.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
@@ -1006,9 +1001,32 @@ function CodeLienImageDossier($mesInfosFichier){
 	
 	if ($Lien) {
 		$codeHTML = '<div class="tooltip">
-		<a href="' . LienOuvrirDossierOS($mesInfosFichier->RepTirage(),'CATPhotolab') . '" >' . $codeHTML . '</a>
-		<span class="tooltiptext"><br>Cliquez pour aller vers le dossier des planches crées<br><br></span></div>';
+		<a href="' . LienOuvrirDossierOS($GLOBALS['repTIRAGES'].$mesInfosFichier->RepTirage(),'CATPhotolab') . '" >' . $codeHTML . '</a>
+		<span class="tooltiptext"><br>Cliquez ici pour retrouver le dossier des planches crées pour les tirages photos<br><br></span></div>';
 		
+	}
+	$codeHTML = $codeHTML ;
+	
+	return $codeHTML;
+	
+}
+
+function CodeLienImageWebArboDossier($mesInfosFichier){	
+
+	$Lien = $GLOBALS['g_IsLocalMachine'] && ($mesInfosFichier->EtatFichier > 0);
+	$DossierOK =($Lien )? 'OK':'KO' ;
+	$nbClasse = 0;
+	$nbFichier = $mesInfosFichier->NBfichiersARBOWEB($nbClasse);
+	$codeHTML = '<div class="containerCMDPLanche">
+		<div class="txtCMDPLanche">' . $nbClasse . ' <span class="mini">classes</span><br>' . $nbFichier . ' <span class="mini">fichiers</span></div>'. '<img src="img/Dossier' . $DossierOK . '.png"></div>';	
+	
+	if ($Lien) {
+		/*$codeHTML = '<div class="tooltip">
+		<a href="' . LienOuvrirDossierOS($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage(),'CATPhotolab') . '" >' . $codeHTML . '</a>
+		<span class="tooltiptext"><br>Cliquez ici pour retrouver le dossier "Arborescence" des fichiers et dossiers crées<br><br></span></div>';*/
+		
+		$codeHTML = '<a href="' . LienOuvrirDossierOS($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage(),'CATPhotolab') . '" 
+		title="Cliquez ici pour retrouver le dossier \'Arborescence\' des fichiers et dossiers crées">' . $codeHTML . '</a>';		
 	}
 	$codeHTML = $codeHTML ;
 	

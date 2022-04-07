@@ -319,13 +319,13 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 	
 
 
-	$AncienNom = ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' )? substr($leFichierLab,11,-5) :'';
-	if ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' ){
+	//$AncienNom = ($leFichierLab != $GLOBALS['FichierDossierRECOMMANDE'] . '.lab2' )? substr($leFichierLab,11,-5) :'';
+	if (substr($leFichierLab,0,-5) == $GLOBALS['FichierDossierRECOMMANDE']){
 		$AncienNom = '';
 		$DateCommande = date('Y-m-d') ; 
 		$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
 	}
-	elseif ($leFichierLab != $GLOBALS['FichierDossierCMDESLIBRE'] . '.lab2' ){
+	elseif (substr($leFichierLab,0,-5) == $GLOBALS['FichierDossierCMDESLIBRE']){
 		$AncienNom = '';
 		$DateCommande = date('Y-m-d') ; 
 		$CMDhttpLocal = '&CMDdate=' . $DateCommande;	
@@ -573,7 +573,7 @@ function API_UISelectFILELAB($strAPI_SelectFILELAB){
 	$Formulaire =
 	'<!-- UPLOAD FILE -->
 	<div id="apiReponse" class="modal">
-	  <form class="modal-content animate" action="API_photolab.php" method="post" enctype="multipart/form-data">
+	  <form class="modal-content animate" action="APIDialogue.php" method="post" enctype="multipart/form-data">
 		<div class="imgcontainer">
 				<a href="../index.php" class="close" title="Annuler et retour écran général des commandes">&times;</a>
 				<img src="img/Logo-Go-PhotoLab-Catalog.png" alt="Image de fichier" class="apiReponseIMG">

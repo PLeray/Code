@@ -52,8 +52,9 @@ class CConnexionAPI {
 		}
         return $this->URL . $this->Demo . $cmd;
     } 	
-    function CallServeur($CMDLocal){
-		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod') . '&pageRetour=' . $this->PageRetour . '&serveurRetour=' . urlencode(ServeurLocal()) ;
+    function CallServeur($CMDLocal, $PageRetour = ''){
+		$PageRetour = ($PageRetour == ''?$this->PageRetour:$PageRetour);
+		$cmd = '?codeMembre=' . $this->codeMembre . '&isDebug=' .($this->isDebug ? 'Debug' : 'Prod') . '&pageRetour=' . $PageRetour . '&serveurRetour=' . urlencode(ServeurLocal()) ;
         return $this->URL .'/res/LOGTalkServeur.php' . $cmd . $CMDLocal;
     } 	
 }

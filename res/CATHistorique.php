@@ -54,7 +54,7 @@ elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) {
 //else echo 'Y A RIEN';
 
 $nb_fichier = 0;
-$affiche_Tableau = AfficheTableauCMDLAB($nb_fichier, false);
+$affiche_Tableau = AfficheTableauHistoriqueCMDLAB($nb_fichier, false);
 
 ?>
 <BR>
