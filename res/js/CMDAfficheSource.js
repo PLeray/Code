@@ -265,13 +265,13 @@ function BasculeMode() {
 		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "none";
 		
 		g_IsTirage = true;
-		document.getElementById("maBascule").innerHTML = "Commandes de tirages";		
+		document.getElementById("maBascule").innerHTML = "aller à la Création fichiers boutique";		
 	  } else {
 		document.getElementById("ZoneCommandesTirages").style.display = "none";
 		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "inline-block";		
 		
 		g_IsTirage = false;
-		document.getElementById("maBascule").innerHTML = "Création fichiers boutique";	
+		document.getElementById("maBascule").innerHTML = "aller aux commandes de tirages";	
 	  }
 }		
 

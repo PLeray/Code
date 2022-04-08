@@ -143,7 +143,7 @@ if (!$MAJ){
 		
 		
 			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"><<</a>
-			<H1><a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a></H1><br>
+			<p><a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a></p><br>
 				
 
 			<div id="myRecommandes" class="infoRecommandes">

@@ -6,7 +6,7 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 0.859;
+var g_NumVersion = 0.860;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 

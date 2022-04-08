@@ -44,8 +44,8 @@ class CINFOfichierLab {
 				if ($identifiant == '@')  {
 			//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
 					$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
-					$this->DateTirage = $morceau[0];
-					$this->NomEcole = $morceau[1];		
+					//$this->DateTirage = $morceau[0];
+					//$this->NomEcole = $morceau[1];		
 					
 					$this->DateTirage = substr($this->Fichier,0,10);
 					$this->NomEcole = substr($this->Fichier,11,-5);
@@ -173,6 +173,15 @@ class CINFOfichierArbo {
 					//echo '$txtAvancement: ' . $txtAvancement . '  this->PourcentageAvancement : ' . $this->PourcentageAvancement ;
 		
 				}
+				if ($identifiant == '@')  {
+					//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabFICHIERLabo[$i])));
+							$morceau = explode("_", str_replace("@", "", $tabFICHIERLabo[$i]));
+							$this->DateTirage = $morceau[0];
+							$this->NomEcole = $morceau[1];		
+							
+							//$this->DateTirage = substr($this->Fichier,0,10);
+							$this->NomEcole = substr($this->Fichier,16,-5);		
+						}				
 			}
 		}
 	}
@@ -568,15 +577,30 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 				<td colspan=3>';
 				
 				if (file_exists($mesInfosFichier->LienFichierERREUR())){
-					//echo $mesInfosFichier->LienFichierERREUR();
+					/* NEW */
 					$affiche_Tableau .=	'			
-					<div class="tooltip" title="Afficher les erreurs">
+					<div class="TitreErreur" onclick="VisuErreur(\''. $mesInfosFichier->FichierERREUR . '\');" title="Afficher les erreurs sur '.$mesInfosFichier->NomEcole . '">
 						<img src="img/ERREUR.png" alt="ERREUR">
-						
-						<font size="3" color="red">ATTENTION : Erreurs !</font>
-						' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
-						</div>			';					
+						<font size="3" color="red">ATTENTION : Erreurs !</font>' . LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '								
+					</div>';	
+
+					$affiche_Tableau .=	
+					'<div id="'. $mesInfosFichier->FichierERREUR .'" class="ContenufichierErreur">';
+					$affiche_Tableau .=	'<div class="TitreErreur" onclick="VisuErreur(\''. $mesInfosFichier->FichierERREUR . '\');" title="Fermer les erreurs sur '.$mesInfosFichier->NomEcole . '">
+						<img src="img/KO.png" alt="FERMER">
+						<font size="5">   '.$mesInfosFichier->NomEcole . '</font>
+						<br>
+						<font size="3" color="red"style="text-align: right;">CORRIGEZ les erreurs listée(s) ci-dessous, puis relancez le plugin PhotoLab </font>'
+						. LienIMGSuprFichierLab($mesInfosFichier->FichierERREUR, 'Erreur') . '
+					</div>
+					<br>';				
+					
+					$affiche_Tableau .=	LireFichierErreur($mesInfosFichier->LienFichierERREUR());
+					$affiche_Tableau .=	'</div>';										
 				}//
+
+
+
 				$affiche_Tableau .=	'
 				<div class="boiteProgressBar">
 				<div class="progressBar" id="AV'. $mesInfosFichier->Fichier .'" style="width:'.$mesInfosFichier->Avancement().'%;" title="'. TitleEtatTirage($mesInfosFichier->Fichier,1) . '">';				
