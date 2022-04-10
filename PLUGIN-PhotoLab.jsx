@@ -6,7 +6,9 @@
 #include SourceJSX/PSDFonctionsInterface.js
 #include SourceJSX/PSDBibliotheque.js
 
-var g_NumVersion = 0.860;
+app.bringToFront();
+
+var g_NumVersion = 0.861;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
@@ -322,6 +324,8 @@ PHOTOLAB.onClose = function(){
     if(!isDebug){photoshop.quit();}
 };
 
+//Mettre à jour fichier des script de Photoshop Pour PhotoLab mot clé : 'photolab'
+MAJFichierScriptPSP();
 
 // keep palette opened until user click button or close window
 var FermerPhotoLab = false;

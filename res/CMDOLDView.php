@@ -33,7 +33,7 @@ if($isDebug){
 
 ?>
     <title id="PHOTOLAB"><?php echo substr($myfileName,0, -5) ?> : Préparation de commandes</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMD-View.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 

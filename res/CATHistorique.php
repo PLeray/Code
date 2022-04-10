@@ -19,7 +19,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATHistorique');
 <html>
 <head>
 	<title id="PHOTOLAB">Historique des commandes</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<script type="text/javascript" src="<?php Mini('js/CATFonctions.js');?>"></script>

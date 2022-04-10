@@ -31,7 +31,7 @@ $EnteteHTML =
     <html>
     <head>
 	<title id="PHOTOLAB">PhotoLab étape suivante ...</title>
-	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
+	<link rel="stylesheet" type="text/css" href="'. strMini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css') . '">
     <link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
@@ -98,13 +98,13 @@ elseif (isset($_POST['lesCmdesLibres']) ){
 	}	
 	echo $EnteteHTML . ETAPE_01(false) . $BotomHTML;	
 
-}
+}/*
 elseif (isset($_FILES["myfile"]["tmp_name"]) ){
 	if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab uploadé
 			echo $EnteteHTML . API_PostFILELAB() . $BotomHTML;
 		} 	
 }
-
+*/
 else echo '<br>Rien à Afficher pas de parametres ?! !';		
 
 ///////////////////////////////////////////////////////////////
@@ -221,7 +221,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 					<br><br>';									
 			}
 			else{
-				$retourMSG = "APIPhotoProd : Erreur " . $target_fichier . " est manquant !";
+				$retourMSG = "APIPhotoLab : Erreur " . $target_fichier . " est manquant !";
 			}	
 
 			$retourMSG .= ' </div>';	

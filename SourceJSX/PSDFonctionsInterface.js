@@ -681,7 +681,7 @@ function GenererFichiersWEB() {
 			}			
 		}
 		leSousGroupeDeFichier.sort();
-		//alert(TableauTOStr(leSousGroupeDeFichier));
+		alert(TableauTOStr(leSousGroupeDeFichier));
 		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
 		
 		progressBar.maxvalue = leSousGroupeDeFichier.length;			
@@ -696,11 +696,11 @@ function GenererFichiersWEB() {
 
 				//UI
 				Raffraichir(); // A voir ?		
-
 				CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
-
+				alert(TableauTOStr(leSousGroupeDeFichier));
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
-
+				//ICI Probleme avec les groupes 
+				//alert(TableauTOStr(leSousGroupeDeFichier));
 				SauverFichierFromTableauDeLigne(decodeURI(g_SelectFichierLab.name),1);
 				EcrireErreursBilan(decodeURI(g_SelectFichierLab.name));
 				

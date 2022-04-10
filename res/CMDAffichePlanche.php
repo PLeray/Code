@@ -43,7 +43,7 @@
 	<title id="PHOTOLAB">Sources enregistrées</title>
 
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDAffichePlanche.css');?>">
-	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CouleursDEBUG.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 </head>
 

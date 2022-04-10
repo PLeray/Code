@@ -62,7 +62,7 @@ $monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $a
 <html>
 	<head>
 		<title id="PHOTOLAB">Affichage :  <?php echo $monProjet->NomProjet ; 	?></title>
-		<link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+		<link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
 		<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDAfficheSource.css');?>">
 		<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 
@@ -155,8 +155,24 @@ if (!$MAJ){
 					<div class="dropdown">
 						
 						<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
-						<div id="myDropdown" class="dropdown-content">
-							<?php echo RemplissageDropProduit($monProjet); ?>  
+						<div id="myDropdown" class="dropdown-content">							
+							<table ><tr with =100%>
+
+								sdfsdfsdfsdfdsfdsfdsfdsfd dqsfdsfsdf
+
+
+
+								</tr><tr>
+
+								<?php echo RemplissageDropScriptFormat($monProjet); ?>
+
+
+
+							</tr></table>
+
+							</table><?php echo RemplissageDropScriptFormat($monProjet); ?>
+							<?php echo RemplissageDropProduit($monProjet); ?>
+							
 						</div>
 					</div>
 					<br><br>
@@ -277,7 +293,6 @@ function MAJFichierBoutique($ListeFichier, $codeSource, $anneeSource){
 //echo 'VOILA LES lesFichiersBoutique : ' . $ListeFichier;
 }
 
-
 function RemplissageDropProduit($monProjet){ 
 	$str =  '';
 	$CataloguePdtWEB = array();
@@ -292,14 +307,91 @@ function RemplissageDropProduit($monProjet){
 
 	$ListeUniqueProduit = array();
 	$ListeUniqueProduit = array_column($CataloguePdtWEBFinal, 'Code');
-	
+
 	for($i = 0; $i < count($CataloguePdtWEBFinal) ; $i++){
 		if((in_array($CataloguePdtWEBFinal[$i]['Code'],$ListeUniqueProduit))&&($CataloguePdtWEBFinal[$i]['Description']!='')){
-			$str .= '<a href=javascript:void(0); Code="'.$CataloguePdtWEBFinal[$i]['Code'].'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEBFinal[$i]['Description'].'</a>';
+			if ($CataloguePdtWEBFinal[$i]['Code'] !=''){
+				$str .= '<a href=javascript:void(0); Code="'.$CataloguePdtWEBFinal[$i]['Code'].'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEBFinal[$i]['Description'].'</a>';
+			}
 		}
-	} 
+	} 	
 	return $str;
+
+
 }
+
+function RemplissageDropScriptFormat($monProjet){ 
+	$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjet->ScriptsPS . '.csv';
+	
+	$CataloguePRODUITS = array();
+	$PremiereLigneARefaire = false;	
+	if (file_exists($monCatalogueScriptPS)){ 
+		$file = fopen($monCatalogueScriptPS, "r");
+		if ($file) {
+			while(!feof($file)) {
+				$line = trim(fgets($file));
+				if (strpos($line, ';') > 1){
+					array_push($CataloguePRODUITS, $line);
+				}
+			}
+			fclose($file);	
+		}
+		$maBibliothequeScriptPS = $GLOBALS['repGABARITS'] . 'ActionsScriptsPSP.csv';
+		if (filemtime($maBibliothequeScriptPS) > filemtime($monCatalogueScriptPS)){
+			$PremiereLigneARefaire = true;		 
+		 }	
+			
+	}else {
+		$PremiereLigneARefaire = true;
+	}
+
+
+	//if(count($CataloguePRODUITS) < 1){echo 'lkdsfgfdgd dfgggggggggggggggggggggggg jlkj';array_push($CataloguePRODUITS,'lkj');}
+	//array_push($CataloguePRODUITS,RecupScriptSelonNomDossier($monProjet->ScriptsPS));
+	//If date fichier ActionsScriptsPSP.csv + recente que $monCatalogueScriptPS alors mettre à jour 1ere ligne
+	$line =  '';
+	$file = fopen($monCatalogueScriptPS, 'w');
+	if ($PremiereLigneARefaire){
+		fputs($file, RecupScriptSelonNomDossier($monProjet->ScriptsPS). "\n");
+	}
+	else{ fputs($file, $CataloguePRODUITS[0]. "\n");}
+	for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
+		fputs($file, $CataloguePRODUITS[$i]. "\n");
+	} 	
+	fclose($file);
+
+	for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
+		if (strpos($CataloguePRODUITS[$i], ';') > 1){
+			$morceau = explode(";",  $CataloguePRODUITS[$i]);
+			$line .= '<a href=javascript:void(0); Code="'.$morceau[0].'" onclick="CliqueDropDown(this)">'.$morceau[1].'</a>';
+		}
+	} 	
+	return $line;
+}
+
+function RecupScriptSelonNomDossier($moDossierScriptsPS){ 
+	$maBibliothequeScriptPS = $GLOBALS['repGABARITS'] . 'ActionsScriptsPSP.csv';
+	$strScripts = '';
+
+	if (file_exists($maBibliothequeScriptPS)){ 
+		$file = fopen($maBibliothequeScriptPS, "r");
+		if ($file) {
+			while(!feof($file)) {
+				$strScripts = trim(fgets($file));
+				$morceau = explode(";", $strScripts);
+				if ($morceau[0] == $moDossierScriptsPS){					
+					$maBibliothequeScriptPS = $strScripts;
+				}
+			}
+			fclose($file);	
+		}
+	}
+	return $maBibliothequeScriptPS;
+	//return 'oih';
+}
+
+
+
 
 
 
@@ -379,47 +471,22 @@ function RetourEcranSources($ParamAnnee = ''){
 
 //function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
-	//$NBPlanches = NBfichiersARBOWEB($fichier);
-	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
-	//$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
 	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
-	/*
-	if ($GLOBALS['lesFichiersBoutique'] != ''){
+	$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
+	$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
 
-	}
-	if ($GLOBALS['lesCmdesLibres'] != ''){
-
-	}	
-*/
-		$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
-		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
-
-	
 	$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
 	return $retourMSG ;
 }	
 
 function ValidationCommandesLIBRES($NomProjet){
-	//$NBPlanches = NBfichiersARBOWEB($fichier);
-	//$NBPlanches = INFOsurFichierLab($target_file, $CMDAvancement, $CMDhttpLocal, $Compilateur);
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
-	//$CMDhttpLocal .= '&CMDwebArbo=' . $NBPlanches;
 	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
-	/*
-	if ($GLOBALS['lesFichiersBoutique'] != ''){
+	$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
+	$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
 
-	}
-	if ($GLOBALS['lesCmdesLibres'] != ''){
-
-	}	
-*/
-		$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
-		$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
-
-	
 	$retourMSG = 'APIDialogue.php?codeMembre=' . $GLOBALS['codeMembre'] .$CMDhttpLocal . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
-
 
 	return $retourMSG ;
 }	

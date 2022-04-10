@@ -27,7 +27,7 @@ $g_IsLocalMachine = IsLocalMachine();
 <html>
 <head>
 	<title id="PHOTOLAB">Sources enregistrées</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATSources.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
@@ -45,10 +45,7 @@ $g_IsLocalMachine = IsLocalMachine();
 <?php
 if (isset($_GET['OpenRep'])) { // OUVRIR REP !
 	$leRep = str_replace("/","\\",$_GET['OpenRep']);
-	if ($GLOBALS['isDebug']){
-		echo 'le rep  à ouvrir : explorer /select,"'.$leRep.'"' ;
-	}
-	execInBackground('explorer /select,"'.$leRep.'"');
+	execInBackground('explorer /select,"'.$leRep.'"', true);// true :  on rentre dans le dossier
 } 
 
 $AnneeScolaire = '2021-2022';

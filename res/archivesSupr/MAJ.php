@@ -15,7 +15,7 @@ $EnteteHTML =
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <html>
     <head>
-	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
+	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"DEBUG":"PROD") . ".css") . '">
     <link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>

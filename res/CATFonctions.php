@@ -1042,7 +1042,7 @@ function CodeLienImageWebArboDossier($mesInfosFichier){
 	$nbClasse = 0;
 	$nbFichier = $mesInfosFichier->NBfichiersARBOWEB($nbClasse);
 	$codeHTML = '<div class="containerCMDPLanche">
-		<div class="txtCMDPLanche">' . $nbClasse . ' <span class="mini">classes</span><br>' . $nbFichier . ' <span class="mini">fichiers</span></div>'. '<img src="img/Dossier' . $DossierOK . '.png"></div>';	
+		<div class="txtCMDPLanche">' . $nbFichier . ' <span class="mini">fichiers</span></div>'. '<img src="img/Dossier' . $DossierOK . '.png"></div>';	
 	
 	if ($Lien) {
 		/*$codeHTML = '<div class="tooltip">

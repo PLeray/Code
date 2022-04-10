@@ -393,6 +393,7 @@ function GetActionSetInfo() {
         setCounter++;
     }
     return actionSetInfo;
+	//alert (actionSetInfo);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -606,4 +607,30 @@ function removeDiacritics (str) {
         str = str.replace(changes[i].letters, changes[i].base);
     }
     return str;
+}
+
+function MAJFichierScriptPSP() {	
+	GlobalVariables();
+	var Ligne = '';
+	var g_Rep_Script = g_Rep_PHOTOLAB  + 'GABARITS/';
+	var fichierScriptPSP = g_Rep_Script+"ActionsScriptsPSP.csv";
+	var file = new File(fichierScriptPSP);
+	var actionInfo = GetActionSetInfo();
+	//alert(fichierScriptPSP);
+	file.encoding='UTF-8';
+	file.open("w");	
+    if ( actionInfo.length > 0 ) {
+        for ( var i = 0; i < actionInfo.length; i++ ) {	
+			Ligne = actionInfo[i].name + ';'			
+			if ( Ligne.indexOf('PHOTOLAB') > -1) {
+				/**/
+				for ( var j = 0; j < actionInfo[i].children.length; j++ ) {
+					Ligne += actionInfo[i].children[j].name + ';';				
+				}
+				file.writeln(Ligne); // On Ecrit les entetes du csv					
+				Ligne = '';	
+			}		
+        }
+    } 
+	file.close();			
 }

@@ -1,11 +1,12 @@
 <?php
-$VERSION = 0.860;
+$VERSION = 0.861;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
 $repMINIATURES = "../../CMDLABO/MINIATURES/";
 $repTIRAGES = "../../TIRAGES/";
 $repWEBARBO = "../../WEB-ARBO/";
+$repGABARITS = "../../GABARITS/";
 
 // remis le 21/06/2021 ??
 ini_set("auto_detect_line_endings", true); // Lecture MAC fin de ligne
@@ -96,7 +97,10 @@ function LienOuvrirDossierOS($Dossier,$depuisPage) {
 	return $LienFichier;
 }
 
-function execInBackground($cmd) {
+function execInBackground($cmd, $isDedans = false) {
+	if ($isDedans){ // On affiche l'intérieur en ajoutant le premier fichier au dossier cherché
+			$cmd = str_replace("/","\\",$cmd); // Oui Ajouter ca permet de rentrer dans le dossier plutot que le pointer depuis le repertoire parent ????
+	} 
     
 	if (substr(php_uname(), 0, 7) == "Windows"){
         pclose(popen("start /B ". $cmd, "r")); 
@@ -112,6 +116,19 @@ function execInBackground($cmd) {
 */
 	
 }
+
+
+function execInBackgroundOLD($cmd) {    
+	if (substr(php_uname(), 0, 7) == "Windows"){
+        pclose(popen("start /B ". $cmd, "r")); 
+		echo "Sur OS Windows " . $cmd;
+    }
+    else {
+        exec($cmd . " > /dev/null &");  
+		echo "Sur OS Autres " . $cmd;
+    }
+}
+
 function IsLocalMachine() {
 	$isLocal = false;
 
@@ -186,4 +203,21 @@ function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou
 	}	
 }	
 
+/*
+function NomPremierFichierDossier($Directory)
+{
+	$MyDirectory = opendir($Directory) or die('Erreur');
+	while($Entry = @readdir($MyDirectory)) 
+	{
+		if(!is_dir($Directory.'/'.$Entry) && $Entry != '.' && $Entry != '..') 
+		{  
+				echo '<br>' . 	$Entry;			 
+			return $Entry;
+			break;
+		}
+	}
+	closedir($MyDirectory);
+			return false;
+}
+*/
 ?>

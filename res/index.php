@@ -33,7 +33,7 @@ if (isset($_GET['version'])) {
 <html>
 <head>
 	<title id="PHOTOLAB">PhotoLab : accueil</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/index.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">

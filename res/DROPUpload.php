@@ -22,7 +22,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<html>
 		<head>
-		<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"":"AMP") . ".css") . '">
+		<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"DEBUG":"PROD") . ".css") . '">
 		<link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
 		</head>
 		<body>
@@ -40,24 +40,24 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 	$extension = strrchr($_FILES['myfile']['name'], '.'); 
 	//Début des vérifications de sécurité...
 	if(!in_array($extension, $extensionsAutorisee))	{ //Si l'extension n'est pas dans le tableau
-		$retourMSG .= "APIPhotoProd : Vous devez sélectionner un fichier de type .lab, .web ou .csv ...";
+		$retourMSG .= "APIPhotoLab : Vous devez sélectionner un fichier de type .lab, .web ou .csv ...";
 		$uploadOk = 0;			 
 	}
 	// Check file size
 	if ($_FILES["myfile"]["size"] > 500000) {
-		$retourMSG .= "APIPhotoProd : Le fichier est trop gros, vérifiez...";
+		$retourMSG .= "APIPhotoLab : Le fichier est trop gros, vérifiez...";
 		$uploadOk = 0;
 	}
 	// Check if $uploadOk is set to 0 by an error
 	if ($uploadOk == 0) {
-		$retourMSG .= "APIPhotoProd : Ce fichier non valide.";
+		$retourMSG .= "APIPhotoLab : Ce fichier non valide.";
 	} 
 	else {// if everything is ok, try to upload file
 		if (file_exists($_FILES["myfile"]["tmp_name"])){
 			if ($extension == '.csv') {
 				//Verif si fichier de commande web iso ou groupe ou pas bon !
 				if (ConvertirCMDcsvEnlab($TabCSV, $_FILES["myfile"]["tmp_name"], $target_file) != '') {					
-					$retourMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
+					$retourMSG .= "<h3>Pour créer les planches de la commande : '. $target_file .'</h3>"  ;
 					$retourMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";					
 					$uploadOk = 2; // Flag test si OK
 					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
@@ -104,7 +104,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			}		
 		}
 		else{
-			$retourMSG = "APIPhotoProd : Erreur " . $target_file . " est manquant !";
+			$retourMSG = "APIPhotoLab : Erreur " . $target_file . " est manquant !";
 		}
 	}
 	//echo "<br><br> Fermer la fenetre (faire un bouton!)";
@@ -119,7 +119,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 	'<div id="apiReponse" class="modal">
 		<div class="modal-content animate" >
 			<div class="imgcontainer">
-				<a href="'.$GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
+				<a href="CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($target_file_seul).'0" class="close" title="Annuler et retour écran général des commandes">&times;</a>
 				<br>
 			</div>' . $retourMSG;
 	

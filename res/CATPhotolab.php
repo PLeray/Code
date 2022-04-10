@@ -21,7 +21,7 @@ $tabFichiersEnCoursDeCompilation = array();
 <html>
 <head>	
 	<title id="PHOTOLAB">Commandes en cours de préparation</title>
-    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'':'AMP').'.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/CATPhotolab.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/Favicon.png">
 	<link rel="stylesheet" type="text/css" href="<?php Mini('css/Menu.css');?>">
@@ -72,11 +72,8 @@ $tabFichiersEnCoursDeCompilation = array();
 	}
 	elseif (isset($_GET['OpenRep'])) { // OUVRIR REP !
 		$RechargerPage = true;
-		$leRep = str_replace("/","\\", $_GET['OpenRep']);
-		if ($isDebug){
-			echo 'le rep  à ouvrir : explorer /select,"'.$leRep.'"' ;
-		}
-		execInBackground('explorer /select,"'.$leRep.'"');
+		$leRep = str_replace("/","\\",$_GET['OpenRep']);
+		execInBackground('explorer /select,"'.$leRep.'"', false); // False : on point le dossier sans rentrer dedans
 	} 	
 	elseif (isset($_GET['BDDRECFileLab'])) { // Transformation de l'état d'un fichier lab 
 		$RechargerPage = true;
