@@ -111,14 +111,14 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			<div class="imgcontainer">
 				<a href="CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($target_file_seul) .'0" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
 			</div>
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Importer les commandes de fichiers "produits" à Créer.</h1>';	
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Vérification des scripts Photoshop et fichiers source</h1>';	
 		$retourMSG .= '<table>
 		<tr>
 			<td width="50%">';	
 
 			
 			$retourMSG .= '	<div class="Planchecontainer">
-			<h1>Vérification des scripts Photoshop et des fichier source</h1>';
+			<h1>scripts Photoshop</h1>';
 			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 
 
@@ -127,8 +127,8 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			// A REMETTRE !!! 
 			$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
 
-
-			$retourMSG .= 'Photos manquantes : 0 PierrePierrePierrePierrePierrePierre ';
+			$retourMSG .= '<h1>Photos necessaires</h1>';
+			$retourMSG .= 'Photos manquantes : 0';
 
 			$retourMSG .= '</div>';
 		$retourMSG .= '</td>
