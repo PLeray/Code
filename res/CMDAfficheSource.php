@@ -154,14 +154,11 @@ if (!$MAJ){
 				<H1>Mes Commandes</H1><br>	
 					<div class="dropdown">
 						
-						<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
+					<img src="img/searchicon.png" id="LoupeInitZoneSaisie" title="Initialiser la liste de produits" onclick="SelectionProduitInitialisation()">
+					<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
 						<div id="myDropdown" class="dropdown-content">							
 							<table ><tr with =100%>
-
-								sdfsdfsdfsdfdsfdsfdsfdsfd dqsfdsfsdf
-
-
-
+								sdfsdfs dfsdfdsfds fdsfdsfd dqsfdsfsdf
 								</tr><tr>
 
 								<?php echo RemplissageDropScriptFormat($monProjet); ?>
@@ -182,9 +179,9 @@ if (!$MAJ){
 					<div id="myListePhoto" class="ListeCommandes">		
 						<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
 					</div>	
-
-					<button id="btnAjouterTirages" class="btnAjouterTirages" onclick="CreationCommandeProduitDepuisPhoto()" disabled>Ajouter tirages</button>
-																		<span id="SelectProduit" Code="20x20cm MAT_PORTRAIT"></span>		 
+					<p>Traiter les photos ci-dessus pour faire le produit :</p>
+					<button id="btnAjouterTirages" Code="" class="btnAjouterTirages" onclick="CreationCommandeProduitDepuisPhoto()" disabled></button>
+																				 
 					<br>
 					<div id="myListeCommandes" class="ListeCommandes">		
 						<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      

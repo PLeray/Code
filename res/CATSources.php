@@ -402,12 +402,18 @@ function BDDLibreRECFileLab($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire
 	$Tabl = [];
 	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
 
-	if (file_exists($strURL_NewFichier)) { 	$Tabl = file($strURL_NewFichier); }//Les commande existantes s'il y en a 
-	
+	if (file_exists($strURL_NewFichier)) {
+		$Tabl = file($strURL_NewFichier); 
+	}//Les commande existantes s'il y en a 
+	//$mesInfosFichier = new CINFOfichierLab($strURL_NewFichier); 
+	//$ligneResume = '{Etat '. substr($strURL_RECFileLab,-1) .' : ' . $mesInfosFichier->MAJSyntheseCommande();	
+
+	$ligneResume = LigneDeuxMAJ($strURL_NewFichier);		
+
 	$file = fopen($strURL_NewFichier, 'w');
 		$ligne = '[Version : 2.0' . $BDDRECCode . "\n";
 		fputs($file, $ligne);
-		$ligne = '{Etat 1 :0%%En Cours....}' . "\n";
+		$ligne = $ligneResume . "\n";
 		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
 		$nomFichier = utf8_decode($NewFichier);
 		

@@ -310,7 +310,7 @@ function MAJEnregistrementSelectionPhotos() {
 	maListePhotos.innerHTML =  AfficherResumePhotoSelection(mesRecoInfo);
 
 	document.getElementById("btnAjouterTirages").disabled = ((maListePhotos.innerHTML === "")
-								||(document.getElementById("SelectProduit").innerHTML === ""));
+								||(document.getElementById("btnAjouterTirages").textContent === ""));
 
 	MAJAffichageSelectionPhotos();
 }	
@@ -436,20 +436,21 @@ function CreationCommandeProduitDepuisPhoto() {
 		//var LeProduitSelection = document.getElementById('SelectProduit').innerHTML;	
 		
 		//Affichage  // '&#60;' et '&#62;' pour remplacer les '<' et '>'		
-		document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos,  document.getElementById('SelectProduit').innerHTML);		
+		//document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos,  document.getElementById('SelectProduit').innerHTML);
+		document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages').textContent);				
 		
 		//Cequ on enregistre : 
 		//document.getElementById("myListeCommandes").innerHTML += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
 		//La commande Sauvée																																
-		document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
-														
+		//document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
+		document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages'));														
 		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");	
 	}
 }
 
 function CMDPhotosProduits(ListedePhoto, elementSelection) {
 	
-	var maCMDPhotosProduits = '<' + elementSelection.innerHTML + '>' + sepFinLigne;
+	var maCMDPhotosProduits = '<' + elementSelection.textContent + '>' + sepFinLigne;
 	var CMDSelectionPhoto = ListedePhoto.split(sepFinLigne);
 	
 	for (i = 0; i < CMDSelectionPhoto.length  ; i++) {
@@ -500,6 +501,16 @@ function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 function SelectionProduit() {
 	document.getElementById("myDropdown").classList.toggle("show");
 }
+
+function SelectionProduitInitialisation() {
+/* */
+	//document.getElementById("SelectProduit").innerText = "";
+	document.getElementById("btnAjouterTirages").textContent = "";
+	document.getElementById("btnAjouterTirages").disabled = true;
+	document.getElementById("ZoneSaisie").value = "";
+	filterProduits();
+	SelectionProduit();
+}
   
 function filterProduits() {
 	var input, filter, ul, li, a, i;
@@ -519,14 +530,19 @@ function filterProduits() {
 
 function CliqueDropDown(element) {
 	document.getElementById("ZoneSaisie").value = element.innerText;
-	document.getElementById("SelectProduit").innerText = element.innerText;
-	//document.getElementById("SelectProduit").Code = element.Code;
+	//document.getElementById("SelectProduit").innerText = element.innerText;
 
-	document.getElementById("SelectProduit").setAttribute('Code', element.getAttribute('Code'));
+	document.getElementById("btnAjouterTirages").textContent = element.innerText;
+	document.getElementById("btnAjouterTirages").setAttribute('Code', element.getAttribute('Code'));
+	
+	//document.getElementById("SelectProduit").setAttribute('Code', element.getAttribute('Code'));
 
-	filterProduits();
+	//filterProduits();
+	//document.getElementById("btnAjouterTirages").disabled = ((document.getElementById("myListePhoto").innerHTML === "")
+	//							||(document.getElementById("SelectProduit").innerHTML === ""));
 	document.getElementById("btnAjouterTirages").disabled = ((document.getElementById("myListePhoto").innerHTML === "")
-								||(document.getElementById("SelectProduit").innerHTML === ""));
+								||(document.getElementById("btnAjouterTirages").textContent === ""));
+	SelectionProduit();
 }
 
 function ZoomPhoto(element)

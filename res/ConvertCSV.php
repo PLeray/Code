@@ -24,7 +24,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 {
 	$TabCSV = array();
 
-	$GLOBALS['CataloguePdtWEB'] = csv_to_array('../../GABARITS/CatalogueProduits.csv', ';'); // New 22-10
+	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
 	//var_dump( $GLOBALS['CataloguePdtWEB']) ;
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');
@@ -127,7 +127,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 		}
 		else{ // Tout va bien !
 			# Chemin vers fichier texte
-			$target_file =  $GLOBALS['repCommandesLABO'] . $target_file ;
+			$target_file =  $GLOBALS['repCMDLABO'] . $target_file ;
 
 			$txtFichier = str_replace("<br>", "\n", $affiche_Tableau);
 			$txtFichier = str_replace("&#60;", "<", $txtFichier);

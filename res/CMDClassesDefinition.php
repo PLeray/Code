@@ -114,7 +114,11 @@ class CGroupeCmdes {
 		return $resultat;
 	}	
 	function AffichePlancheAProduire(){
-		$resultat = '';
+		$resultat = '<table class="TablePlanche"><tr>
+			<td  width="40%" class ="StyleFichier">FichierSource</td>
+			<td  width="20%" class ="StyleTaille">Taille</td>
+			<td  width="40%" class ="StyleProduit">Produit</td>
+		</tr></table>';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
@@ -437,10 +441,16 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		$str = str_replace("<", "", str_replace(">", "", $str));
 		//echo "jhgjhg :  " . $str;
 		$morceau = explode("%", $str);		
-		$TailleInfo = count($morceau);
 
         $this->Classe = $morceau[0]; 
-		if ($TailleInfo > 1){$this->Nom = $morceau[1];} 
+		if (count($morceau) > 1){
+			$this->Nom = $morceau[1];
+			$this->Classe = $morceau[0]; 
+		} 
+		else{
+			//$this->Classe = '';
+			$this->Nom = $morceau[0];			
+		}
 		$this->colPlanche = array();
     }   
 	function AjoutPlanche($unePlanche){

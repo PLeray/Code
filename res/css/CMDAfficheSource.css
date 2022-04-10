@@ -206,7 +206,6 @@ p {/*Police Détails Fichier commande et commun  */
   all: unset; 
 }
 .btnAjouterTirages {
-
   text-align: center;
   z-index: 9; /* Make sure it does not overlap */
   border: none; /* Remove borders */
@@ -217,6 +216,8 @@ p {/*Police Détails Fichier commande et commun  */
   padding: 10px; /* Some padding */
   border-radius: 10px; /* Rounded corners */
   font-size: 12px; /* Increase font size */
+  width:  270px;
+  min-height:  50px;
 }
 
 .btnAjouterTirages:hover { 
@@ -974,25 +975,38 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 }
 */
 #ZoneSaisie {
+  border:none;
+  padding-bottom: 15px;
+  padding-left: 50px;
+}
+  /**/
+#ZoneSaisie:focus {outline: none;}
+#LoupeInitZoneSaisie{
+  cursor: pointer; 
+  position: fixed;
+  margin-top: -15px;
+  margin-left: 5px;
+
+
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+
   box-sizing: border-box;
-  background-image: url('../img/searchicon.png');
-  background-position: 14px 6px;
-  background-repeat: no-repeat;
   font-size: 12px;
-  padding: 14px 20px 12px 60px;
+
+  vertical-align: middle;
+  
+  padding: 14px 10px 0px 10px;
 
   border: 1px solid var(--FondLigneTabGrisFonce);
 
   width:  270px;
+
 }
-
-#ZoneSaisie:focus {outline: 1px solid #ddd;}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
+.dropdown:focus {outline: 1px solid #ddd;}
 .dropdown-content {
   display: none;
   position: absolute;
@@ -1042,11 +1056,11 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 .dropdown a:hover {background-color: var(--boutonVert);}
 
 .show {display: block;}
-
+/*
 #SelectProduit {
   font-size: 12px;
 }
-
+*/
 
 /* Pour message probleme librairie gd */
 .modal-PBgd {

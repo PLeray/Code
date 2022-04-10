@@ -32,7 +32,7 @@ $EnteteHTML =
     <head>
 	<title id="PHOTOLAB">PhotoLab étape suivante ...</title>
 	<link rel="stylesheet" type="text/css" href="'. strMini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css') . '">
-    <link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
+    <link rel="stylesheet" type="text/css" href="'. strMini("css/APIDialogue.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
     <body>
@@ -42,7 +42,7 @@ $BotomHTML = '
     </body>
     </html>';
 
-$DebutMessageBox =
+$DebutMessageBox = // N'est utilisé que pour API_UIConfirmation ??
 '<div id="apiReponse" class="modal">
 	<div class="modal-content animate" >
 		<div class="imgcontainer">
@@ -177,10 +177,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 
 				
 				$retourMSG .= '	<div class="Planchecontainer">
-				<h1>COMMANDES EN COURS</h1>
-				<table class="TablePlanche"><tr>
-				<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
-				</tr></table>';
+				<h1>COMMANDES EN COURS</h1>';
 				//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 
 
@@ -251,10 +248,7 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 			<tr>
 				<td width="50%">';	
 				$retourMSG .= '	<div class="Planchecontainer">
-				<h1>COMMANDES EN COURS</h1>
-				<table class="TablePlanche"><tr>
-				<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
-				</tr></table>';
+				<h1>COMMANDES EN COURS</h1>';
 			$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$strAPI_fichierLAB);
 
 			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
@@ -301,10 +295,7 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 	$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $leFichierLab); 		
 	$NBPlanches = $mesInfosFichier->NbPlanches;	
 		$retourMSG .= '	<div class="Planchecontainer">
-		<h1>COMMANDES EN COURS -> ' . $mesInfosFichier->NbPlanches.' Planches</h1>
-		<table class="TablePlanche"><tr>
-		<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
-		</tr></table>';
+		<h1>COMMANDES EN COURS -> ' . $mesInfosFichier->NbPlanches.' Planches</h1>';
 		$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $leFichierLab);
 
 		//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	

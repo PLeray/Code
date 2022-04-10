@@ -26,8 +26,15 @@ class CINFOfichierLab {
 		for($i = 0; $i < count($tabFICHIERLabo); $i++){
 			$identifiant = substr($tabFICHIERLabo[$i],0,1);
 			if (($identifiant != '[') && ($identifiant != '{') && ($identifiant != '#') && ($identifiant != '@') && ($identifiant != '<') && ($identifiant != '')) {
-				$this->NbPlanches = $this->NbPlanches + 1 ;
+				$this->NbPlanches += 1 ;
 				//echo $this->NbPlanches;
+				/*$curPlanche = new CPlanche($tabFICHIERLabo[$i]);
+				
+				//$leCodeFormat = stristr(substr(stristr($tabFICHIERLabo[$i] , '_'),1), '_', true);
+				//$leCodeFormat = substr(stristr($tabFICHIERLabo[$i] , '_'),1);
+				if ($curPlanche->Taille != ''){
+					array_push($this->TabResumeFormat,$curPlanche->Taille);	
+				}	*/			
 			}else {
 				if ($identifiant == '{')  {
 					$this->SyntheseCodeCMD = substr(stristr($tabFICHIERLabo[$i], '%%'),1,-1);
@@ -49,12 +56,18 @@ class CINFOfichierLab {
 					
 					$this->DateTirage = substr($this->Fichier,0,10);
 					$this->NomEcole = substr($this->Fichier,11,-5);
-
-
 				}
 				if ($identifiant == '#')  {
-					$this->NbCommandes = $this->NbCommandes + 1 ;		
-				}				
+					$this->NbCommandes += 1 ;
+				}		
+				/*if ($identifiant == '<')  {
+
+					$str = str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$i]));
+					//echo "jhgjhg :  " . $str;
+					$morceau = explode("%", $str);		
+					if (count($morceau) > 1){array_push($this->TabResumeProduit,$morceau[1]);} // Y Le nom de la classe
+					else{array_push($this->TabResumeProduit,$morceau[0]);} // ya que le produit
+				}*/					
 			}		
 		}
 	}
@@ -75,21 +88,52 @@ class CINFOfichierLab {
 		}
 		return $leRepTirage;
     } 
-	/*
-    function GenSyntheseCommande(){
+	/**/
+    function MAJSyntheseCommande(){
 		try {
-			$unBilan = 'Le groupe de commandes comprend ' . $NbCommandes . ' commandes.%';
-			$unTab = array_count_values($GLOBALS['TabResumeProduit']);
+			$tabFICHIERLabo = LireFichierLab($GLOBALS['repCMDLABO'] .$this->Fichier);
+			$ProduitenCours = '';
+			$TabResumeProduit = array();
+			$TabResumeFormat = array();
+			$this->NbCommandes = 0;
+			$this->NbPlanches = 0;
+			for($i = 0; $i < count($tabFICHIERLabo); $i++){
+				$identifiant = substr($tabFICHIERLabo[$i],0,1);
+				if (($identifiant != '[') && ($identifiant != '{') && ($identifiant != '#') && ($identifiant != '@') && ($identifiant != '<') && ($identifiant != '')) {
+					$this->NbPlanches += 1 ;
+					$curPlanche = new CPlanche($tabFICHIERLabo[$i]);
+					if ($curPlanche->Taille != ''){
+						array_push($TabResumeFormat,$curPlanche->Taille);	
+						array_push($TabResumeProduit,$ProduitenCours);
+					}			
+				}else {	
+					if ($identifiant == '#')  {
+						$this->NbCommandes += 1 ;		
+					}						
+					if ($identifiant == '<')  {
+						$str = str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$i]));
+						$morceau = explode("%", $str);		
+						/*if (count($morceau) > 1){array_push($TabResumeProduit,$morceau[1]);} // Y Le nom de la classe
+						else{array_push($TabResumeProduit,$morceau[0]);} // ya que le produit
+						*/
+						if (count($morceau) > 1){$this->ProduitenCours = $morceau[1];} // Y Le nom de la classe
+						else{$this->ProduitenCours = $morceau[0];} // ya que le produit
+					}					
+				}		
+			}
+
+			$unBilan = '%%Le groupe de commandes comprend ' . $this->NbCommandes . ' commandes.%';
+			$unTab = array_count_values($TabResumeProduit);
 			
 			foreach ($unTab as $key => $row) {
 				$unBilan .= '- ' .$key . ': ' . $unTab[$key] . '%';
 			}
-			//echo "erreur avant " . error_get_last();
-			$unTab = array_count_values($GLOBALS['TabResumeFormat']);
-			//echo "erreur apres " . error_get_last();
+			$unTab = array_count_values($TabResumeFormat);
+
 			//var_dump($GLOBALS['TabResumeFormat']);
-			//$unBilan .= '%%%Pour un total de ' . $NbCommandes . ' commandes individuelles%';
-			$unBilan .= '%%%Il y a ' . count($GLOBALS['TabResumeProduit']) . ' fichiers a creer au laboratoire.%';
+			
+			$unBilan .= 'Il y a ' . $this->NbPlanches . ' fichiers a creer au laboratoire.%';
+			/**/
 			foreach ($unTab as $key => $row) {
 				$unBilan .= '- Format ' .$key . ': ' . $unTab[$key] . '%';
 			}	
@@ -111,7 +155,7 @@ class CINFOfichierLab {
     function TabProduits(){
 
     } 	
-	*/
+	
     function LienFichierERREUR(){
 		return $GLOBALS['repCMDLABO'] . $this->FichierERREUR;
     }	
@@ -357,6 +401,7 @@ function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 	}
 	$NewFichier = $strURL_RECFileLab;  // . "_rec" ;
 	//echo '<br><br>' . $NewFichier;
+	/*
 	$file = fopen($NewFichier, 'w');
 		for($i = 0; $i < count($lines); $i++){
 			if(!$i){
@@ -368,6 +413,15 @@ function BDDRECFileLab($strRECFileLab, $BDDRECCode){
 			}
 		}
 	fclose($file);	
+	*/  // NEW 10 AVRIL 2022
+	//$mesInfosFichier = new CINFOfichierLab($NewFichier); 
+	$ligneResume = LigneDeuxMAJ($NewFichier);
+	$file = fopen($NewFichier, 'w');
+		fputs($file, '[Version : 2.0' . $BDDRECCode . "\n");
+		fputs($file, $ligneResume . "\n");
+		for($i = 2; $i < count($lines); $i++){
+			fputs($file, $lines[$i]);	
+		}	
 }
 
 function RECFileLab($strRECFileLab){
@@ -401,6 +455,12 @@ function RECFileLab($strRECFileLab){
 
 }
 
+function LigneDeuxMAJ($FichierCommande){
+	$mesInfosFichier = new CINFOfichierLab($FichierCommande); 
+	$ligneResume = '{Etat '. substr($FichierCommande,-1) .' : %%' . $mesInfosFichier->MAJSyntheseCommande();	
+	return $ligneResume;
+}
+
 function SetCatalog($strTRANSFileLab){
 	return 'le transformer ' . $strTRANSFileLab;
 }
@@ -421,10 +481,22 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 		'<tr style="background-color:'.$laCouleur.'">
 		
 			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
-			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD . '<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
+			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD
+								 . '<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
 			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
 
 			/*
+		$affiche_Tableau .=
+		'<tr style="background-color:'.$laCouleur.'">
+		
+			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
+			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD
+								 . '<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
+			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
+
+
+
+
 			$affiche_Tableau .='			
 			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">
 			<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>';
@@ -463,7 +535,6 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 				
 				$affiche_Tableau .=	LireFichierErreur($mesInfosFichier->LienFichierERREUR());
 				$affiche_Tableau .=	'</div>';				
-
 			}
 			$affiche_Tableau .=	'
 			<div class="boiteProgressBar">			
@@ -571,7 +642,6 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 					<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
 					<td>'. CodeLienImageWebArboDossier($mesInfosFichier) . '</td>';
 				
-
 			if($mesInfosFichier->EtatFichier < 2){ //<td>' . $mesInfosFichier->NBfichiersARBOWEB() . '</td>';
 				$affiche_Tableau .=	'
 				<td colspan=3>';
@@ -598,8 +668,6 @@ function AfficheTableauCMDWEB(&$nb_fichier, $isEnCours){
 					$affiche_Tableau .=	LireFichierErreur($mesInfosFichier->LienFichierERREUR());
 					$affiche_Tableau .=	'</div>';										
 				}//
-
-
 
 				$affiche_Tableau .=	'
 				<div class="boiteProgressBar">
@@ -790,8 +858,6 @@ function LienImageProgression($EtatActuel,$Etat){
 		//return $Lien;
 		//$Lien = '<img class= "'.$Laclasse.'" src="img/' . $Etat . '-Etat.png">'
 		return '<img class= "'.$Laclasse.'" src="img/' . $Etat . '-Etat.png">';		
-
-
 	}
 } 
 
@@ -812,8 +878,6 @@ function LienImageEtatWEB($Etat){
 }
 
 function LienEtatLab($fichier, $EtatVise) {
-
-
 	$EtatActuel = substr($fichier,-1);
 	$lien = '#';
 	if ($EtatActuel > 0){
@@ -954,9 +1018,13 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 	$NewFichierSeul = $GLOBALS['FichierDossierRECOMMANDE'].".lab0" ;
 	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
 	if (!file_exists($NewFichier)){
+		//$mesInfosFichier = new CINFOfichierLab($NewFichier); 
+		//$ligneResume = '{Etat '. substr($strURL_RECFileLab,-1) .' : ' . $mesInfosFichier->MAJSyntheseCommande();
+		$ligneResume = LigneDeuxMAJ($NewFichier);
 		$file = fopen($NewFichier, 'w');
 			fputs($file, '[Version : 2.0]'.PHP_EOL );
-			fputs($file, '{Etat : 0 : Non enregistre %%Recommandes de tirages dejà effectués}'.PHP_EOL );
+			fputs($file, $ligneResume.PHP_EOL );
+			//fputs($file, '{Etat : 0 : Non enregistre %%Recommandes de tirages dejà effectués}'.PHP_EOL );
 		fclose($file); 
 	}
 	$isRecommande = false; //true;
@@ -976,12 +1044,67 @@ function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
 	SuprFichier($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierCMDESLIBRE'].".lab2");
 	$NewFichierSeul = $GLOBALS['FichierDossierCMDESLIBRE'].".lab0" ;
 	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
+
 	if (!file_exists($NewFichier)){
-		$file = fopen($NewFichier, 'w');
-			fputs($file, '[Version : 2.0]'.PHP_EOL );
-			fputs($file, '{Etat : 0 : Non enregistre %%Commandes de tirages Libres }'.PHP_EOL );
-		fclose($file); 
+		$myfile = fopen($NewFichier, 'w');
+			fputs($myfile, '[Version : 2.0]'.PHP_EOL );
+			fputs($myfile, '{Etat : 0 : Non enregistre %%Commandes de tirages Libres }'.PHP_EOL );			
+		fclose($myfile); 
 	}
+	else{
+		$tabFICHIERLabo = array();
+		$myfile = fopen($NewFichier, "r") or die('Unable to open file : ' .$NewFichier);
+		// Output one line until end-of-file
+		while(!feof($myfile)) {
+			array_push($tabFICHIERLabo,trim(fgets($myfile)));
+		}
+		fclose($myfile);
+
+		$ligneResume = LigneDeuxMAJ($NewFichier);
+		$myfile = fopen($NewFichier, 'w');
+			fputs($myfile, '[Version : 2.0]'.PHP_EOL );
+			fputs($myfile, $ligneResume.PHP_EOL );		
+			for($j = 2; $j < count($tabFichierLabo); $j++){								
+				fputs($myfile, $tabFichierLabo[$j]);
+			}
+		fclose($myfile);
+
+
+
+
+/*
+
+		$file = fopen($NewFichier, 'w');
+		if ($file) {
+			while (($buffer = fgets($file, 4096)) !== false) {
+				echo $buffer;
+				$line = $line . $buffer;
+			}
+			if (!feof($file)) {
+				echo "Erreur: fgets() a échoué\n";
+			}
+			fclose($file);
+		}
+		$file = fopen($NewFichier, 'w');
+
+
+			fputs($file, $line);
+		fclose($file);
+
+
+		
+		
+		$mesInfosFichier = new CINFOfichierLab($NewFichier); 
+		//$ligneResume = '{Etat '. substr($strURL_RECFileLab,-1) .' : ' . $mesInfosFichier->MAJSyntheseCommande();
+*/ 
+
+
+	}
+
+
+
+
+
 	/*
 	$isRecommande = false; //true;
 	$TabCMDLibre = explode("%", $strTabCMDLibre);

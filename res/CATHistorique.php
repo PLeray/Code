@@ -40,11 +40,12 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATHistorique');
 
 <?php
 	$g_IsLocalMachine = IsLocalMachine();
-if (isset($_GET['RECFileLab'])) { // Transformation de l'état d'un fichier lab 
-	if ($GLOBALS['isDebug']){echo 'le fichier a transformer : ' .$_GET['RECFileLab'] . ' en : ' .$_GET['RECFileLab']. '0';}
-	RECFileLab($_GET['RECFileLab']);
-} 
-elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
+//if (isset($_GET['RECFileLab'])) { // Transformation de l'état d'un fichier lab 
+//	if ($GLOBALS['isDebug']){echo 'le fichier a transformer : ' .$_GET['RECFileLab'] . ' en : ' .$_GET['RECFileLab']. '0';}
+//	RECFileLab($_GET['RECFileLab']);
+//} 
+//elseif
+if(isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
     //echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 }
 elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) { 
