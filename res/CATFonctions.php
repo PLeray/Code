@@ -1,71 +1,12 @@
 <?php
 setlocale(LC_TIME, 'fr_FR');
 include_once 'CMDClassesDefinition.php';
-
-/*
 class CINFOfichierLab {
 	var $Fichier;	
 	var $FichierERREUR;	
 	var $EtatFichier;  // 0, 1 , 2 , 3
 	var $PourcentageAvancement = 0;
-	var $SyntheseCMD;
-	//var $SyntheseCodeCMD;
-	var $Compilateur;
-	//var $isOuvrable;
-    var $NbPlanches = 0;
-    var $NbCommandes = 0;
-    var $NomEcole;
-    var $DateTirage;
-	var $TabListeProduits = array();
-	var $TabListeFormats = array();
-
-    function __construct($myfileName){ // Le chemin complet !
-		$tabLignesFichierLabo = LireFichierLab($myfileName);
-		$this->Fichier = basename($myfileName);
-		$this->EtatFichier = substr(strrchr($this->Fichier, '.'),4);
-		$this->FichierERREUR = substr($this->Fichier, 0, -5) . '.Erreur';
-		$this->AffichageNomCMD = substr($this->Fichier, 11, -5);
-
-		//for($i = 0; $i < count($tabLignesFichierLabo); $i++){
-		for($i = 0; $i < 2; $i++){ //Juste les 2 premieres lignes
-			$identifiant = substr($tabLignesFichierLabo[$i],0,1);
-			if (($identifiant != '[') && ($identifiant != '{') && ($identifiant != '#') && ($identifiant != '@') && ($identifiant != '<') && ($identifiant != '')) {
-				$this->NbPlanches += 1 ;		
-			}else {
-				if ($identifiant == '{')  {
-					$this->SyntheseCMD = substr(stristr($tabLignesFichierLabo[$i], '%%'),1,-1);
-					//$this->SyntheseCMD = $this->SyntheseCodeCMD;
-					$this->SyntheseCMD = str_replace("%", "<br>", $this->SyntheseCMD);
-					$this->SyntheseCMD = str_replace("{", "<br>", $this->SyntheseCMD) . "<br>";
-
-					$this->PourcentageAvancement = 100 * floatval(str_replace(",", ".", substr(stristr($tabLignesFichierLabo[$i], '%%', true), 9)));
-				}
-				if ($identifiant == '[')  {
-					$this->Compilateur = strstr(strrchr($tabLignesFichierLabo[$i], '%'), 1, -1);
-					//$this->isOuvrable = $this->Compilateur;
-				}		
-				if ($identifiant == '@')  {
-					//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabLignesFichierLabo[$i])));
-					$morceau = explode("_", str_replace("@", "", $tabLignesFichierLabo[$i]));
-					//$this->DateTirage = $morceau[0];
-					//$this->NomEcole = $morceau[1];		
-					
-					$this->DateTirage = substr($this->Fichier,0,10);
-					$this->NomEcole = substr($this->Fichier,11,-5);
-				}
-				if ($identifiant == '#')  {
-					$this->NbCommandes += 1 ;
-				}						
-			}		
-		}
-	}
-	*/
-class CINFOfichierLab {
-	var $Fichier;	
-	var $FichierERREUR;	
-	var $EtatFichier;  // 0, 1 , 2 , 3
-	var $PourcentageAvancement = 0;
-	var $SyntheseCMD;
+	//var $SyntheseCMD;
 	var $Compilateur;
 	var $NbPlanches = 0;
 	var $NbCommandes = 0;
@@ -169,12 +110,6 @@ class CINFOfichierLab {
 		foreach ($this->TabResumeFormat as $key => $row) {
 			$unBilan .= '- Format ' .$key . ' : ' . $this->TabResumeFormat[$key] . '<br>';
 		}	
-		/* 
-		echo '<br><br>TabResumeProduit : <br>';	
-		var_dump($this->TabResumeProduit);
-		echo '<br><br><br>TabResumeFormat : <br>';
-		var_dump($this->TabResumeFormat);
-		*/
 		return $unBilan;	
 	}	
 
@@ -211,10 +146,9 @@ class CINFOfichierLab {
 			$this->TabResumeProduit = array_count_values($TabListeProduits);
 
 		} catch (ErrorException $e) {
-			$unBilan ='';
-			//return $unBilan;
+			echo 'Probleme MAJSyntheseCommande';
 		}
-		$this->SyntheseCMD =  $unBilan;
+		//$this->SyntheseCMD =  $unBilan;
     }
 
 	function MAJResumeFichierCommandes(){	

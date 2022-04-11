@@ -431,26 +431,38 @@ function AfficheSOURCESEcole($monProjet){
 
 	$affiche_Tableau = '<p>';
 
-	$PrecedentEstGroupe = false;
+	$PrecedentIdentifiantClasse = '';
 		
 	//$affiche_Tableau .= '				<table>';	
 	foreach($files as $image){ 
 		// SUPPRESSION DU CACHE $FichierARefaire = false;
+		//echo $image;
+
+		//$file_name = 'gfg.html';
+		//$extension = pathinfo($image, PATHINFO_EXTENSION);
+		//echo $extension;
+
+		//$FichierSource = substr($image,0, strpos($image,$extension));
+
+		
+
 		$posDernier = 1 + strripos($image, '/');
 		$FichierSource = substr($image, $posDernier);
 		// SUPPRESSION DU CACHE $FichierCache = 'Cache/'. $FichierSource;
 		$Dossier = substr($image, 0, $posDernier);
 
 		 $mesSources = new CImgSource($FichierSource, $Dossier, $monProjet->CodeEcole,$monProjet->AnneeScolaire,$monProjet->ScriptsPS);
-		 
-		 if ($mesSources->isGroupe() && !$PrecedentEstGroupe){
-			 //echo 'GROUPE';
-			 $affiche_Tableau .= '<div class="ligne_classe">'.NomClasseDepuisNomGroupe($mesSources->Fichier).'</div>';
-			 $PrecedentEstGroupe = true;
-			 //$affiche_Tableau .= '<tr><td style=vertical-align:top>';
-		 }else{
-			$PrecedentEstGroupe = false;	
-		}
+		
+		
+		if ($mesSources->isGroupe()){
+			$mesInfoichierGroupe = new CNomFichierGroupe($mesSources->Fichier);
+			if($PrecedentIdentifiantClasse != $mesInfoichierGroupe->IdentifiantClasse()){   //$mesInfoichierGroupe->NomClasse
+				//echo 'GROUPE';
+				//$affiche_Tableau .= '<div class="ligne_classe">'.NomClasseDepuisNomGroupe($mesSources->Fichier).'</div>';
+				$affiche_Tableau .= '<div class="ligne_classe">'.$mesInfoichierGroupe->NomClasse.'</div>';
+				$PrecedentIdentifiantClasse = $mesInfoichierGroupe->IdentifiantClasse();		
+			}
+		 }
 		$affiche_Tableau .= $mesSources->Affiche();
 	}
 
@@ -509,7 +521,9 @@ function NomClasseDepuisNomGroupe($strNOMdeClasse){
 	if (strpos(strtolower($strNOMdeClasse),'fratrie')){
 		$NomClasse = 'Fratries';
 	}else{
-		$NomClasse = substr($strNOMdeClasse, 1 + strpos($strNOMdeClasse, '-', 5), -4);
+		$mesInfoichierGroupe = new CNomFichierGroupe($strNOMdeClasse);
+		$NomClasse = $mesInfoichierGroupe->NomClasse;
+		//$NomClasse = substr($strNOMdeClasse, 1 + strpos($strNOMdeClasse, '-', 5), -4);
 	}
 	return  '   ' . $NomClasse . '   ' ;
 }

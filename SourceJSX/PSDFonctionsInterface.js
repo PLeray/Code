@@ -681,7 +681,7 @@ function GenererFichiersWEB() {
 			}			
 		}
 		leSousGroupeDeFichier.sort();
-		alert(TableauTOStr(leSousGroupeDeFichier));
+		alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
 		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
 		
 		progressBar.maxvalue = leSousGroupeDeFichier.length;			
@@ -697,7 +697,7 @@ function GenererFichiersWEB() {
 				//UI
 				Raffraichir(); // A voir ?		
 				CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
-				alert(TableauTOStr(leSousGroupeDeFichier));
+				alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
 				//ICI Probleme avec les groupes 
 				//alert(TableauTOStr(leSousGroupeDeFichier));

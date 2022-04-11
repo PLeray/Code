@@ -657,7 +657,6 @@ class CProjetSource {
 }
 
 class CImgSource {
-	var $FichierPlanche;
 	var $Fichier;
 	var $Dossier;
 	var $CodeEcole;
@@ -665,8 +664,7 @@ class CImgSource {
 	var $AnneeScolaire;
 
 	//var $Extension;
-    function __construct($Fichier,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){
-			//$morceau = explode(".", $this->FichierPlanche);		
+    function __construct($Fichier,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){	
 			$this->Fichier = $Fichier;
 			$this->Dossier = $Dossier;
 			$this->CodeEcole = $CodeEcole;
@@ -706,7 +704,7 @@ class CImgSource {
 
 			$resultat .= '<button class="EnregistrerPhoto" onclick="SelectionnerCliquePhoto(this.parentElement)" >
 			<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
-				src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '">
+				src="' . $Lien . '"  title="'. urldecode($this->Fichier) . '">
 			</button>';
 
 	/*
@@ -794,6 +792,33 @@ class CImgSource {
 		return $resultat;				
 	}
 	*/		
+}
+class CNomFichierGroupe {
+    var $Numero;
+	var $TypeGroupe;	
+	var $NomClasse;
+	var $Version;
+
+    function __construct($NomFichierGroupe){
+		if (strpos($NomFichierGroupe,'-') > 1){
+			$CodeFichierGroupe = substr($NomFichierGroupe,0, strripos($NomFichierGroupe,'.')); // enlever l'extension
+			$morceau = explode('-', $CodeFichierGroupe);
+			$this->Numero = $morceau[0];
+			$this->TypeGroupe = $morceau[1];
+			if (count($morceau) > 2){ $this->NomClasse = $morceau[2]; } 
+			if (strpos($this->NomClasse,'@') > 1){ // Nom du groupe avec plusieurs version
+				$morceauNomClasse = explode('@', $this->NomClasse);
+				$this->NomClasse = $morceauNomClasse[0];
+				$this->Version = $morceauNomClasse[1];				
+			}
+			if (strpos(strtolower($NomFichierGroupe),'fratrie')){
+				$this->NomClasse = 'Fratries';
+			}			
+		}
+	} 
+	function IdentifiantClasse(){
+		return $this->Numero.$this->NomClasse; 
+	}
 }
 
 function csv_to_array($filename='', $delimiter=';')
