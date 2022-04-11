@@ -690,9 +690,13 @@ margin-top: -10px;
 
   
 
-
+  border-radius: 10px; /* Rounded corners */
   margin-left: -40px;/*315px;*/
-  font-size: 20px;
+  font-size: 30px;
+
+  width:150px;
+  height:150px;
+  border: 1px solid var(--boutonRouge);
 
     color: var(--texteGris);
 

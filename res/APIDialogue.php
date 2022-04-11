@@ -174,8 +174,6 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 				// A REMETTRE !!! 
 				$monGroupeCmdes = new CGroupeCmdes($target_fichier);
 
-
-				
 				$retourMSG .= '	<div class="Planchecontainer">
 				<h1>COMMANDES EN COURS</h1>';
 				//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
@@ -199,6 +197,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 				$CMDhttpLocal ='';
 				
 				$mesInfosFichier = new CINFOfichierLab($target_fichier); 
+				$mesInfosFichier->MAJResumeFichierCommandes();	
 				//$CMDAvancement ='';
 				
 				//$Compilateur = '';				
@@ -253,6 +252,10 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 
 			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 			$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+
+			$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'].$strAPI_fichierLAB); 
+			$mesInfosFichier->MAJResumeFichierCommandes();
+
 			$retourMSG .= '</div>';
 			$retourMSG .= '</td>
 							<td width="50%">';	
@@ -292,7 +295,8 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 			$retourMSG .= '<table>
 			<tr>
 				<td width="50%">';	
-	$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $leFichierLab); 		
+	$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $leFichierLab); 
+	$mesInfosFichier->MAJResumeFichierCommandes();		
 	$NBPlanches = $mesInfosFichier->NbPlanches;	
 		$retourMSG .= '	<div class="Planchecontainer">
 		<h1>COMMANDES EN COURS -> ' . $mesInfosFichier->NbPlanches.' Planches</h1>';

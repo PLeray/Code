@@ -129,10 +129,6 @@ if($RechargerPage){
 	<a href="<?php echo $maConnexionAPI->Demonstration(); ?>" title="Voir informations sur PhotoLab"><img src="img/Logo-mini.png" alt="Informations sur PhotoLab"></a>
 </div>
 
-
-
-
-
 <!-- <div class="recherche">	
 <a href="<?php //echo 'CATHistorique.php' . ArgumentURL(); ?>" style="width:auto" 
 	class="BoutonVoirhistorique" title="Rechercher dans l'historique des commandes">Groupes de commandes expédiées...
