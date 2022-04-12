@@ -432,6 +432,7 @@ function AfficheSOURCESEcole($monProjet){
 	$affiche_Tableau = '<p>';
 
 	$PrecedentIdentifiantClasse = '';
+	$PrecedentNumeroClasse = '';
 		
 	//$affiche_Tableau .= '				<table>';	
 	foreach($files as $image){ 
@@ -456,11 +457,11 @@ function AfficheSOURCESEcole($monProjet){
 		
 		if ($mesSources->isGroupe()){
 			$mesInfoichierGroupe = new CNomFichierGroupe($mesSources->Fichier);
-			if($PrecedentIdentifiantClasse != $mesInfoichierGroupe->IdentifiantClasse()){   //$mesInfoichierGroupe->NomClasse
+			if($PrecedentNumeroClasse != $mesInfoichierGroupe->Numero){   //$mesInfoichierGroupe->NomClasse
 				//echo 'GROUPE';
 				//$affiche_Tableau .= '<div class="ligne_classe">'.NomClasseDepuisNomGroupe($mesSources->Fichier).'</div>';
 				$affiche_Tableau .= '<div class="ligne_classe">'.$mesInfoichierGroupe->NomClasse.'</div>';
-				$PrecedentIdentifiantClasse = $mesInfoichierGroupe->IdentifiantClasse();		
+				$PrecedentNumeroClasse = $mesInfoichierGroupe->Numero;		
 			}
 		 }
 		$affiche_Tableau .= $mesSources->Affiche();

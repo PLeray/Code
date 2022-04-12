@@ -1031,7 +1031,7 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 			}
 			if (theObject.name.slice(-4) == ".JPG" || theObject.name.slice(-4) == ".jpg") {
 				//alert("boucle : " + theObject.name + " taille : " + theObject.name.length);
-				if (theObject.name.length >= g_MinimuNomClasse) { // C'est un petit nom de groupe !
+				if (theObject.name.length >= g_MinimuNomClasse) { // C'est un groupe !
 					//On ajoute le groupe à TabLesGroupesClasse
 					//alert("theObject.name : " + theObject.name + "    strNUMEROClasse :  " + strNUMEROClasse);
 					if ((strNUMEROClasse != "") && (strNUMEROClasse != NumeroClasseDepuisNomGroupe(theObject.name))){
@@ -1253,8 +1253,15 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 					//On ajoute le groupe à TabLesGroupesClasse
 					if (strNUMEROClasse != NumeroClasseDepuisNomGroupe(theObject.name)){
 							//TabLesGroupesClasse.length = 0; // = [];
+
+
+							// A Chnger Model php objet infofichierGroupe
+
 							strNUMEROClasse = NumeroClasseDepuisNomGroupe(theObject.name);							
 							strNOMClasse = NomClasseDepuisNomGroupe(theObject.name);
+
+							/////////////////////////////////////////////////////
+
 							//alert("X234 strNOMClasse.name : " + strNOMClasse);
 							g_TabListeNomsClasses[strNUMEROClasse] = strNOMClasse;	
 					}					

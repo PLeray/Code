@@ -260,8 +260,15 @@ function NBfichiersDOSSIER($Dossier) {
 }
 
 function NBClassesDOSSIER($Dossier) {
-	$files = glob($Dossier . '/*-*-*.*{jpg,jpeg}',GLOB_BRACE);	
-	$NbFicher = count($files);/* Variable $compteur pour compter (count) les fichiers lister ($files) dans le dossier */
+	$NbFicher = 0;
+	$PrecedentNumeroClasse = '';
+	foreach (glob($Dossier . '/*-*-*.*{jpg,jpeg}',GLOB_BRACE) as $filename) {
+		$mesInfoichierGroupe = new CNomFichierGroupe(basename($filename));
+		if($PrecedentNumeroClasse != $mesInfoichierGroupe->Numero){   //$mesInfoichierGroupe->NomClasse
+			$NbFicher += 1;
+			$PrecedentNumeroClasse = $mesInfoichierGroupe->Numero;		
+		}
+	}
 	return $NbFicher;
 }
 
