@@ -85,6 +85,33 @@ function PhotosDeClasse(CodeLigne) {
 }
 */
 
+function CNomFichierGroupe(NomFichierGroupe) {
+    var CodeFichierGroupe = decodeURI(NomFichierGroupe).substr(0, NomFichierGroupe.lastIndexOf('.')-2);
+	this.Numero;
+	this.TypeGroupe;	
+	this.NomClasse;
+	this.Version;
+	//alert('NomFichierGroupe ' + CodeFichierGroupe);
+	//$CodeFichierGroupe = substr($NomFichierGroupe,0, strripos($NomFichierGroupe,'.')); // enlever l'extension     if (this.FichierPhoto.lastIndexOf("SEP") > 0){
+	//var CodeFichierGroupe = decodeURI(NomFichierGroupe);
+	if (CodeFichierGroupe.indexOf('-') > 1){
+		var Morceau = CodeFichierGroupe.split('-');
+		this.Numero = Morceau[0];
+		this.TypeGroupe = Morceau[1];
+		
+		if (NomFichierGroupe.toLowerCase().indexOf('fratrie') > 1){
+			this.NomClasse = 'Fratries';
+		}			
+		if ((Morceau.length) > 2){ this.NomClasse = Morceau[2]; } 	
+		if (this.NomClasse.indexOf('@') > 1){// Nom du groupe avec plusieurs version
+			var MorceauNomClasse = this.NomClasse.split('@');
+			this.NomClasse = MorceauNomClasse[0];
+			this.Version = MorceauNomClasse[1];	
+		}
+	} 
+	//alert('NomClasse ' + this.NomClasse);
+}
+
 function Ecole(CodeLigne) {
 	//this.Code = CodeLigne;
 	this.Code = CodeLigne.substr(1,CodeLigne.indexOf(sepNumLigne)-2); 

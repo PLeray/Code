@@ -667,9 +667,10 @@ function GenererFichiersWEB() {
 		g_TabListeNomsClasses = [];
 
 		var theFolder = new Folder(g_RepSOURCE);
-		//alert("ZX00FFF : MAJinfoEcole = "+isEcoleOK);		
+			
 
 		InitialisationSourcePourLeWEB(theFolder, []);
+
 
 		var leSousGroupeDeFichier = [];
 		if (isCORR){
@@ -681,7 +682,7 @@ function GenererFichiersWEB() {
 			}			
 		}
 		leSousGroupeDeFichier.sort();
-		alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
+		//alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
 		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
 		
 		progressBar.maxvalue = leSousGroupeDeFichier.length;			
@@ -697,7 +698,7 @@ function GenererFichiersWEB() {
 				//UI
 				Raffraichir(); // A voir ?		
 				CreerUnFichiersPresentationWEB(fichier, '_nb', g_GroupeIndiv[fichier] );
-				alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
+				//alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
 				if (!g_IsPhotoLabON ||isInterruptionTraitement()){break;};	
 				//ICI Probleme avec les groupes 
 				//alert(TableauTOStr(leSousGroupeDeFichier));

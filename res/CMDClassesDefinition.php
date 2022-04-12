@@ -805,20 +805,17 @@ class CNomFichierGroupe {
 			$morceau = explode('-', $CodeFichierGroupe);
 			$this->Numero = $morceau[0];
 			$this->TypeGroupe = $morceau[1];
+			if (strpos(strtolower($NomFichierGroupe),'fratrie')){
+				$this->NomClasse = 'Fratries';
+			}	
 			if (count($morceau) > 2){ $this->NomClasse = $morceau[2]; } 
 			if (strpos($this->NomClasse,'@') > 1){ // Nom du groupe avec plusieurs version
 				$morceauNomClasse = explode('@', $this->NomClasse);
 				$this->NomClasse = $morceauNomClasse[0];
 				$this->Version = $morceauNomClasse[1];				
-			}
-			if (strpos(strtolower($NomFichierGroupe),'fratrie')){
-				$this->NomClasse = 'Fratries';
-			}			
+			}		
 		}
 	} 
-	function IdentifiantClasse(){
-		return $this->Numero.$this->NomClasse; 
-	}
 }
 
 function csv_to_array($filename='', $delimiter=';')

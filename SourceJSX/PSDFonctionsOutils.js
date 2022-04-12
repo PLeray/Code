@@ -1065,6 +1065,10 @@ function InitGroupesClasseIndiv(leRepSOURCE, theFiles) {
 }
 
 function NumeroClasseDepuisNomGroupe(strNOMdeClasse){
+	var uneInfoNomFichierGroupe  = new CNomFichierGroupe(strNOMdeClasse);
+	return uneInfoNomFichierGroupe.Numero;
+
+/*
 	var retour = '';
 	if ( strNOMdeClasse.toLowerCase().indexOf('fratrie') > -1) { // c'est une classe fratrie 
 		retour = strNOMdeClasse.substr(0, 4);
@@ -1078,9 +1082,13 @@ function NumeroClasseDepuisNomGroupe(strNOMdeClasse){
 		} 
 	}
 	return retour;
+*/
 }
 
 function NomClasseDepuisNomGroupe(strNOMdeClasse){
+	var uneInfoNomFichierGroupe  = new CNomFichierGroupe(strNOMdeClasse);
+	return uneInfoNomFichierGroupe.NomClasse;
+	/* 
 	var retour = '';
 	if ( strNOMdeClasse.toLowerCase().indexOf('fratrie') > -1) { // c'est une classe fratrie 
 			retour = 'Fratries';
@@ -1088,7 +1096,7 @@ function NomClasseDepuisNomGroupe(strNOMdeClasse){
 	else{
 		retour = strNOMdeClasse.slice(PosDeuxiemeTiret(strNOMdeClasse),-4);		
 	}
-	return retour;
+	return retour;*/
 }
 
 // Avant// Avant// Avant// Avant// Avant// Avant
@@ -1259,6 +1267,8 @@ function InitialisationSourcePourLeWEB(leRepSOURCE, theFiles) {
 
 							strNUMEROClasse = NumeroClasseDepuisNomGroupe(theObject.name);							
 							strNOMClasse = NomClasseDepuisNomGroupe(theObject.name);
+
+							//alert("ZX00FFF : strNOMClasse = "+ strNOMClasse);	
 
 							/////////////////////////////////////////////////////
 

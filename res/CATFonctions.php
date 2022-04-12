@@ -467,24 +467,7 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD
 								 . '<span class="tooltiptext">'. $mesInfosFichier->TexteSyntheseCommande() . '</span></div></td>		
 			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
-
-			/*
-		$affiche_Tableau .=
-		'<tr style="background-color:'.$laCouleur.'">
-		
-			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
-			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD
-								 . '<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
-			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
-
-
-
-
-			$affiche_Tableau .='			
-			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">
-			<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>';
-			*/
-			
+	
 		if(($mesInfosFichier->EtatFichier < 2)&&($mesInfosFichier->EtatFichier > 0)){
 			$affiche_Tableau .=	'
 			<td colspan=4>';
@@ -561,11 +544,11 @@ function AfficheTableauHistoriqueCMDLAB(&$nb_fichier, $isEnCours){
 		$laCouleur = ($mesInfosFichier->EtatFichier == 2)?'GreenYellow':'white';
 		$affiche_Tableau .=
 		'<tr style="background-color:'.$laCouleur.'">
-			<td><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">
-					<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></div></td>			
+			<td>
+					<img src="img/' . $mesInfosFichier->EtatFichier . '-Etat.png"></a></td>			
 			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
 			<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienFichierLab($mesInfosFichier->Fichier) . '">'.LienImageVoir($mesInfosFichier->EtatFichier).' ' . $mesInfosFichier->AffichageNomCMD . '</a>
-				<span class="tooltiptext">'. $mesInfosFichier->SyntheseCMD . '</span></div></td>		
+				<span class="tooltiptext">'. $mesInfosFichier->TexteSyntheseCommande() . '</span></div></td>		
 			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	
 			
 			<td>'. LienVoirMiseEnPochette($mesInfosFichier) . '</td>	
@@ -927,7 +910,7 @@ function LienFichierLab($fichier) {
 			$LienFichier = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 			break;
 		default:
-			$LienFichier = "CMDCartonnage.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
+			$LienFichier = "CMDRecherche.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
 			break;		
 	}
   

@@ -286,7 +286,8 @@ function LienEtatArbo($fichier , $CodeEcole, $nbFichier) {
 		$CMDhttpLocal .= '&CodeEcole=' . $CodeEcole;
 		$CMDhttpLocal .= '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;  
 		//$CMDhttpLocal .= '&CMDwebArbo=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));		
-		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));	
+		//$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));	
+		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename($fichierARBO)));	
 		
 		$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);				
 	}	
@@ -322,7 +323,8 @@ function LienImageArbo($fichier, $CodeEcole, $nbFichier) {
 		$LienPage .= '&CMDwebArbo='. urlencode('ARBO');
 		$LienPage .= '&CodeEcole=' . $CodeEcole;
 		$LienPage .= '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;  	
-		$LienPage .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents(NomfichierARBO($fichier)))));	
+		//$LienPage .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents(NomfichierARBO($fichier)))));	
+		$LienPage .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(NomfichierARBO($fichier))));
 		
 		$LienPage = $GLOBALS['maConnexionAPI']->CallServeur($LienPage);	
 	}
@@ -335,7 +337,8 @@ function LienImageArbo($fichier, $CodeEcole, $nbFichier) {
 
 function isArboPrete($NomProjet) {
 	$DossierCMDLABO = $GLOBALS['repCMDLABO'];
-	$files = glob( $DossierCMDLABO . SUPRAccents(NomfichierARBO($NomProjet)) .'{2,3,4,5}',GLOB_BRACE);	
+	//$files = glob( $DossierCMDLABO . SUPRAccents(NomfichierARBO($NomProjet)) .'{2,3,4,5}',GLOB_BRACE);	
+	$files = glob( $DossierCMDLABO . NomfichierARBO($NomProjet) .'{2,3,4,5}',GLOB_BRACE);	
 
 	return (count($files) > 0)?true:false;
 }
@@ -353,7 +356,7 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire, $s
 	
 	if ($GLOBALS['isDebug']){
 		echo "<br> STOP !<br> ";
-		echo '<br><br>' . $NewFichier;
+		echo '<br><br>' . utf8_decode($NewFichier);
 		echo '<br><br> strListeFichiers ' . $strListeFichiers;
 	}
 	
