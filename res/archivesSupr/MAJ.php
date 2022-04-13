@@ -60,7 +60,7 @@ $retourMSG .= "<br><h3>MiSE a Jour .<br><br><br></h3>";
 	$retourMSG = $retourMSG . "<br><h3>Si oui valider !</h3><br>";
 
 	$CMDhttpLocal = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
-	$CMDhttpLocal = $CMDhttpLocal . '&apiChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
+	$CMDhttpLocal = $CMDhttpLocal . '&apiFichierChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
 	
 	$retourMSG .= '<br><br>
 		<a href="../index.php" class="KO" title="Valider et retour écran général des commandes">Annuler</a>

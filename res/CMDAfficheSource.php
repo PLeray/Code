@@ -66,8 +66,6 @@ $monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $a
 		<link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDAfficheSource.css');?>">
 		<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 
-		
-
 	</head>
 
 <body onload="EffacerChargement()">
@@ -102,7 +100,7 @@ if (!$MAJ){
 ?>
 <div id="site"">
    <!-- Tout le site ici -->
-	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">Remonter</button>
+	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">↑ Remonter ↑</button>
 	
 	<div id="Entete">	
 		<div class="logo"><a href="<?php echo RetourEcranSources($monProjet->AnneeScolaire); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
@@ -141,10 +139,8 @@ if (!$MAJ){
 
 		<div id="mySidenav" class="sidenav">
 		
-		
 			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"> + </a>
 			<p><a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a></p><br>
-				
 
 			<div id="myRecommandes" class="infoRecommandes">
 				<div>
@@ -431,7 +427,7 @@ function AfficheSOURCESEcole($monProjet){
 
 	$affiche_Tableau = '<p>';
 
-	$PrecedentIdentifiantClasse = '';
+	//$PrecedentIdentifiantClasse = '';
 	$PrecedentNumeroClasse = '';
 		
 	//$affiche_Tableau .= '				<table>';	

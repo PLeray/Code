@@ -85,7 +85,36 @@ function PhotosDeClasse(CodeLigne) {
 }
 */
 
-function CNomFichierGroupe(NomFichierGroupe) {
+function CNomFichierGroupe(NomFichierGroupe) { 
+	//0100-CADR-5A-CM2.jpg
+    var CodeFichierGroupe = decodeURI(NomFichierGroupe).substr(0, NomFichierGroupe.lastIndexOf('.')); //0100-CADR-5A-CM2 sans l'extension
+	//alert(' NomFichierGroupe ' +  NomFichierGroupe +  ' CodeFichierGroupe ' +  CodeFichierGroupe) ;
+	this.Numero;
+	this.TypeGroupe;	
+	this.NomClasse;
+	this.Version;
+	var PosMarqueur = CodeFichierGroupe.indexOf('-');
+	if ( PosMarqueur > 1){
+		this.Numero = CodeFichierGroupe.substr(0, PosMarqueur);
+		if (NomFichierGroupe.toLowerCase().indexOf('fratrie') > 1){
+			this.NomClasse = 'Fratries';
+			this.TypeGroupe = 'Fratries';
+		}
+		else{
+			var ResteCodeFichierGroupe = CodeFichierGroupe.substr(PosMarqueur + 1);
+			PosMarqueur = ResteCodeFichierGroupe.indexOf('-');
+			this.TypeGroupe = ResteCodeFichierGroupe.substr(0, PosMarqueur); 
+			this.NomClasse = ResteCodeFichierGroupe.substr(PosMarqueur + 1); 
+			if (this.NomClasse.indexOf('@') > 1){// Nom du groupe avec plusieurs version
+				var MorceauNomClasse = this.NomClasse.split('@');
+				this.NomClasse = MorceauNomClasse[0];
+				this.Version = MorceauNomClasse[1];	
+			}			
+		}
+	} 
+	//alert(' Numero ' + this.Numero + ' TypeGroupe ' + this.TypeGroupe + ' NomClasse ' + this.NomClasse + ' Version ' + this.Version + '');
+
+/*
     var CodeFichierGroupe = decodeURI(NomFichierGroupe).substr(0, NomFichierGroupe.lastIndexOf('.')-2);
 	this.Numero;
 	this.TypeGroupe;	
@@ -109,7 +138,9 @@ function CNomFichierGroupe(NomFichierGroupe) {
 			this.Version = MorceauNomClasse[1];	
 		}
 	} 
-	//alert('NomClasse ' + this.NomClasse);
+
+*/
+
 }
 
 function Ecole(CodeLigne) {

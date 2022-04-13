@@ -368,30 +368,44 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 	
 	}
 	else{
-		if ($GLOBALS['isDebug']) echo ' X chgt etat   BaseName : ' .$strBaseName;	
+		if ($GLOBALS['isDebug']) echo ' Y chgt etat   BaseName : ' .$strBaseName;	
 
-		RenommerFichierOuDossier($GLOBALS['repCMDLABO'] . utf8_decode( $strFILELAB), $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) . $Extension . $Etat);
+		$AncienNomDeFichier = $GLOBALS['repCMDLABO'] .  $strFILELAB;
+		$NouveauNomDeFichier = $GLOBALS['repCMDLABO'] . $strBaseName . $Extension . $Etat;	
 
-			$fichierdeBase = $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) ;
-			if ($Etat > 2){
-				SuprFichier($fichierdeBase . $Extension . '0');
-				SuprFichier($fichierdeBase . $Extension . '1');
-				SuprFichier($fichierdeBase . '.Erreur');
-			}
-			return 'OK';
+		if ($GLOBALS['isDebug']){
+			echo '<br><br><br>$Ancien NomDeFichier  40    : ' . utf8_encode($AncienNomDeFichier);
+			echo '<br>$Nouveau NomDeFichier   40  : ' . $NouveauNomDeFichier;			
+		}
+		RenommerFichierOuDossier($AncienNomDeFichier, $NouveauNomDeFichier);
 
-		$CMDhttpLocal = '?apiChgEtat='. $strFILELAB .'&apiEtat=' . $Etat ;
+		//$fichierdeBase = $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) ;
+		$fichierdeBase = $GLOBALS['repCMDLABO'] . $strBaseName ;
+		if ($Etat > 2){
+			SuprFichier($fichierdeBase . $Extension . '0');
+			SuprFichier($fichierdeBase . $Extension . '1');
+			SuprFichier($fichierdeBase . '.Erreur');
+		}
+		return 'OK';
+
+		$CMDhttpLocal = '?apiFichierChgEtat='. utf8_encode($strFILELAB) .'&apiEtat=' . $Etat ;
 		echo $CMDhttpLocal;		
-
 	}
 }
 
 function RemplacementNomCommande($AncienNomDeFichier, $NouveauNomDeFichier){ // Nouveau Nom SANS extention
 	//$NomTemporaire =utf8_decode($GLOBALS['FichierDossierRECOMMANDE']);
-	$AncienNomDeDossier =  substr(utf8_decode($AncienNomDeFichier),0,-5);
-	$NouveauNomDeDossier =  substr(utf8_decode($NouveauNomDeFichier),0,-5);
-	if ($GLOBALS['isDebug']){
+	//$AncienNomDeDossier =  substr($AncienNomDeFichier,0,-5);
+	//$NouveauNomDeDossier =  substr($NouveauNomDeFichier,0,-5);
+	//$AncienNomDeDossier =  substr(($AncienNomDeFichier),0,-5);
+	//$NouveauNomDeDossier =  substr(($NouveauNomDeFichier),0,-5);
+	
+	//$NouveauNomDeFichier = utf8_encode($NouveauNomDeFichier);
+	$AncienNomDeDossier =  substr(($AncienNomDeFichier),0,-5);
+	$NouveauNomDeDossier =  substr(($NouveauNomDeFichier),0,-5);
 
+
+	if ($GLOBALS['isDebug']){
 		echo '<br><br><br>$Ancien NomDeFichier     : ' . $AncienNomDeFichier;
 		echo '<br>$Nouveau NomDeFichier     : ' . $NouveauNomDeFichier;		
 
@@ -400,7 +414,7 @@ function RemplacementNomCommande($AncienNomDeFichier, $NouveauNomDeFichier){ // 
 	}
 	//substr(    ,0,-5)
 
-	RenommerFichierOuDossier($GLOBALS['repCMDLABO'] . utf8_decode($AncienNomDeFichier) , $GLOBALS['repCMDLABO'] . utf8_decode($NouveauNomDeFichier));
+	RenommerFichierOuDossier($GLOBALS['repCMDLABO'] . $AncienNomDeFichier , $GLOBALS['repCMDLABO'] . $NouveauNomDeFichier);
 	RenommerFichierOuDossier($GLOBALS['repMINIATURES'] . $AncienNomDeDossier , $GLOBALS['repMINIATURES'] .  $NouveauNomDeDossier);	
 	RenommerFichierOuDossier($GLOBALS['repTIRAGES'] . $AncienNomDeDossier,  $GLOBALS['repTIRAGES'] . $NouveauNomDeDossier);	
 
@@ -849,34 +863,34 @@ function LienEtatLab($fichier, $EtatVise) {
 	if ($EtatActuel > 0){
 		if ($EtatVise <= $EtatActuel + 1){	
 			if ($EtatVise == 1 ){// Hack pour Historique pour pouvoir revenir sur commande en cours
-				$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=2','CATPhotolab');	
+				$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($fichier) .'&apiEtat=2','CATPhotolab');	
 			}				
 			elseif ($EtatVise == 2 ){//
-				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				//$lien =  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
+				//$lien =  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
 
 				$lien =   "CMDRecherche.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
 			}	
 			//if (($EtatVise == 3 )&& (substr($fichier, 0, -5) == $GLOBALS['FichierDossierRECOMMANDE'])){//
 			elseif  ($EtatVise == 3 ){//
-				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
+				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiDemandeNOMImpression=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
 			}
 			elseif ($EtatVise == 4 ){//
-				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
 				if (substr($fichier, -1) == $EtatVise){
 					$lien =   "CMDCartonnage.php" . ArgumentURL() . "&fichierLAB=" . urlencode($fichier) ;
 				}else{
-					$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+					$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoMiseEnPochette=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
 				}			
 			}
 			elseif ($EtatVise == 5 ){//
-				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
-				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiChgEtat='. urlencode($fichier) ;
+				//echo '<br>' .  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
+				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
 			}
 			else{
-			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatVise);
-			$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $EtatVise);		
+			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatVise);
+			$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($fichier) .'&apiEtat=' . $EtatVise);		
 			
 			}
 		}
@@ -891,8 +905,8 @@ function LienEtatCMDWEB($fichier, $Etat) {
 	$EtatActuel = substr($fichier,-1);
 	$lien = '#';
 	if ($EtatActuel > 0){
-		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
-		$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
+		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
+		$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
 	} else {
 		$lien =  'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
 	}

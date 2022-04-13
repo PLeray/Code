@@ -39,24 +39,17 @@ $tabFichiersEnCoursDeCompilation = array();
 		if ($isDebug){
 			echo '<br>apiSupprimer   : ' . $_GET['apiSupprimer']  ;
 		}			
-		SuprimeFichierCMDetDossier($_GET['apiSupprimer']);
+		SuprimeFichierCMDetDossier(utf8_decode($_GET['apiSupprimer']));
 	}
 	elseif (isset($_GET['ValideNomCommande']) ){
-		if ($isDebug){
-			echo 'ValideNomCommande   : ' . $_GET['ValideNomCommande']  ;
-		}	
-		/*if (isset($_GET['apiChgEtat'])){
-			$AncienNomFichier = $_GET['apiChgEtat'];
+		/*if (isset($_GET['apiFichierChgEtat'])){
+			$AncienNomFichier = $_GET['apiFichierChgEtat'];
 		}else{
 			$AncienNomFichier = utf8_decode($GLOBALS['FichierDossierRECOMMANDE']) . 'lab2';
 		}*/
-		$AncienNomFichier = $_GET['BDDFileLab'];
-		if ($isDebug){
-			echo '    -    AncienNomFichier =  : ' . $_GET['BDDFileLab']  ;
-		}		
+		//$AncienNomFichier = $_GET['BDDFileLab'];
 
-		RemplacementNomCommande($AncienNomFichier, $_GET['ValideNomCommande']); // Sans L'extension
-
+		RemplacementNomCommande(utf8_decode($_GET['BDDFileLab']), utf8_decode($_GET['ValideNomCommande']) ); // Sans L'extension
 	}
 	elseif (isset($_POST['lesRecommandes']) ){
 		$RechargerPage = true;
@@ -89,9 +82,9 @@ $tabFichiersEnCoursDeCompilation = array();
 		$RechargerPage = true;
 		//echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 	}
-	elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) { 
+	elseif (isset($_GET['apiFichierChgEtat']) && isset($_GET['apiEtat'])) { 
 		$RechargerPage = true;
-		ChangeEtat($_GET['apiChgEtat'], $_GET['apiEtat']);
+		ChangeEtat(utf8_decode($_GET['apiFichierChgEtat']), $_GET['apiEtat']);
 	} 
 
 	//else echo 'Y A RIEN';

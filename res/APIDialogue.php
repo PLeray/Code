@@ -67,20 +67,20 @@ elseif (isset($_GET['apiUI_SELECTFILELAB'])) { // Formulaire de selection d'un f
 elseif (isset($_GET['apiUI_CONFIRMEtat']) && isset($_GET['apiEtat'])) {       
 	echo $EnteteHTML . API_UIConfirmation($_GET['apiUI_CONFIRMEtat'], $_GET['apiEtat']) . $BotomHTML;	
 }
-elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) { 
-	ChangeEtat($_GET['apiChgEtat'], $_GET['apiEtat']);
+elseif (isset($_GET['apiFichierChgEtat']) && isset($_GET['apiEtat'])) { 
+	ChangeEtat($_GET['apiFichierChgEtat'], $_GET['apiEtat']);
 } 
 elseif (isset($_GET['apiPhotoshop'])) { 
 	echo $EnteteHTML . Etape_20($_GET['apiPhotoshop']). $BotomHTML;	
 } 
 elseif (isset($_GET['apiDemandeNOMImpression'])) { 
-	echo $EnteteHTML . Etape_30($_GET['apiChgEtat']). $BotomHTML;	
+	echo $EnteteHTML . Etape_30($_GET['apiFichierChgEtat']). $BotomHTML;	
 } 
 elseif (isset($_GET['apiInfoMiseEnPochette'])) { 
-	echo $EnteteHTML . Etape_40($_GET['apiChgEtat']). $BotomHTML;	
+	echo $EnteteHTML . Etape_40($_GET['apiFichierChgEtat']). $BotomHTML;	
 }
 elseif (isset($_GET['apiInfoExpeditionArchivage'])) { 
-	echo $EnteteHTML . Etape_50($_GET['apiChgEtat']). $BotomHTML;	
+	echo $EnteteHTML . Etape_50($_GET['apiFichierChgEtat']). $BotomHTML;	
 } 
 elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
@@ -334,7 +334,7 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 
 	
 	$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
-	$CMDhttpLocal .= '&BDDFileLab='. $leFichierLab ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
+	$CMDhttpLocal .= '&BDDFileLab='. utf8_encode($leFichierLab) ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
 	
 	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) ;	
 
@@ -417,10 +417,10 @@ function Etape_40($leFichierLab){ // API information Mise en cartonange sauve US
 	et choisissez de l\'enregistrer sur un clé USB par exemple...<br><br>
 	Cela vous permettra de faire le cartonnage avec n\'importe quel autre ordinateur...</h3>';	
 	
-	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($leFichierLab) .'&apiEtat=4' ) ;	
+	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($leFichierLab)) .'&apiEtat=4' ) ;	
 
 	if ($GLOBALS['isDebug']){
-		echo $ActionServeur;
+		echo 'DDDDDDDDDDDDDDDDDDDDDDDDDDDD    ' .$ActionServeur;
 	}		
 
 	$retourMSG .= '<form  action="' . $ActionServeur .'" method="post">';
@@ -483,7 +483,7 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 	$retourMSG .=  "<h3>.En livraison directe, c'est près de chez vous !</h3>";
 	$retourMSG .=  "<h3>.Le client vient lui même chercher ses commandes (Plus rare)</h3>";
 	$retourMSG .=  "<br><br>";
-	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiChgEtat='. urlencode($leFichierLab) .'&apiEtat=5' ) ;	
+	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($leFichierLab) .'&apiEtat=5' ) ;	
 
 	if ($GLOBALS['isDebug']){
 		echo $ActionServeur;
@@ -621,7 +621,7 @@ function API_UIConfirmation($strAPI_fichierLAB, $Etat){
 	$retourMSG = $retourMSG . "<br><h3>Si oui valider !</h3><br>";
 
 	$CMDhttpLocal = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
-	$CMDhttpLocal = $CMDhttpLocal . '&apiChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
+	$CMDhttpLocal = $CMDhttpLocal . '&apiFichierChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
 	
 	$retourMSG .= '<br><br>
 		<a href="../index.php" class="KO" title="Valider et retour écran général des commandes">Annuler</a>

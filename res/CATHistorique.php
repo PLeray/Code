@@ -48,8 +48,8 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATHistorique');
 if(isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
     //echo API_GetCMDLAB(($_GET['apiCMDLAB']));
 }
-elseif (isset($_GET['apiChgEtat']) && isset($_GET['apiEtat'])) { 
-	ChangeEtat($_GET['apiChgEtat'], $_GET['apiEtat']);
+elseif (isset($_GET['apiFichierChgEtat']) && isset($_GET['apiEtat'])) { 
+	ChangeEtat($_GET['apiFichierChgEtat'], $_GET['apiEtat']);
 } 
 
 //else echo 'Y A RIEN';

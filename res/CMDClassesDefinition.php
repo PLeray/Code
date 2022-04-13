@@ -799,23 +799,28 @@ class CNomFichierGroupe {
 	var $NomClasse;
 	var $Version;
 
-    function __construct($NomFichierGroupe){
-		if (strpos($NomFichierGroupe,'-') > 1){
-			$CodeFichierGroupe = substr($NomFichierGroupe,0, strripos($NomFichierGroupe,'.')); // enlever l'extension
-			$morceau = explode('-', $CodeFichierGroupe);
-			$this->Numero = $morceau[0];
-			$this->TypeGroupe = $morceau[1];
+    function __construct($NomFichierGroupe){   //0100-CADR-5A-CM2.jpg
+		$PosMarqueur = strpos($NomFichierGroupe,'-');
+		if ( $PosMarqueur > 1){
+			$this->Numero = substr($NomFichierGroupe,0, $PosMarqueur); 			
 			if (strpos(strtolower($NomFichierGroupe),'fratrie')){
 				$this->NomClasse = 'Fratries';
+				$this->TypeGroupe = 'Fratries';
+			}
+			else{
+				$ResteCodeFichierGroupe = substr($NomFichierGroupe,$PosMarqueur + 1, strripos($NomFichierGroupe,'.') - $PosMarqueur - 1); // CADR-5A-CM2 :: enlever le code et l'extension
+				$PosMarqueur = strpos($ResteCodeFichierGroupe,'-');	
+				$this->TypeGroupe = substr($ResteCodeFichierGroupe,0, $PosMarqueur); 
+				$this->NomClasse = substr($ResteCodeFichierGroupe,$PosMarqueur +1 ); // 5A-CM2 :: enlever le type de groupe
+				if (strpos($this->NomClasse,'@') > 1){ // Nom du groupe avec plusieurs version
+					$morceauNomClasse = explode('@', $this->NomClasse);
+					$this->NomClasse = $morceauNomClasse[0];
+					$this->Version = $morceauNomClasse[1];				
+				}	
 			}	
-			if (count($morceau) > 2){ $this->NomClasse = $morceau[2]; } 
-			if (strpos($this->NomClasse,'@') > 1){ // Nom du groupe avec plusieurs version
-				$morceauNomClasse = explode('@', $this->NomClasse);
-				$this->NomClasse = $morceauNomClasse[0];
-				$this->Version = $morceauNomClasse[1];				
-			}		
-		}
+		}	
 	} 
+	
 }
 
 function csv_to_array($filename='', $delimiter=';')
