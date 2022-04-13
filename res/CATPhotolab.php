@@ -15,6 +15,12 @@ $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATPhotolab');
 
 $tabFichiersEnCoursDeCompilation = array();
 
+if($isDebug){ 
+	header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
+	header('Cache-Control: no-store, no-cache, must-revalidate');
+	header('Cache-Control: post-check=0, pre-check=0', FALSE);
+	header('Pragma: no-cache');	
+}
 ?>
 <!DOCTYPE html>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -84,7 +90,10 @@ $tabFichiersEnCoursDeCompilation = array();
 	}
 	elseif (isset($_GET['apiFichierChgEtat']) && isset($_GET['apiEtat'])) { 
 		$RechargerPage = true;
-		ChangeEtat(utf8_decode($_GET['apiFichierChgEtat']), $_GET['apiEtat']);
+		if ($GLOBALS['isDebug']){
+			echo 'le fichier apiFichierChgEtat  ::::::: ' . $_GET['apiFichierChgEtat'];
+		}
+		ChangeEtat($_GET['apiFichierChgEtat'], $_GET['apiEtat']);		
 	} 
 
 	//else echo 'Y A RIEN';
@@ -94,12 +103,7 @@ $tabFichiersEnCoursDeCompilation = array();
 ?>
 
 <?php 
-if($isDebug){ 
-	header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
-	header('Cache-Control: no-store, no-cache, must-revalidate');
-	header('Cache-Control: post-check=0, pre-check=0', FALSE);
-	header('Pragma: no-cache');	
-}
+
 	// ou header("Expires: -1");  ???
 
 if($RechargerPage){ 

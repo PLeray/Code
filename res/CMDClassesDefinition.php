@@ -129,7 +129,11 @@ class CGroupeCmdes {
 		return $resultat;
 	}	
 	function AfficheCommandesAProduire(){
-		$resultat = '';
+		$resultat = '<table class="TableCommandes"><tr>
+		<td  width="15%" class ="StyleNumCommande">Identifiant</td><td  width="85%" class ="StyleInfoClient"><center>Informations client</center></td>
+		</tr></table>';
+
+
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
@@ -249,21 +253,6 @@ class CEcole {
 		//$resultat .= '</div>';	/////////////////////////////		
 		return $resultat;
 	}	
-    function AfficheCommandesAProduire(){
-		//$isParPage = ($numeroPage>0);
-		$resultat = '';
-
-		/**/$resultat .= '<div class="StyleEcole">';	
-		$resultat .= $this->Nom ;  
-		$resultat .= '</div>';				
-		$resultat .= '<table class="TableCommandes">';	
-		for($i = 0; $i < count($this->colCMD); $i++){
-			$resultat .= $this->colCMD[$i]->AfficheCommandesAProduire();	
-		}	
-		$resultat .= '</table>';
-	
-		return $resultat;
-	}	
 	function AffichePlancheAProduire(){
 		//$isParPage = ($numeroPage>0);
 		$resultat = '';
@@ -279,7 +268,21 @@ class CEcole {
 	
 		return $resultat;
 	}
+    function AfficheCommandesAProduire(){
+		//$isParPage = ($numeroPage>0);
+		$resultat = '';
 
+		/**/$resultat .= '<div class="StyleEcole">';	
+		$resultat .= $this->Nom ;  
+		$resultat .= '</div>';				
+		$resultat .= '<table class="TableCommandes">';	
+		for($i = 0; $i < count($this->colCMD); $i++){
+			$resultat .= $this->colCMD[$i]->AfficheCommandesAProduire();	
+		}	
+		$resultat .= '</table>';
+	
+		return $resultat;
+	}	
 //utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
 
 	function Ecrire($tabPlanche, &$isRecommande){	
@@ -392,6 +395,15 @@ class CCommande {
 		}
 		return $resultat;				
 	}
+	function AffichePlancheAProduire(){
+		$resultat = '';
+
+		for($i = 0; $i < count($this->colPDT); $i++){
+			$resultat .= $this->colPDT[$i]->AffichePlancheAProduire();			
+		}
+
+		return $resultat;				
+	}
 	function AfficheCommandesAProduire(){
 		$resultat = '';
 		//for($i = 0; $i < count($this->colPDT); $i++){
@@ -405,15 +417,7 @@ class CCommande {
 		return $resultat;		
 
 	}	
-	function AffichePlancheAProduire(){
-		$resultat = '';
 
-		for($i = 0; $i < count($this->colPDT); $i++){
-			$resultat .= $this->colPDT[$i]->AffichePlancheAProduire();			
-		}
-
-		return $resultat;				
-	}
 
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'. PHP_EOL; 

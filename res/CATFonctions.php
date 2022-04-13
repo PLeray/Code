@@ -364,17 +364,20 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 	if(($Etat == "3" )&& ($strBaseName == $GLOBALS['FichierDossierRECOMMANDE'])){
 		if ($GLOBALS['isDebug']) echo ' X chgt etat   BaseName : ' .$strBaseName;		
 		// ON Verifie si le nom de Dossier est OK pour le Laboratoire et suivit !
-
-	
 	}
 	else{
 		if ($GLOBALS['isDebug']) echo ' Y chgt etat   BaseName : ' .$strBaseName;	
 
-		$AncienNomDeFichier = $GLOBALS['repCMDLABO'] .  $strFILELAB;
+		$AncienNomDeFichier = $GLOBALS['repCMDLABO'] . $strFILELAB;
 		$NouveauNomDeFichier = $GLOBALS['repCMDLABO'] . $strBaseName . $Extension . $Etat;	
 
+
+		//$AncienNomDeFichier = utf8_encode($AncienNomDeFichier);
+		//$NouveauNomDeFichier = utf8_encode($NouveauNomDeFichier);
+
+
 		if ($GLOBALS['isDebug']){
-			echo '<br><br><br>$Ancien NomDeFichier  40    : ' . utf8_encode($AncienNomDeFichier);
+			echo '<br><br><br>$Ancien NomDeFichier  40    : ' . $AncienNomDeFichier;
 			echo '<br>$Nouveau NomDeFichier   40  : ' . $NouveauNomDeFichier;			
 		}
 		RenommerFichierOuDossier($AncienNomDeFichier, $NouveauNomDeFichier);
@@ -388,7 +391,7 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 		}
 		return 'OK';
 
-		$CMDhttpLocal = '?apiFichierChgEtat='. utf8_encode($strFILELAB) .'&apiEtat=' . $Etat ;
+		$CMDhttpLocal = '?apiFichierChgEtat='. urlencode($strFILELAB) .'&apiEtat=' . $Etat ;
 		echo $CMDhttpLocal;		
 	}
 }
@@ -1032,7 +1035,7 @@ function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
 
 	$resultat = $SourceDesCMD ."\n";
 
-	$resultat .= '#Tirages d\'exemples du ' . date("d / F") ."#\n";
+	$resultat .= '# # __Tirages d\'exemples du ' . date("d / F") ."#\n";
 
 	$resultat .= trim(str_replace($GLOBALS['SeparateurInfoPlanche'] , "\n", $strTabCMDLibre));
 

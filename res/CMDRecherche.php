@@ -96,7 +96,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		
 		<div class="titreFichier">	
 			<?php 	
-				echo pathinfo(utf8_encode($myfileName))['filename'];
+				echo pathinfo($myfileName)['filename'];
 				//echo $isRECOmmandes?'true':'false'. " sgsfdgdfg" ; 				
 			?>
 			

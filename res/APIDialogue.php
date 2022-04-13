@@ -396,10 +396,7 @@ function Etape_40($leFichierLab){ // API information Mise en cartonange sauve US
 				<td width="50%">';	
 
 		$retourMSG .= '	<div class="Planchecontainer">
-		<h1>COMMANDES EN COURS</h1>
-		<table class="TableCommandes"><tr>
-		<td  width="15%" class ="StyleNumCommande">Identifiant</td><td  width="85%" class ="StyleInfoClient"><center>Informations client</center></td>
-		</tr></table>';
+		<h1>COMMANDES EN COURS</h1>';
 		$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $leFichierLab);
 
 		//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
@@ -417,10 +414,10 @@ function Etape_40($leFichierLab){ // API information Mise en cartonange sauve US
 	et choisissez de l\'enregistrer sur un clé USB par exemple...<br><br>
 	Cela vous permettra de faire le cartonnage avec n\'importe quel autre ordinateur...</h3>';	
 	
-	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($leFichierLab)) .'&apiEtat=4' ) ;	
+	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($leFichierLab) .'&apiEtat=4' ) ;	
 
 	if ($GLOBALS['isDebug']){
-		echo 'DDDDDDDDDDDDDDDDDDDDDDDDDDDD    ' .$ActionServeur;
+		echo 'DDDDDDDDDD    ' .$ActionServeur;
 	}		
 
 	$retourMSG .= '<form  action="' . $ActionServeur .'" method="post">';
@@ -465,10 +462,7 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 				<td width="50%">';	
 
 		$retourMSG .= '	<div class="Planchecontainer">
-		<h1>Liste des commandes prêtes à expédier</h1>
-		<table class="TableCommandes"><tr>
-		<td  width="15%" class ="StyleNumCommande">Identifiant</td><td  width="85%" class ="StyleInfoClient"><center>Informations client</center></td>
-		</tr></table>';
+		<h1>Liste des commandes prêtes à expédier</h1>';
 		$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $leFichierLab);
 
 		//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
@@ -490,7 +484,9 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 	}		
 
 	$retourMSG .=  '<h3>Cette action va archiver votre commande comme traitée et expédiée.
-	Vous pourrez toujours la consulter ultérieurement dans l\'historique des commandes expediées ...
+	<br><br>Les fichiers photos grand format, destinés à l\'impression seront suprimés, en effet ils ne serviront plus. 
+	<br><br>En outre, ça liberera de la place sur votre disque dur!
+	<br><br>Vous pourrez toujours la consulter ultérieurement dans l\'historique des commandes expediées :
 	<br><br><img src="img/menuBouton3.png" alt="Image Historique" >
 	</h3>';
 
@@ -499,7 +495,7 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 	$retourMSG .= '<h4>'. substr($leFichierLab,0,-5) .'</h4>'; 
 
 
-	$retourMSG .= '<br><br><br>
+	$retourMSG .= '<br>
 		<a href="CATPhotolab.php' . ArgumentURL() .'" class="KO" title="Valider et retour écran général des commandes">Annuler</a>
 		<button type="submit" class="OK">Archiver</button>
     </div>

@@ -44,7 +44,8 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 		if (file_exists($_FILES["myfile"]["tmp_name"])){
 			if ($extension == '.csv') {
 				//Verif si fichier de commande web iso ou groupe ou pas bon !
-				if (ConvertirCMDcsvEnlab($TabCSV, $_FILES["myfile"]["tmp_name"], $target_file) != '') {					
+				//$TabCSV = array();
+				if (ConvertirCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file)) {					
 					$retourTraitementMSG .= "<h3>Pour créer les planches de la commande : '. $target_file .'</h3>"  ;
 					$retourTraitementMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";					
 					$uploadOk = 2; // Flag test si OK
@@ -54,7 +55,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 					$retourTraitementMSG .= '<h2>' .	utf8_encode(substr($target_file ,14,-5)) . '</h2>';	
 					$retourTraitementMSG .= '<h4>'. $GLOBALS['ERREUR_EnCOURS'] .'</h4>'  ;
 					$target_file = '';
-					//$uploadOk = 0;
+					$uploadOk = 0;
 				}
 			} 
 			else {
@@ -121,14 +122,16 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			<h1>scripts Photoshop</h1>';
 			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 
+			if ($uploadOk == 2) {
+				// A REMETTRE !!! 
+				$monGroupeCmdes = new CGroupeCmdes($target_file);
+	
+				$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+				// A REMETTRE !!!
+				$retourMSG .= '<h1>Photos necessaires</h1>';
+				$retourMSG .= 'Photos manquantes : 0';
+			}
 
-			// A REMETTRE !!! 
-			$monGroupeCmdes = new CGroupeCmdes($target_file);
-			// A REMETTRE !!! 
-			$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-
-			$retourMSG .= '<h1>Photos necessaires</h1>';
-			$retourMSG .= 'Photos manquantes : 0';
 
 			$retourMSG .= '</div>';
 		$retourMSG .= '</td>

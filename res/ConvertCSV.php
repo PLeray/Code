@@ -20,12 +20,14 @@ $TabResumeFormat = array();
 
 //echo ConvertirCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
 
-function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
-{
-	$TabCSV = array();
-
-	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
+//function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
+function ConvertirCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_file)
+{	
+	$valRetour = false;
+	//	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
+	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  $CatalogueProduits, ';'); // New 22-10
 	//var_dump( $GLOBALS['CataloguePdtWEB']) ;
+	$TabCSV = array();
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');
 	$isCMDUnique = is_numeric(substr($target_file ,-11,-5));
@@ -107,7 +109,7 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], $colNomDeLaPhoto, $nbColonneCommnandes,true), $TabCSV[$i]['Nom de la photo'], $TabCSV[$i]['Classe']);				
 			}	
 		}
-		$NbPlanches = $NbLignes;
+		//$NbPlanches = $NbLignes;
 		$affiche_Tableau = '[Version :1.0]' . '<br>'
 							. '{Etat : -1 : Non enregistre %%'
 							. EcrireBilanCMD(count(array_unique(array_column($TabCSV, 'Num de commande')))) . '<br>' 
@@ -118,12 +120,13 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 							
 							
 							
-		//$affiche_Tableau = str_replace('<br>', '\n', $affiche_Tableau);
+		//echo $affiche_Tableau;
 		
 		
 		if ($GLOBALS['ERREUR_EnCOURS'] != ''){
-			$affiche_Tableau = '';
-			//echo '<br style="background-color:#EAEFF5" />  Erreur !!! : ' . $GLOBALS['ERREUR_EnCOURS'] .'</br>';
+			//$affiche_Tableau = '';
+			$valRetour = false;
+			echo '<br style="background-color:#EAEFF5" />  PROBLEME : ' . $GLOBALS['ERREUR_EnCOURS'] .'</br>';
 		}
 		else{ // Tout va bien !
 			# Chemin vers fichier texte
@@ -139,13 +142,13 @@ function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
 			fputs($fileopen,$txtFichier);
 			# On ferme le fichier proprement
 			fclose($fileopen);	
-			
+			$valRetour = true;
 		}		
 
 	}
 	//'&#60;' . $Classe . ' ' . $key . '&#62;<br>';
 
-	return $affiche_Tableau ;  
+	return $valRetour;  
 }
 
 
@@ -260,7 +263,7 @@ function EcrireProduitPhoto($NomPhoto, $ProduitPhoto)
 		if (! in_array($tabCodesProduit[$i], $GLOBALS['ProduitsNONLABO'])){
 			$leCodeFormat = stristr($tabCodesProduit[$i] , '_', true);
 			//array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);
-			if ($leCodeFormat != ''){
+			if ($leCodeFormat){
 				array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);	
 			}
 			else{

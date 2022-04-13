@@ -21,7 +21,7 @@ $fichierCSV = '../../2021-04-10 TEST MAX PLANCK-NANTES-2020-2021.csv';
 $fichierCSV = '../../2021-6-1 isolées.csv';
 $fichierLAB = 'TEST.lab';
 
-echo ConvertirCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);
-
+//echo ConvertirCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);
+echo ConvertirCMDcsvEnlab('CatalogueProduits.csv',$fichierCSV , $fichierLAB);
 ?>
 
