@@ -689,7 +689,7 @@ function GenererFichiersWEB() {
 		//for(var fichier in g_GroupeIndiv){//Pour tout les fichier du Source
 		for (var i = 0; i < leSousGroupeDeFichier.length; i++) {	
 				var fichier = leSousGroupeDeFichier[i];
-			//alert('leSousGroupeDeFichier[i] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
+			//alert('x4545 leSousGroupeDeFichier[i] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
 			//if (leSousGroupeDeFichier.includes(fichier)){
 				//i = i + 1;
 				progressBar.value = i ;

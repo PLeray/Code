@@ -45,7 +45,12 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			if ($extension == '.csv') {
 				//Verif si fichier de commande web iso ou groupe ou pas bon !
 				//$TabCSV = array();
-				if (ConvertirCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file)) {					
+				if (isFichierLumysCSV($_FILES["myfile"]["tmp_name"])) {					
+					$RetourConversion = ConvertirCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file);
+				}else{
+					$RetourConversion = ConvertirEXCELCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file);
+				}
+				if ($RetourConversion) {					
 					$retourTraitementMSG .= "<h3>Pour créer les planches de la commande : '. $target_file .'</h3>"  ;
 					$retourTraitementMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";					
 					$uploadOk = 2; // Flag test si OK
@@ -53,7 +58,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				}	
 				else {					
 					$retourTraitementMSG .= '<h2>' .	utf8_encode(substr($target_file ,14,-5)) . '</h2>';	
-					$retourTraitementMSG .= '<h4>'. $GLOBALS['ERREUR_EnCOURS'] .'</h4>'  ;
+					$retourTraitementMSG .= '<h3>'. $GLOBALS['ERREUR_EnCOURS'] .'</h3>'  ;
 					$target_file = '';
 					$uploadOk = 0;
 				}
@@ -66,6 +71,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				}					
 				else {
 					$retourTraitementMSG = "APIPhotoLab : Probleme d'enregistrement de :" . $target_file;
+					$uploadOk = 0;
 				}				
 			}
 			$CMDhttpLocal ='';
@@ -160,5 +166,13 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 	
 	return $retourMSG;	
 }
+
+
+function isFichierLumysCSV($fichierCSV) {
+	$lines = file($fichierCSV);
+	return (strpos($lines[0], 'Num de facture', 1) > 1);
+	
+}
+
 
 ?>

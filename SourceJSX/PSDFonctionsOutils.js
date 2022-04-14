@@ -386,18 +386,6 @@ function ImporterAutrePhoto(PathNomAutrePhoto){
 		return false;			
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 function AjoutBilanGeneration(msg){
@@ -999,8 +987,12 @@ function GroupeClassePourIndiv(unProduit){
 		var unFichierGroupe ='';
 		for (var n = 0; n < TableauListeGroupe.length; n++) {
 			unFichierGroupe = TableauListeGroupe[n];
-			if (unFichierGroupe.indexOf(unProduit.Type.slice(-4)) > -1){
-				//alert(unProduit.FichierPhoto + ' => fichier groupe de remplacement :  ' + unFichierGroupe);
+			//alert('unFichierGroupe: ' + unFichierGroupe + ' on y cherche : (unProduit.Type.slice(-4)) : ' + unProduit.Type.slice(-4));	
+			
+			var uneInfoNomFichierGroupe  = new CNomFichierGroupe(unFichierGroupe);
+			if (unFichierGroupe.indexOf(uneInfoNomFichierGroupe.TypeGroupe) > -1){					
+			//if (unFichierGroupe.indexOf(unProduit.Type.slice(-4)) > -1){
+				//alert(unProduit.FichierPhoto + ' ZZZZ=> fichier groupe de remplacement :  ' + unFichierGroupe);
 				//On renvoie celui qui correspond au produit de groupe demandé
 				unProduit.FichierPhoto = decodeURI(unFichierGroupe);
 				//alert('unProduit.FichierPhoto => ' + unProduit.FichierPhoto );

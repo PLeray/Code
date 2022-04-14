@@ -66,11 +66,11 @@ div.recherche {
 /******************************/
 /*     LISTE DE COMMANDES     */
 /******************************/
-#myInput {
+#myInputRecherche {
 	background-image: url('../img/searchicon.png');
 	background-position: 2px 2px;
 	background-repeat: no-repeat;
-	width: 40%;
+	width: 50%;
 	font-size: 16px;
 	padding: 5px 20px 12px 60px;
 
@@ -78,7 +78,10 @@ div.recherche {
 	border: none;
 	border-bottom: 1px solid var(--FondLigneTabGrisFonce); 
 }
-
+#myInputRecherche:focus {
+	outline: none;
+	border-bottom: 1px solid var(--boutonRouge); 
+}
 
 
 .majCache {

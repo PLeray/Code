@@ -102,12 +102,12 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECLibreCode']) && isset($_
 	<div class="titreFichier">Saisons : <?php echo $affiche_Saison; ?></div>  
 	<h1>Sources écoles référencées : <?php echo $nb_fichier; ?></H1>    
 
-	<BR><BR>
+	<BR><BR><BR>
 		<div class="recherche">	
 	<!-- RECHERCHE -->
-	<input type="text" id="myInput" onkeyup="MonFiltreSource()" placeholder="Tapez les premières lettres, pour rechercher une source de photos..." title="Tapez les premières lettres...">
+	<input type="text" id="myInputRecherche" onkeyup="MonFiltreSource()" placeholder="Tapez les premières lettres, pour rechercher une source de photos..." title="Tapez les premières lettres...">
 </div>
-
+<BR>
 
 
 	<table id="commandes">

@@ -16,6 +16,7 @@ var g_TypeGROUPE = [
 'SITU',
 ];
 
+/**/
 var g_PdtGROUPE = [
 'PANO', 
 'CAL-PANO', 
@@ -23,6 +24,7 @@ var g_PdtGROUPE = [
 'TRAD', 
 'CAL-TRAD',
 'COMPO-TRAD',
+'pngTRAD-CALENDRIER',
 'DUO-TRAD',
 'CUBE', 
 'CAL-CUBE',
@@ -205,9 +207,20 @@ function Produit(CodeLigne) {
 	this.isFichierGroupe = function(){return (this.FichierPhoto.length >= g_MinimuNomClasse); };
 	this.Nom = function(){return this.FichierPhoto.substr(0,this.FichierPhoto.length-4); };
 	/*this.isProduitGroupe = g_PdtGROUPE.includes(this.Type);*/		
+	/*this.isProduitGroupe = function(){		
+		var retour = false;
+		//alert('isProduitGroupe ' + this.Type + '  ' + this.Type.indexOf(g_TypeGROUPE[i]) );      
+		for (var i = 0; i < g_TypeGROUPE.length; i++) {
+			if (this.Type.indexOf(g_TypeGROUPE[i]) > -1) {
+				retour = true;
+				break;
+			}
+		} 
+		return retour;
+	};*/
 	this.isProduitGroupe = function(){		
 		var retour = false;
-		//alert('isProduitGroupe ' + g_PdtGROUPE[1] );
+		//alert('isProduitGroupe ' + g_PdtGROUPE[1] );   g_TypeGROUPE    
 		for (var i = 0; i < g_PdtGROUPE.length; i++) {
 			if (g_PdtGROUPE[i]==this.Type) {
 				retour = true;
@@ -216,6 +229,7 @@ function Produit(CodeLigne) {
 		} 
 		return retour;
 	};
+	
 	this.isTypeGroupe = function(){		
 		var retour = false;
 		//alert('isTypeGroupe ' + g_TypeGROUPE[1] );

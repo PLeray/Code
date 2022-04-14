@@ -35,8 +35,10 @@ class CINFOfichierLab {
 			if ($identifiant == '{')  {
 				$this->LireLigneSyntheseCMD(substr(stristr($tabLignesFichierLabo[$i], '%%'),2,-1)); // la partie Résumé
 				$this->PourcentageAvancement = 100 * floatval(str_replace(",", ".", substr(stristr($tabLignesFichierLabo[$i], '%%', true), 9)));	
+				
 			}
 		}
+		
 	}	
 	/*
 	function SyntheseCMDDepuisLigne($Ligne){	
@@ -45,14 +47,16 @@ class CINFOfichierLab {
 		//$this->SyntheseCMD = str_replace("%", "<br>", $this->SyntheseCMD);
 		//$this->SyntheseCMD = str_replace("{", "<br>", $this->SyntheseCMD) . "<br>";
 		$this->PourcentageAvancement = 100 * floatval(str_replace(",", ".", substr(stristr($Ligne, '%%', true), 9)));		
-	}	*/
+	}	
+	*/
 
 	function LireLigneSyntheseCMD($Ligne){	// que la partie concernant la Synthese
 		if (strpos($Ligne,'NBPLA') > 1){
 			$this->TabListeFormats = array();		
 			$this->TabListeProduits = array();	
-
+			
 			$morceau = explode("%", substr($Ligne,0,strpos($Ligne,'NBPLA'))); // avant 'NBPLA'
+			
 			$this->NbCommandes = substr($morceau[0],strpos($Ligne,'NBCMD')+5);	
 			for($i = 1; $i < count($morceau); $i++){
 				if (strpos($morceau[$i],' : ') > 1){
@@ -71,6 +75,7 @@ class CINFOfichierLab {
 				}				
 			}	
 		}
+		//var_dump($this->TabResumeProduit);
 	}	
 	function EcrireLigneSyntheseCMD(){	
 		$str = 'NBCMD' . $this->NbCommandes . '%';
@@ -293,7 +298,7 @@ class CINFOfichierArbo {
 			break;		
 		}
 		return $RetourEtat;  	
-	}	
+	}
 }
 
 /////////////////// Les Fonctions ... ///////////////////    

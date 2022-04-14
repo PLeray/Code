@@ -39,10 +39,24 @@ $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 
 			// A REMETTRE !!! 
-			$monGroupeCmdes = new CGroupeCmdes($target_file);
-			// A REMETTRE !!! 
-			$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-            $retourMSG .= 'Photos manquantes : 0 PierrePierrePierrePierrePierrePierre ';
+			/*$monGroupeCmdes = new CGroupeCmdes($target_file);
+            $retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+			*/
+
+            $mesInfosFichier = new CINFOfichierLab($target_file); 
+            //$CMDAvancement ='';
+            
+            //$Compilateur = '';				
+            $ListeDeProduits = array_keys($mesInfosFichier->TabResumeProduit);
+            for($i = 0; $i < count($ListeDeProduits); $i++){
+                $retourMSG .=  $ListeDeProduits[$i] . '<br>';
+
+            }
+            //var_dump($mesInfosFichier->TabResumeProduit) ;
+
+
+			
+            $retourMSG .= '<br><br><br><br>Photos manquantes : 0 PierrePierrePierrePierrePierrePierre ';
 			$retourMSG .= '</div>';
             $retourMSG .= ' </div>';	
             $retourMSG .= '</td>

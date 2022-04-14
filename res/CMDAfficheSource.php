@@ -406,6 +406,7 @@ function RecupProjetSourceEcole($fichierCSV, $codeProjet, $anneeProjet){
 				if ($codeProjet == $TabCSV[$i]["Code"]  && $anneeProjet == $TabCSV[$i]["AnneeScolaire"]){
 					$Dossier = $TabCSV[$i]["DossierSources"];	
 					$Dossier = "../.." . urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
+					//echo '<br>'.$Dossier;
 					$monProjet = new CProjetSource($TabCSV[$i]["NomProjet"], 
 												$Dossier, 
 												$codeProjet,

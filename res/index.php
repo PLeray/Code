@@ -77,7 +77,7 @@ if (isset($_GET['version'])) {
 		<?php 
 		if ($codeMembre != '' && $codeMembre != '0'){
 			echo '<div id="dropArea"><br>Glisser déposer un fichier commandes dans cette zone.<br>
-			Soit un fichier (.lab ou .web) créé par ProdEcole.<br>
+			Soit un fichier (.csv) Conversion d\'un livret des vente.<br>
 			Soit un fichier (.csv) téléchargé depuis le site de vente en ligne Lumys.<br>
 			<span id="count"></span>
 			<div id="result"></div>				

@@ -259,7 +259,7 @@ var Zone1Entete = PHOTOLAB.add ("group");
 
 	var group = Zone131Action.add ("group {alignChildren: 'left', orientation: ’stack'}");	
 	
-	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,45], '0/0', {multiline: true});
+	var txtTraitement = Zone13Option.add ('statictext', [0,0,g_LargeurUI/2,55], '0/0', {multiline: true});
 	txtTraitement.graphics.font = ScriptUI.newFont ("Arial", 'BOLD', 14);	
 	
 
