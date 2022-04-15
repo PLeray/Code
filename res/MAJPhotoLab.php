@@ -16,7 +16,7 @@ $MessageBox =
     <html>
     <head>
 	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"DEBUG":"PROD") . ".css") . '">
-    <link rel="stylesheet" type="text/css" href="'. strMini("css/API_PhotoLab.css") . '">
+    <link rel="stylesheet" type="text/css" href="'. strMini("css/APIDialogue.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     </head>
     <body>
@@ -30,15 +30,15 @@ $MessageBox =
 $MessageBox .= '<div class="msgcontainer">';
 $MessageBox = $MessageBox . '<br><h3>'.$MsgRecupCode.'</h3><br>';
 
-if (isset($_GET['version'])){$MessageBox .=  '<br><h3> version : ' . $GLOBALS['VERSION'] . ' > version : ' .  $_GET['version'].'</h3><br>'; }
+if (isset($_GET['versionDistante'])){$MessageBox .=  '<br><h3> versionLocal : ' . $GLOBALS['VERSIONLOCAL'] . ' > version Distante : ' .  $_GET['versionDistante'].'</h3><br>'; }
 
 //if ($GLOBALS['isDebug']){$MessageBox = $MessageBox . "<br><h3>".$Etat." (en Debug)<br><br></h3>";}
 //$MessageBox = $MessageBox . "<br><h3>Améliorations !</h3><br>";
 
-$CMDhttpLocal = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
+//$CMDhttpLocal = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
 	
 $MessageBox .= '<br><br>
-		<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>		
+		<a href="' . $GLOBALS['maConnexionAPI']->CallServeur('') . '" class="OK" title="Valider et retour écran général des commandes">OK</a>		
 			<br><br><br>';
 
 $MessageBox .= '

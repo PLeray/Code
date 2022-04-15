@@ -13,10 +13,12 @@ include_once 'CMDClassesDefinition.php';
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATSources');
 
-if (isset($_GET['version'])) { 
+if (isset($_GET['versionDistante'])) { 
 	//MAJ PHOTOLAB !!!
-	if($GLOBALS['VERSION'] < $_GET['version']){ MAJPhotoLab($_GET['version']);}
-	
+	if( $GLOBALS['VERSIONLOCAL'] < $_GET['versionDistante']){ 
+		MAJPhotoLab($_GET['versionDistante']);
+		if ($GLOBALS['isDebug']){echo 'Version en ligne : ' .$GLOBALS['VERSIONLOCAL'];}	
+	}
 }
 
 $g_IsLocalMachine = IsLocalMachine();

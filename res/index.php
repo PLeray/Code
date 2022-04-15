@@ -22,9 +22,12 @@ if ($codeMembre == '' || $codeMembre == '0'){
 }
 
 
-if (isset($_GET['version'])) { 
+if (isset($_GET['versionDistante'])) { 
 	//MAJ PHOTOLAB !!!
-	if( $GLOBALS['VERSION'] < $_GET['version']){ MAJPhotoLab($_GET['version']);}
+	if( $GLOBALS['VERSIONLOCAL'] < $_GET['versionDistante']){ 
+		MAJPhotoLab($_GET['versionDistante']);
+		if ($GLOBALS['isDebug']){echo 'Version en ligne : ' .$GLOBALS['VERSIONLOCAL'];}	
+	}
 }
 ?>
 
@@ -52,8 +55,8 @@ if (isset($_GET['version'])) {
 		<?php 
 
 	if ($isDebug ) { 
-		echo "GLOBALS[VERSION] (Version actuelle) : " . $GLOBALS['VERSION'] . " >>>> GET[version]: (y a t il une version a recupérer ?)  ";
-		if (isset($_GET['version'])) { 	echo $_GET['version'];} 
+		echo "GLOBALS[VERSIONLOCAL] (Version actuelle) : " . $GLOBALS['VERSIONLOCAL'] . " >>>> GET[versionDistante]: (y a t il une version a recupérer ?)  ";
+		if (isset($_GET['versionDistante'])) { 	echo $_GET['versionDistante'];} 
 		else { echo 'PAS DE VERSION';}
 
 			$localURL =  '<br> http//'.$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ;	

@@ -1,5 +1,5 @@
 <?php
-$VERSION = 0.862;
+$VERSIONLOCAL = 0.863;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -61,7 +61,7 @@ class CConnexionAPI {
 }
 
 function VersionPhotoLab(){
-	return '©PhotoLab ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSION'].') : Création et visualisation de commandes de photographies';
+	return '©PhotoLab ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSIONLOCAL'].') : Création et visualisation de commandes de photographies';
 }
 
 function ArgumentURL($ARGSupl = ''){
@@ -69,7 +69,7 @@ function ArgumentURL($ARGSupl = ''){
 }
 
 function MAJPhotoLab($NouvelleVersion) {
-	if( $GLOBALS['VERSION'] < $NouvelleVersion){ 
+	if( $GLOBALS['VERSIONLOCAL'] < $NouvelleVersion){ 
 		header('Location: MAJPhotoLab.php'. ArgumentURL('&version='. $NouvelleVersion));
 	}
 }
