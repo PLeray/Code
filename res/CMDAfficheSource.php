@@ -140,14 +140,22 @@ if (!$MAJ){
 		<div id="mySidenav" class="sidenav">
 		
 			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"> + </a>
-			<p><a href=javascript:void(0); id="maBascule" onclick=BasculeMode()>Tempo bascule Tirage / Boutique</a></p><br>
+ 
+<div class="tab">
+  <button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesTirages')" id="defaultOngletOuvert">Tirages</button>
+  <button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesFichierBoutiques')">Fichiers boutique</button>
+</div>
+
 
 			<div id="myRecommandes" class="infoRecommandes">
+			
+				<div id="ZoneCommandesTirages" class="tabcontent">
+				<H1>Mes Commandes</H1><br>	
+
 				<div>
 					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
-				</div>				
-				<div id="ZoneCommandesTirages">
-				<H1>Mes Commandes</H1><br>	
+				</div>	
+
 					<div class="dropdown">
 						
 					<img src="img/searchicon.png" id="LoupeInitZoneSaisie" title="Initialiser la liste de produits" onclick="SelectionProduitInitialisation()">
@@ -191,8 +199,12 @@ if (!$MAJ){
 				</div>	
 				
 
-				<div id="ZoneCommandesFichierBoutiques">
+				<div id="ZoneCommandesFichierBoutiques" class="tabcontent">
 				<H1>Mes FichiersBoutique</H1><br>		
+				<div>
+					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+				</div>	
+
 					<!-- FICHIERBOUTIQUES ici -->
 					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	
 					<div id="myListeFichiersBoutique" class="ListeCommandes">

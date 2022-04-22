@@ -1,9 +1,13 @@
 var sepFinLigne = '§';
 
 var g_IsTirage;
+document.getElementById("defaultOngletOuvert").click();
 BasculeMode();BasculeMode();
+
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
+
+
 
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
@@ -265,15 +269,32 @@ function BasculeMode() {
 		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "none";
 		
 		g_IsTirage = true;
-		document.getElementById("maBascule").innerHTML = "aller à la Création fichiers boutique";		
+		//document.getElementById("maBascule").innerHTML = "aller à la Création fichiers boutique";	
+		document.getElementById("CMDTirages").className = "myclass";	
 	  } else {
 		document.getElementById("ZoneCommandesTirages").style.display = "none";
 		document.getElementById("ZoneCommandesFichierBoutiques").style.display = "inline-block";		
 		
 		g_IsTirage = false;
-		document.getElementById("maBascule").innerHTML = "aller aux commandes de tirages";	
+		//document.getElementById("maBascule").innerHTML = "aller aux commandes de tirages";
+		document.getElementById("CMDFichiers").className = "myclass";		
 	  }
 }		
+
+
+function BasculeOnglet(evt, cityName) {
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent");
+	for (i = 0; i < tabcontent.length; i++) {
+	  tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+	  tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	document.getElementById(cityName).style.display = "block";
+	evt.currentTarget.className += " active";
+  }
 
 
 function VoirPhotoSelection(x) {
@@ -569,3 +590,4 @@ function FermerZoom()
 	var x = document.getElementById(maZone.id.substring(4)).getElementsByClassName("ZoneMoinsPlusZoom")[0];	
 	if(x.classList.contains("ZoneMoinsPlusZoom")){x.classList.replace("ZoneMoinsPlusZoom", "ZoneMoinsPlus");}
 }
+

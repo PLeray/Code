@@ -664,6 +664,8 @@ function GenererFichiersWEB() {
 		g_RepTIRAGES_DateEcole = g_Rep_PHOTOLAB + 'WEB-ARBO/' + (isCORR? 'CORR-' : 'ARBO-') +  uneSource.NomProjet;
 		g_RepSCRIPTSPhotoshop = uneSource.RepScriptPS;				
 		g_RepSOURCE  = uneSource.DossierSources;
+		//g_RepSOURCE  = encodeURI(uneSource.DossierSources);
+		//alert('g_RepSOURCE : ' + g_RepSOURCE);
 		g_TabListeNomsClasses = [];
 
 		var theFolder = new Folder(g_RepSOURCE);

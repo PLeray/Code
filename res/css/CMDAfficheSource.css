@@ -690,23 +690,86 @@ margin-top: -10px;
 
   
 
-  border-radius: 10px; /* Rounded corners */
-  margin-left: -40px;/*315px;*/
+  border-radius: 10px; 
+  margin-left: -40px;
   font-size: 30px;
 
-  width:150px;
-  height:150px;
+  width:250px;
+  height:100px;
   border: 1px solid var(--boutonRouge);
 
     color: var(--texteGris);
 
 }
 
-
 .sidenav .closebtn:hover{
     color: var(--boutonRouge);
 
 }
+
+
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: var(--FondLigneTabGrisFonce);
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 14px;
+  width:  170px;
+  border: 1px solid var(--boutonRouge);
+  margin-left: 2px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color:  white;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: white;
+  border-bottom: none;
+}
+
+.tabcontent {
+  display: none;
+  margin-top: 25px;
+  /*border-top: 1px solid var(--boutonRouge);*/
+
+}
+
+/*
+.OngletOuvert{
+  position:fixed;
+  text-align: center;
+  color: var(--FondLigneTabGrisFonce);
+  width:  150px;
+  height:  150px; 
+  background-color: white; 
+  border: 1px solid var(--boutonRouge);
+  border-bottom: none;
+  top:0px;
+
+}
+
+.OngletFermer{
+  position:fixed;
+  text-align: center;
+  color: var(--FondLigneTabGrisFonce);
+  width:  100px;
+  min-height:  150px;
+  background-color: var(--FondLigneTabGrisClair); 
+  border: 1px solid var(--boutonRouge);
+
+  border-bottom: none;
+  top:0px;
+}
+
+*/
 
 /* Style the search box */
 #zoneRecherche {
