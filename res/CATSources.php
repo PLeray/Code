@@ -409,7 +409,7 @@ function BDDLibreRECFileLab($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire
 		echo '<br><br>' . $NewFichier;
 		echo '<br><br>' . $strListeFichiers;
 	}
-	$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $CodeEcole, $Annnescolaire);
+	//$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $CodeEcole, $Annnescolaire);
 	
 	$Tabl = [];
 	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	

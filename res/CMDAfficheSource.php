@@ -54,7 +54,11 @@ if (isset($_POST['lesFichiersBoutique']) ){
 	MAJFichierBoutique($lesFichiersBoutique, $codeSource, $anneeSource);
 }
 
-$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+//$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+
+$monProjet = new CProjetSource($codeSource, $anneeSource);
+
+
 
 // echo $monProjet->NomProjet . $monProjet->NomProjet . $monProjet->NomProjet;
 ?>
@@ -395,24 +399,14 @@ function RecupScriptSelonNomDossier($moDossierScriptsPS){
 	//return 'oih';
 }
 
-
-
-
-
-
-
-
-
-
+/*
 function RecupProjetSourceEcole($fichierCSV, $codeProjet, $anneeProjet){ 
 	$monProjet = '';
 	if (file_exists($fichierCSV)){
 		$TabCSV = csv_to_array($fichierCSV, ';');
-
 		$NbLignes=count($TabCSV);
 		//echo 'nb ligne catalog source ' . $NbLignes;
 		if ($NbLignes){
-
 			$NbLignes=count($TabCSV);
 			for($i = 0; $i < $NbLignes; $i++){ 
 				if ($codeProjet == $TabCSV[$i]["Code"]  && $anneeProjet == $TabCSV[$i]["AnneeScolaire"]){
@@ -430,7 +424,7 @@ function RecupProjetSourceEcole($fichierCSV, $codeProjet, $anneeProjet){
 		}
 	}
 	return $monProjet;
-}
+}*/ 
 
 function AfficheSOURCESEcole($monProjet){ 
 	$dir = $monProjet->Dossier . '/*.*{jpg,jpeg}';

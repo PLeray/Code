@@ -14,12 +14,12 @@ body{
 body {font-family: Arial, Helvetica, sans-serif;}
 
 h1 { /*Police texte Ecole */
-    text-align: center;
+    text-align: left;
 	font-size: 20px;
     text-transform: uppercase;
     color: var(--texteGris);
     letter-spacing: 2px;
-	padding: 0px;
+	padding-left: 10px;
 	vertical-align:middle;
 
 	font-family: "Courier New", Times, serif;
@@ -38,8 +38,10 @@ h2 { /*Police texte Adresse */
 }
 
 h3 { /*Police texte produits */
+    text-align: left;
+    padding-left: 10px;
     letter-spacing: 2px;
-	padding: 0% 10%;
+
 	line-height: 12px;
 	font-size: 12px;
 	font-family: "Courier New", Times, serif;
@@ -91,7 +93,7 @@ STRONG {/*Police Détails Fichier commande et commun  */
     font-size: 12px;
     color: white;
     background-color:var(--texteGris);
-
+    width: 100%;
 }
 .StyleFichier {/*Police Détails Fichier commande et commun  */
     text-align: left;
@@ -108,6 +110,19 @@ STRONG {/*Police Détails Fichier commande et commun  */
     text-align: left;
     font-size: 10px;
     color: var(--boutonVert);
+}
+
+.StyleKO{/*Police Détails Fichier commande et commun  */
+    text-align: left;
+    font-size: 16px;
+    color: var(--boutonRouge);
+    padding-left: 10px;
+}
+.StyleOK{/*Police Détails Fichier commande et commun  */
+    text-align: left;
+    font-size: 16px;
+    color: var(--boutonVert);
+    padding-left: 10px;
 }
 
 
@@ -167,10 +182,11 @@ td
 
 .TablePlanche
 {
-    table-layout: fixed;
+    
     width: 100%;
     border-collapse: collapse;
-    /* border: 1px solid blue;*/
+    /*table-layout: fixed; 
+    border: 1px solid blue;*/
 
 }
 
@@ -191,7 +207,7 @@ td
 
 .TableCommandes td
 {
-    /**/ border-bottom: 1px solid var(--FondLigneTabGrisFonce);  
+    /**/ border-top: 1px solid var(--FondLigneTabGrisFonce);  
     
 }
 
@@ -259,11 +275,19 @@ img {
 }
 .msgcontainer {
     text-align: center;
-    margin: 24px 0 12px 0;
+    /*margin: 24px 0 12px 0;*/
+    margin: 10px 40px 10px 25px;    
     position: relative;
 }
 .Planchecontainer {
-    height: 500px; 
+    height: 500px;
+    
+    /* display: flex;
+        flex-wrap: wrap; */
+    
+    
+
+
     overflow: auto;
     margin: 10px 0 0 24px;
     border: 1px solid var(--FondLigneTabGrisFonce);  

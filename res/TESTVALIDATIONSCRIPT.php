@@ -30,33 +30,18 @@ $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
                 <div class="imgcontainer">
                     <a href="CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($target_file_seul) .'0" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
                 </div>
-                <h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Importer les commandes de fichiers "produits" à Créer.</h1>';	
+                <h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Vérification</h1>';	
             $retourMSG .= '<table>
             <tr>
                 <td width="50%">';            
-            $retourMSG .= '	<div class="Planchecontainer">
-			<h1>Vérification des scripts Photoshop et des fichier source</h1>';
-			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
+            $retourMSG .= '	<div class="Planchecontainer">';
 
-			// A REMETTRE !!! 
-			/*$monGroupeCmdes = new CGroupeCmdes($target_file);
-            $retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-			*/
+			$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
+            $retourMSG .= BilanScriptPhotoshop($target_file);
 
-            $mesInfosFichier = new CINFOfichierLab($target_file); 
-            //$CMDAvancement ='';
-            
-            //$Compilateur = '';				
-            $ListeDeProduits = array_keys($mesInfosFichier->TabResumeProduit);
-            for($i = 0; $i < count($ListeDeProduits); $i++){
-                $retourMSG .=  $ListeDeProduits[$i] . '<br>';
+            $retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+			$retourMSG .= PhotosManquantes($target_file);
 
-            }
-            //var_dump($mesInfosFichier->TabResumeProduit) ;
-
-
-			
-            $retourMSG .= '<br><br><br><br>Photos manquantes : 0 PierrePierrePierrePierrePierrePierre ';
 			$retourMSG .= '</div>';
             $retourMSG .= ' </div>';	
             $retourMSG .= '</td>
@@ -68,8 +53,65 @@ $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
             echo $retourMSG;
 
+
+
 ?>
+
+
+
+
 
 
 </body>
 </html>
+
+<?php
+
+
+function BilanScriptPhotoshop($target_file){
+    $mesInfosFichier = new CINFOfichierLab($target_file); 
+    $resultat = '<table width="100%">';  
+
+    $ListeDeProduits = array_keys($mesInfosFichier->TabResumeProduit);
+    for($i = 0; $i < count($ListeDeProduits); $i++){
+        $resultat .=  '<tr class="StyleKO"><td width="80%">' . $ListeDeProduits[$i] . '</td ><td width="20%">' . LienEditionProduit($ListeDeProduits[$i]). '</td ></tr>';
+
+    }
+    $resultat .= '</table>';
+    return $resultat;
+}
+
+function LienEditionProduit($leProduit){
+
+    $resultat = ' KO' ;  
+
+    return $resultat;
+}
+
+
+
+
+function PhotosManquantes($target_file){
+    $NombrePhotosManquante = 0;
+    $resultat = ''; 
+    $monGroupeCmdes = new CGroupeCmdes($target_file);
+    $maListeDeFichier = $monGroupeCmdes->ListeFichiersSourcesManquants();
+
+    if ($maListeDeFichier != ''){
+        $TableauFichiersManquants = explode($GLOBALS['SeparateurInfoPlanche'], $maListeDeFichier);    
+        for($i = 0; $i < count($TableauFichiersManquants); $i++){
+            if ($TableauFichiersManquants[$i] != '') {
+                $NombrePhotosManquante += 1;
+                $resultat .= $TableauFichiersManquants[$i] . '<br>';	
+            }		
+        }
+    }
+    $resultat = '<span class="Style'.(($NombrePhotosManquante)?'KO':'OK').'"> Photos manquantes : ' . $NombrePhotosManquante .'<br>' . $resultat .'</span>';
+    return $resultat;
+}
+
+?>
+
+
+
+

@@ -13,6 +13,8 @@ class CINFOfichierLab {
 	var $NomEcole;
 	var $DateTirage;
 
+	//var $leCProjetSource;  // CProjetSource
+
 	var $TabResumeProduit = array();
 	var $TabResumeFormat = array();
 
@@ -25,6 +27,8 @@ class CINFOfichierLab {
 
 		$this->DateTirage = substr($this->Fichier,0,10);
 		$this->NomEcole = substr($this->Fichier,11,-5);
+
+		//$this->leCProjetSource = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
 
 		//for($i = 0; $i < count($tabLignesFichierLabo); $i++){
 		for($i = 0; $i < 2; $i++){ //Juste les 2 premieres lignes

@@ -456,13 +456,13 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 				<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
 				
 			</div>
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 5 : Expédier vos commandes à vos clients : Ecoles, familles,...</h1>';
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 5 : Expédier les commandes à vos clients : Ecoles, familles,...</h1>';
 			$retourMSG .= '<table>
 			<tr>
 				<td width="50%">';	
 
 		$retourMSG .= '	<div class="Planchecontainer">
-		<h1>Liste des commandes prêtes à expédier</h1>';
+		<h1>Commandes prêtes à expédier</h1>';
 		$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $leFichierLab);
 
 		//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
@@ -473,9 +473,9 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 
 	$retourMSG .= '	<div class="msgcontainer">';
 	$retourMSG .=  "<h1>Expédition de vos commandes photos</h1>";	
-	$retourMSG .=  "<h3>.Par colis en livraison (La Poste, ou autres...)</h3>";
-	$retourMSG .=  "<h3>.En livraison directe, c'est près de chez vous !</h3>";
-	$retourMSG .=  "<h3>.Le client vient lui même chercher ses commandes (Plus rare)</h3>";
+	$retourMSG .=  "<h3>➔ Par colis en livraison (La Poste, ou autres...)</h3>";
+	$retourMSG .=  "<h3>➔ En livraison directe, c'est près de chez vous !</h3>";
+	$retourMSG .=  "<h3>➔ Le client vient lui même chercher ses commandes (Plus rare)</h3>";
 	$retourMSG .=  "<br><br>";
 	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($leFichierLab) .'&apiEtat=5' ) ;	
 
@@ -486,9 +486,9 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 	$retourMSG .=  '<h3>Cette action va archiver votre commande comme traitée et expédiée.
 	<br><br>Les fichiers photos grand format, destinés à l\'impression seront suprimés, en effet ils ne serviront plus. 
 	<br><br>En outre, ça liberera de la place sur votre disque dur!
-	<br><br>Vous pourrez toujours la consulter ultérieurement dans l\'historique des commandes expediées :
-	<br><br><img src="img/menuBouton3.png" alt="Image Historique" >
-	</h3>';
+	<br><br>Vous pourrez toujours la consulter ultérieurement dans l\'historique des commandes expediées :</h3>';
+	
+	$retourMSG .=  '<br><br><img src="img/menuBouton3.png" alt="Image Historique" >';
 
 	$retourMSG .= '<form  action="' . $ActionServeur .'" method="post">';
 

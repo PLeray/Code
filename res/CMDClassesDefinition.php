@@ -5,6 +5,8 @@ $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
 $FichierDossierCMDESLIBRE = "8888-88-88-(COMMANDES LIBRES)-EN-COURS";
 
+$CSVCatalogueSources = "../../SOURCES/Sources.csv";
+
 class CGroupeCmdes {
     var $ListePromoteurs;
     var $ListeCommandes;
@@ -50,15 +52,12 @@ class CGroupeCmdes {
 								if (file_exists($GLOBALS['repMINIATURES'].$this->DateISOLEE . '-CMD-ISOLEES')) {
 									$this->DossierTirage = $this->DateISOLEE . '-CMD-ISOLEES' ;
 								} 								
-							} 
-							
+							} 							
 						}	
-
 						elseif (stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== false) { // C'est des RECOs
 							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
 
-						}	
-			
+						}				
 						else{ // C'est des PAS des ISOLEES
 							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');							
 							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
@@ -92,6 +91,14 @@ class CGroupeCmdes {
 			}
 		}  
     } 
+	function ListeFichiersSourcesManquants(){
+		$resultat = '';
+		for($i = 0; $i < count($this->colEColes); $i++){
+			$resultat .= $this->colEColes[$i]->ListeFichiersSourcesManquants() . $GLOBALS['SeparateurInfoPlanche'];			
+		}
+		return $resultat;
+	}	
+
 	function AfficheMenuCMD(){
 		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
@@ -146,7 +153,6 @@ class CGroupeCmdes {
 
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat =''; 
-
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
 			$EcoleEnCours = $this->colEColes[$i];
@@ -202,10 +208,10 @@ class CPage {
 	}
 
 }
-
 class CEcole {
     var $DateTirage;
     var $Nom;
+	var $CodeEcole;
 	var $AnneeScolaire;
     var $Details;
 	var $colCMD;
@@ -226,6 +232,28 @@ class CEcole {
 		//$this->DateISOLEE = $dateIsole;
 		$this->DossierTirage = $DossierTirage;
     }
+    function ListeFichiersSourcesManquants(){
+		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);		
+		$TableauDeFichierduDossierSource  = glob($monProjetSource->Dossier . '/*.*{jpg,jpeg}',GLOB_BRACE);
+		
+		$resultat = '';
+		//var_dump($TableauDeFichierduDossierSource);	
+		for($i = 0; $i < count($this->colCMD); $i++){
+			$resultat .= $this->colCMD[$i]->FichiersSourceNecessaires();	
+		}	
+		$TableauDeFichierNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
+		$resultat = '';
+		for($i = 0; $i < count($TableauDeFichierNecessaire); $i++){
+			if ($TableauDeFichierNecessaire[$i] != '') {
+				$TableauDeFichierNecessaire[$i] = $monProjetSource->Dossier .'/'. $TableauDeFichierNecessaire[$i];
+				if (!(in_array($TableauDeFichierNecessaire[$i], $TableauDeFichierduDossierSource))) {
+					$resultat .=  $TableauDeFichierNecessaire[$i] . $GLOBALS['SeparateurInfoPlanche'];
+				}
+			}			
+
+		}	
+		return $resultat;
+    }   
 
     function RepTirage(){
 		return $this->DossierTirage;		
@@ -404,6 +432,15 @@ class CCommande {
 
 		return $resultat;				
 	}
+	function FichiersSourceNecessaires(){
+		$resultat = '';
+
+		for($i = 0; $i < count($this->colPDT); $i++){
+			$resultat .= $this->colPDT[$i]->FichiersSourceNecessaires();			
+		}
+
+		return $resultat;				
+	}
 	function AfficheCommandesAProduire(){
 		$resultat = '';
 		//for($i = 0; $i < count($this->colPDT); $i++){
@@ -482,6 +519,13 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 			$resultat .= '<tr>' .$this->colPlanche[$i]->AffichePlancheAProduire(). '</tr>' ;			
 		}
 		$resultat .= '</span>';
+		return $resultat;
+	}	    
+	function FichiersSourceNecessaires(){
+		$resultat = '';
+		for($i = 0; $i < count($this->colPlanche); $i++){
+			$resultat .= $this->colPlanche[$i]->FichiersSourceNecessaires() . $GLOBALS['SeparateurInfoPlanche'] ;			
+		}
 		return $resultat;
 	}	
 	function AfficheCommandesAProduire(){
@@ -576,6 +620,12 @@ class CPlanche {
 
 		return $resultat;
 	}
+	function FichiersSourceNecessaires(){
+		//$resultat = 'qsdqsdqsddq';
+		$resultat = $this->FichierSource;
+
+		return $resultat;
+	}
 
 	function RECOPIEREcrire($tabPlanche, &$isRecommande){
 		 $resultat ='';
@@ -651,12 +701,35 @@ class CProjetSource {
 	var $AnneeScolaire;
     var $ScriptsPS;
 	
-    function __construct($NomProjet,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){
+    /*
+	function __construct($NomProjet,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){
 			$this->NomProjet = $NomProjet;
 			$this->Dossier = $Dossier;
 			$this->CodeEcole = $CodeEcole;
 			$this->AnneeScolaire = $AnneeScolaire;
 			$this->ScriptsPS = $ScriptsPS;
+	}  
+	*/
+	function __construct($CodeEcole,$AnneeScolaire){
+		if (file_exists($GLOBALS['CSVCatalogueSources'])){
+			$TabCSV = csv_to_array($GLOBALS['CSVCatalogueSources'], ';');
+			$NbLignes=count($TabCSV);
+			if ($NbLignes){
+				for($i = 0; $i < $NbLignes; $i++){ 
+					if ($CodeEcole == $TabCSV[$i]["Code"]  && $AnneeScolaire == $TabCSV[$i]["AnneeScolaire"]){
+						$Dossier = $TabCSV[$i]["DossierSources"];	
+						$Dossier = "../.." . urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
+						//echo '<br>'.$Dossier;
+						$this->NomProjet = $TabCSV[$i]["NomProjet"];
+						$this->Dossier = $Dossier;
+						$this->CodeEcole = $CodeEcole;
+						$this->AnneeScolaire = $AnneeScolaire;
+						$this->ScriptsPS = $TabCSV[$i]["Rep Scripts PS"];
+						break;
+					}
+				}
+			}
+		}
 	}  
 }
 
