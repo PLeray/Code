@@ -519,9 +519,6 @@ function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 	return strAffichage;
 }
 
-function SelectionProduit() {
-	document.getElementById("myDropdown").classList.toggle("show");
-}
 
 function SelectionProduitInitialisation() {
 /* */
@@ -532,7 +529,10 @@ function SelectionProduitInitialisation() {
 	filterProduits();
 	SelectionProduit();
 }
-  
+
+function SelectionProduit() {
+	document.getElementById("myDropdown").classList.toggle("show");
+}  
 function filterProduits() {
 	var input, filter, ul, li, a, i;
 	input = document.getElementById("ZoneSaisie");

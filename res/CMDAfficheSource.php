@@ -166,7 +166,6 @@ if (!$MAJ){
 					<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
 						<div id="myDropdown" class="dropdown-content">							
 							<table ><tr with =100%>
-								sdfsdfs dfsdfdsfds fdsfdsfd dqsfdsfsdf
 								</tr><tr>
 
 								<?php echo RemplissageDropScriptFormat($monProjet); ?>
@@ -175,8 +174,8 @@ if (!$MAJ){
 
 							</tr></table>
 
-							</table><?php echo RemplissageDropScriptFormat($monProjet); ?>
-							<?php echo RemplissageDropProduit($monProjet); ?>
+							</table><?php //echo RemplissageDropScriptFormat($monProjet); ?>
+							<?php //echo RemplissageDropProduit($monProjet); ?>
 							
 						</div>
 					</div>

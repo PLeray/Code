@@ -1,11 +1,13 @@
 <?php
+$SeparateurInfoCatalogue = '£';
 $SeparateurInfoPlanche = '§';
 $SeparateurInfoPlancheLab0 = '_';
 $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
 $FichierDossierCMDESLIBRE = "8888-88-88-(COMMANDES LIBRES)-EN-COURS";
 
-$CSVCatalogueSources = "../../SOURCES/Sources.csv";
+$CSVCatalogueSources = '../../SOURCES/Sources.csv';
+$CSVBibliothequeScriptPS = '../../GABARITS/ActionsScriptsPSP.csv';
 
 class CGroupeCmdes {
     var $ListePromoteurs;
@@ -97,7 +99,18 @@ class CGroupeCmdes {
 			$resultat .= $this->colEColes[$i]->ListeFichiersSourcesManquants() . $GLOBALS['SeparateurInfoPlanche'];			
 		}
 		return $resultat;
-	}	
+	}
+	function ListeProduitsManquants(){
+		$TableauDeProduitsManquants = array();
+
+		//$resultat = '';
+		for($i = 0; $i < count($this->colEColes); $i++){
+			//array_push($TableauDeProduitsManquants, $this->colEColes[$i]->ListeProduitsManquants($TableauDeProduitsManquants));
+			$this->colEColes[$i]->ListeProduitsManquants($TableauDeProduitsManquants);
+			//$resultat .= $this->colEColes[$i]->ListeProduitsManquants() . $GLOBALS['SeparateurInfoPlanche'];			
+		}
+		return $TableauDeProduitsManquants;
+	}		
 
 	function AfficheMenuCMD(){
 		$resultat = '';
@@ -255,6 +268,42 @@ class CEcole {
 		return $resultat;
     }   
 
+    function ListeProduitsManquants(&$TableauDeProduitsManquants){
+		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);	
+		//$TableauDeProduitsDansDossierScript  = //REcupt tableau des scripts de repScript
+		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';	
+		$TableauDeProduitsDansDossierScript = array();
+
+		if (file_exists($monCatalogueScriptPS)){ 
+			$file = fopen($monCatalogueScriptPS, "r");
+			if ($file) {
+				while(!feof($file)) {
+					$line = trim(fgets($file));
+					if (strpos($line, ';') > 1){
+						array_push($TableauDeProduitsDansDossierScript, $line);
+					}
+				}
+				fclose($file);	
+			}			
+		}
+		$resultat = '';
+		for($i = 0; $i < count($this->colCMD); $i++){
+			$resultat .= $this->colCMD[$i]->ProduitsNecessaires();	
+		}	
+		$TableauDeProduitsNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
+		$resultat = '';
+		for($i = 0; $i < count($TableauDeProduitsNecessaire); $i++){
+			if ($TableauDeProduitsNecessaire[$i] != '') {
+				//$TableauDeProduitsNecessaire[$i] = $monProjetSource->Dossier .'/'. $TableauDeProduitsNecessaire[$i];
+				if (!(in_array($TableauDeProduitsNecessaire[$i], $TableauDeProduitsDansDossierScript))) {
+					$resultat .=  $TableauDeProduitsNecessaire[$i] . $GLOBALS['SeparateurInfoCatalogue'] . $monProjetSource->ScriptsPS;
+					array_push($TableauDeProduitsManquants, $resultat);
+				}
+			}			
+		}	
+		//return $resultat;
+    }   
+	/*	*/
     function RepTirage(){
 		return $this->DossierTirage;		
     }   
@@ -441,6 +490,14 @@ class CCommande {
 
 		return $resultat;				
 	}
+	function ProduitsNecessaires(){
+		$resultat = '';
+
+		for($i = 0; $i < count($this->colPDT); $i++){
+			$resultat .= $this->colPDT[$i]->ProduitsNecessaires();			
+		}
+		return $resultat;
+	}		
 	function AfficheCommandesAProduire(){
 		$resultat = '';
 		//for($i = 0; $i < count($this->colPDT); $i++){
@@ -521,13 +578,7 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		$resultat .= '</span>';
 		return $resultat;
 	}	    
-	function FichiersSourceNecessaires(){
-		$resultat = '';
-		for($i = 0; $i < count($this->colPlanche); $i++){
-			$resultat .= $this->colPlanche[$i]->FichiersSourceNecessaires() . $GLOBALS['SeparateurInfoPlanche'] ;			
-		}
-		return $resultat;
-	}	
+
 	function AfficheCommandesAProduire(){
 		$resultat = '';
 		$resultat .= '<span >'; //Debut du produit
@@ -552,7 +603,20 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 		else{
 			return '';			
 		}				
+	}	
+	function FichiersSourceNecessaires(){
+		$resultat = '';
+		for($i = 0; $i < count($this->colPlanche); $i++){
+			$resultat .= $this->colPlanche[$i]->FichiersSourceNecessaires() . $GLOBALS['SeparateurInfoPlanche'] ;			
+		}
+		return $resultat;
 	}		
+	function ProduitsNecessaires(){
+		//$resultat = 'qsdqsdqsddq';
+		$resultat = $this->Nom;
+
+		return $resultat;
+	}			
 }
 
 class CPlanche {
@@ -620,12 +684,7 @@ class CPlanche {
 
 		return $resultat;
 	}
-	function FichiersSourceNecessaires(){
-		//$resultat = 'qsdqsdqsddq';
-		$resultat = $this->FichierSource;
 
-		return $resultat;
-	}
 
 	function RECOPIEREcrire($tabPlanche, &$isRecommande){
 		 $resultat ='';
@@ -677,6 +736,12 @@ class CPlanche {
 		}
 		return $resultat;					
 	}
+	function FichiersSourceNecessaires(){
+		//$resultat = 'qsdqsdqsddq';
+		$resultat = $this->FichierSource;
+
+		return $resultat;
+	}	
 }
 function RecopierPlanche($LienOrigine,$LienDestination){
 	$valReturn = copy($LienOrigine,$LienDestination);
@@ -701,15 +766,6 @@ class CProjetSource {
 	var $AnneeScolaire;
     var $ScriptsPS;
 	
-    /*
-	function __construct($NomProjet,$Dossier,$CodeEcole,$AnneeScolaire,$ScriptsPS){
-			$this->NomProjet = $NomProjet;
-			$this->Dossier = $Dossier;
-			$this->CodeEcole = $CodeEcole;
-			$this->AnneeScolaire = $AnneeScolaire;
-			$this->ScriptsPS = $ScriptsPS;
-	}  
-	*/
 	function __construct($CodeEcole,$AnneeScolaire){
 		if (file_exists($GLOBALS['CSVCatalogueSources'])){
 			$TabCSV = csv_to_array($GLOBALS['CSVCatalogueSources'], ';');
@@ -730,7 +786,95 @@ class CProjetSource {
 				}
 			}
 		}
-	}  
+	}
+	function DropListeScriptsRecadrages($valDefaut = ''){ 
+		$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
+		$laDropliste .= '<option value="">(rien)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();		
+        for($i = 1; $i < count($lesScripts); $i++){
+            if (substr($lesScripts[$i],0,9) == 'Portrait-') {
+				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
+				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
+            }		
+        }
+		return $laDropliste;
+	}	
+	function DropListeScriptsTailles($valDefaut = ''){ 
+		$laDropliste = '<option value="(obligatoire !)">(obligatoire !)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();		
+        for($i = 1; $i < count($lesScripts); $i++){
+            if (($lesScripts[$i] != '')&&(is_numeric(substr($lesScripts[$i],0,1)))) {
+				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
+				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
+            }		
+        }
+		return $laDropliste;
+	}		
+	function DropListeScriptsTransformation($valDefaut = ''){ 
+		$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
+		$laDropliste .= '<option value="">(rien)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();	
+        for($i = 1; $i < count($lesScripts); $i++){
+            if (($lesScripts[$i] != '')&&(!is_numeric(substr($lesScripts[$i],0,1)))&&(substr($lesScripts[$i],0,9) != 'Portrait-')) {
+				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
+				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
+            }		
+        }
+		return $laDropliste;
+	}	
+	function DropListeScriptsTeinte(){ 
+		return $this->DropListeScriptsTransformation();	
+	}	
+	function TabScriptsPhotoshop(){ 
+		$leTableauDeScriptsPhotoshop = array();
+		$maBibliothequeScriptPS = $GLOBALS['CSVBibliothequeScriptPS'] ;	
+		//echo $maBibliothequeScriptPS;		
+		if (file_exists($maBibliothequeScriptPS)){ 
+			$file = fopen($maBibliothequeScriptPS, "r");
+			if ($file) {
+				while(!feof($file)) {
+					$line = trim(fgets($file));	
+					//echo '<br>' . $this->AnneeScolaire . ' = ' . substr($line,0,strpos($line, ';'));				
+					if($this->ScriptsPS == substr($line,0,strpos($line, ';'))){
+						$leTableauDeScriptsPhotoshop = explode(';', $line);
+					}
+				}
+				//var_dump($leTableauDeScriptsPhotoshop);
+				fclose($file);	
+			}	
+		}
+		return $leTableauDeScriptsPhotoshop;
+	}	
+	function DropListeProduits(){ 
+		$laDropliste ='';
+		$lesProduits = $this->TabProduits();		
+        for($i = 0; $i < count($lesProduits); $i++){
+            if ($lesProduits[$i] != '') {
+				$morceau = explode(";",  $lesProduits[$i]);
+				$laDropliste .= '<a href=javascript:void(0); Code="'.$morceau[0].'" onclick="CliqueDropDown(this)">'.$morceau[1].'</a>';
+            }		
+        }
+		return $laDropliste;
+	}	
+	function TabProduits(){ 
+		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$this->ScriptsPS . '.csv';		
+		$CataloguePRODUITS = array();
+
+		if (file_exists($monCatalogueScriptPS)){ 
+			$file = fopen($monCatalogueScriptPS, "r");
+			if ($file) {
+				while(!feof($file)) {
+					$line = trim(fgets($file));
+					if (strpos($line, ';') > 1){
+						array_push($CataloguePRODUITS, $line);
+					}
+				}
+				fclose($file);	
+			}		
+		}
+		return $CataloguePRODUITS;
+	}
+	
 }
 
 class CImgSource {

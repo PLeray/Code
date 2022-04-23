@@ -27,12 +27,12 @@ h1 { /*Police texte Ecole */
 
 h2 { /*Police texte Adresse */
     text-align: center;
-	font-size: 18px;
+	font-size: 16px;
     text-transform: uppercase;
-    color: var(--boutonRouge);
+    color: var(--boutonVert);
     letter-spacing: 2px;
 	padding: 0px;
-	line-height: 18px;
+	line-height: 16px;
 	font-family: "Courier New", Times, serif;
 
 }
@@ -444,4 +444,89 @@ img {
   top: 0px;
   z-index: -1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.DefinitionProduit {
+    margin: 10px;
+    border: 1px solid var(--FondLigneTabGrisFonce); 
+  }
+
+
+
+
+/*the container must be positioned relative:*/
+.custom-select {
+    position: relative;
+    font-family: Arial;
+    margin-left: 10px;
+  }
+  
+  .custom-select select {
+    display: none; /*hide original SELECT element:*/
+  }
+  
+  .select-selected {
+    background-color: var(--boutonRouge);
+  }
+  
+  /*style the arrow inside the select element:*/
+  .select-selected:after {
+    position: absolute;
+    content: "";
+    top: 15px; /* 14px;*/
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+  }
+  
+  /*point the arrow upwards when the select box is open (active):*/
+  .select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 8px;
+  }
+  
+  /*style the items (options), including the selected item:*/
+  .select-items div,.select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  /*style items (options):*/
+  .select-items {
+    position: absolute;
+    background-color: var(--boutonRouge);
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+  
+  /*hide the items when the select box is closed:*/
+  .select-hide {
+    display: none;
+  }
+  
+  .select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 

@@ -357,7 +357,7 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 	en cliquant sur cette icône, dans l\'écran des commandes en cours.
 	</h3>
 	<br><br>
-	<a href="CATPhotolab.php' . ArgumentURL() .'" class="KO" title="Valider et retour écran général des commandes">Annuler</a>
+	<a href="CATPhotolab.php' . ArgumentURL() .'" class="KO" title="Annuler">Annuler</a>
 	<button type="submit" class="OK">OK</button>
 		
     </div>
