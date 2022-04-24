@@ -1107,6 +1107,64 @@ function CodeLienImageWebArboDossier($mesInfosFichier){
 }
 
 
+function BilanScriptPhotoshop($target_file){
+    $resultat = ''; 
+    $monGroupeCmdes = new CGroupeCmdes($target_file);
+    $monTableauDeProduits = $monGroupeCmdes->ListeProduitsManquants();
+    if ($monTableauDeProduits != ''){
+        $resultat = '<table width="100%">';     
+        for($i = 0; $i < count($monTableauDeProduits); $i++){
+            if ($monTableauDeProduits[$i] != '') {
+                //$resultat .= $monTableauDeProduits[$i] . '<br>';	
+                $refProduitsManquants = explode($GLOBALS['SeparateurInfoCatalogue'], $monTableauDeProduits[$i]); 
+                $resultat .=  '<tr class="StyleKO"><td width="60%">' . $refProduitsManquants[0] . '</td ><td width="40%">' . LienEditionProduit($refProduitsManquants[1]). '</td ></tr>';
+            }		
+        }
+    }
+    $resultat .= '</table>';
+    return $resultat;
+}
+
+/*
+function BilanScriptPhotoshop($target_file){
+    $mesInfosFichier = new CINFOfichierLab($target_file); 
+    $resultat = '<table width="100%">';  
+
+    $ListeDeProduits = array_keys($mesInfosFichier->TabResumeProduit);
+    for($i = 0; $i < count($ListeDeProduits); $i++){
+        $resultat .=  '<tr class="StyleKO"><td width="80%">' . $ListeDeProduits[$i] . '</td ><td width="20%">' . LienEditionProduit($ListeDeProduits[$i]). '</td ></tr>';
+
+    }
+    $resultat .= '</table>';
+    return $resultat;
+}
+
+*/
+
+function LienEditionProduit($leProduit){
+    $resultat = $leProduit . ' KO' ;  
+    return $resultat;
+}
+
+function PhotosManquantes($target_file){
+    $NombrePhotosManquante = 0;
+    $resultat = ''; 
+    $monGroupeCmdes = new CGroupeCmdes($target_file);
+    $maListeDeFichier = $monGroupeCmdes->ListeFichiersSourcesManquants();
+
+    if ($maListeDeFichier != ''){
+        $TableauFichiersManquants = explode($GLOBALS['SeparateurInfoPlanche'], $maListeDeFichier);    
+        for($i = 0; $i < count($TableauFichiersManquants); $i++){
+            if ($TableauFichiersManquants[$i] != '') {
+                $NombrePhotosManquante += 1;
+                $resultat .= $TableauFichiersManquants[$i] . '<br>';	
+            }		
+        }
+    }
+    $resultat = '<span class="Style'.(($NombrePhotosManquante)?'KO':'OK').'"> Photos manquantes : ' . $NombrePhotosManquante .'<br>' . $resultat .'</span>';
+    return $resultat;
+}
+
 
 
 

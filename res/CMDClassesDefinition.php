@@ -111,7 +111,6 @@ class CGroupeCmdes {
 		}
 		return $TableauDeProduitsManquants;
 	}		
-
 	function AfficheMenuCMD(){
 		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
@@ -739,6 +738,12 @@ class CPlanche {
 	function FichiersSourceNecessaires(){
 		//$resultat = 'qsdqsdqsddq';
 		$resultat = $this->FichierSource;
+
+		if (strpos($resultat,'-QCoin')>-1){
+			$Asurpprimer = substr($resultat,strpos($resultat,'-QCoin'),7);
+			$resultat = str_replace($Asurpprimer,'',$resultat);
+
+		}
 
 		return $resultat;
 	}	

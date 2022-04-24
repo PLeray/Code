@@ -34,7 +34,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 	// Check file size
 	if ($_FILES["myfile"]["size"] > 500000) {
 		$retourTraitementMSG .= "APIPhotoLab : Le fichier est trop gros, vérifiez...";
-		$uploadOk = 0;
+		$uploadOk = 0; 
 	}
 	// Check if $uploadOk is set to 0 by an error
 	if ($uploadOk == 0) {

@@ -168,9 +168,6 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 			$retourMSG .= '<table>
 			<tr>
 				<td width="50%">';	
-				
-
-
 				// A REMETTRE !!! 
 				$monGroupeCmdes = new CGroupeCmdes($target_fichier);
 
@@ -178,13 +175,8 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 				<h1>COMMANDES EN COURS</h1>';
 				//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 
-
-
 				// A REMETTRE !!! 
 				$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-
-
-
 
 				$retourMSG .= '</div>';
 			$retourMSG .= '</td>
@@ -248,12 +240,23 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 				<td width="50%">';	
 				$retourMSG .= '	<div class="Planchecontainer">
 				<h1>COMMANDES EN COURS</h1>';
-			$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$strAPI_fichierLAB);
+			//$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$strAPI_fichierLAB);
 
 			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-			$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+			//$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
 
-			$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'].$strAPI_fichierLAB); 
+			$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
+			$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
+            $retourMSG .= BilanScriptPhotoshop($target_file);
+
+            $retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+			$retourMSG .= PhotosManquantes($target_file);
+
+
+
+
+
+			$mesInfosFichier = new CINFOfichierLab($target_file); 
 			$mesInfosFichier->MAJResumeFichierCommandes();
 
 			$retourMSG .= '</div>';
