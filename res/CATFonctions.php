@@ -1112,12 +1112,13 @@ function BilanScriptPhotoshop($target_file){
     $monGroupeCmdes = new CGroupeCmdes($target_file);
     $monTableauDeProduits = $monGroupeCmdes->ListeProduitsManquants();
     if ($monTableauDeProduits != ''){
-        $resultat = '<table width="100%">';     
+        $resultat = '<table width="100%">';   
+		
         for($i = 0; $i < count($monTableauDeProduits); $i++){
             if ($monTableauDeProduits[$i] != '') {
                 //$resultat .= $monTableauDeProduits[$i] . '<br>';	
                 $refProduitsManquants = explode($GLOBALS['SeparateurInfoCatalogue'], $monTableauDeProduits[$i]); 
-                $resultat .=  '<tr class="StyleKO"><td width="60%">' . $refProduitsManquants[0] . '</td ><td width="40%">' . LienEditionProduit($refProduitsManquants[1]). '</td ></tr>';
+                $resultat .=  '<tr class="StyleKO"><td width="80%">' . $refProduitsManquants[0] . '</td ><td width="20%">' . LienEditionProduit($refProduitsManquants[1]). '</td ></tr>';
             }		
         }
     }
@@ -1139,11 +1140,20 @@ function BilanScriptPhotoshop($target_file){
     return $resultat;
 }
 
-*/
+
 
 function LienEditionProduit($leProduit){
     $resultat = $leProduit . ' KO' ;  
+	//$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
     return $resultat;
+}
+*/
+
+function LienEditionProduit($leProduit) {
+
+	$Lien = 'CMDCatalogueProduits.php' . ArgumentURL() ;
+	$LienImage = '<img src="img/searchicon.png" alt="Voir écran de mise en pochette">';
+	return '<a href="'. $Lien . '">'.$LienImage.' KO</a>';
 }
 
 function PhotosManquantes($target_file){
@@ -1165,7 +1175,24 @@ function PhotosManquantes($target_file){
     return $resultat;
 }
 
-
+function ListeProduitsSelonCatalogue($monCatalogue){ 
+	$fichierCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'. $monCatalogue . '.csv';
+	
+	$CataloguePRODUITS = array();
+	if (file_exists($fichierCatalogueScriptPS)){ 
+		$file = fopen($fichierCatalogueScriptPS, "r");
+		if ($file) {
+			while(!feof($file)) {
+				$line = trim(fgets($file));
+				if (strpos($line, ';') > 1){
+					array_push($CataloguePRODUITS, $line);
+				}
+			}
+			fclose($file);	
+		}			
+	}
+	return $CataloguePRODUITS;
+}
 
 
 ?>

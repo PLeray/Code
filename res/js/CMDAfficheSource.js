@@ -8,11 +8,6 @@ window.onscroll = function() {scrollFunction();};
 //BasculeMode();BasculeMode();
 document.getElementById("defaultOngletOuvert").click();
 
-
-
-
-
-
 function EffacerChargement(){
    document.getElementById('MSGChargement').style.display='none';
    document.getElementById('site').style.display='block';
@@ -34,7 +29,7 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("Entete").style.marginRight = "350px";	
 		document.getElementById("btnRemonter").style.right = "380px";	
 		document.getElementById("closeSidenav").textContent = "-";
-		document.getElementById("closeSidenav").style.right = "365px";
+		document.getElementById("closeSidenav").style.right = "351px";
 		document.getElementsByClassName("SelectionToutePlanche")[0].style.display='block';;
 		
 		
@@ -47,7 +42,7 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("Entete").style.marginRight = "0px";
 		document.getElementById("btnRemonter").style.right = "80px";	
 		document.getElementById("closeSidenav").textContent = "+"; //= >>	
-		document.getElementById("closeSidenav").style.right = "15px";
+		document.getElementById("closeSidenav").style.right = "1px";
 		document.getElementsByClassName("SelectionToutePlanche")[0].style.display='none';
 					
 	}
@@ -153,29 +148,19 @@ function topFunction() {
 	document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 } 
 
-
 function openNav() {
 	AfficheRechercheCMD(true);	
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {  
-
-
 	AfficheRechercheCMD(false);
-	//InitCommandes();
-
 }
 
 function CopierCommandes(x) {
-	//alert('lesCmdesLibres generales : ' + document.getElementById("lesCmdesLibres").value + ' lesFichiersBoutique generales : ' + document.getElementById("lesFichiersBoutique").value); 
-	//alert('etzrte : '); 	
 	x.querySelector("#ZlesPhotoSelection").value = document.getElementById("lesPhotoSelection").value;
 	x.querySelector("#ZlesCmdesLibres").value = document.getElementById("lesCmdesLibres").value;
 	x.querySelector("#ZlesFichiersBoutique").value = document.getElementById("lesFichiersBoutique").value;
-	//x.setAttribute('name',  document.getElementById("lesFichiersBoutique").value);
-	//alert('ZlesCmdesLibres : ' + x.querySelector("#ZlesCmdesLibres").value + ' ZlesFichiersBoutique : ' +  x.querySelector("#ZlesFichiersBoutique").value); 
-
 }
 
 function SelectionnerCliquePhoto(x) {
@@ -214,9 +199,8 @@ function RemplacementClassSelection(x) {
 	}else if(x.classList.contains("GroupeSELECTION")){x.classList.replace("GroupeSELECTION", "PlancheGroupe");}  	
 }
 
-
-function SelectionnerCommandesAffiche() {
-	var ToutSelectionner = (document.getElementById("CaseSelectionnerCommandesAffiche").className == 'caseCheckVide');
+function SelectionnerCommandeTiragesAffiche() {
+	var ToutSelectionner = (document.getElementById("CaseSelectionnerTiragesAffiche").className == 'caseCheckVide');
 	if (ToutSelectionner){
 		// INDIV  
 		var mesPlanches = document.getElementsByClassName("PlancheIndiv");
@@ -241,7 +225,6 @@ function SelectionnerCommandesAffiche() {
 				}else{
 					mesPlanches[0].classList.replace("PlancheGroupe", "plancheNONVisibleGroupe");
 				}
-
 			}	
 			else{
 				mesPlanches[0].classList.replace("PlancheGroupe", "plancheNONVisibleGroupe");
@@ -266,9 +249,64 @@ function SelectionnerCommandesAffiche() {
 			SelectionSurPhoto(mesPlanches[0]);
 		}		
 	}
-	document.getElementById("CaseSelectionnerCommandesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
+	document.getElementById("CaseSelectionnerTiragesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
 	//mesRecommandes();
 }	
+
+function SelectionnerCommandesBoutiquesAffiche() {
+	var ToutSelectionner = (document.getElementById("CaseSelectionnerBoutiqueAffiche").className == 'caseCheckVide');
+	if (ToutSelectionner){
+		// INDIV  
+		var mesPlanches = document.getElementsByClassName("PlancheIndiv");
+		while(mesPlanches.length >0){
+			if ( mesPlanches[0].offsetHeight > 0 ) {
+				SelectionSurPhoto(mesPlanches[0]);
+			}
+			else{
+				mesPlanches[0].classList.replace("PlancheIndiv", "plancheNONVisibleIndiv");
+			}			
+		}	
+		var mesPlanches = document.getElementsByClassName("plancheNONVisibleIndiv");
+		while(mesPlanches.length > 0){
+			mesPlanches[0].classList.replace("plancheNONVisibleIndiv", "PlancheIndiv");
+		}
+		// GROUPE
+		var mesPlanches = document.getElementsByClassName("PlancheGroupe");
+		while(mesPlanches.length > 0){
+			if ( mesPlanches[0].offsetHeight > 0 ) {
+				if (!(mesPlanches[0].getAttribute('id').indexOf('FRATRIES')>-1)) {
+					SelectionSurPhoto(mesPlanches[0]);
+				}else{
+					mesPlanches[0].classList.replace("PlancheGroupe", "plancheNONVisibleGroupe");
+				}
+			}	
+			else{
+				mesPlanches[0].classList.replace("PlancheGroupe", "plancheNONVisibleGroupe");
+			}			
+		}
+		var mesPlanches = document.getElementsByClassName("plancheNONVisibleGroupe");
+		while(mesPlanches.length > 0){
+			mesPlanches[0].classList.replace("plancheNONVisibleGroupe", "PlancheGroupe");
+		}		
+		openNav();
+	}else{
+		// INDIV
+		var mesPlanches = document.getElementsByClassName("IndivSELECTION");
+		while(mesPlanches.length >0){
+			//mesPlanches[0].classList.replace("IndivSELECTION", "PlancheIndiv");	
+			SelectionSurPhoto(mesPlanches[0]);
+		}
+		// GROUPE
+		var mesPlanches = document.getElementsByClassName("GroupeSELECTION");
+		while(mesPlanches.length >0){
+			//mesPlanches[0].classList.replace("GroupeSELECTION", "PlancheGroupe");	
+			SelectionSurPhoto(mesPlanches[0]);
+		}		
+	}
+	document.getElementById("CaseSelectionnerBoutiqueAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
+	//mesRecommandes();
+}	
+
 /*
 function BasculeMode() {
 	//alert('isTirage ' + isTirage);
@@ -306,10 +344,8 @@ function BasculeOnglet(evt, cityName) {
 	g_IsTirage = (document.getElementById("ZoneCommandesFichierBoutiques").style.display == "none"); 
 }
 
-
 function VoirPhotoSelection(x) {
 	var mesPlanches = document.getElementsByClassName("planche");
-
 	for (i = 0; i < mesPlanches.length; i++) {
 	  if (mesPlanches[i].style.display === "none") {
 		mesPlanches[i].style.display = "inline-block";
@@ -342,7 +378,6 @@ function MAJEnregistrementSelectionPhotos() {
 
 	document.getElementById("btnAjouterTirages").disabled = ((maListePhotos.innerHTML === "")
 								||(document.getElementById("btnAjouterTirages").textContent === ""));
-
 	MAJAffichageSelectionPhotos();
 }	
 
@@ -375,24 +410,18 @@ function MAJAffichageSelectionPhotos(chargement = false) {
 function AjoutFichierBoutique(element) {
 	//alert('xcvxcvxcv.id : ' + element.getAttribute('id')); 
 	var leFichier = element.getAttribute('id');
-	var cmdfichierBoutique = document.getElementById("lesFichiersBoutique").value;
-	//var AfffichierBoutique = document.getElementById("myListeFichiersBoutique").innerHTML;
-	/*	*/		
+	var cmdfichierBoutique = document.getElementById("lesFichiersBoutique").value;	
 	if(cmdfichierBoutique.indexOf(leFichier)>-1){//On l'enleve		
 		document.getElementById("lesFichiersBoutique").value = cmdfichierBoutique.replaceAll(leFichier + sepFinLigne, '');
 		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "none";
-		//document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique.replaceAll(leFichier + '<br>', '');
 	}else{//On l'ajoute
 		document.getElementById("lesFichiersBoutique").value = cmdfichierBoutique + leFichier + sepFinLigne;
-		//document.getElementById("myListeFichiersBoutique").innerHTML = AfffichierBoutique +  leFichier + '<br>';	
 		element.getElementsByClassName("ImageFichierWeb")[0].style.display = "inline-block";	
 	}
 	var maListeFichiersBoutique = document.getElementById("myListeFichiersBoutique");
 	maListeFichiersBoutique.innerHTML = AfficherResumeFichierBoutiqueSelection( document.getElementById("lesFichiersBoutique").value); 
 	
 	document.getElementById("btnFichiersBoutique").disabled = (maListeFichiersBoutique.innerHTML === "");
-
-
 }
 
 function AfficherResumePhotoSelection(str) {

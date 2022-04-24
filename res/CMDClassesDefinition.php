@@ -246,8 +246,7 @@ class CEcole {
     }
     function ListeFichiersSourcesManquants(){
 		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);		
-		$TableauDeFichierduDossierSource  = glob($monProjetSource->Dossier . '/*.*{jpg,jpeg}',GLOB_BRACE);
-		
+		$TableauDeFichierduDossierSource  = glob($monProjetSource->Dossier . '/*.*{jpg,jpeg}',GLOB_BRACE);		
 		$resultat = '';
 		//var_dump($TableauDeFichierduDossierSource);	
 		for($i = 0; $i < count($this->colCMD); $i++){
@@ -269,8 +268,9 @@ class CEcole {
 
     function ListeProduitsManquants(&$TableauDeProduitsManquants){
 		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);	
+		$DossierScriptsPS = $monProjetSource->ScriptsPS;
 		//$TableauDeProduitsDansDossierScript  = //REcupt tableau des scripts de repScript
-		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';	
+		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'. $DossierScriptsPS . '.csv';	
 		$TableauDeProduitsDansDossierScript = array();
 
 		if (file_exists($monCatalogueScriptPS)){ 
@@ -289,20 +289,20 @@ class CEcole {
 		for($i = 0; $i < count($this->colCMD); $i++){
 			$resultat .= $this->colCMD[$i]->ProduitsNecessaires();	
 		}	
+		//echo $resultat . '<br>';
 		$TableauDeProduitsNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
-		$resultat = '';
+		//var_dump($TableauDeProduitsNecessaire)  ;
+		$ligne = '';
 		for($i = 0; $i < count($TableauDeProduitsNecessaire); $i++){
 			if ($TableauDeProduitsNecessaire[$i] != '') {
-				//$TableauDeProduitsNecessaire[$i] = $monProjetSource->Dossier .'/'. $TableauDeProduitsNecessaire[$i];
 				if (!(in_array($TableauDeProduitsNecessaire[$i], $TableauDeProduitsDansDossierScript))) {
-					$resultat .=  $TableauDeProduitsNecessaire[$i] . $GLOBALS['SeparateurInfoCatalogue'] . $monProjetSource->ScriptsPS;
-					array_push($TableauDeProduitsManquants, $resultat);
+					$ligne =  $TableauDeProduitsNecessaire[$i] . $GLOBALS['SeparateurInfoCatalogue'] . $DossierScriptsPS;
+					array_push($TableauDeProduitsManquants, $ligne);
 				}
 			}			
 		}	
-		//return $resultat;
+		//var_dump($TableauDeProduitsManquants)  ;
     }   
-	/*	*/
     function RepTirage(){
 		return $this->DossierTirage;		
     }   
@@ -606,13 +606,13 @@ class CProduit { // <CP-CE1 1%Produits Carrés Cadre-ID>
 	function FichiersSourceNecessaires(){
 		$resultat = '';
 		for($i = 0; $i < count($this->colPlanche); $i++){
-			$resultat .= $this->colPlanche[$i]->FichiersSourceNecessaires() . $GLOBALS['SeparateurInfoPlanche'] ;			
+			$resultat .= $this->colPlanche[$i]->FichiersSourceNecessaires() ;			
 		}
 		return $resultat;
 	}		
 	function ProduitsNecessaires(){
 		//$resultat = 'qsdqsdqsddq';
-		$resultat = $this->Nom;
+		$resultat = $this->Nom . $GLOBALS['SeparateurInfoPlanche'] ;
 
 		return $resultat;
 	}			
@@ -736,16 +736,13 @@ class CPlanche {
 		return $resultat;					
 	}
 	function FichiersSourceNecessaires(){
-		//$resultat = 'qsdqsdqsddq';
 		$resultat = $this->FichierSource;
-
+		/**/
 		if (strpos($resultat,'-QCoin')>-1){
-			$Asurpprimer = substr($resultat,strpos($resultat,'-QCoin'),7);
-			$resultat = str_replace($Asurpprimer,'',$resultat);
-
+			$MorceauAsurpprimer = substr($resultat,strpos($resultat,'-QCoin'),7);
+			$resultat = str_replace($MorceauAsurpprimer,'',$resultat);
 		}
-
-		return $resultat;
+		return $resultat . $GLOBALS['SeparateurInfoPlanche'] ;
 	}	
 }
 function RecopierPlanche($LienOrigine,$LienDestination){

@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <?php
+setlocale(LC_TIME, 'french');
+include_once 'APIConnexion.php';
+include_once 'CMDClassesDefinition.php';
 
-	setlocale(LC_TIME, 'french');
-	include_once 'APIConnexion.php';
-	include_once 'CMDClassesDefinition.php';
+$myfileName = (isset($_GET['fichierLAB'])) ? $_GET['fichierLAB'] :'';
 
-	$myfileName = (isset($_GET['fichierLAB'])) ? $_GET['fichierLAB'] :'';
-	
-	$codeMembre = 0;
-	if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
-	$isDebug = false;
-	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
-	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
-	
-	$sepFinLigne = '§';	
+$codeMembre = 0;
+if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
+$isDebug = false;
+if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
+if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
+
+$sepFinLigne = '§';	
 	
 $codeSource = 'qsd';
 if (isset($_GET['codeSource'])) { // Test connexion l'API
@@ -119,17 +118,13 @@ if (!$MAJ){
 			<span id="idAfficheTout" onclick=AfficheTout()>|Toutes les photos|</span>
 			<span id="idAfficheGroupe" onclick=AfficheGroupe()>|Seulement les groupes|</span>	
 			<span id="idAfficheIndivs" onclick=AfficheIndivs()>|Seulement les individuelles|</span>
-			
 		</div>		
-
-		
 	</div>
 
 	  <div id="main">
 	  <div id="zoneAffichagePhotoEcole">	
 			<?php //echo AfficheSOURCESEcole($monProjet); ?>	
 			<div id="sdf" class="ZoneZoomPhoto" onclick="FermerZoom();">
-			
 			</div>		
 	
 			<?php  
@@ -154,7 +149,7 @@ if (!$MAJ){
 				<H1>Mes Commandes</H1><br>	
 
 				<div>
-					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerTiragesAffiche" onclick=SelectionnerCommandeTiragesAffiche() class="caseCheckVide" > ✓ </a></span >
 				</div>	
 				<br>
 					<div class="dropdown">
@@ -200,7 +195,7 @@ if (!$MAJ){
 				<div id="ZoneCommandesFichierBoutiques" class="tabcontent">
 				<H1>Mes FichiersBoutique</H1><br>		
 				<div>
-					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
+					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerBoutiqueAffiche" onclick=SelectionnerCommandesBoutiquesAffiche() class="caseCheckVide" > ✓ </a></span >
 				</div>	
 				<br>
 					<!-- FICHIERBOUTIQUES ici 
