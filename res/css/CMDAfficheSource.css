@@ -364,9 +364,15 @@ text-align: right;
   color: black;
   font-size: 30px;
 }
-.active, .Titrecommande:hover {
+.Titrecommande:hover {
   /*background-color: var(--FondLigneTabGrisClair);*/
   color: var(--boutonRouge);
+  font-weight: bold;
+}
+
+.active {
+  /*background-color: var(--FondLigneTabGrisClair);*/
+  color: var(--boutonVert);
   font-weight: bold;
 }
 
@@ -395,7 +401,8 @@ font-size: 12px;
   /*width: auto;97%;*/
  display: block;
 
- margin-left :50px;
+ margin-top :20px;
+ margin-left :20px;
 
 
 
@@ -667,9 +674,10 @@ margin-top: -10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: white;
   transition: 0.5s;  
-  /*   overflow: hidden; */
+  /*   overflow: hidden; 
 
-  padding-top: 5px;
+ 
+  margin-top: -30px;*/ padding-top: 10px;
 }
 
 .sidenav a {
@@ -688,15 +696,28 @@ margin-top: -10px;
 */
 .sidenav .closebtn {
 
+  position: fixed;
+  
+  right : 300px;
+  right : 15px;
+  top : 20px;
+  text-align: center;
+  vertical-align:middle;
+	
+  line-height: 25px;
+  padding-top: 1px;
+
   
 
-  border-radius: 10px; 
-  margin-left: -40px;
+  width:30px;
+  height:29px;
+
+
+  border-radius: 20px; 
+
   font-size: 30px;
 
-  width:250px;
-  height:100px;
-  border: 1px solid var(--boutonRouge);
+  border: 3px solid var(--boutonRouge);
 
     color: var(--texteGris);
 
@@ -713,6 +734,7 @@ margin-top: -10px;
 .tab button {
   background-color: var(--FondLigneTabGrisFonce);
   float: left;
+
   border: none;
   outline: none;
   cursor: pointer;
@@ -720,7 +742,7 @@ margin-top: -10px;
   transition: 0.3s;
   font-size: 14px;
   width:  170px;
-  border: 1px solid var(--boutonRouge);
+  border: 1px solid var(--boutonVert);
   margin-left: 2px;
 }
 
@@ -737,7 +759,7 @@ margin-top: -10px;
 
 .tabcontent {
   display: none;
-  margin-top: 25px;
+  padding-top: 35px;
   /*border-top: 1px solid var(--boutonRouge);*/
 
 }
@@ -1079,13 +1101,13 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   display: none;
   position: absolute;
   background-color: #f6f6f6;
-  min-width: 500px;
+  min-width: 400px;
   overflow: auto;
   right:0px;
   z-index: 1;
   font-size: 10px;
-  column-width: 100px;
-  min-height: 300px;
+  column-width: 150px;
+  min-height: 20px;
 }
 /*
 .dropdown-content .Favori {

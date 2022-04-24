@@ -1,11 +1,15 @@
 var sepFinLigne = '§';
 
 var g_IsTirage;
-document.getElementById("defaultOngletOuvert").click();
-BasculeMode();BasculeMode();
 
 // When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function() {scrollFunction()};
+window.onscroll = function() {scrollFunction();};
+
+//BasculeMode();BasculeMode();
+document.getElementById("defaultOngletOuvert").click();
+
+
+
 
 
 
@@ -29,7 +33,8 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("main").style.marginRight = "350px";
 		document.getElementById("Entete").style.marginRight = "350px";	
 		document.getElementById("btnRemonter").style.right = "380px";	
-		document.getElementById("closeSidenav").textContent = " - ";
+		document.getElementById("closeSidenav").textContent = "-";
+		document.getElementById("closeSidenav").style.right = "365px";
 		document.getElementsByClassName("SelectionToutePlanche")[0].style.display='block';;
 		
 		
@@ -41,7 +46,8 @@ function AfficheRechercheCMD(isAffiche) {
 		document.getElementById("main").style.marginRight = "0px";
 		document.getElementById("Entete").style.marginRight = "0px";
 		document.getElementById("btnRemonter").style.right = "80px";	
-		document.getElementById("closeSidenav").textContent = " + "; //= >>	
+		document.getElementById("closeSidenav").textContent = "+"; //= >>	
+		document.getElementById("closeSidenav").style.right = "15px";
 		document.getElementsByClassName("SelectionToutePlanche")[0].style.display='none';
 					
 	}
@@ -133,6 +139,7 @@ function AfficheTout() {
 }
 
 function scrollFunction() {
+	//alert('scrollFunction');
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 		document.getElementById("btnRemonter").style.display = "block";
 	} else {
@@ -249,7 +256,8 @@ function SelectionnerCommandesAffiche() {
 		// INDIV
 		var mesPlanches = document.getElementsByClassName("IndivSELECTION");
 		while(mesPlanches.length >0){
-			mesPlanches[0].classList.replace("IndivSELECTION", "PlancheIndiv");	
+			//mesPlanches[0].classList.replace("IndivSELECTION", "PlancheIndiv");	
+			SelectionSurPhoto(mesPlanches[0]);
 		}
 		// GROUPE
 		var mesPlanches = document.getElementsByClassName("GroupeSELECTION");
@@ -259,9 +267,9 @@ function SelectionnerCommandesAffiche() {
 		}		
 	}
 	document.getElementById("CaseSelectionnerCommandesAffiche").className = (ToutSelectionner?'caseCheckCoche':'caseCheckVide');
-	mesRecommandes();
+	//mesRecommandes();
 }	
-
+/*
 function BasculeMode() {
 	//alert('isTirage ' + isTirage);
 	if (document.getElementById("ZoneCommandesFichierBoutiques").style.display == "inline-block") {
@@ -280,7 +288,7 @@ function BasculeMode() {
 		document.getElementById("CMDFichiers").className = "myclass";		
 	  }
 }		
-
+*/
 
 function BasculeOnglet(evt, cityName) {
 	var i, tabcontent, tablinks;
@@ -294,7 +302,9 @@ function BasculeOnglet(evt, cityName) {
 	}
 	document.getElementById(cityName).style.display = "block";
 	evt.currentTarget.className += " active";
-  }
+
+	g_IsTirage = (document.getElementById("ZoneCommandesFichierBoutiques").style.display == "none"); 
+}
 
 
 function VoirPhotoSelection(x) {

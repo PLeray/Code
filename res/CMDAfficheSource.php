@@ -142,14 +142,11 @@ if (!$MAJ){
 		</div>
 
 		<div id="mySidenav" class="sidenav">
-		
-			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"> + </a>
- 
-<div class="tab">
-  <button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesTirages')" id="defaultOngletOuvert">Tirages</button>
-  <button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesFichierBoutiques')">Fichiers boutique</button>
-</div>
-
+			<div class="tab">
+				<button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesTirages')" id="defaultOngletOuvert">Tirages</button>
+				<button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesFichierBoutiques')" >Fichiers boutique</button>
+			</div>
+			<a href="javascript:void(0)" id="closeSidenav" class="closebtn" onclick="BasculeAfficheSideBar()"> + </a>	
 
 			<div id="myRecommandes" class="infoRecommandes">
 			
@@ -159,30 +156,29 @@ if (!$MAJ){
 				<div>
 					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
 				</div>	
-
+				<br>
 					<div class="dropdown">
 						
 					<img src="img/searchicon.png" id="LoupeInitZoneSaisie" title="Initialiser la liste de produits" onclick="SelectionProduitInitialisation()">
 					<input type="text" placeholder="Sélectionner un produit..." id="ZoneSaisie" onclick="SelectionProduit()" onkeyup="filterProduits()">
 						<div id="myDropdown" class="dropdown-content">							
-							<table ><tr with =100%>
-								</tr><tr>
+							<table >
+								<tr with =100%>
+									<?php echo RemplissageDropScriptFormat($monProjet); ?>
+								</tr>
+									<?php //echo RemplissageDropScriptFormat($monProjet); ?>
+									<?php echo RemplissageDropProduit($monProjet); ?>								<tr>								
+								</tr>
+							</table>
 
-								<?php echo RemplissageDropScriptFormat($monProjet); ?>
-
-
-
-							</tr></table>
-
-							</table><?php //echo RemplissageDropScriptFormat($monProjet); ?>
-							<?php //echo RemplissageDropProduit($monProjet); ?>
 							
 						</div>
 					</div>
 					<br><br>
-					
+					<!-- Tirages ici 
+					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	-->
 		
-					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour tirage</a>	
+						
 					<div id="myListePhoto" class="ListeCommandes">		
 						<?php echo str_replace($sepFinLigne, "<br>", $lesPhotoSelection); ?>      
 					</div>	
@@ -201,15 +197,16 @@ if (!$MAJ){
 					</form>     
 				</div>	
 				
-
 				<div id="ZoneCommandesFichierBoutiques" class="tabcontent">
 				<H1>Mes FichiersBoutique</H1><br>		
 				<div>
 					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerCommandesAffiche" onclick=SelectionnerCommandesAffiche() class="caseCheckVide" > ✓ </a></span >
 				</div>	
+				<br>
+					<!-- FICHIERBOUTIQUES ici 
+					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	-->
 
-					<!-- FICHIERBOUTIQUES ici -->
-					<a href=javascript:void(0); onclick=VoirPhotoSelection()>Afficher (A FAIRE) uniquement sélection pour fichiers boutiques</a>	
+					
 					<div id="myListeFichiersBoutique" class="ListeCommandes">
 						<?php echo str_replace($sepFinLigne, "<br>", $lesFichiersBoutique); ?>
 					</div>				
@@ -218,7 +215,8 @@ if (!$MAJ){
 		
 						<button type="submit" id="btnFichiersBoutique" class="btnEnregistrer" disabled>Quitter et enregistrer ces commandes de FICHIERBOUTIQUES</button>
 					</form>     
-				</div>							
+				</div>		
+						
 			</div>	
 			
 			<div class="footer">
@@ -262,6 +260,7 @@ if (!extension_loaded('gd')) {
 ?>
 <script type="text/javascript" src="<?php Mini('js/CMDAfficheSource.js');?>"></script>
 <script>
+
 <?php 
 if ($MAJ){	
 	$AffichePanneau = false;
@@ -277,9 +276,6 @@ if ($MAJ){
 		echo 'AfficheRechercheCMD(false);';
 	}
 }
-
-
-
 
 
 ?>
