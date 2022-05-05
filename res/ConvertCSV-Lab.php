@@ -349,33 +349,37 @@ function ConvertirEXCELCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_fil
 		foreach($TabCSV[0] as $key => $value)
 		{
 			$i++;
-			if($key == 'Nom de la classe'){$colNomDeLaPhoto = $i + 1;}// numero col Nom de la photo, + 1 (Classe) pour le livret des ventes
-			if($key == 'Nom'){$isAvantColonneNom = false;}		
+			if($key == 'Nom de la classe'){ // numero col Nom de la photo est avant , + 1 (Classe) pour le livret des ventes
+				$colNomDeLaPhoto = $i - 1;// numero col Nom de la photo est avant !!!
+			}// numero col Nom de la photo, + 1 (Classe) pour le livret des ventes
+			if($key == 'Nom'){$isAvantColonneNom = false;} // Ca n'arrive jamais ca pour le moment dans un livret de vente (Une colonne apres les produits)
 			if($colNomDeLaPhoto && $isAvantColonneNom){$nbColonneCommnandes++;}					  
 			//echo $i. ' : ' . $key.'<br />';
 		}		
-		$nbColonneCommnandes--; //On ne prend pas le colonne Nom
-        $nbColonneCommnandes--; //On ne prend pas le colonne Nom  x2 ???
-		echo '<br /> $colNomDeLaPhoto ' . $colNomDeLaPhoto.'  $nbColonneCommnandes ' . $nbColonneCommnandes.'<br /><br /> ';	
+		//$nbColonneCommnandes--; //On ne prend pas le colonne Nom
+        //$nbColonneCommnandes--; //On ne prend pas le colonne Nom  x2 ???
+		echo '<br /> numéro col de NomDeLaPhoto ' . $colNomDeLaPhoto.'   nb de ColonneCommnandes ' . $nbColonneCommnandes.'<br /><br /> ';
 
 		for($i = 0; $i < $NbLignes; $i++)
 		{ 
-			$affiche_Tableau .= EcrireEcole($TabCSV[$i]["Nom Ecole"] .'_'
-										//. ($TabCSV[$i]["Code interne"] == ''?$TabCSV[$i]["Reference"]:$TabCSV[$i]["Code interne"]) . '_Ecole web !'
-										. ReferenceECOLE($TabCSV[$i]["Code Ecole"], $TabCSV[$i]["Nom Ecole"]) . '_Ecole web Lumys!'
-										, $PrefixeTirage);   
-										
-			$affiche_Tableau .= EcrireClient($TabCSV[$i]['Numero de la Photo'] . '_' 
-										.  '_' 
-										.  '_' 
-										.  '_' 
-										.  '_' 								
-										.  '_' 								
-										.  '_' );  
-										
-			if ($TabCSV[$i]['Numero de la Photo'] != '[Pochettes]') {	
-				$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], $colNomDeLaPhoto, $nbColonneCommnandes,true), $TabCSV[$i]['Numero de la Photo'], $TabCSV[$i]['Nom de la classe']);				
-			}	
+			if ($TabCSV[$i]["Nom Ecole"] && $TabCSV[$i]['Numero de la Photo']){
+				$affiche_Tableau .= EcrireEcole($TabCSV[$i]["Nom Ecole"] .'_'
+											//. ($TabCSV[$i]["Code interne"] == ''?$TabCSV[$i]["Reference"]:$TabCSV[$i]["Code interne"]) . '_Ecole web !'
+											. ReferenceECOLE($TabCSV[$i]["Code Ecole"], $TabCSV[$i]["Nom Ecole"]) . '_Ecole web Lumys!'
+											, $PrefixeTirage);   
+											
+				$affiche_Tableau .= EcrireClient($TabCSV[$i]['Numero de la Photo'] . '_' 
+											.  '_' 
+											.  '_' 
+											.  '_' 
+											.  '_' 								
+											.  '_' 								
+											.  '_' );  
+											
+				if ($TabCSV[$i]['Numero de la Photo'] != '[Pochettes]') {	
+					$affiche_Tableau .= EcrireCommande(array_slice($TabCSV[$i], $colNomDeLaPhoto, $nbColonneCommnandes,true), $TabCSV[$i]['Numero de la Photo'], $TabCSV[$i]['Nom de la classe']);				
+				}
+			}
  /* */   
 		}
        
@@ -442,15 +446,12 @@ function ConvertirEXCELCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_fil
 				}
 			}
 */
-
 			# On ferme le fichier proprement
 			fclose($fileopen);	
 			$valRetour = true;
 		}		
-
 	}
 	//'&#60;' . $Classe . ' ' . $key . '&#62;<br>';
-
 	return $valRetour;  
 }
 

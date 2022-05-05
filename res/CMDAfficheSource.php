@@ -479,7 +479,6 @@ function AccesCatalogue($monProjet){
 	return $RetourEcran . '&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;	
 }	
 
-
 //function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 

@@ -240,20 +240,22 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 				<td width="50%">';	
 				$retourMSG .= '	<div class="Planchecontainer">
 				<h1>COMMANDES EN COURS</h1>';
-			//$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$strAPI_fichierLAB);
+				$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
+				if($GLOBALS['isDebug'] && 1){
+					
+					$retourMSG .= '<h1>UNIQUEMENT EN DEBUG</h1>';
 
-			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-			//$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+					$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
+					$retourMSG .= BilanScriptPhotoshop($target_file);
+		
+					$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+					$retourMSG .= PhotosManquantes($target_file);					
+				}else{
+					$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$strAPI_fichierLAB);
 
-			$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
-			$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-            $retourMSG .= BilanScriptPhotoshop($target_file);
-
-            $retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
-			$retourMSG .= PhotosManquantes($target_file);
-
-
-
+					//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
+					$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
+				}
 
 
 			$mesInfosFichier = new CINFOfichierLab($target_file); 
@@ -266,7 +268,7 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 			$retourMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
 			$retourMSG .= "<h1>".utf8_encode(substr($strAPI_fichierLAB,0,-1))."</h1>";
 			$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-			$retourMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin) sur PC.</h3><br>';
+			$retourMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin dans le dossier : /PhotoLab/Code )</h3><br>';
 				$retourMSG .= '<br><br>
 								<a href="CATPhotolab.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
 								<br><br><br>';

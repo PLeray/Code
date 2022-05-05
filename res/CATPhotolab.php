@@ -189,7 +189,7 @@ if($RechargerPage){
 <!-- ////////// FIN de l'HTML Standard 	////////// -->
 
 
-	<h1>Ensemble de fichiers pour présentation web : <?php echo $nb_fichier; ?></H1>
+	<h1>Ensemble de fichiers pour présentation sur boutique web : <?php echo $nb_fichier; ?></H1>
 	<!--<table class="Tableau" id="myTableWEB">-->
 	<table id="commandes">
 	  <tr class="header" >

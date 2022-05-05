@@ -76,7 +76,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			}
 			$CMDhttpLocal ='';
 			if ($uploadOk == 2) {				
-				$retourTraitementMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin).</h3>';			
+				$retourTraitementMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin dans le dossier : /PhotoLab/Code )</h3>';			
 				$retourTraitementMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
 				//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
 			
@@ -139,11 +139,17 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				$retourMSG .= 'Photos manquantes : 0';
 				*/
 
-				$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-				$retourMSG .= BilanScriptPhotoshop($target_file);
-	
-				$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
-				$retourMSG .= PhotosManquantes($target_file);
+
+				if($GLOBALS['isDebug'] && 0){
+					$retourMSG .= '<h1>UNIQUEMENT EN DEBUG</h1>';
+
+					$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
+					$retourMSG .= BilanScriptPhotoshop($target_file);
+		
+					$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+					$retourMSG .= PhotosManquantes($target_file);					
+				}				
+
 			}
 
 

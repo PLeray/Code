@@ -454,7 +454,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							if (myDocument.width > myDocument.height) { 
 								//alert('rotateCanvas' ); 						
 								aRetourner = true;
-								myDocument.rotateCanvas(90)  
+								myDocument.rotateCanvas(90);  
 							}  
 						//}	
 						//alert('TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
@@ -503,7 +503,20 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
 							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);							
 						}
-						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+
+
+						if (myDocument.width > myDocument.height) { 
+							//alert('re re tourne 90');
+							myDocument.rotateCanvas(90);
+							//alert('re re tourne Taille');
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+							//alert('re re tourne -90');
+							myDocument.rotateCanvas(-90);
+						} else{
+							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
+						}
+
+						//reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
 						
 						/*else{ // Sinon !!!		
 							// A REVOIR !!!!!!!		

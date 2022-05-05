@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.863;
+$VERSIONLOCAL = 0.864;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -61,7 +61,7 @@ class CConnexionAPI {
 }
 
 function VersionPhotoLab(){
-	return '©PhotoLab ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSIONLOCAL'].') : Création et visualisation de commandes de photographies';
+	return '©PhotoLab 2018 - ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSIONLOCAL'].') : Création et visualisation de commandes de photographies';
 }
 
 function ArgumentURL($ARGSupl = ''){

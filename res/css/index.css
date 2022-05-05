@@ -6,7 +6,7 @@ h1 { /*Police texte Ecole */
     color: var(--texteGris);
     letter-spacing: 3px;
 	padding: 0px;
-	line-height: 0;
+	line-height: 20px;
 	font-size: 28px;
 
 	margin: 10px;

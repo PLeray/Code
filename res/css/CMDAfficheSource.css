@@ -292,7 +292,7 @@ p {/*Police Détails Fichier commande et commun  */
     right: 40px;
     top:10px;
     color: var(--FondLigneTabGrisSombre);
-line-height: 0;
+
     cursor: pointer;
 	display:block;
 text-align: right;

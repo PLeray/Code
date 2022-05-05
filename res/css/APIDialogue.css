@@ -59,7 +59,7 @@ h4 { /*Police texte Erreur */
 
 p {/*Police Détails Fichier commande et commun  */
     letter-spacing: 1px;
-	line-height: 0;
+	line-height: 10px;
 	font-size: 10px;
 }
 
