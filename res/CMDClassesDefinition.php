@@ -931,7 +931,7 @@ class CImgSource {
 			</button>';
 
 	/*
-			$Argument = '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
+			$Argument = '&CodeEcole=' . urlencode($this->CodeEcole). '&AnneeScolaire=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
 			
 			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
 			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
@@ -975,7 +975,7 @@ class CImgSource {
 			//$resultat .= '<p>'. substr($this->Fichier, 0, -4)  .'</p>';
 
 			$Argument = '&urlImage=' . $LienBig;
-			$Argument .= '&codeSource=' . urlencode($this->CodeEcole). '&anneeSource=' . urlencode($this->AnneeScolaire);
+			$Argument .= '&CodeEcole=' . urlencode($this->CodeEcole). '&AnneeScolaire=' . urlencode($this->AnneeScolaire);
 			
 			//$resultat .= '<p><a href="CMDAffichePlanche.php'.ArgumentURL($Argument) . '" class = "NomPhotoZoom">'. substr($this->Fichier, 0, -4)  .'</a></p>';	
 			

@@ -3,11 +3,6 @@ setlocale(LC_TIME, 'french');
 
 include_once 'APIConnexion.php';
 
-/*include 'res/CATFonctions.php';
-include 'res/ConvertCSV.php';
-
-$repCommandesLABO = "../CMDLABO/";
-*/
 $codeMembre = '0';
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');

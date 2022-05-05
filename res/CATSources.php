@@ -233,7 +233,7 @@ function LienImgSource($codeProjet, $anneeProjet) {
 
 	$LienFichier = "#";
 
-	$LienFichier = "CMDAfficheSource.php". $Environnement . "&codeSource=" . urlencode($codeProjet). "&anneeSource=" . urlencode($anneeProjet);
+	$LienFichier = "CMDAfficheSource.php". $Environnement . "&CodeEcole=" . urlencode($codeProjet). "&AnneeScolaire=" . urlencode($anneeProjet);
 	//$isDebug = true;
 	return $LienFichier;
 }

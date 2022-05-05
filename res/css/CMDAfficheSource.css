@@ -101,6 +101,18 @@ p {/*Police Détails Fichier commande et commun  */
   z-index: 1; 
 }
 
+.btnCatalogue {
+  position: absolute;
+  right: 100px;
+  Top: 10px;
+
+  z-index: 1; 
+}
+
+.btnCatalogue:hover {
+  border: 1px solid var(--boutonVert); 
+}
+
 .titreFichier {
 
 	text-align: center;

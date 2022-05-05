@@ -14,13 +14,13 @@ if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
 
 $sepFinLigne = '§';	
 	
-$codeSource = 'qsd';
-if (isset($_GET['codeSource'])) { // Test connexion l'API
-	$codeSource = $_GET['codeSource'];
+$CodeEcole = 'qsd';
+if (isset($_GET['CodeEcole'])) { // Test connexion l'API
+	$CodeEcole = $_GET['CodeEcole'];
 }
-$anneeSource = 'qsd';
-if (isset($_GET['anneeSource'])) { // Test connexion l'API
-	$anneeSource = $_GET['anneeSource'];
+$AnneeScolaire = 'qsd';
+if (isset($_GET['AnneeScolaire'])) { // Test connexion l'API
+	$AnneeScolaire = $_GET['AnneeScolaire'];
 }
 
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATSources');
@@ -38,24 +38,23 @@ $lesPhotoSelection = '';
 if (isset($_POST['lesPhotoSelection']) ){
 	$lesPhotoSelection = $_POST['lesPhotoSelection'];
 	if ($isDebug){echo 'VOILA LES PHOTOS SELECTIONNEES  pour ' . $lesPhotoSelection;}	
-	///MAJFichierCommandes($lesCmdesLibres, $codeSource, $anneeSource);
 }
 $lesCmdesLibres = '';
 if (isset($_POST['lesCmdesLibres']) ){
 	$lesCmdesLibres = $_POST['lesCmdesLibres'];
 	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesCmdesLibres;}	
-	MAJFichierCommandes($lesCmdesLibres, $codeSource, $anneeSource);
+	MAJFichierCommandes($lesCmdesLibres, $CodeEcole, $AnneeScolaire);
 }
 $lesFichiersBoutique = '';
 if (isset($_POST['lesFichiersBoutique']) ){
 	$lesFichiersBoutique = $_POST['lesFichiersBoutique'];
 	if ($isDebug){echo 'VOILA LES lesFichiersBoutique : ' . $lesFichiersBoutique;}	
-	MAJFichierBoutique($lesFichiersBoutique, $codeSource, $anneeSource);
+	MAJFichierBoutique($lesFichiersBoutique, $CodeEcole, $AnneeScolaire);
 }
 
-//$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $codeSource, $anneeSource);
+//$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $CodeEcole, $AnneeScolaire);
 
-$monProjet = new CProjetSource($codeSource, $anneeSource);
+$monProjet = new CProjetSource($CodeEcole, $AnneeScolaire);
 
 
 
@@ -96,7 +95,7 @@ $monProjet = new CProjetSource($codeSource, $anneeSource);
 
 /* */
 if (!$MAJ){
-	$RefSource = "&codeSource=" . urlencode($codeSource). "&anneeSource=" . urlencode($anneeSource);
+	$RefSource = "&CodeEcole=" . urlencode($CodeEcole). "&AnneeScolaire=" . urlencode($AnneeScolaire);
 	
 	echo '<meta http-equiv="refresh" content="0; URL=CMDAfficheSource.php' . ArgumentURL($RefSource.'&MAJ=true') .'"> ';
 }
@@ -107,6 +106,9 @@ if (!$MAJ){
 	
 	<div id="Entete">	
 		<div class="logo"><a href="<?php echo RetourEcranSources($monProjet->AnneeScolaire); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
+		</div>
+
+		<div class="btnCatalogue"><a href="<?php echo AccesCatalogue($monProjet); ?>" title="Retour à la liste des sources de photos"><img src="img/btnCatalogue.png" alt="Image de fichier"></a>
 		</div>
 		
 		<div class="titreFichier">	
@@ -284,11 +286,11 @@ if ($MAJ){
 
 
 <?php 
-function MAJFichierCommandes($ListeFichier, $codeSource, $anneeSource){ 
+function MAJFichierCommandes($ListeFichier, $CodeEcole, $AnneeScolaire){ 
 //echo 'VOILA LES MAJFichierCommandes : ' . $ListeFichier;
 }
 
-function MAJFichierBoutique($ListeFichier, $codeSource, $anneeSource){ 
+function MAJFichierBoutique($ListeFichier, $CodeEcole, $AnneeScolaire){ 
 //echo 'VOILA LES lesFichiersBoutique : ' . $ListeFichier;
 }
 
@@ -472,10 +474,16 @@ function RetourEcranSources($ParamAnnee = ''){
 	return $RetourEcran . '&AnneeScolaire=' . $ParamAnnee ;
 }	
 
+function AccesCatalogue($monProjet){
+	$RetourEcran = 'CMDCatalogueProduits.php?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	return $RetourEcran . '&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;	
+}	
+
+
 //function ValidationCommandes($NomProjet, $ParamAnnee = ''){
 function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
-	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
+	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['CodeEcole'] . '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;		
 	$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
 	$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
 
@@ -485,7 +493,7 @@ function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 
 function ValidationCommandesLIBRES($NomProjet){
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
-	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['codeSource'] . '&AnneeScolaire=' . $GLOBALS['anneeSource'] ;		
+	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['CodeEcole'] . '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;		
 	$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
 	$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
 
