@@ -132,7 +132,7 @@ if($isDebug){
 
     $retourMSG .= '<tr><td><h2>Nom du Produit</h2></td><td><h2>Code pour actions Photoshop</h2></td></tr>';	
 
-    for($i = 0; $i < count($TabProduits); $i++){
+    for($i = 1; $i < count($TabProduits); $i++){
         if ($TabProduits[$i] != '') {
             $morceau = explode(';', $TabProduits[$i]);
             $retourMSG .= '<tr><td><h3>' . $morceau[0] . '</h3></td><td><h3>' . $morceau[1] . '</h3></td></tr>';	

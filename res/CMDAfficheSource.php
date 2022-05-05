@@ -164,7 +164,7 @@ if (!$MAJ){
 									<?php echo RemplissageDropScriptFormat($monProjet); ?>
 								</tr>
 									<?php //echo RemplissageDropScriptFormat($monProjet); ?>
-									<?php echo RemplissageDropProduit($monProjet); ?>								<tr>								
+									<?php //echo RemplissageDropProduit($monProjet); ?>								<tr>								
 								</tr>
 							</table>
 
@@ -350,7 +350,7 @@ function RemplissageDropScriptFormat($monProjet){
 	//if(count($CataloguePRODUITS) < 1){echo 'lkdsfgfdgd dfgggggggggggggggggggggggg jlkj';array_push($CataloguePRODUITS,'lkj');}
 	//array_push($CataloguePRODUITS,RecupScriptSelonNomDossier($monProjet->ScriptsPS));
 	//If date fichier ActionsScriptsPSP.csv + recente que $monCatalogueScriptPS alors mettre à jour 1ere ligne
-	$line =  '';
+/*
 	$file = fopen($monCatalogueScriptPS, 'w');
 	if ($PremiereLigneARefaire){
 		fputs($file, RecupScriptSelonNomDossier($monProjet->ScriptsPS). "\n");
@@ -361,10 +361,12 @@ function RemplissageDropScriptFormat($monProjet){
 	} 	
 	fclose($file);
 
+	*/
+	$line =  '';
 	for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
 		if (strpos($CataloguePRODUITS[$i], ';') > 1){
 			$morceau = explode(";",  $CataloguePRODUITS[$i]);
-			$line .= '<a href=javascript:void(0); Code="'.$morceau[0].'" onclick="CliqueDropDown(this)">'.$morceau[1].'</a>';
+			$line .= '<a href=javascript:void(0); Code="'.$morceau[1].'" onclick="CliqueDropDown(this)">'.$morceau[0].'</a>';
 		}
 	} 	
 	return $line;

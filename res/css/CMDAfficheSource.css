@@ -1106,13 +1106,15 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   display: none;
   position: absolute;
   background-color: #f6f6f6;
-  min-width: 400px;
+  min-width: 550px;
   overflow: auto;
   right:0px;
   z-index: 1;
-  font-size: 10px;
-  column-width: 150px;
+  font-size: 11px;
+  column-width: 200px;
   min-height: 20px;
+
+  border: 1px solid var(--FondLigneTabGrisFonce);
 }
 /*
 .dropdown-content .Favori {
