@@ -37,10 +37,19 @@ h2 {
 h3 { /*Police texte produits */
     letter-spacing: 1px;
 	padding: 0px;
-	line-height: 0.8;
+	line-height: 14px;
 	font-size: 14px;
 	font-family: "Courier New", Times, serif;
 
+}
+
+h4 { /*Police texte produits */
+    letter-spacing: 1px;
+	line-height: 14px;
+	font-size: 14px;
+	font-family: "Courier New", Times, serif;
+	padding-left: 5px;
+	text-align: left;
 }
 
 p {/*Police détails Fichier commande et commun  */
@@ -186,8 +195,8 @@ color: var(--boutonVert);
 }
 
 
-/*Commandes*/
-#commandes {
+/* Sources */
+#Sources {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	border-collapse: collapse;
 	width: 100%;
@@ -200,7 +209,7 @@ color: var(--boutonVert);
 	text-align: center;
 }
 
-#commandes a{
+#Sources a{
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	border-collapse: collapse;
 	width: 100%;
@@ -213,22 +222,22 @@ color: var(--boutonVert);
 	text-align: center;
 }
 
-#commandes td, #commandes th {
+#Sources td, #Sources th {
   border: 1px solid var(--FondLigneTabGrisFonce);
   padding: 2px;
 }
-#commandes tr:nth-child(even){background-color: var(--FondLigneTabGrisClair);}
+#Sources tr:nth-child(even){background-color: var(--FondLigneTabGrisClair);}
 
 
-#commandes tr:hover {background-color: var(--FondsurvolLigneTab);}
+#Sources tr:hover {background-color: var(--FondsurvolLigneTab);}
 
-#commandes th {
+#Sources th {
   text-align: center;
   background-color: var(--FondEnteteTableau);
   color: white;
 }
 
-.titreCommande { /*Police texte produits */
+.titreProjet { /*Police texte produits */
 	/*padding-left: 30px;*/
 	line-height: 1;
 	font-size: 14px;

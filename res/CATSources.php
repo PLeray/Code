@@ -112,14 +112,14 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECLibreCode']) && isset($_
 <BR>
 
 
-	<table id="commandes">
+<table id="Sources">
 	<tr class="header" >
-		<th style="width:90px;" onclick="sortTable(1)"><H3>Ref Ecole</H3></th>	
-		<th style="width:165px;" onclick="sortTable(2)"><H3>Dossier 'actions' Photoshop</H3></th>		
-		<th style="width:105px;" onclick="sortTable(0)"><H3>Année scolaire</H3></th>
-		<th  onclick="sortTable(1)"><H3>Nom projet</H3></th>	
-		<th style="width:200px;" onclick="sortTable(0)"><H3>Contenus Projet</H3></th>		
-		<th  style="width:180px;" ><H3>Fichiers de présentation Web</H3></th>		
+		<th style="width:90px;"><H3>Référence Ecole</H3></th>	
+		<th style="width:165px;"><H3>Dossier 'actions' Photoshop</H3></th>		
+		<th style="width:105px;"><H3>Année scolaire</H3></th>
+		<th  align="left" class="titreProjet"><H4>Nom projet</H4></th>	
+		<th style="width:200px;"><H3>Contenus Projet</H3></th>		
+		<th  style="width:180px;"><H3>Fichiers de présentation Web</H3></th>		
 	</tr>  
 	<?php echo $affiche_Tableau; ?>	  
 	</table>
@@ -192,9 +192,9 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV, $AnneeScolaire){
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>				
 					<td class="mini" ><div class="tooltip">' . $TabCSV[$i]["Rep Scripts PS"] .'
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>	
-					<td class="titreCommande" ><div class="tooltip">' . $TabCSV[$i]["AnneeScolaire"] .'
+					<td class="titreProjet" ><div class="tooltip">' . $TabCSV[$i]["AnneeScolaire"] .'
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>		
-					<td align="left" class="titreCommande" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>
+					<td align="left" class="titreProjet" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>';						
 					$nbFichier = NBfichiersDOSSIER($Dossier);
 					$affiche_Tableau .= '<td>'. CodeLienImageDossier($Dossier,$nbFichier) . '</td>';				

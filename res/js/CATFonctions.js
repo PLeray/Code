@@ -120,9 +120,9 @@ function InitAfficheErreur() {
 
 
 /**/ 
-function myFunction() {
+function Filtrer() {
   var input, filter, table, tr, td, i;
-  input = document.getElementById("myInput");
+  input = document.getElementById("myInputRecherche");
   filter = input.value.toUpperCase();
   table = document.getElementById("commandes");
   tr = table.getElementsByTagName("tr");
