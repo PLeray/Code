@@ -3,6 +3,7 @@ include_once 'APIConnexion.php';
 include_once 'CATFonctions.php';
 include_once 'ConvertCSV-Lab.php';
 
+
 //$repCommandesLABO = "../../CMDLABO/";
 
 $codeMembre = 0;
@@ -14,13 +15,54 @@ if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true :
 if (isset($_GET['unNomProduit'])) { $unNomProduit = $_GET['unNomProduit'];}
 
 
+$unCodeEcole = '2PLANCHES';
+$uneAnneeScolaire = '2021-2022';
 
 if (isset($_GET['CodeEcole'])) { $unCodeEcole = $_GET['CodeEcole'];}
 if (isset($_GET['AnneeScolaire'])) { $uneAnneeScolaire = $_GET['AnneeScolaire'];}
 
+$PDTNumeroLigne = 0;
+$PDTDenomination = $InviteNomProduit;
+$PDTRecadrage = '(facultatif)';
+$PDTTaille = '(facultatif)';
+$PDTTransformation = '(facultatif)';
+$PDTTeinte = '(facultatif)';
+if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
+if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
+if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
+if (isset($_GET['PDTTaille'])) { $PDTTaille = $_GET['PDTTaille'];}
+if (isset($_GET['PDTTransformation'])) { $PDTTransformation = $_GET['PDTTransformation'];}
+if (isset($_GET['PDTTeinte'])) { $PDTTeinte = $_GET['PDTTeinte'];}
+
+if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
+if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
+if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
+if (isset($_POST['PDTTaille'])) { $PDTTaille = $_POST['PDTTaille'];}
+if (isset($_POST['PDTTransformation'])) { $PDTTransformation = $_POST['PDTTransformation'];}
+if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
+
+
+$PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
+$PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
+$PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
+$PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
+
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
 $monProjetSource = new CProjetSource($unCodeEcole, $uneAnneeScolaire); 
+
+//echo 'SUPRIMER : ' .$PDTNumeroLigne;
+if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
+    if($PDTNumeroLigne > 0){
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+    }elseif($PDTNumeroLigne == 0){ // On Ajoute cette ligne du fichier
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+
+    }elseif($PDTNumeroLigne < 0){ // On suprime cette ligne du fichier
+        
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+    }
+}
 
 
 
@@ -35,115 +77,64 @@ $monProjetSource = new CProjetSource($unCodeEcole, $uneAnneeScolaire);
 </head>
 <body>
 
+<div id="apiReponse" class="modal">
+    <div class="modal-content animate" >
+        <div class="imgcontainer">
+            <a href="<?php echo RetourEcranAfficheSources($monProjetSource); ?>" class="close" title="Annuler et retour à l'écran de la source des photos">&times;</a>	
+            <?php echo LienEdition($PDTDenomination,0, $monProjetSource->CodeEcole,$monProjetSource->AnneeScolaire); ?>			
+        </div>
+        <h1><img src="img/logo.png" width ="80px">Catalogue des produits avec <?php echo $monProjetSource->ScriptsPS ?></h1>
+
+
+    <h2>(Nom du dossier d'Actions dans Photoshop : <?php echo $monProjetSource->ScriptsPS; ?>)</h2>
+
+    <h1>Liste des Produits</h1>
+
+<div class="CadreListeProduits">
+       
+
+
+
+
+    <table class="TableListeProduits" > 
+	<tr >	
+		<th >Nom du Produit</th>
+		<th >Code pour actions Photoshop</th>	
+		<th style="width:90px;"><font size="-1">Editer</font></th>		
+		<th style="width:90px;"><font size="-1">Suprimer</font></th>
+        
+	</tr>          
+
+
 <?php
-
-if($isDebug){
-	echo 'un DossierScript : ' . $monProjetSource->ScriptsPS;
-}
-
-
-            $target_file_seul = '2022-04-10-POUR VALIDATION.lab';
-            $target_file = $GLOBALS['repCMDLABO'] . "temp/".$target_file_seul . "0";
-                        
-            $retourMSG = '';	
-            $retourMSG .= '<div id="apiReponse" class="modal">
-            <div class="modal-content animate" >
-                <div class="imgcontainer">
-                    <a href="'.RetourEcranAfficheSources($monProjetSource).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
-                </div>
-                <h1><img src="img/logo.png" width ="80px" alt="Aide sur l\'étape" >Catalogue des produits pour ' . $monProjetSource->ScriptsPS . '</h1>';	
-
-                echo $retourMSG;
-                if (isset($_POST['PDTTaille'])) { 
-                    echo '<br> PDTRecadrage > ' . $_POST['PDTRecadrage'];
-                    echo '<br> PDTTaille > ' . $_POST['PDTTaille'];
-                    echo '<br> PDTTransformation > ' . $_POST['PDTTransformation'];
-                    echo '<br> PDTTeinte > ' . $_POST['PDTTeinte'];
-                }
-                ?>
-
-<h3>Dossier de script : <?php echo $monProjetSource->ScriptsPS; ?></h3>
-<div class="DefinitionProduit">
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-
-
-
-<h4>Nom du produit : 
-<input type="text" id="zoneTexteNomCommande" placeholder="Nom de votre commande..." value="le nom du porod" name="apiNomCommande" required>
-</h4>
-    <table class="TableDefinitionCodeProduit">
-            <tr>
-                <td ><h2>Recadrages :</h2></td>
-                <td ><h2>Taille :</h2></td>
-                <td ><h2>Transformation :</h2></td>
-                <td ><h2>Teinte :</h2></td>
-            </tr>
-
-            <tr>
-                <td ><div class="custom-select" style="width:180px;">
-                <select name="PDTRecadrage">
-                    <?php          
-                        echo $monProjetSource->DropListeScriptsRecadrages(); 
-                    ?>
-                    </select>
-                    </div> 
-                </td>
-                <td ><div class="custom-select" style="width:180px;">
-                    <select name="PDTTaille">
-                    <?php          
-                        echo $monProjetSource->DropListeScriptsTailles('20x20cm'); 
-                    ?>
-                    </select>
-                    </div>  
-                </td>
-                <td ><div class="custom-select" style="width:250px;">
-                <select name="PDTTransformation">
-                    <?php          
-                        echo $monProjetSource->DropListeScriptsTransformation(); 
-                    ?>
-                    </select>
-                    </div>  
-                </td>
-                <td ><div class="custom-select" style="width:250px;">
-                <select name="PDTTeinte">
-                    <?php          
-                        echo $monProjetSource->DropListeScriptsTeinte(); 
-                    ?>
-                    </select>
-                    </div>  
-                </td>                
-
-  
-            </tr>
-</table>
-<a href="CATPhotolab.php' . ArgumentURL() .'" class="KO" title="Annuler">Annuler</a>
-
-<button type="submit" class="OK">OK</button>
-  </form>
-</div>
-      
-<?php
-    $retourMSG .= '	<div class="Planchecontainer">';
-    $retourMSG = '<table class="TableListeProduit" >';            
-    //
-    $retourMSG .= '<h1>Liste des Produits</h1>';
-    //$retourMSG .= BilanScriptPhotoshop($target_file);
+    
     $TabProduits = ListeProduitsSelonCatalogue($monProjetSource->ScriptsPS);
-
-    $retourMSG .= '<tr><td><h2>Nom du Produit</h2></td><td><h2>Code pour actions Photoshop</h2></td></tr>';	
-
+    $retourMSG = '';
     for($i = 1; $i < count($TabProduits); $i++){
         if ($TabProduits[$i] != '') {
             $morceau = explode(';', $TabProduits[$i]);
-            $retourMSG .= '<tr><td><h3>' . $morceau[0] . '</h3></td><td><h3>' . $morceau[1] . '</h3></td></tr>';	
+            $retourMSG .= '<tr>
+                            <td>' . $morceau[0] . '</td>
+                            <td>' . $morceau[1] . '</td>
+                        
+                            <td>' .LienEdition($TabProduits[$i], $i,$monProjetSource->CodeEcole,$monProjetSource->AnneeScolaire). '</td>
+                            <td>' .LienSupression($morceau[0],  $i, $monProjetSource->CodeEcole,$monProjetSource->AnneeScolaire). '</td>
+                       
+                            </tr>';	
         }		
     }
-    $retourMSG .= '</table>	';	
-    $retourMSG .= '</div>';
-    $retourMSG .= '</div>
-                   </div>';
     echo $retourMSG;
-?>
+    ?>
+
+</table>
+
+</div>
+
+</div>
+</div>
+
+    
+
 
 <script type="text/javascript" src="<?php Mini('js/APIDialogue.js');?>"></script>
 </body>
@@ -156,8 +147,112 @@ function RetourEcranAfficheSources($monProjet){
 	return $RetourEcran ;
 }
 
+
+function LienEdition($Ligne, $PDTNumeroLigne, $unCodeEcole, $uneAnneeScolaire){
+    $ParamCProjetSource = '&unCodeEcole=' . $unCodeEcole . '&uneAnneeScolaire=' . $uneAnneeScolaire;
+    
+    if($PDTNumeroLigne == 0){// // Ajout d'un nouveau Produit
+        $NomProduit = $GLOBALS['PDTDenomination'];
+
+        $NomClasseBouton = 'AjoutProduit';
+        $TitreBouton = '+';
+        $TagTitleBouton = 'Ajouter un nouveau produit : ';
+        $DefinitionProduit = '&PDTNumeroLigne=' . $PDTNumeroLigne . 
+        '&PDTDenomination=' . urlencode($NomProduit) .
+        '&PDTRecadrage=' . ''.
+        '&PDTTaille=' . ''.
+        '&PDTTransformation=' . ''.
+        '&PDTTeinte=' . '';
+    }else{
+        $morceau = explode(';', $Ligne);
+        $Script = explode('_', $morceau[1]);        
+        $NomProduit = $morceau[0];
+        $NomClasseBouton = 'icone';
+        $TitreBouton = '🖉';
+        $TagTitleBouton = 'Editer le produit : '.$NomProduit;
+        $DefinitionProduit = '&PDTNumeroLigne=' . $PDTNumeroLigne . 
+        '&PDTDenomination=' . urlencode($NomProduit) .
+        '&PDTRecadrage=' . ''.
+        '&PDTTaille=' . urlencode($Script[0]).
+        '&PDTTransformation=' . (count($Script)>1? urlencode($Script[1]):'').
+        '&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');
+        
+    }
+
+    $lien = '<a href="CMDEditionProduits.php' . ArgumentURL($DefinitionProduit.$ParamCProjetSource) 
+                . '" class="'.$NomClasseBouton.'" title="'.$TagTitleBouton.'">'.$TitreBouton.'</a>';
+    return $lien ;
+}
+
+
+function LienSupression($NomProduit, $PDTNumeroLigne, $unCodeEcole, $uneAnneeScolaire){
+    
+
+    $lien = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF']) 
+                . ArgumentURL('&PDTNumeroLigne=-'. $PDTNumeroLigne
+                .'&CodeEcole=' . $unCodeEcole 
+                . '&AnneeScolaire=' . $uneAnneeScolaire) 
+                . '" class="icone" title="Suprimer le produit : '. $NomProduit .'">🗑</a>';
+    return $lien ;
+
+}
+
+
+function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+    $Supression = ($PDTNumeroLigne<0);
+    $PDTNumeroLigne = abs($PDTNumeroLigne);
+    $monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';
+	$CataloguePRODUITS = array();
+	if (file_exists($monCatalogueScriptPS)){ 
+		$file = fopen($monCatalogueScriptPS, "r");
+		if ($file) {
+			while(!feof($file)) {
+				$line = trim(fgets($file));
+				if (strpos($line, ';') > 1){
+					array_push($CataloguePRODUITS, $line);
+				}
+			}
+			fclose($file);	
+		}
+        $file = fopen($monCatalogueScriptPS, 'w');
+
+        $lefichier ='';
+
+        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
+            $morceau = explode(';', $CataloguePRODUITS[$i]);   
+            if(($morceau[0]==$PDTDenomination) &&  ($i != $PDTNumeroLigne)){
+                $PDTDenomination .='> (Doublon) ! Modifiez le nom du produit...';
+            }          
+        }        
+        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){ 
+            //echo '<br>PDTDenomination ' . $PDTDenomination ;
+            if ($i == $PDTNumeroLigne){
+                if(!$Supression){
+                    $lefichier .= $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n";
+                    //fputs($file, $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n");
+                }                
+            }else{
+                $lefichier .= $CataloguePRODUITS[$i]. "\n";
+                //fputs($file, $CataloguePRODUITS[$i]. "\n");
+            }            
+        }
+        if ($PDTNumeroLigne == 0) { 
+            $lefichier = $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n" . $lefichier;  
+        }        
+        $lefichier = "Description;Code\n" . $lefichier;        
+        
+        fputs($file, $lefichier);
+        fclose($file);
+        //header('Location: '. htmlspecialchars($_SERVER['PHP_SELF']). ArgumentURL('&CodeEcole=' . $monProjetSource->CodeEcole . '&AnneeScolaire=' . $monProjetSource->AnneeScolaire));
+
+    }
+}
+
+function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+    $leCodeProduit = ($PDTTaille ==''?'':$PDTTaille);
+    $leCodeProduit .= ($PDTTransformation ==''?'': '_'. $PDTTransformation);
+    $leCodeProduit .= ($PDTTeinte ==''?'': '_'. $PDTTeinte);
+    return $leCodeProduit;
+}
+
 ?>
-
-
-
-

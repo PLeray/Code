@@ -26,17 +26,16 @@ h1 { /*Police texte Ecole */
 }
 
 h2 { /*Police texte Adresse */
-    text-align: center;
-	font-size: 14px;
+    text-align: left;
+	font-size: 16px;
 
     color: var(--boutonVert);
     letter-spacing: 2px;
 	padding-left: 10px;
-	line-height: 14px;
+	line-height: 16px;
 	font-family: "Courier New", Times, serif;
 
 }
-
 
 h3 { /*Police texte produits */
     text-align: left;
@@ -106,63 +105,66 @@ button:hover {
 	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
 }
 
-.icone { /*Police texte Adresse */
-    text-align: center;
-	font-size: 22px;
 
+#zoneTexteNomCommande {
+    width: 600px;
+    text-align: left;
+    font-size: 18px;
+    padding: 11px;
+    margin-left: -3px;
     color: var(--boutonVert);
-    letter-spacing: 2px;
-	padding-left: 10px;
-	line-height: 14px;
-	font-family: "Courier New", Times, serif;
-    text-decoration: none;
+    border: 1px solid #888;
 }
 
-.icone:hover {
-    color: var(--boutonRouge);
-    cursor: pointer;
+#zonePDTNumeroLigne {
+display: none;
+
 }
 
 
 
-.TableListeProduits{
-    table-layout: fixed;
+.TableDefinitionCodeProduit
+{
     width: 100%;
     border-collapse: collapse;
 }
 
-.TableListeProduits td{
-    /**/
-    border-top: 1px solid var(--FondLigneTabGrisFonce);  
-
-
-    text-align: left;
-    padding-left: 10px;
-    letter-spacing: 2px;
-
-    line-height: 35px;
-
-	font-size: 12px;
-	font-family: "Courier New", Times, serif;
-	color: var(--texteGris);
-
+.TableDefinitionCodeProduit td
+{
+    /* border: 1px solid rgb(115, 250, 126);*/
 }
 
-.TableListeProduits th {
-    text-align: center;
-    background-color: var(--FondEnteteTableau);
+
+
+/* Set a style for all buttons */
+.OK, .KO {
+	text-decoration:none; 
     color: white;
+	font-size: 14px;
+	font-weight: bold;
+    padding: 14px 20px;
+    margin: 8px 0 ;
+    border: none;
+    cursor: pointer;
+	width:100px;
+}
 
-    text-align: left;
-	padding-left: 10px;
+.OK {
+    background-color: var(--boutonVert);
+}
 
-	font-size: 16px;
-
-    letter-spacing: 2px;
-	height: 40px;
-	font-family: "Courier New", Times, serif;
-
- }
+.KO {
+    background-color: var(--boutonRouge);
+}
+.OK:hover, .KO:hover {
+    /* opacity: 0.8; */
+	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
+}
+.OK:disabled {
+    color: white;
+    background-color: var( --FondLigneTabGrisFonce);
+    cursor: not-allowed;
+  }
 
 /* The Close Button (x) */
 .close {
@@ -201,7 +203,26 @@ img {
     margin: 10px 40px 10px 25px;    
     position: relative;
 }
+.Planchecontainer {
+    height: 500px;
+    
+    /* display: flex;
+        flex-wrap: wrap; */
+    
+    
 
+
+    overflow: auto;
+    margin: 10px 0 0 24px;
+    border: 1px solid var(--FondLigneTabGrisFonce);  
+  /*   text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+ REvoir dimensin de base du tableau
+    vertical-align: top;
+
+    */
+}
 .container {
     padding: 50px;
 }
@@ -210,16 +231,6 @@ img {
     text-align: center;
     margin: 24px 0 12px 0;
     position: relative;
-}
-
-.CadreListeProduits {
-    margin: 10px;     
-    border: 1px solid var(--FondLigneTabGrisFonce); 
-
-    
-    height: 70%;
-    /* flex-grow : 1;*/
-    overflow: auto; /* Enable scroll if needed */
 }
 
 /* The Modal (background) */
@@ -231,7 +242,7 @@ img {
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-
+    overflow: auto; /* Enable scroll if needed */
 
   /* background-color: rgb(0,0,0); Fallback color */
   /* background-color: rgba(0,0,0,0.4); Black w/ opacity */  
@@ -245,11 +256,7 @@ img {
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
 	
     border: 1px solid #888;
-    width: 80%; /*PASSAGE 0 50% Could be more or less, depending on screen size */
-    height: 80%; /*PASSAGE 0 50% Could be more or less, depending on screen size */
-
-     /*overflow: auto; Enable scroll if needed */
-     flex-flow: column;
+     width: 75%; /*PASSAGE 0 50% Could be more or less, depending on screen size */
 }
 
 /* Add Zoom Animation */
@@ -276,60 +283,74 @@ img {
     }
 }
 
-.AjoutProduit2 {
-    position:;
-    right: 20px;
-    top: 15px;
-
-
-    text-align: center;
-    vertical-align:middle;
-      
-    line-height: 25px;
-    padding-top: 1px;
-  
-    width:30px;
-    height:29px;
-    border-radius: 20px; 
-    font-size: 30px;
-  
-    border: 3px solid var(--boutonVert);
-    color: var(--texteGris);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    transition: 0.5s;  
-  }
-  
-.AjoutProduit2:hover{
-      color: var(--boutonRouge);
-  
+.DefinitionProduit {
+    margin: 10px;     
+    border: 1px solid var(--FondLigneTabGrisFonce); 
+    border: 1px solid var(--boutonVert);
   }
 
-  .AjoutProduit {
+
+
+
+/*the container must be positioned relative:*/
+.custom-select {
+    position: relative;
+    font-family: Arial;
+    margin-left: 10px;
+  }
+  
+  .custom-select select {
+    display: none; /*hide original SELECT element:*/
+  }
+  
+  .select-selected {
+    background-color: var(--boutonRouge);
+  }
+  
+  /*style the arrow inside the select element:*/
+  .select-selected:after {
     position: absolute;
-    right: 100px;
-    top: 110px;
-    color: var(--boutonVert);
-    font-size: 50px;
-
-	text-decoration: none;
-
-    border-radius: 50px; 
-    text-align: center;
-    width:50px;
-    height:50px;
-    line-height: 44px;
-
-
-    border: 5px solid var(--boutonVert);
-
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    transition: 0.5s;  
-
-}
-
-.AjoutProduit:hover,
-.AjoutProduit:focus {
-    color: var(--boutonRouge);
+    content: "";
+    top: 15px; /* 14px;*/
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+  }
+  
+  /*point the arrow upwards when the select box is open (active):*/
+  .select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 8px;
+  }
+  
+  /*style the items (options), including the selected item:*/
+  .select-items div,.select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
     cursor: pointer;
-    border: 5px solid var(--boutonRouge);
-}
+    user-select: none;
+  }
+  
+  /*style items (options):*/
+  .select-items {
+    position: absolute;
+    background-color: var(--boutonRouge);
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+  
+  /*hide the items when the select box is closed:*/
+  .select-hide {
+    display: none;
+  }
+  
+  .select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+

@@ -72,7 +72,13 @@ function closeAllSelect(elmnt) {
       x[i].classList.add("select-hide");
     }
   }
+  document.getElementById("btnOK").disabled = (
+    (document.getElementById("PDTTaille").value === "(obligatoire !)")
+
+    );
 }
 /*if the user clicks anywhere outside the select box,
 then close all select boxes:*/
 document.addEventListener("click", closeAllSelect);
+
+document.getElementById("btnOK").disabled = (document.getElementById("PDTTaille").value === "(obligatoire !)");

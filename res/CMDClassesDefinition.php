@@ -9,6 +9,8 @@ $FichierDossierCMDESLIBRE = "8888-88-88-(COMMANDES LIBRES)-EN-COURS";
 $CSVCatalogueSources = '../../SOURCES/Sources.csv';
 $CSVBibliothequeScriptPS = '../../GABARITS/ActionsScriptsPSP.csv';
 
+$InviteNomProduit = 'Saisissez le nom de votre nouveau produit';
+
 class CGroupeCmdes {
     var $ListePromoteurs;
     var $ListeCommandes;
@@ -824,8 +826,8 @@ class CProjetSource {
         }
 		return $laDropliste;
 	}	
-	function DropListeScriptsTeinte(){ 
-		return $this->DropListeScriptsTransformation();	
+	function DropListeScriptsTeinte($valDefaut = ''){ 
+		return $this->DropListeScriptsTransformation($valDefaut);	
 	}	
 	function TabScriptsPhotoshop(){ 
 		$leTableauDeScriptsPhotoshop = array();

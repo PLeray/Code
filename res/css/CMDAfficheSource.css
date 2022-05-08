@@ -240,6 +240,7 @@ p {/*Police Détails Fichier commande et commun  */
 .btnAjouterTirages:disabled{ 
   color: white;
   background-color: var( --FondLigneTabGrisFonce);
+  cursor: not-allowed;
 }
 
 .btnEnregistrer {
@@ -264,6 +265,7 @@ p {/*Police Détails Fichier commande et commun  */
 .btnEnregistrer:disabled{ 
   color: white;
   background-color: var( --FondLigneTabGrisFonce);
+  cursor: not-allowed;
 }
 
 
