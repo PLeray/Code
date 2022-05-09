@@ -134,7 +134,8 @@ $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
             $retourMSG .= '	<div class="Planchecontainer">';
 
 			$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-            $retourMSG .= BilanScriptPhotoshop($target_file);
+            $ProduitsManquant = 0;
+            $retourMSG .= BilanScriptPhotoshop($target_file,$ProduitsManquant);
 
             $retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
 			$retourMSG .= PhotosManquantes($target_file);

@@ -15,11 +15,11 @@ if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true :
 if (isset($_GET['unNomProduit'])) { $unNomProduit = $_GET['unNomProduit'];}
 
 
-$unCodeEcole = '2PLANCHES';
-$uneAnneeScolaire = '2021-2022';
+$CodeEcole = '2PLANCHES';
+$AnneeScolaire = '2021-2022';
 
-if (isset($_GET['CodeEcole'])) { $unCodeEcole = $_GET['CodeEcole'];}
-if (isset($_GET['AnneeScolaire'])) { $uneAnneeScolaire = $_GET['AnneeScolaire'];}
+if (isset($_GET['CodeEcole'])) { $CodeEcole = $_GET['CodeEcole'];}
+if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 $PDTNumeroLigne = 0;
 $PDTDenomination = $InviteNomProduit;
@@ -49,7 +49,7 @@ $PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
-$monProjetSource = new CProjetSource($unCodeEcole, $uneAnneeScolaire); 
+$monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
 //echo 'SUPRIMER : ' .$PDTNumeroLigne;
 if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
@@ -148,8 +148,8 @@ function RetourEcranAfficheSources($monProjet){
 }
 
 
-function LienEdition($Ligne, $PDTNumeroLigne, $unCodeEcole, $uneAnneeScolaire){
-    $ParamCProjetSource = '&unCodeEcole=' . $unCodeEcole . '&uneAnneeScolaire=' . $uneAnneeScolaire;
+function LienEdition($Ligne, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire){
+    $ParamCProjetSource = '&CodeEcole=' . $CodeEcole . '&AnneeScolaire=' . $AnneeScolaire;
     
     if($PDTNumeroLigne == 0){// // Ajout d'un nouveau Produit
         $NomProduit = $GLOBALS['PDTDenomination'];
@@ -185,13 +185,13 @@ function LienEdition($Ligne, $PDTNumeroLigne, $unCodeEcole, $uneAnneeScolaire){
 }
 
 
-function LienSupression($NomProduit, $PDTNumeroLigne, $unCodeEcole, $uneAnneeScolaire){
+function LienSupression($NomProduit, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire){
     
 
     $lien = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF']) 
                 . ArgumentURL('&PDTNumeroLigne=-'. $PDTNumeroLigne
-                .'&CodeEcole=' . $unCodeEcole 
-                . '&AnneeScolaire=' . $uneAnneeScolaire) 
+                .'&CodeEcole=' . $CodeEcole 
+                . '&AnneeScolaire=' . $AnneeScolaire) 
                 . '" class="icone" title="Suprimer le produit : '. $NomProduit .'">🗑</a>';
     return $lien ;
 

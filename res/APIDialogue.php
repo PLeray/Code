@@ -232,30 +232,20 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 				<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
 				
 			</div>
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 2 : Créer les fichiers de la commande en cours.</h1>';	
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 2 : Créer la commande : 
+			<font size="-1">'.utf8_encode(substr($strAPI_fichierLAB,0,-1)).'</font></h1>';	
 			
 	
 			$retourMSG .= '<table>
 			<tr>
 				<td width="50%">';	
-				$retourMSG .= '	<div class="Planchecontainer">
-				<h1>COMMANDES EN COURS</h1>';
+				$retourMSG .= '	<div class="Planchecontainer">';
 				$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
-				if($GLOBALS['isDebug'] && 1){
-					
-					$retourMSG .= '<h1>UNIQUEMENT EN DEBUG</h1>';
-
-					$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-					$retourMSG .= BilanScriptPhotoshop($target_file);
-		
-					$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
-					$retourMSG .= PhotosManquantes($target_file);					
-				}else{
-					$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$strAPI_fichierLAB);
-
-					//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
-					$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-				}
+				$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
+				$ProduitsManquant = 0;
+				$retourMSG .= BilanScriptPhotoshop($target_file,$ProduitsManquant);
+				//echo $ProduitsManquant;
+	
 
 
 			$mesInfosFichier = new CINFOfichierLab($target_file); 
@@ -265,13 +255,22 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 			$retourMSG .= '</td>
 							<td width="50%">';	
 			$retourMSG .= '	<div class="msgcontainer">';
-			$retourMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
-			$retourMSG .= "<h1>".utf8_encode(substr($strAPI_fichierLAB,0,-1))."</h1>";
+
+			$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+			$retourMSG .= '<div style="padding-left:20px">'.PhotosManquantes($target_file).'</div>';  
+
+			$retourMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
+			$retourMSG .= "<h3>".utf8_encode(substr($strAPI_fichierLAB,0,-1))."</h3>";
+			$retourMSG .= "<h2>Démarrez le plug-in PhotoLab pour Photoshop</h2>";
 			$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-			$retourMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin dans le dossier : /PhotoLab/Code )</h3><br>';
-				$retourMSG .= '<br><br>
-								<a href="CATPhotolab.php' . ArgumentURL() .'" class="OK" title="Retour écran général des commandes">OK</a>	
-								<br><br><br>';
+			$retourMSG .= '<h3>Le plug-in PhotoLab (PLUGIN-PhotoLab.jsxbin) se trouve dans le dossier : /PhotoLab/Code</h3><br>';
+			$retourMSG .= '<br><br>';
+			if($ProduitsManquant>0){
+				$retourMSG .= '<a href="#" class="OKDisabled" title="Valider et Retour écran général des commandes">OK</a>';
+			}else{
+				$retourMSG .= '<a href="'.($ProduitsManquant>0?"#":"CATPhotolab.php" . ArgumentURL()).'" class="OK" title="Valider et Retour écran général des commandes">OK</a>';
+			}
+			$retourMSG .= '<br><br><br>';
 			$retourMSG .= ' </div>';	
 			$retourMSG .= '</td>
 			</tr>

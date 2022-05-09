@@ -1107,18 +1107,28 @@ function CodeLienImageWebArboDossier($mesInfosFichier){
 }
 
 
-function BilanScriptPhotoshop($target_file){
+function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
     $resultat = ''; 
     $monGroupeCmdes = new CGroupeCmdes($target_file);
-    $monTableauDeProduits = $monGroupeCmdes->ListeProduitsManquants();
+    $monTableauDeProduits = array_unique($monGroupeCmdes->ListeProduitsManquants());
     if ($monTableauDeProduits != ''){
-        $resultat = '<table width="100%">';   
-		
+        $resultat = '<table width="100%" class = "TableProduit">';   
+		$nbProduitsManquant = 0;
         for($i = 0; $i < count($monTableauDeProduits); $i++){
             if ($monTableauDeProduits[$i] != '') {
-                //$resultat .= $monTableauDeProduits[$i] . '<br>';	
-                $refProduitsManquants = explode($GLOBALS['SeparateurInfoCatalogue'], $monTableauDeProduits[$i]); 
-                $resultat .=  '<tr class="StyleKO"><td width="80%">' . $refProduitsManquants[0] . '</td ><td width="20%">' . LienEditionProduit($refProduitsManquants[1]). '</td ></tr>';
+                //$resultat .= $monTableauDeProduits[$i] . 'qsdqsd<br>';	
+                //$tableauProduitsManquants = explode($GLOBALS['SeparateurInfoCatalogue'], $monTableauDeProduits[$i]); 
+				$refProduitsManquants = explode(';', $monTableauDeProduits[$i]); 
+
+				if ($refProduitsManquants[1] == ''){ // NODEFINITION pas défini
+					$resultat .=  '<tr class="StyleKO"><td >' . $refProduitsManquants[0] . '</td >
+								<td >' . LienEditionProduit($refProduitsManquants). '</td ></tr>';
+					$nbProduitsManquant = $nbProduitsManquant + 1;
+				}
+				else{
+					$resultat .=  '<tr class="StyleOK"><td >' . $refProduitsManquants[0] . '</td >
+								<td w>' . LienEditionProduit($refProduitsManquants). '</td ></tr>';
+				}                
             }		
         }
     }
@@ -1126,34 +1136,29 @@ function BilanScriptPhotoshop($target_file){
     return $resultat;
 }
 
-/*
-function BilanScriptPhotoshop($target_file){
-    $mesInfosFichier = new CINFOfichierLab($target_file); 
-    $resultat = '<table width="100%">';  
-
-    $ListeDeProduits = array_keys($mesInfosFichier->TabResumeProduit);
-    for($i = 0; $i < count($ListeDeProduits); $i++){
-        $resultat .=  '<tr class="StyleKO"><td width="80%">' . $ListeDeProduits[$i] . '</td ><td width="20%">' . LienEditionProduit($ListeDeProduits[$i]). '</td ></tr>';
-
-    }
-    $resultat .= '</table>';
-    return $resultat;
-}
-
-
-
-function LienEditionProduit($leProduit){
-    $resultat = $leProduit . ' KO' ;  
-	//$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
-    return $resultat;
-}
-*/
-
 function LienEditionProduit($leProduit) {
+	$ParamCProjetSource = '&CodeEcole=' . $leProduit[2] . '&AnneeScolaire=' . $leProduit[3];
+	$NomProduit = $leProduit[0];
+	if ($leProduit[1]==''){ // Pas de produit défini
+		$Script = explode('_', $leProduit[1]);        
+		$DefinitionProduit = '';
+		$LienImage = '<img class="OKKOIMG" src="img/KO.png" alt="Pas de produit défini">';		
+	}else{
+		$Script = explode('_', $leProduit[1]);        
+		$DefinitionProduit = '&PDTDenomination=' . urlencode($NomProduit) .
+		'&PDTRecadrage=' . ''.
+		'&PDTTaille=' . urlencode($Script[0]).
+		'&PDTTransformation=' . (count($Script)>1? urlencode($Script[1]):'').
+		'&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');
+		$LienImage = '<img class="OKKOIMG" src="img/OK.png" alt="Produit défini">';		
+	}
+	//echo '&pageRetour=' . urlencode(basename($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']));
+	$Lien = 'CMDEditionProduits.php' . ArgumentURL($ParamCProjetSource. $DefinitionProduit.
+			'&pageRetour=' . urlencode(basename($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']))) ;
 
-	$Lien = 'CMDCatalogueProduits.php' . ArgumentURL() ;
-	$LienImage = '<img src="img/searchicon.png" alt="Voir écran de mise en pochette">';
-	return '<a href="'. $Lien . '">'.$LienImage.' KO</a>';
+
+	return $LienImage.'<a href="'. $Lien . '" class ="icone" title="Editer le produit : '. $leProduit[0].'"> 🖉 </a>';
+
 }
 
 function PhotosManquantes($target_file){
@@ -1171,7 +1176,8 @@ function PhotosManquantes($target_file){
             }		
         }
     }
-    $resultat = '<span class="Style'.(($NombrePhotosManquante)?'KO':'OK').'"> Photos manquantes : ' . $NombrePhotosManquante .'<br>' . $resultat .'</span>';
+    $resultat = '<span class="Style'.(($NombrePhotosManquante)?'KO':'OK').'"> Photos manquantes : ' . $NombrePhotosManquante .
+				'<img class="OKKOIMG" src="img/'.(($NombrePhotosManquante)?'KO':'OK').'.png"><br>' . $resultat .'</span>';
     return $resultat;
 }
 

@@ -13,16 +13,19 @@ if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true :
 
 if (isset($_GET['unNomProduit'])) { $unNomProduit = $_GET['unNomProduit'];}
 
+$pageRetour = 'CMDCatalogueProduits.php';
+if (isset($_GET['pageRetour'])) { $pageRetour = $_GET['pageRetour'];}
 
-$unCodeEcole = '2PLANCHES';
-$uneAnneeScolaire = '2021-2022';
 
-if (isset($_GET['CodeEcole'])) { $unCodeEcole = $_GET['CodeEcole'];}
-if (isset($_GET['AnneeScolaire'])) { $uneAnneeScolaire = $_GET['AnneeScolaire'];}
+$CodeEcole = '';
+$AnneeScolaire = '';
+
+if (isset($_GET['CodeEcole'])) { $CodeEcole = $_GET['CodeEcole'];}
+if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
-$monProjetSource = new CProjetSource($unCodeEcole, $uneAnneeScolaire); 
+$monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
 $PDTNumeroLigne = 0;
 $PDTDenomination = 'Mon nom de produit';
@@ -66,32 +69,33 @@ if($isDebug){
             $retourMSG .= '<div id="apiReponse" class="modal">
             <div class="modal-content animate" >
                 <div class="imgcontainer">
-                    <a href="'.RetourEcranCatalogue($monProjetSource).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
+                    <a href="'.RetourEcranPrecedent($monProjetSource).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
                 </div>
                 <h1><img src="img/logo.png" width ="80px" alt="Aide sur l\'étape" >Catalogue produits : Edition d\'un produit '
                 . '</h1>';	
                 $retourMSG .= "<h2>(Nom du dossier d'Actions dans Photoshop : ". $monProjetSource->ScriptsPS .')</h2>';
                 
                 echo $retourMSG;
-                
-                if ((isset($_GET['PDTTaille']))||(isset($_POST['PDTTaille']))) { 
-                    echo '<br> CodeEcole : ' . $unCodeEcole;
-                    echo '<br> AnneeScolaire : ' . $uneAnneeScolaire;
-                    echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
-                    echo '<br> PDTDenomination : ' . $PDTDenomination;
-                    /**/
-                    echo '<br> PDTRecadrage > ' . $PDTRecadrage;
-                    echo '<br> PDTTaille > ' . $PDTTaille;
-                    echo '<br> PDTTransformation > ' . $PDTTransformation;
-                    echo '<br> PDTTeinte > ' . $PDTTeinte;
-                    
-                    
+                if ($GLOBALS['isDebug']) { 
+                    if ((isset($_GET['PDTTaille']))||(isset($_POST['PDTTaille']))) { 
+                        echo '<br> CodeEcole : ' . $CodeEcole;
+                        echo '<br> AnneeScolaire : ' . $AnneeScolaire;
+                        echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
+                        echo '<br> PDTDenomination : ' . $PDTDenomination;
+                        /**/
+                        echo '<br> PDTRecadrage > ' . $PDTRecadrage;
+                        echo '<br> PDTTaille > ' . $PDTTaille;
+                        echo '<br> PDTTransformation > ' . $PDTTransformation;
+                        echo '<br> PDTTeinte > ' . $PDTTeinte;
+                        
+                        
+                    }
                 }
                 ?>
 
 <h3>Dossier de script : <?php echo $monProjetSource->ScriptsPS; ?></h3>
 <div class="DefinitionProduit">
-<form action="<?php echo RetourEcranCatalogue($monProjetSource); ?>" method="post">
+<form action="<?php echo RetourEcranPrecedent($monProjetSource); ?>" method="post">
 
 
 
@@ -145,7 +149,7 @@ if($isDebug){
   
             </tr>
 </table>
-<a href="<?php echo RetourEcranCatalogue($monProjetSource); ?>" class="KO" title="Annuler">Annuler</a>
+<a href="<?php echo RetourEcranPrecedent($monProjetSource); ?>" class="KO" title="Annuler">Annuler</a>
 
 <button type="submit" id="btnOK" class="OK" >OK</button>
   </form>
@@ -158,8 +162,8 @@ if($isDebug){
 
 <?php
 
-function RetourEcranCatalogue($monProjet){
-    $RetourEcran = 'CMDCatalogueProduits.php' . ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire) ;
+function RetourEcranPrecedent($monProjet){
+    $RetourEcran = $GLOBALS['pageRetour'];// . ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire) ;
 	return $RetourEcran ;
 }
 /*

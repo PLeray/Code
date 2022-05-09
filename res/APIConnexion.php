@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.864;
+$VERSIONLOCAL = 0.865;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";

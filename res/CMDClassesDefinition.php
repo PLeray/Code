@@ -228,7 +228,7 @@ class CEcole {
 	var $CodeEcole;
 	var $AnneeScolaire;
     var $Details;
-	var $colCMD;
+	var $tabCommandes;
 	//var $DateISOLEE;
 	var $DossierTirage;
 
@@ -242,7 +242,7 @@ class CEcole {
         $this->CodeEcole = $morceau[2];
 		$this->AnneeScolaire = $morceau[3];
 		if (count($morceau) > 4){$this->Details = $morceau[4];} 		
-		$this->colCMD = array();
+		$this->tabCommandes = array();
 		//$this->DateISOLEE = $dateIsole;
 		$this->DossierTirage = $DossierTirage;
     }
@@ -251,8 +251,8 @@ class CEcole {
 		$TableauDeFichierduDossierSource  = glob($monProjetSource->Dossier . '/*.*{jpg,jpeg}',GLOB_BRACE);		
 		$resultat = '';
 		//var_dump($TableauDeFichierduDossierSource);	
-		for($i = 0; $i < count($this->colCMD); $i++){
-			$resultat .= $this->colCMD[$i]->FichiersSourceNecessaires();	
+		for($i = 0; $i < count($this->tabCommandes); $i++){
+			$resultat .= $this->tabCommandes[$i]->FichiersSourceNecessaires();	
 		}	
 		$TableauDeFichierNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
 		$resultat = '';
@@ -281,26 +281,40 @@ class CEcole {
 				while(!feof($file)) {
 					$line = trim(fgets($file));
 					if (strpos($line, ';') > 1){
-						array_push($TableauDeProduitsDansDossierScript, $line);
+						array_push($TableauDeProduitsDansDossierScript, $line);						
 					}
 				}
 				fclose($file);	
 			}			
 		}
+		//var_dump($TableauDeProduitsDansDossierScript);
 		$resultat = '';
-		for($i = 0; $i < count($this->colCMD); $i++){
-			$resultat .= $this->colCMD[$i]->ProduitsNecessaires();	
+		for($i = 0; $i < count($this->tabCommandes); $i++){
+			$resultat .= $this->tabCommandes[$i]->ProduitsNecessaires();	
 		}	
 		//echo $resultat . '<br>';
 		$TableauDeProduitsNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
+		//var_dump($TableauDeProduitsNecessaire);
 		//var_dump($TableauDeProduitsNecessaire)  ;
 		$ligne = '';
 		for($i = 0; $i < count($TableauDeProduitsNecessaire); $i++){
 			if ($TableauDeProduitsNecessaire[$i] != '') {
-				if (!(in_array($TableauDeProduitsNecessaire[$i], $TableauDeProduitsDansDossierScript))) {
-					$ligne =  $TableauDeProduitsNecessaire[$i] . $GLOBALS['SeparateurInfoCatalogue'] . $DossierScriptsPS;
-					array_push($TableauDeProduitsManquants, $ligne);
+				$indiceTrouve = 0;
+				for($j = 0; $j < count($TableauDeProduitsDansDossierScript); $j++){
+					$NomProduitsCatalgue = explode(";", $TableauDeProduitsDansDossierScript[$j]);
+					if( $NomProduitsCatalgue[0] == $TableauDeProduitsNecessaire[$i]){
+						$indiceTrouve = $j;
+						$ligne =  $TableauDeProduitsNecessaire[$i] .';'. $NomProduitsCatalgue[1];//. $GLOBALS['SeparateurInfoCatalogue'];
+						array_push($TableauDeProduitsManquants, $ligne.';'.$this->CodeEcole.';'.$this->AnneeScolaire);
+						break;
+					}
 				}
+				if ($indiceTrouve == 0){
+					$ligne =  $TableauDeProduitsNecessaire[$i] .';';//. $GLOBALS['SeparateurInfoCatalogue'];
+					array_push($TableauDeProduitsManquants, $ligne.';'.$this->CodeEcole.';'.$this->AnneeScolaire);
+				}
+
+				// ?? array_push($TableauDeProduitsManquants, $ligne);
 			}			
 		}	
 		//var_dump($TableauDeProduitsManquants)  ;
@@ -309,7 +323,7 @@ class CEcole {
 		return $this->DossierTirage;		
     }   
 	function AjoutCMD($uneCMD){
-		array_push($this->colCMD,$uneCMD);
+		array_push($this->tabCommandes,$uneCMD);
     } 	
     function Affiche(&$gestionPage){
 		//$isParPage = ($numeroPage>0);
@@ -322,10 +336,10 @@ class CEcole {
 		//$resultat .= '<span class ="Titreecole">'.$this->Nom .'</span>';  
 		$resultat .= '<h1>'.$this->Nom .'</h1>';  	
 		$resultat .= '</div>';
-		for($i = 0; $i < count($this->colCMD); $i++){
+		for($i = 0; $i < count($this->tabCommandes); $i++){
 			//$resultat .= $gestionPage->AfficheDebutPage($this->Nom);
 			$resultat .= $gestionPage->AfficheDebutPage();
-			$resultat .= $this->colCMD[$i]->Affiche($gestionPage);	
+			$resultat .= $this->tabCommandes[$i]->Affiche($gestionPage);	
 			$resultat .= $gestionPage->AfficheFinPage();
 		}
 		//$resultat .= '</div>';	/////////////////////////////		
@@ -339,8 +353,8 @@ class CEcole {
 		$resultat .= $this->Nom ;  
 		$resultat .= '</div>';				
 		$resultat .= '<table class="TablePlanche">';	
-		for($i = 0; $i < count($this->colCMD); $i++){
-			$resultat .= $this->colCMD[$i]->AffichePlancheAProduire();	
+		for($i = 0; $i < count($this->tabCommandes); $i++){
+			$resultat .= $this->tabCommandes[$i]->AffichePlancheAProduire();	
 		}	
 		$resultat .= '</table>';
 	
@@ -354,8 +368,8 @@ class CEcole {
 		$resultat .= $this->Nom ;  
 		$resultat .= '</div>';				
 		$resultat .= '<table class="TableCommandes">';	
-		for($i = 0; $i < count($this->colCMD); $i++){
-			$resultat .= $this->colCMD[$i]->AfficheCommandesAProduire();	
+		for($i = 0; $i < count($this->tabCommandes); $i++){
+			$resultat .= $this->tabCommandes[$i]->AfficheCommandesAProduire();	
 		}	
 		$resultat .= '</table>';
 	
@@ -379,9 +393,9 @@ class CEcole {
 		//$strDate = MarqueurDateCommande($this->DateTirage);
 		$resultat ='@9999-99-99'.  '_' . $strDate .' (RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
 		//@2020-12-03_(ISOLEES) Elementaire La Chateigneraie-HAUTE GOULAINE_ECOLE-1017_Ecole web !@ 
-		for($i = 0; $i < count($this->colCMD); $i++){
+		for($i = 0; $i < count($this->tabCommandes); $i++){
 			$isEcris = false;
-			$resultat .= $this->colCMD[$i]->Ecrire($tabPlanche, $isEcris);		
+			$resultat .= $this->tabCommandes[$i]->Ecrire($tabPlanche, $isEcris);		
 			$isRecommande = $isRecommande || $isEcris;		
 		}		
 		if ($isRecommande) {
@@ -401,7 +415,7 @@ class CCommande {
     var $Adresse;
     var $CodePostal;
     var $Ville;
-	var $colPDT;
+	var $tabProduits;
     
     function __construct($str){
         //NEW UTF-8 $this->CmdClient = utf8_encode($str);
@@ -420,7 +434,7 @@ class CCommande {
 		if ($TailleInfo > 5){$this->Adresse = $this->Adresse . ' ' . $morceau[5];}  
         if ($TailleInfo > 6){$this->CodePostal = $morceau[6];}  
         if ($TailleInfo > 7){$this->Ville = $morceau[7];}   
-		$this->colPDT = array();		
+		$this->tabProduits = array();		
     } 
     function FormatNumCmd(){
         $numCMD = trim(str_replace("#", "", $this->Numero));
@@ -428,7 +442,7 @@ class CCommande {
         return $numCMD;
     }    
 	function AjoutPDT($unPDT){
-		array_push($this->colPDT,$unPDT);
+		array_push($this->tabProduits,$unPDT);
     }     
 	//function Affiche(&$isParPage){	
     function Affiche(&$gestionPage){
@@ -440,9 +454,9 @@ class CCommande {
 				//Le contenu ...
 				$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
 				
-					for($i = 0; $i < count($this->colPDT); $i++){
-						$resultat .= $this->colPDT[$i]->Affiche();
-						$nbPlanche = $nbPlanche + count($this->colPDT[$i]->colPlanche);
+					for($i = 0; $i < count($this->tabProduits); $i++){
+						$resultat .= $this->tabProduits[$i]->Affiche();
+						$nbPlanche = $nbPlanche + count($this->tabProduits[$i]->colPlanche);
 					}
 					// Afffichage Facture nb de planche
 					$resultat .= '<div class="ResumeCMD">'; //Debut du produit
@@ -463,8 +477,8 @@ class CCommande {
 				$resultat .= '<button  class="TitrecommandeRecherche"> Commande <span class="grosNumCMD"> ' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 				//Le contenu ...
 				$resultat .= '<div class="Contenucommande">';
-				for($i = 0; $i < count($this->colPDT); $i++){
-					$resultat .= $this->colPDT[$i]->Affiche();			
+				for($i = 0; $i < count($this->tabProduits); $i++){
+					$resultat .= $this->tabProduits[$i]->Affiche();			
 				}
 				$resultat .= '</div>';
 			$resultat .= '</div>';
@@ -476,8 +490,8 @@ class CCommande {
 	function AffichePlancheAProduire(){
 		$resultat = '';
 
-		for($i = 0; $i < count($this->colPDT); $i++){
-			$resultat .= $this->colPDT[$i]->AffichePlancheAProduire();			
+		for($i = 0; $i < count($this->tabProduits); $i++){
+			$resultat .= $this->tabProduits[$i]->AffichePlancheAProduire();			
 		}
 
 		return $resultat;				
@@ -485,8 +499,8 @@ class CCommande {
 	function FichiersSourceNecessaires(){
 		$resultat = '';
 
-		for($i = 0; $i < count($this->colPDT); $i++){
-			$resultat .= $this->colPDT[$i]->FichiersSourceNecessaires();			
+		for($i = 0; $i < count($this->tabProduits); $i++){
+			$resultat .= $this->tabProduits[$i]->FichiersSourceNecessaires();			
 		}
 
 		return $resultat;				
@@ -494,14 +508,14 @@ class CCommande {
 	function ProduitsNecessaires(){
 		$resultat = '';
 
-		for($i = 0; $i < count($this->colPDT); $i++){
-			$resultat .= $this->colPDT[$i]->ProduitsNecessaires();			
+		for($i = 0; $i < count($this->tabProduits); $i++){
+			$resultat .= $this->tabProduits[$i]->ProduitsNecessaires();			
 		}
 		return $resultat;
 	}		
 	function AfficheCommandesAProduire(){
 		$resultat = '';
-		//for($i = 0; $i < count($this->colPDT); $i++){
+		//for($i = 0; $i < count($this->tabProduits); $i++){
 			$resultat .= '<tr>
 			<td width="15%" class ="StyleNumCommande">'. $this->FormatNumCmd() . '</td>
 			<td width="85%" class ="StyleInfoClient"><b>' . $this->Prenom . ' ' . $this->Nom . '</b>, ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .'</td>
@@ -517,9 +531,9 @@ class CCommande {
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'. PHP_EOL; 
 	
-		for($i = 0; $i < count($this->colPDT); $i++){
+		for($i = 0; $i < count($this->tabProduits); $i++){
 			$isEcris = false;
-			$resultat .= $this->colPDT[$i]->Ecrire($tabPlanche, $isEcris);	
+			$resultat .= $this->tabProduits[$i]->Ecrire($tabPlanche, $isEcris);	
 			$isRecommande = $isRecommande || $isEcris;			
 		}		
 		if ($isRecommande) {

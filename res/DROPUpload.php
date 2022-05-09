@@ -116,7 +116,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 		$retourMSG .= '<div id="apiReponse" class="modal">
 		<div class="modal-content animate" >
 			<div class="imgcontainer">
-				<a href="CATPhotolab.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($target_file_seul) .'0" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
+				<a href="index.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($target_file_seul) .'0" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
 			</div>
 			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Vérification des scripts et fichiers source</h1>';	
 		$retourMSG .= '<table>
@@ -140,11 +140,12 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				*/
 
 
-				if($GLOBALS['isDebug'] && 0){
+				if($GLOBALS['isDebug'] && 1){
 					$retourMSG .= '<h1>UNIQUEMENT EN DEBUG</h1>';
 
 					$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-					$retourMSG .= BilanScriptPhotoshop($target_file);
+					$ProduitsManquant = 0;
+					$retourMSG .= BilanScriptPhotoshop($target_file,$ProduitsManquant);
 		
 					$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
 					$retourMSG .= PhotosManquantes($target_file);					

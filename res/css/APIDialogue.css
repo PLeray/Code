@@ -114,13 +114,13 @@ STRONG {/*Police Détails Fichier commande et commun  */
 
 .StyleKO{/*Police Détails Fichier commande et commun  */
     text-align: left;
-    font-size: 16px;
+    font-size: 20px;
     color: var(--boutonRouge);
     padding-left: 10px;
 }
 .StyleOK{/*Police Détails Fichier commande et commun  */
     text-align: left;
-    font-size: 16px;
+    font-size: 20px;
     color: var(--boutonVert);
     padding-left: 10px;
 }
@@ -177,8 +177,21 @@ td
 {     
     vertical-align: top;  
     /*border: 1px solid rgb(220, 6, 240); */
-   
+
 }
+
+.TableProduit{
+    font-size: 40px;
+  /*Tableau initial
+  border: 1px solid red;*/
+}
+.TableProduit td
+{     
+    padding-left: 30px;;
+    /*border: 1px solid rgb(220, 6, 240); */
+    vertical-align:middle;
+}
+
 
 .TablePlanche
 {
@@ -193,7 +206,7 @@ td
 .TablePlanche td
 {
     /* border: 1px solid rgb(115, 250, 126);*/
-    
+    vertical-align:middle;
 }
 
 .TableCommandes
@@ -213,11 +226,35 @@ td
 
 /* 
 
-
-
-
-
 Set a style for all buttons */
+
+img.OKKOIMG {
+    width: 30px;
+	margin: 3%;
+	
+}
+
+img {
+  vertical-align:middle;
+}
+
+.icone { /*Police texte Adresse */
+    text-align: center;
+	font-size: 30px;
+
+    color: var(--boutonVert);
+    letter-spacing: 2px;
+	padding-left: 10px;
+	line-height: 14px;
+	font-family: "Courier New", Times, serif;
+    text-decoration: none;
+}
+
+.icone:hover {
+    color: var(--boutonRouge);
+    cursor: pointer;
+}
+
 .OK, .KO {
 	text-decoration:none; 
     color: white;
@@ -233,6 +270,11 @@ Set a style for all buttons */
 .OK {
     background-color: var(--boutonVert);
 }
+.OKDisabled{ 
+    color: white;
+    background-color: var( --FondLigneTabGrisFonce);
+    cursor: not-allowed;
+  }
 
 .KO {
     background-color: var(--boutonRouge);
