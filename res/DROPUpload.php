@@ -51,22 +51,23 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 					$RetourConversion = ConvertirEXCELCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file);
 				}
 				if ($RetourConversion) {					
-					$retourTraitementMSG .= "<h3>Pour créer les planches de la commande : '. $target_file .'</h3>"  ;
-					$retourTraitementMSG .= "<h2>" .	utf8_encode(substr($target_file ,14,-5)) . "</h2>";					
+					$retourTraitementMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
+					
+					$retourTraitementMSG .= "<h3>" .	utf8_encode(substr($target_file ,14,-5)) . "</h3>";					
 					$uploadOk = 2; // Flag test si OK
 					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
 				}	
 				else {					
-					$retourTraitementMSG .= '<h2>' .	utf8_encode(substr($target_file ,14,-5)) . '</h2>';	
-					$retourTraitementMSG .= '<h3>'. $GLOBALS['ERREUR_EnCOURS'] .'</h3>'  ;
+					$retourTraitementMSG .= '<h3>' .	utf8_encode(substr($target_file ,14,-5)) . '</h3>';	
+					$retourTraitementMSG .= '<h2>'. $GLOBALS['ERREUR_EnCOURS'] .'</h2>'  ;
 					$target_file = '';
 					$uploadOk = 0;
 				}
 			} 
 			else {
 				if (move_uploaded_file($_FILES["myfile"]["tmp_name"], $target_file)) {
-					$retourTraitementMSG .= "<h3>Pour créer les planches de la commande : </h3>"  ;
-					$retourTraitementMSG .= "<h2>" .	substr(basename($_FILES['myfile']['name']) ,0,-4) . " </h2>";
+					$retourTraitementMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
+					$retourTraitementMSG .= "<h3>" .	substr(basename($_FILES['myfile']['name']) ,0,-4) . " </h3>";
 					$uploadOk = 2; // Flag test si OK
 				}					
 				else {
@@ -76,10 +77,6 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			}
 			$CMDhttpLocal ='';
 			if ($uploadOk == 2) {				
-				$retourTraitementMSG .= '<h3>Démarrez le plug-in PhotoLab pour Photoshop<br>(PLUGIN-PhotoLab.jsxbin dans le dossier : /PhotoLab/Code )</h3>';			
-				$retourTraitementMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-				//$CMDhttpLocal = '?RECFileLab=' . urlencode(basename($_FILES['myfile']['name']));	
-			
 				
 				$mesInfosFichier = new CINFOfichierLab($target_file); 
 				//$CMDAvancement ='';
@@ -118,39 +115,21 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			<div class="imgcontainer">
 				<a href="index.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($target_file_seul) .'0" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
 			</div>
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Vérification des scripts et fichiers source</h1>';	
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Vérification des scripts et fichiers source pour 
+			<font size="-1">' . $target_file_seul .'0</font></h1>';
 		$retourMSG .= '<table>
 		<tr>
 			<td width="50%">';	
+		
 
 			
 			$retourMSG .= '	<div class="Planchecontainer">';
-			//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
 
 			if ($uploadOk == 2) {
-				/* 
-				$retourMSG .= '<h1>scripts Photoshop</h1>';
-				// A REMETTRE !!! 
-				$monGroupeCmdes = new CGroupeCmdes($target_file);
-	
-				$retourMSG .= $monGroupeCmdes->AffichePlancheAProduire(); 
-				// A REMETTRE !!!
-				$retourMSG .= '<h1>Photos necessaires</h1>';
-				$retourMSG .= 'Photos manquantes : 0';
-				*/
-
-
-				if($GLOBALS['isDebug'] && 1){
-					$retourMSG .= '<h1>UNIQUEMENT EN DEBUG</h1>';
-
-					$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-					$ProduitsManquant = 0;
-					$retourMSG .= BilanScriptPhotoshop($target_file,$ProduitsManquant);
+				$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
+				$ProduitsManquant = 0;
+				$retourMSG .= BilanScriptPhotoshop($target_file,$ProduitsManquant);
 		
-					$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
-					$retourMSG .= PhotosManquantes($target_file);					
-				}				
-
 			}
 
 
@@ -158,10 +137,37 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 		$retourMSG .= '</td>
 						<td width="50%">';	
 		$retourMSG .= '	<div class="msgcontainer">';
+
+		$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+		$retourMSG .= PhotosManquantes($target_file);
+
+		$retourMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
+		if($ProduitsManquant>0){
+			$retourMSG .= '<h3>Vous ne pouvez pas créer votre commande, car un ou plusieurs produits de la commande ne sont pas définis!</h3>';
+			$retourMSG .= "<h2>Corrigez les erreurs de produit</h2>";
+
+			$retourMSG .= '<h3>cliquez sur le crayon en face le produit en rouge pour editer le produit</h3>';
+		}else{
+			$retourMSG .= "<h2>Démarrez le plug-in PhotoLab pour Photoshop</h2>";
+			$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
+			$retourMSG .= '<h3>Le plug-in PhotoLab (PLUGIN-PhotoLab.jsxbin) se trouve dans le dossier : /PhotoLab/Code</h3><br>';
+		}
+
+
+
+
+			if ($uploadOk == 2) {
+				if($ProduitsManquant==0){
+					$retourMSG .= '<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) 
+							.'" class="OK" title="Valider et retour écran général des commandes">OK</a>';
+				}
+			}else{
+				$retourMSG .= $retourTraitementMSG;
+			}
 		
-			$retourMSG .= $retourTraitementMSG;
+			
 	
-	$retourMSG .= ' </div>';	
+	$retourMSG .= '<br><br> </div>';	
 	$retourMSG .= '</td>
 	</tr>
  </table>	';	

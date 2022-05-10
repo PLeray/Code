@@ -22,6 +22,70 @@ if (isset($_POST['isDebug']) ){
 if (isset($_GET['isDebug'])) { // Test connexion l'API
 	$isDebug = ($_GET['isDebug'] == 'Debug');
 }
+$CodeEcole = '';
+$AnneeScolaire = '';
+
+if (isset($_GET['CodeEcole'])) { $CodeEcole = $_GET['CodeEcole'];}
+if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
+
+$PDTNumeroLigne = 0;
+$PDTDenomination = $InviteNomProduit;
+$PDTRecadrage = '(facultatif)';
+$PDTTaille = '(facultatif)';
+$PDTTransformation = '(facultatif)';
+$PDTTeinte = '(facultatif)';
+if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
+if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
+if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
+if (isset($_GET['PDTTaille'])) { $PDTTaille = $_GET['PDTTaille'];}
+if (isset($_GET['PDTTransformation'])) { $PDTTransformation = $_GET['PDTTransformation'];}
+if (isset($_GET['PDTTeinte'])) { $PDTTeinte = $_GET['PDTTeinte'];}
+
+if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
+if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
+if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
+if (isset($_POST['PDTTaille'])) { $PDTTaille = $_POST['PDTTaille'];}
+if (isset($_POST['PDTTransformation'])) { $PDTTransformation = $_POST['PDTTransformation'];}
+if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
+
+$PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
+$PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
+$PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
+$PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
+
+if ($isDebug) { 
+	if ((isset($_GET['PDTTaille']))||(isset($_POST['PDTTaille']))) { 
+		echo '<br> CodeEcole : ' . $CodeEcole;
+		echo '<br> AnneeScolaire : ' . $AnneeScolaire;
+		echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
+		echo '<br> PDTDenomination : ' . $PDTDenomination;
+		/**/
+		echo '<br> PDTRecadrage > ' . $PDTRecadrage;
+		echo '<br> PDTTaille > ' . $PDTTaille;
+		echo '<br> PDTTransformation > ' . $PDTTransformation;
+		echo '<br> PDTTeinte > ' . $PDTTeinte;
+		
+		
+	}
+}
+
+$monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
+
+//MAJFichierCatalogue
+if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
+    echo 'MAJFichierCatalogue';
+	if($PDTNumeroLigne > 0){
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+    }elseif($PDTNumeroLigne == 0){ // On Ajoute cette ligne du fichier
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+
+    }elseif($PDTNumeroLigne < 0){ // On suprime cette ligne du fichier
+        
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+    }
+}
+
+
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
@@ -70,8 +134,10 @@ elseif (isset($_GET['apiUI_CONFIRMEtat']) && isset($_GET['apiEtat'])) {
 elseif (isset($_GET['apiFichierChgEtat']) && isset($_GET['apiEtat'])) { 
 	ChangeEtat($_GET['apiFichierChgEtat'], $_GET['apiEtat']);
 } 
-elseif (isset($_GET['apiPhotoshop'])) { 
-	echo $EnteteHTML . Etape_20($_GET['apiPhotoshop']). $BotomHTML;	
+elseif (isset($_GET['apiCMDEnCours'])) { 
+	$isImport = false;
+	if (isset($_GET['isImport'])) { $isImport = ($_GET['isImport']=='true');} 	
+	echo $EnteteHTML . Etape_20($_GET['apiCMDEnCours'], $isImport). $BotomHTML;	
 } 
 elseif (isset($_GET['apiDemandeNOMImpression'])) { 
 	echo $EnteteHTML . Etape_30($_GET['apiFichierChgEtat']). $BotomHTML;	
@@ -224,26 +290,43 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 	return $retourMSG;	
 }
 
-function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
+function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut compiler !
+	
+	$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
+	$ProduitsManquant = 0;
+	$Bilan = BilanScriptPhotoshop($target_file,$ProduitsManquant);	
+	
 	$retourMSG = 
 	'<div id="apiReponse" class="modal">
 		<div class="modal-content animate" >
-			<div class="imgcontainer">
-				<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>
-				
-			</div>
-			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 2 : Créer la commande : 
-			<font size="-1">'.utf8_encode(substr($strAPI_fichierLAB,0,-1)).'</font></h1>';	
+			<div class="imgcontainer">';
+			$retourMSG .= '<table>';			
+	if($isImport){		
+		$retourMSG .= '<a href="index.php' . ArgumentURL() . '&apiSupprimer=' . urlencode($strAPI_fichierLAB) .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>';
+	}else{
+		$retourMSG .= '<a href="CATPhotolab.php' . ArgumentURL() .'" class="close" title="Annuler et retour écran général des commandes">&times;</a>';
+	}				
+	$retourMSG .= '</div>';
+	if($isImport){		
+		$retourMSG .= '<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Vérification des scripts et fichiers source pour ';
+	}else{
+		$retourMSG .= '<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 2 : Créer la commande : ';
+	}	
+			
+
+
+
+			$retourMSG .= '<font size="-1">'.utf8_encode($strAPI_fichierLAB).'</font></h1>';	
 			
 	
 			$retourMSG .= '<table>
 			<tr>
 				<td width="50%">';	
 				$retourMSG .= '	<div class="Planchecontainer">';
-				$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
+
 				$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
-				$ProduitsManquant = 0;
-				$retourMSG .= BilanScriptPhotoshop($target_file,$ProduitsManquant);
+				$retourMSG .= $Bilan;
+
 				//echo $ProduitsManquant;
 	
 
@@ -261,13 +344,19 @@ function Etape_20($strAPI_fichierLAB){ // Mesage il faut compiler !
 
 			$retourMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
 			$retourMSG .= "<h3>".utf8_encode(substr($strAPI_fichierLAB,0,-1))."</h3>";
-			$retourMSG .= "<h2>Démarrez le plug-in PhotoLab pour Photoshop</h2>";
-			$retourMSG .= '<BR><BR><img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
-			$retourMSG .= '<h3>Le plug-in PhotoLab (PLUGIN-PhotoLab.jsxbin) se trouve dans le dossier : /PhotoLab/Code</h3><br>';
-			$retourMSG .= '<br><br>';
 			if($ProduitsManquant>0){
-				$retourMSG .= '<a href="#" class="OKDisabled" title="Valider et Retour écran général des commandes">OK</a>';
+				$retourMSG .= '<h3>Vous ne pouvez pas créer votre commande, car un ou plusieurs produits de la commande ne sont pas définis!</h3>';
+				$retourMSG .= "<h2>Corrigez les erreurs de produit</h2>";
+	
+				$retourMSG .= '<h3>cliquez sur le crayon en face le produit en rouge pour editer le produit</h3>';
 			}else{
+				$retourMSG .= "<h2>Démarrez le plug-in PhotoLab pour Photoshop</h2>";
+				$retourMSG .= '<img src="img/LogoPSH.png" alt="Image de fichier" width="25%">';
+				$retourMSG .= '<h3>Le plug-in PhotoLab (PLUGIN-PhotoLab.jsxbin) se trouve dans le dossier : /PhotoLab/Code</h3><br>';
+			}
+
+			$retourMSG .= '<br><br>';
+			if($ProduitsManquant == 0){
 				$retourMSG .= '<a href="'.($ProduitsManquant>0?"#":"CATPhotolab.php" . ArgumentURL()).'" class="OK" title="Valider et Retour écran général des commandes">OK</a>';
 			}
 			$retourMSG .= '<br><br><br>';

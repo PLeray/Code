@@ -908,7 +908,7 @@ function LienEtatLab($fichier, $EtatVise) {
 		}
 
 	}else {
-		$lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
+		$lien = 'APIDialogue.php' . ArgumentURL() . '&apiCMDEnCours=' . urlencode($fichier) ;
 	}
 	return $lien . '"  title="'. TitleEtatTirage($fichier, $EtatVise) . '">';
 }
@@ -920,7 +920,7 @@ function LienEtatCMDWEB($fichier, $Etat) {
 		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
 		$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
 	} else {
-		$lien =  'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
+		$lien =  'APIDialogue.php' . ArgumentURL() . '&apiCMDEnCours=' . urlencode($fichier) ;
 	}
 	return $lien . '"  title="'. TitleEtatCMDWEB($fichier, $Etat) . '">';
 }
@@ -933,7 +933,7 @@ function LienFichierLab($fichier) {
 	$LienFichier = "#";
 	switch ($Extension) {
 		case ".lab0":
-			$LienFichier = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($fichier) ;
+			$LienFichier = 'APIDialogue.php' . ArgumentURL() . '&apiCMDEnCours=' . urlencode($fichier) ;
 			break;
 		default:
 			$LienFichier = "CMDRecherche.php". $Environnement . "&fichierLAB=" . urlencode($fichier);
@@ -950,7 +950,7 @@ function LienVoirMiseEnPochette($infosFichier) {
 	$Lien = "#";
 	switch ($Extension) {
 		case ".lab0":
-			$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
+			$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiCMDEnCours=' . urlencode($infosFichier->Fichier) ;
 			break;
 		default:
 			$Lien = "CMDCartonnage.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
@@ -970,7 +970,7 @@ function LienRecherchePlanche($infosFichier) {
 	$Lien = "#";
 	switch ($Extension) {
 		case ".lab0":
-			$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiPhotoshop=' . urlencode($infosFichier->Fichier) ;
+			$Lien = 'APIDialogue.php' . ArgumentURL() . '&apiCMDEnCours=' . urlencode($infosFichier->Fichier) ;
 			break;
 		default:
 			$Lien = "CMDRecherche.php". $Environnement . "&fichierLAB=" . urlencode($infosFichier->Fichier);
@@ -1108,7 +1108,8 @@ function CodeLienImageWebArboDossier($mesInfosFichier){
 
 
 function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
-    $resultat = ''; 
+
+	$resultat = ''; 
     $monGroupeCmdes = new CGroupeCmdes($target_file);
     $monTableauDeProduits = array_unique($monGroupeCmdes->ListeProduitsManquants());
     if ($monTableauDeProduits != ''){
@@ -1119,15 +1120,16 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
                 //$resultat .= $monTableauDeProduits[$i] . 'qsdqsd<br>';	
                 //$tableauProduitsManquants = explode($GLOBALS['SeparateurInfoCatalogue'], $monTableauDeProduits[$i]); 
 				$refProduitsManquants = explode(';', $monTableauDeProduits[$i]); 
-
+				$CommandeRetour=urlencode(substr($target_file,1+strripos($target_file, '/')));
+				//echo $CommandeRetour;
 				if ($refProduitsManquants[1] == ''){ // NODEFINITION pas défini
 					$resultat .=  '<tr class="StyleKO"><td >' . $refProduitsManquants[0] . '</td >
-								<td >' . LienEditionProduit($refProduitsManquants). '</td ></tr>';
+								<td >' . LienEditionProduit($refProduitsManquants,$CommandeRetour). '</td ></tr>';
 					$nbProduitsManquant = $nbProduitsManquant + 1;
 				}
 				else{
 					$resultat .=  '<tr class="StyleOK"><td >' . $refProduitsManquants[0] . '</td >
-								<td w>' . LienEditionProduit($refProduitsManquants). '</td ></tr>';
+								<td >' . LienEditionProduit($refProduitsManquants,$CommandeRetour). '</td ></tr>';
 				}                
             }		
         }
@@ -1136,12 +1138,12 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
     return $resultat;
 }
 
-function LienEditionProduit($leProduit) {
-	$ParamCProjetSource = '&CodeEcole=' . $leProduit[2] . '&AnneeScolaire=' . $leProduit[3];
+function LienEditionProduit($leProduit, $CommandeRetour) {
+	$ParamCProjetSource = '&CodeEcole=' . $leProduit[2] . '&AnneeScolaire=' . $leProduit[3].  '&isImport=true';
 	$NomProduit = $leProduit[0];
 	if ($leProduit[1]==''){ // Pas de produit défini
 		$Script = explode('_', $leProduit[1]);        
-		$DefinitionProduit = '';
+		$DefinitionProduit = '&PDTDenomination=' . urlencode($NomProduit) ;
 		$LienImage = '<img class="OKKOIMG" src="img/KO.png" alt="Pas de produit défini">';		
 	}else{
 		$Script = explode('_', $leProduit[1]);        
@@ -1152,9 +1154,20 @@ function LienEditionProduit($leProduit) {
 		'&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');
 		$LienImage = '<img class="OKKOIMG" src="img/OK.png" alt="Produit défini">';		
 	}
+
+	if($CommandeRetour == ''){
+		$Lien = 'CMDEditionProduits.php' . ArgumentURL($ParamCProjetSource. $DefinitionProduit.
+				'&pageRetour=' . urlencode(basename($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']))) ;
+	}else{
+		//APIDialogue.php?codeMembre=PSL&isDebug=Debug&apiCMDEnCours=2022-05-10-L2-2022-02-28-Elementaire+Les+Plantes-NANTES+2021-2022.lab0
+		$CommandeRetour = 'APIDialogue.php' .ArgumentURL('&isImport=true'. '&apiCMDEnCours='. $CommandeRetour);
+		//'&apiCMDEnCours=2022-05-10-L2-2022-02-28-Elementaire+Les+Plantes-NANTES+2021-2022.lab0'
+		
+		$Lien = 'CMDEditionProduits.php' . ArgumentURL($ParamCProjetSource. $DefinitionProduit.
+				'&pageRetour=' . urlencode($CommandeRetour)) ;
+	}
 	//echo '&pageRetour=' . urlencode(basename($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']));
-	$Lien = 'CMDEditionProduits.php' . ArgumentURL($ParamCProjetSource. $DefinitionProduit.
-			'&pageRetour=' . urlencode(basename($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']))) ;
+
 
 
 	return $LienImage.'<a href="'. $Lien . '" class ="icone" title="Editer le produit : '. $leProduit[0].'"> 🖉 </a>';
@@ -1171,13 +1184,23 @@ function PhotosManquantes($target_file){
         $TableauFichiersManquants = explode($GLOBALS['SeparateurInfoPlanche'], $maListeDeFichier);    
         for($i = 0; $i < count($TableauFichiersManquants); $i++){
             if ($TableauFichiersManquants[$i] != '') {
-                $NombrePhotosManquante += 1;
-                $resultat .= $TableauFichiersManquants[$i] . '<br>';	
+                //$NombrePhotosManquante += 1;
             }		
-        }
+        }		
+		//$TableauFichiersManquants = array_unique($TableauFichiersManquants,SORT_LOCALE_STRING);
+		//var_dump(array_unique($TableauFichiersManquants));
+		foreach (array_unique($TableauFichiersManquants,SORT_LOCALE_STRING) as &$value) {
+            if ($value != '') {
+                $NombrePhotosManquante += 1;
+            }	
+			$resultat .= $value . '<br>';	
+		}
+
+
+
     }
     $resultat = '<span class="Style'.(($NombrePhotosManquante)?'KO':'OK').'"> Photos manquantes : ' . $NombrePhotosManquante .
-				'<img class="OKKOIMG" src="img/'.(($NombrePhotosManquante)?'KO':'OK').'.png"><br>' . $resultat .'</span>';
+				'<img class="OKKOIMG" src="img/'.(($NombrePhotosManquante)?'KO':'OK').'.png"><br><H3>' . $resultat .'</H3></span>';
     return $resultat;
 }
 
@@ -1200,5 +1223,61 @@ function ListeProduitsSelonCatalogue($monCatalogue){
 	return $CataloguePRODUITS;
 }
 
+function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+    $Supression = ($PDTNumeroLigne<0);
+    $PDTNumeroLigne = abs($PDTNumeroLigne);
+    $monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';
+	$CataloguePRODUITS = array();
+	if (file_exists($monCatalogueScriptPS)){ 
+		$file = fopen($monCatalogueScriptPS, "r");
+		if ($file) {
+			while(!feof($file)) {
+				$line = trim(fgets($file));
+				if (strpos($line, ';') > 1){
+					array_push($CataloguePRODUITS, $line);
+				}
+			}
+			fclose($file);	
+		}
+        $file = fopen($monCatalogueScriptPS, 'w');
+
+        $lefichier ='';
+
+        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
+            $morceau = explode(';', $CataloguePRODUITS[$i]);   
+            if(($morceau[0]==$PDTDenomination) &&  ($i != $PDTNumeroLigne)){
+                $PDTDenomination .='> (Doublon) ! Modifiez le nom du produit...';
+            }          
+        }        
+        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){ 
+            //echo '<br>PDTDenomination ' . $PDTDenomination ;
+            if ($i == $PDTNumeroLigne){
+                if(!$Supression){
+                    $lefichier .= $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n";
+                    //fputs($file, $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n");
+                }                
+            }else{
+                $lefichier .= $CataloguePRODUITS[$i]. "\n";
+                //fputs($file, $CataloguePRODUITS[$i]. "\n");
+            }            
+        }
+        if ($PDTNumeroLigne == 0) { 
+            $lefichier = $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n" . $lefichier;  
+        }        
+        $lefichier = "Description;Code\n" . $lefichier;        
+        
+        fputs($file, $lefichier);
+        fclose($file);
+        //header('Location: '. htmlspecialchars($_SERVER['PHP_SELF']). ArgumentURL('&CodeEcole=' . $monProjetSource->CodeEcole . '&AnneeScolaire=' . $monProjetSource->AnneeScolaire));
+
+    }
+}
+
+function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+    $leCodeProduit = ($PDTTaille ==''?'':$PDTTaille);
+    $leCodeProduit .= ($PDTTransformation ==''?'': '_'. $PDTTransformation);
+    $leCodeProduit .= ($PDTTeinte ==''?'': '_'. $PDTTeinte);
+    return $leCodeProduit;
+}
 
 ?>

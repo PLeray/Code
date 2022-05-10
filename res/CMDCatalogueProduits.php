@@ -51,7 +51,7 @@ $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
 $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
-//echo 'SUPRIMER : ' .$PDTNumeroLigne;
+//MAJFichierCatalogue
 if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
     if($PDTNumeroLigne > 0){
         MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
@@ -198,61 +198,5 @@ function LienSupression($NomProduit, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire
 }
 
 
-function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
-    $Supression = ($PDTNumeroLigne<0);
-    $PDTNumeroLigne = abs($PDTNumeroLigne);
-    $monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';
-	$CataloguePRODUITS = array();
-	if (file_exists($monCatalogueScriptPS)){ 
-		$file = fopen($monCatalogueScriptPS, "r");
-		if ($file) {
-			while(!feof($file)) {
-				$line = trim(fgets($file));
-				if (strpos($line, ';') > 1){
-					array_push($CataloguePRODUITS, $line);
-				}
-			}
-			fclose($file);	
-		}
-        $file = fopen($monCatalogueScriptPS, 'w');
-
-        $lefichier ='';
-
-        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
-            $morceau = explode(';', $CataloguePRODUITS[$i]);   
-            if(($morceau[0]==$PDTDenomination) &&  ($i != $PDTNumeroLigne)){
-                $PDTDenomination .='> (Doublon) ! Modifiez le nom du produit...';
-            }          
-        }        
-        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){ 
-            //echo '<br>PDTDenomination ' . $PDTDenomination ;
-            if ($i == $PDTNumeroLigne){
-                if(!$Supression){
-                    $lefichier .= $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n";
-                    //fputs($file, $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n");
-                }                
-            }else{
-                $lefichier .= $CataloguePRODUITS[$i]. "\n";
-                //fputs($file, $CataloguePRODUITS[$i]. "\n");
-            }            
-        }
-        if ($PDTNumeroLigne == 0) { 
-            $lefichier = $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n" . $lefichier;  
-        }        
-        $lefichier = "Description;Code\n" . $lefichier;        
-        
-        fputs($file, $lefichier);
-        fclose($file);
-        //header('Location: '. htmlspecialchars($_SERVER['PHP_SELF']). ArgumentURL('&CodeEcole=' . $monProjetSource->CodeEcole . '&AnneeScolaire=' . $monProjetSource->AnneeScolaire));
-
-    }
-}
-
-function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
-    $leCodeProduit = ($PDTTaille ==''?'':$PDTTaille);
-    $leCodeProduit .= ($PDTTransformation ==''?'': '_'. $PDTTransformation);
-    $leCodeProduit .= ($PDTTeinte ==''?'': '_'. $PDTTeinte);
-    return $leCodeProduit;
-}
 
 ?>

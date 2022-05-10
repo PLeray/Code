@@ -11,12 +11,16 @@ $isDebug = file_exists ('../debug.txt');
 if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 
 
-if (isset($_GET['unNomProduit'])) { $unNomProduit = $_GET['unNomProduit'];}
+//if (isset($_GET['unNomProduit'])) { $unNomProduit = $_GET['unNomProduit'];}
+$isImport = false;
+if (isset($_GET['isImport'])) { $isImport = ($_GET['isImport'] == 'true');}
 
 $pageRetour = 'CMDCatalogueProduits.php';
 if (isset($_GET['pageRetour'])) { $pageRetour = $_GET['pageRetour'];}
 
-
+if($isDebug){
+	echo 'un pageRetour : ' . $pageRetour;
+}
 $CodeEcole = '';
 $AnneeScolaire = '';
 
@@ -91,6 +95,12 @@ if($isDebug){
                         
                     }
                 }
+if ($isImport){
+    $ValeurNomDefaut = $PDTDenomination;
+}else{
+    $ValeurNomDefaut = ($PDTNumeroLigne?$PDTDenomination:'');
+}
+
                 ?>
 
 <h3>Dossier de script : <?php echo $monProjetSource->ScriptsPS; ?></h3>
@@ -101,7 +111,7 @@ if($isDebug){
 
 <h4>Nom du produit : 
 <input type="text" id="zoneTexteNomCommande" placeholder="<?php echo $PDTDenomination; ?>"
-                            value="<?php echo ($PDTNumeroLigne?$PDTDenomination:''); ?>" name="PDTDenomination" required>
+                            value="<?php echo $ValeurNomDefaut; ?>" name="PDTDenomination" required>
 <input type="text" id="zonePDTNumeroLigne" placeholder="Nom de votre commande..."
                             value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>                            
 </h4>
@@ -163,7 +173,7 @@ if($isDebug){
 <?php
 
 function RetourEcranPrecedent($monProjet){
-    $RetourEcran = $GLOBALS['pageRetour'];// . ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire) ;
+    $RetourEcran = $GLOBALS['pageRetour']. '&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;
 	return $RetourEcran ;
 }
 /*

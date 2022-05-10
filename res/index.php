@@ -1,7 +1,7 @@
 <?php
 setlocale(LC_TIME, 'french');
-
 include_once 'APIConnexion.php';
+include_once 'CATFonctions.php';
 
 $codeMembre = '0';
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
@@ -23,6 +23,13 @@ if (isset($_GET['versionDistante'])) {
 		MAJPhotoLab($_GET['versionDistante']);
 		if ($GLOBALS['isDebug']){echo 'Version en ligne : ' .$GLOBALS['VERSIONLOCAL'];}	
 	}
+}
+if (isset($_GET['apiSupprimer'])) { 
+	$RechargerPage = true;
+	if ($isDebug){
+		echo '<br>apiSupprimer   : ' . $_GET['apiSupprimer']  ;
+	}			
+	SuprimeFichierCMDetDossier(utf8_decode($_GET['apiSupprimer']));
 }
 ?>
 

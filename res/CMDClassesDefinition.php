@@ -247,24 +247,34 @@ class CEcole {
 		$this->DossierTirage = $DossierTirage;
     }
     function ListeFichiersSourcesManquants(){
-		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);		
-		$TableauDeFichierduDossierSource  = glob($monProjetSource->Dossier . '/*.*{jpg,jpeg}',GLOB_BRACE);		
-		$resultat = '';
-		//var_dump($TableauDeFichierduDossierSource);	
-		for($i = 0; $i < count($this->tabCommandes); $i++){
-			$resultat .= $this->tabCommandes[$i]->FichiersSourceNecessaires();	
-		}	
-		$TableauDeFichierNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
-		$resultat = '';
-		for($i = 0; $i < count($TableauDeFichierNecessaire); $i++){
-			if ($TableauDeFichierNecessaire[$i] != '') {
-				$TableauDeFichierNecessaire[$i] = $monProjetSource->Dossier .'/'. $TableauDeFichierNecessaire[$i];
-				if (!(in_array($TableauDeFichierNecessaire[$i], $TableauDeFichierduDossierSource))) {
-					$resultat .=  $TableauDeFichierNecessaire[$i] . $GLOBALS['SeparateurInfoPlanche'];
-				}
-			}			
+		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);
+			
+		if ($GLOBALS['isDebug']){
+			//echo 'monProjetSource->Dossier '. $monProjetSource->Dossier;
 
 		}	
+		$resultat = 'Il n\'y a pas de dossier source correspondant au code : ' . $this->CodeEcole . '" et l\'année ' . $this->AnneeScolaire;
+		if ($monProjetSource->Dossier != ''){
+			$TableauDeFichierduDossierSource  = glob($monProjetSource->Dossier . '/*.*{jpg,jpeg}',GLOB_BRACE);		
+			$resultat = '';
+			//var_dump($TableauDeFichierduDossierSource);	
+			for($i = 0; $i < count($this->tabCommandes); $i++){
+				$resultat .= $this->tabCommandes[$i]->FichiersSourceNecessaires();	
+			}	
+			$TableauDeFichierNecessaire = explode($GLOBALS['SeparateurInfoPlanche'], $resultat);
+			$resultat = '';
+			for($i = 0; $i < count($TableauDeFichierNecessaire); $i++){
+				if ($TableauDeFichierNecessaire[$i] != '') {
+					$TableauDeFichierNecessaire[$i] = $monProjetSource->Dossier .'/'. $TableauDeFichierNecessaire[$i];
+					if (!(in_array($TableauDeFichierNecessaire[$i], $TableauDeFichierduDossierSource))) {
+						$resultat .=  $TableauDeFichierNecessaire[$i] . $GLOBALS['SeparateurInfoPlanche'];
+					}
+				}			
+
+			}	
+		}	
+		
+
 		return $resultat;
     }   
 
