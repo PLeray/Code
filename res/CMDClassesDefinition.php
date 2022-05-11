@@ -2,6 +2,7 @@
 $SeparateurInfoCatalogue = '£';
 $SeparateurInfoPlanche = '§';
 $SeparateurInfoPlancheLab0 = '_';
+
 $DateISOLEE = '2020-09-31';
 $FichierDossierRECOMMANDE = "9999-99-99-(RECOMMANDES)-EN-COURS";
 $FichierDossierCMDESLIBRE = "8888-88-88-(COMMANDES LIBRES)-EN-COURS";
@@ -20,19 +21,22 @@ class CGroupeCmdes {
 	var $DateISOLEE;
 	var $colEColes;
 	var $DossierTirage;	
+	var $NbCommande;	
 	
     function __construct($myfileName){
 		$this->tabFICHIERLabo = $myfileName;
-		$myfile = fopen($myfileName, "r") or die('Unable to open file : ' .$myfileName);
-		$this->tabFICHIERLabo = array();
-		// Output one line until end-of-file
-		
-		//$GLOBALS['DateISOLEE'] = substr($myfileName, strripos($myfileName, '/') + 1,10);
-				//echo '$myfileName : '. substr($myfileName, -1);
-		while(!feof($myfile)) {
-			array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
-		}
-		fclose($myfile);	
+		if (file_exists($myfileName)){
+			$myfile = fopen($myfileName, "r") or die('Unable to open file : ' .$myfileName);
+			$this->tabFICHIERLabo = array();
+			// Output one line until end-of-file
+			
+			//$GLOBALS['DateISOLEE'] = substr($myfileName, strripos($myfileName, '/') + 1,10);
+					//echo '$myfileName : '. substr($myfileName, -1);
+			while(!feof($myfile)) {
+				array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
+			}
+			fclose($myfile);
+		}	
 
 		$this->DateISOLEE = substr($myfileName, strripos($myfileName, '/') + 1,10);		
 		$this->colEColes = array();
@@ -107,9 +111,7 @@ class CGroupeCmdes {
 
 		//$resultat = '';
 		for($i = 0; $i < count($this->colEColes); $i++){
-			//array_push($TableauDeProduitsManquants, $this->colEColes[$i]->ListeProduitsManquants($TableauDeProduitsManquants));
 			$this->colEColes[$i]->ListeProduitsManquants($TableauDeProduitsManquants);
-			//$resultat .= $this->colEColes[$i]->ListeProduitsManquants() . $GLOBALS['SeparateurInfoPlanche'];			
 		}
 		return $TableauDeProduitsManquants;
 	}		
@@ -673,8 +675,8 @@ class CPlanche {
 			$morceau = explode($GLOBALS['SeparateurInfoPlancheLab0'], $this->FichierPlanche);
 			
 			$this->FichierSource = $morceau[0];
-			$this->Taille = $morceau[1];
-			$this->Type = $morceau[2];
+			$this->Taille = (count($morceau) > 1)?$morceau[1]:'';
+			$this->Type = (count($morceau) > 2)?$morceau[2]:'';
 			//var_dump($morceau) ;
 		}
     }   	
@@ -816,15 +818,24 @@ class CProjetSource {
 		}
 	}
 	function DropListeScriptsRecadrages($valDefaut = ''){ 
-		$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
-		$laDropliste .= '<option value="">(rien)</option>';
-		$lesScripts = $this->TabScriptsPhotoshop();		
+		//$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
+		//$laDropliste .= '<option value="">(rien)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();	
+		$laDropliste = '';	
         for($i = 1; $i < count($lesScripts); $i++){
             if (substr($lesScripts[$i],0,9) == 'Portrait-') {
 				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
 				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
             }		
         }
+		if($laDropliste == ''){
+			$laDropliste = 'VIDE';
+
+		} else{
+			$laDropliste = '<option value="(facultatif)">(facultatif)</option>
+						<option value="">(rien)</option>'
+						. $laDropliste;
+		}
 		return $laDropliste;
 	}	
 	function DropListeScriptsTailles($valDefaut = ''){ 

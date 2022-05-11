@@ -8,7 +8,7 @@
 
 app.bringToFront();
 
-var g_NumVersion = 0.861;
+var g_NumVersion = 0.865;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
@@ -62,7 +62,7 @@ var g_TabListeNomsClasses = {};
 
 var g_ToutFichier = false;
 
-var g_RepSCRIPTSPhotoshop = 'PHOTOLAB-STUDIO2';
+var g_RepSCRIPTSPhotoshop = 'PHOTOLAB';
 
 var g_RepSOURCE;
 

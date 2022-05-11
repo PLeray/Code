@@ -1115,11 +1115,11 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
     if ($monTableauDeProduits != ''){
         $resultat = '<table width="100%" class = "TableProduit">';   
 		$nbProduitsManquant = 0;
-        for($i = 0; $i < count($monTableauDeProduits); $i++){
-            if ($monTableauDeProduits[$i] != '') {
-                //$resultat .= $monTableauDeProduits[$i] . 'qsdqsd<br>';	
-                //$tableauProduitsManquants = explode($GLOBALS['SeparateurInfoCatalogue'], $monTableauDeProduits[$i]); 
-				$refProduitsManquants = explode(';', $monTableauDeProduits[$i]); 
+		//var_dump($monTableauDeProduits);
+
+		foreach ($monTableauDeProduits as &$value) {
+            if ($value != '') {
+				$refProduitsManquants = explode(';', $value); 
 				$CommandeRetour=urlencode(substr($target_file,1+strripos($target_file, '/')));
 				//echo $CommandeRetour;
 				if ($refProduitsManquants[1] == ''){ // NODEFINITION pas défini
@@ -1131,8 +1131,8 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
 					$resultat .=  '<tr class="StyleOK"><td >' . $refProduitsManquants[0] . '</td >
 								<td >' . LienEditionProduit($refProduitsManquants,$CommandeRetour). '</td ></tr>';
 				}                
-            }		
-        }
+            }	
+		}
     }
     $resultat .= '</table>';
     return $resultat;
@@ -1140,18 +1140,21 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
 
 function LienEditionProduit($leProduit, $CommandeRetour) {
 	$ParamCProjetSource = '&CodeEcole=' . $leProduit[2] . '&AnneeScolaire=' . $leProduit[3].  '&isImport=true';
-	$NomProduit = $leProduit[0];
+	//$NomProduit = $leProduit[0];
 	if ($leProduit[1]==''){ // Pas de produit défini
-		$Script = explode('_', $leProduit[1]);        
-		$DefinitionProduit = '&PDTDenomination=' . urlencode($NomProduit) ;
+       
+		$DefinitionProduit = '&PDTDenomination=' . urlencode($leProduit[0]) ;
 		$LienImage = '<img class="OKKOIMG" src="img/KO.png" alt="Pas de produit défini">';		
-	}else{
-		$Script = explode('_', $leProduit[1]);        
-		$DefinitionProduit = '&PDTDenomination=' . urlencode($NomProduit) .
-		'&PDTRecadrage=' . ''.
+	}else{		       
+		$DefinitionProduit = '&PDTDenomination=' . urlencode($leProduit[0]);
+		$DefinitionProduit .= '&PDTCodeScripts=' . urlencode($leProduit[1]);
+
+		/*$Script = explode('_', $leProduit[1]); 
+		$DefinitionProduit .= '&PDTRecadrage=' . ''.
 		'&PDTTaille=' . urlencode($Script[0]).
 		'&PDTTransformation=' . (count($Script)>1? urlencode($Script[1]):'').
-		'&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');
+		'&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');*/
+
 		$LienImage = '<img class="OKKOIMG" src="img/OK.png" alt="Produit défini">';		
 	}
 
@@ -1182,14 +1185,15 @@ function PhotosManquantes($target_file){
 
     if ($maListeDeFichier != ''){
         $TableauFichiersManquants = explode($GLOBALS['SeparateurInfoPlanche'], $maListeDeFichier);    
-        for($i = 0; $i < count($TableauFichiersManquants); $i++){
+        /*for($i = 0; $i < count($TableauFichiersManquants); $i++){
             if ($TableauFichiersManquants[$i] != '') {
                 //$NombrePhotosManquante += 1;
             }		
-        }		
+        }	
+		*/	
 		//$TableauFichiersManquants = array_unique($TableauFichiersManquants,SORT_LOCALE_STRING);
 		//var_dump(array_unique($TableauFichiersManquants));
-		foreach (array_unique($TableauFichiersManquants,SORT_LOCALE_STRING) as &$value) {
+		foreach (array_unique($TableauFichiersManquants) as &$value) {
             if ($value != '') {
                 $NombrePhotosManquante += 1;
             }	
@@ -1222,8 +1226,8 @@ function ListeProduitsSelonCatalogue($monCatalogue){
 	}
 	return $CataloguePRODUITS;
 }
-
-function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+//function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$CodeProduit){
     $Supression = ($PDTNumeroLigne<0);
     $PDTNumeroLigne = abs($PDTNumeroLigne);
     $monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';
@@ -1253,7 +1257,8 @@ function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$
             //echo '<br>PDTDenomination ' . $PDTDenomination ;
             if ($i == $PDTNumeroLigne){
                 if(!$Supression){
-                    $lefichier .= $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n";
+                    $lefichier .= $PDTDenomination .';'. $CodeProduit . "\n";
+					//$lefichier .= $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n";
                     //fputs($file, $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n");
                 }                
             }else{
@@ -1262,7 +1267,8 @@ function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$
             }            
         }
         if ($PDTNumeroLigne == 0) { 
-            $lefichier = $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n" . $lefichier;  
+            $lefichier = $PDTDenomination .';'. $CodeProduit . "\n" . $lefichier;  
+			//$lefichier = $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n" . $lefichier;
         }        
         $lefichier = "Description;Code\n" . $lefichier;        
         
@@ -1273,11 +1279,12 @@ function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$
     }
 }
 
+/*
 function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
     $leCodeProduit = ($PDTTaille ==''?'':$PDTTaille);
     $leCodeProduit .= ($PDTTransformation ==''?'': '_'. $PDTTransformation);
     $leCodeProduit .= ($PDTTeinte ==''?'': '_'. $PDTTeinte);
     return $leCodeProduit;
 }
-
+*/
 ?>

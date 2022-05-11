@@ -64,7 +64,7 @@ var g_TabListeNomsClasses = {};
 
 var g_ToutFichier = false;
 
-var g_RepSCRIPTSPhotoshop = 'PHOTOLAB-STUDIO2';
+var g_RepSCRIPTSPhotoshop = 'PHOTOLAB';
 
 var g_RepSOURCE;
 

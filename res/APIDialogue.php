@@ -30,44 +30,39 @@ if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 $PDTNumeroLigne = 0;
 $PDTDenomination = $InviteNomProduit;
-$PDTRecadrage = '(facultatif)';
-$PDTTaille = '(facultatif)';
-$PDTTransformation = '(facultatif)';
-$PDTTeinte = '(facultatif)';
-if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
+
+
 if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
-if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
-if (isset($_GET['PDTTaille'])) { $PDTTaille = $_GET['PDTTaille'];}
-if (isset($_GET['PDTTransformation'])) { $PDTTransformation = $_GET['PDTTransformation'];}
-if (isset($_GET['PDTTeinte'])) { $PDTTeinte = $_GET['PDTTeinte'];}
-
-if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
 if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
-if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
-if (isset($_POST['PDTTaille'])) { $PDTTaille = $_POST['PDTTaille'];}
-if (isset($_POST['PDTTransformation'])) { $PDTTransformation = $_POST['PDTTransformation'];}
-if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
+if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
+if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
 
-$PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
+$PDTCodeScripts = '(facultatif)_(facultatif)_facultatif)_(facultatif)';
+if (isset($_GET['PDTCodeScripts'])) { $PDTCodeScripts = $_GET['PDTCodeScripts'];}
+if (isset($_POST['PDTCodeScripts'])) { $PDTCodeScripts = $_POST['PDTCodeScripts'];}
+
+$Script = explode('_', $PDTCodeScripts);   
+$PDTTaille = urlencode($Script[0]);
+$PDTTransformation = (count($Script)>1? $Script[1]:'');
+$PDTTeinte = (count($Script)>2? $Script[2]:'');
+$PDTRecadrage = (count($Script)>3? $Script[3]:'');
+
 $PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
 $PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
 $PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
+$PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
 
-if ($isDebug) { 
-	if ((isset($_GET['PDTTaille']))||(isset($_POST['PDTTaille']))) { 
-		echo '<br> CodeEcole : ' . $CodeEcole;
-		echo '<br> AnneeScolaire : ' . $AnneeScolaire;
-		echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
-		echo '<br> PDTDenomination : ' . $PDTDenomination;
-		/**/
-		echo '<br> PDTRecadrage > ' . $PDTRecadrage;
-		echo '<br> PDTTaille > ' . $PDTTaille;
-		echo '<br> PDTTransformation > ' . $PDTTransformation;
-		echo '<br> PDTTeinte > ' . $PDTTeinte;
-		
-		
-	}
-}
+					if ($isDebug) { 
+						echo '<br> CodeEcole : ' . $CodeEcole;
+						echo '<br> AnneeScolaire : ' . $AnneeScolaire;
+						echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
+						echo '<br> PDTDenomination : ' . $PDTDenomination;
+						/**/
+						echo '<br> PDTRecadrage > ' . $PDTRecadrage;
+						echo '<br> PDTTaille > ' . $PDTTaille;
+						echo '<br> PDTTransformation > ' . $PDTTransformation;
+						echo '<br> PDTTeinte > ' . $PDTTeinte;
+					}
 
 $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
@@ -83,6 +78,7 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
         
         MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
     }
+	MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
 }
 
 
@@ -357,7 +353,16 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 
 			$retourMSG .= '<br><br>';
 			if($ProduitsManquant == 0){
-				$retourMSG .= '<a href="'.($ProduitsManquant>0?"#":"CATPhotolab.php" . ArgumentURL()).'" class="OK" title="Valider et Retour écran général des commandes">OK</a>';
+				if($isImport){
+					$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
+					$CMDhttpLocal .= '&CMDnbPlanches=' . $mesInfosFichier->NbPlanches;
+					$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename(substr($mesInfosFichier->Fichier,0,-1))));	
+					$retourMSG .= '<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" 
+					class="OK" title="Valider et Retour écran général des commandes">OK</a>';					
+				}else{
+					$retourMSG .= '<a href="'.($ProduitsManquant>0?"#":"CATPhotolab.php" . ArgumentURL()).'" 
+					class="OK" title="Valider et Retour écran général des commandes">OK</a>';
+				}
 			}
 			$retourMSG .= '<br><br><br>';
 			$retourMSG .= ' </div>';	

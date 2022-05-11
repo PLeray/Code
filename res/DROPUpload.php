@@ -46,9 +46,9 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				//Verif si fichier de commande web iso ou groupe ou pas bon !
 				//$TabCSV = array();
 				if (isFichierLumysCSV($_FILES["myfile"]["tmp_name"])) {					
-					$RetourConversion = ConvertirCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file);
+					$RetourConversion = ConvertirLUMYSCMDcsvEnlab($_FILES["myfile"]["tmp_name"], $target_file);
 				}else{
-					$RetourConversion = ConvertirEXCELCMDcsvEnlab('CatalogueProduits.csv', $_FILES["myfile"]["tmp_name"], $target_file);
+					$RetourConversion = ConvertirEXCELCMDcsvEnlab($_FILES["myfile"]["tmp_name"], $target_file);
 				}
 				if ($RetourConversion) {					
 					$retourTraitementMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
@@ -91,7 +91,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename($target_file_seul)));	
 				
 				$retourTraitementMSG .= '<br><br>
-					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
+					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK ANCIEN</a>			
 					<br><br>';				
 			}		
 		}
@@ -139,9 +139,15 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 		$retourMSG .= '	<div class="msgcontainer">';
 
 		$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 
+		echo $target_file_seul ;
 		$retourMSG .= PhotosManquantes($target_file);
 
 		$retourMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
+
+
+			if ($uploadOk == 2) {		
+
+				
 		if($ProduitsManquant>0){
 			$retourMSG .= '<h3>Vous ne pouvez pas créer votre commande, car un ou plusieurs produits de la commande ne sont pas définis!</h3>';
 			$retourMSG .= "<h2>Corrigez les erreurs de produit</h2>";
@@ -156,7 +162,6 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 
 
 
-			if ($uploadOk == 2) {
 				if($ProduitsManquant==0){
 					$retourMSG .= '<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) 
 							.'" class="OK" title="Valider et retour écran général des commandes">OK</a>';

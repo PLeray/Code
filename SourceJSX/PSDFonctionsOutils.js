@@ -479,8 +479,14 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						}								
 						// IMPORT FOND D'ici
 						if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
-							//reussiteTraitement = reussiteTraitement && 
-							ImporterAutrePhoto(g_Rep_GABARITS + unProduit.Type + '.png');					
+							reussiteTraitement = reussiteTraitement && 
+							ImporterAutrePhoto(g_Rep_GABARITS + g_RepSCRIPTSPhotoshop + '/' + unProduit.Type + '.png');			
+							
+							
+							g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole);
+
+
+
 						}							
 						// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 						if (unProduit.Type != "PORTRAIT" 
@@ -661,7 +667,7 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					// IMPORT FOND D'ici
 					if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
 						//reussiteTraitement = reussiteTraitement && 
-						reussiteTraitement = reussiteTraitement && ImporterAutrePhoto(g_Rep_GABARITS + unProduit.Type + '.png');					
+						reussiteTraitement = reussiteTraitement && ImporterAutrePhoto(g_Rep_GABARITS + g_RepSCRIPTSPhotoshop + unProduit.Type + '.png');					
 					}
 
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////

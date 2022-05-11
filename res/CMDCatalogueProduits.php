@@ -23,24 +23,43 @@ if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 $PDTNumeroLigne = 0;
 $PDTDenomination = $InviteNomProduit;
+
+
+if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
+if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
+if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
+if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
+
+$PDTCodeScripts = '(facultatif)_(facultatif)_facultatif)_(facultatif)';
+if (isset($_GET['PDTCodeScripts'])) { $PDTCodeScripts = $_GET['PDTCodeScripts'];}
+if (isset($_POST['PDTCodeScripts'])) { $PDTCodeScripts = $_POST['PDTCodeScripts'];}
+
+$Script = explode('_', $PDTCodeScripts);   
+$PDTTaille = urlencode($Script[0]);
+$PDTTransformation = (count($Script)>1? $Script[1]:'');
+$PDTTeinte = (count($Script)>2? $Script[2]:'');
+$PDTRecadrage = (count($Script)>3? $Script[3]:'');
+
+/* 
+
+
+
 $PDTRecadrage = '(facultatif)';
 $PDTTaille = '(facultatif)';
 $PDTTransformation = '(facultatif)';
 $PDTTeinte = '(facultatif)';
-if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
-if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
+
 if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
 if (isset($_GET['PDTTaille'])) { $PDTTaille = $_GET['PDTTaille'];}
 if (isset($_GET['PDTTransformation'])) { $PDTTransformation = $_GET['PDTTransformation'];}
 if (isset($_GET['PDTTeinte'])) { $PDTTeinte = $_GET['PDTTeinte'];}
 
-if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
-if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
+
 if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
 if (isset($_POST['PDTTaille'])) { $PDTTaille = $_POST['PDTTaille'];}
 if (isset($_POST['PDTTransformation'])) { $PDTTransformation = $_POST['PDTTransformation'];}
 if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
-
+*/
 
 $PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
 $PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
@@ -53,6 +72,7 @@ $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire);
 
 //MAJFichierCatalogue
 if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
+    /*
     if($PDTNumeroLigne > 0){
         MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
     }elseif($PDTNumeroLigne == 0){ // On Ajoute cette ligne du fichier
@@ -62,6 +82,9 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
         
         MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
     }
+    */
+    MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+    header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
 }
 
 
@@ -114,7 +137,7 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
         if ($TabProduits[$i] != '') {
             $morceau = explode(';', $TabProduits[$i]);
             $retourMSG .= '<tr>
-                            <td>' . $morceau[0] . '</td>
+                            <td><H3>' . $morceau[0] . '</H3></td>
                             <td>' . $morceau[1] . '</td>
                         
                             <td>' .LienEdition($TabProduits[$i], $i,$monProjetSource->CodeEcole,$monProjetSource->AnneeScolaire). '</td>
@@ -158,11 +181,13 @@ function LienEdition($Ligne, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire){
         $TitreBouton = '+';
         $TagTitleBouton = 'Ajouter un nouveau produit : ';
         $DefinitionProduit = '&PDTNumeroLigne=' . $PDTNumeroLigne . 
-        '&PDTDenomination=' . urlencode($NomProduit) .
-        '&PDTRecadrage=' . ''.
-        '&PDTTaille=' . ''.
-        '&PDTTransformation=' . ''.
-        '&PDTTeinte=' . '';
+        '&PDTDenomination=' . urlencode($NomProduit) ;
+        $DefinitionProduit .= '&PDTCodeScripts=';
+   
+        /*$DefinitionProduit .= '&PDTRecadrage=' . ''.
+                            '&PDTTaille=' . ''.
+                            '&PDTTransformation=' . ''.
+                            '&PDTTeinte=' . '';*/
     }else{
         $morceau = explode(';', $Ligne);
         $Script = explode('_', $morceau[1]);        
@@ -171,11 +196,13 @@ function LienEdition($Ligne, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire){
         $TitreBouton = '🖉';
         $TagTitleBouton = 'Editer le produit : '.$NomProduit;
         $DefinitionProduit = '&PDTNumeroLigne=' . $PDTNumeroLigne . 
-        '&PDTDenomination=' . urlencode($NomProduit) .
-        '&PDTRecadrage=' . ''.
-        '&PDTTaille=' . urlencode($Script[0]).
-        '&PDTTransformation=' . (count($Script)>1? urlencode($Script[1]):'').
-        '&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');
+        '&PDTDenomination=' . urlencode($NomProduit) ;
+        $DefinitionProduit .= '&PDTCodeScripts=' . $morceau[1];
+        
+        /*$DefinitionProduit .= '&PDTRecadrage=' . ''.
+                            '&PDTTaille=' . urlencode($Script[0]).
+                            '&PDTTransformation=' . (count($Script)>1? urlencode($Script[1]):'').
+                            '&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');*/
         
     }
 

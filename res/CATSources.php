@@ -116,7 +116,8 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECLibreCode']) && isset($_
 	<tr class="header" >
 		<th style="width:90px;"><H3>Référence Ecole</H3></th>	
 		<th style="width:165px;"><H3>Dossier 'actions' Photoshop</H3></th>		
-		<th style="width:105px;"><H3>Année scolaire</H3></th>
+		<th style="width:120px;"><H3>Année scolaire</H3></th>
+		<th style="width:135px;"><H3>Catalogue produit</H3></th>
 		<th  align="left" class="titreProjet"><H4>Nom projet</H4></th>	
 		<th style="width:200px;"><H3>Contenus Projet</H3></th>		
 		<th  style="width:180px;"><H3>Fichiers de présentation Web</H3></th>		
@@ -193,8 +194,9 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV, $AnneeScolaire){
 					<td class="mini" ><div class="tooltip">' . $TabCSV[$i]["Rep Scripts PS"] .'
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>	
 					<td class="titreProjet" ><div class="tooltip">' . $TabCSV[$i]["AnneeScolaire"] .'
-								<span class="tooltiptext">'. $Dossier . '</span></div></td>		
-					<td align="left" class="titreProjet" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>
+								<span class="tooltiptext">'. $Dossier . '</span></div></td>	';
+					$affiche_Tableau .= '<td>'. CodeLienCatalogue($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '</td>';
+					$affiche_Tableau .= '<td align="left" class="titreProjet" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>';						
 					$nbFichier = NBfichiersDOSSIER($Dossier);
 					$affiche_Tableau .= '<td>'. CodeLienImageDossier($Dossier,$nbFichier) . '</td>';				
@@ -226,7 +228,14 @@ function CodeLienImageDossier($Dossier, $nbFichier){
 	
 	return $codeHTML;
 }
+function CodeLienCatalogue($CodeEcole, $AnneeScolaire){	
+	$ImageLien = 'src="img/btnCatalogue.png"';
+	$LienPage = 'CMDCatalogueProduits.php'. ArgumentURL('&CodeEcole=' . $CodeEcole . '&AnneeScolaire=' . $AnneeScolaire);
 
+	return  '<a href="' . $LienPage .'" title="Voir le catalogue produits de cette école"><img ' . $ImageLien. 'class="imgArbo"></a>';
+	
+	return $codeHTML;
+}
 
 function LienImgSource($codeProjet, $anneeProjet) {
 	$Environnement = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
@@ -384,8 +393,6 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire, $s
 			//Les commande existantes
 			for($i = 3; $i < count($Tabl) ; $i++){		
 				if ($Tabl[$i] != '' ) {
-					//str_replace("§","<br>",$Tabl[$i])
-					//fputs($file, str_replace("§","§\n",$Tabl[$i]));
 					fputs($file, $Tabl[$i]);
 				}				
 			}	

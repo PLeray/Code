@@ -1,5 +1,4 @@
 <?php
-/*include 'CataloguePdtWEB.php';*/
 include_once 'CMDClassesDefinition.php';
 include_once 'APIConnexion.php';
 
@@ -8,7 +7,7 @@ $ProduitsNONLABO = array(
 '10x15cm_TAPIS-SOURIS'
 );
 
-$CataloguePdtWEB = array();
+$CataloguePdtENCOURS = array();
 
 $ERREUR_EnCOURS = '';
 
@@ -19,23 +18,16 @@ $ProduitPhoto_EnCOURS = '';
 $TabResumeProduit = array();
 $TabResumeFormat = array();
 
-//echo ConvertirCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
+//echo ConvertirLUMYSCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
 
-//function ConvertirCMDcsvEnlab(&$TabCSV, $fichierCSV, &$target_file)
-function ConvertirCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_file)
-{	
+function ConvertirLUMYSCMDcsvEnlab($fichierCSV, &$target_file){	
 	$valRetour = false;
-	//	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
-	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  $CatalogueProduits, ';'); // New 22-10
-	//var_dump( $GLOBALS['CataloguePdtWEB']) ;
+
 	$TabCSV = array();
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');
 	$isCMDUnique = is_numeric(substr($target_file ,-11,-5));
 	$PrefixeTirage = '';
-	// A Sup
-	//var_dump( $TabCSV[0]) ;
-	// A Sup
 	
 	if ($isCMDUnique){
 		$NumCMD = substr($target_file ,-11,-5) ;
@@ -92,8 +84,7 @@ function ConvertirCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_file)
 		for($i = 0; $i < $NbLignes; $i++)
 		{ 
 			$affiche_Tableau .= EcrireEcole($TabCSV[$i]["Nom de l'ecole"].'-'
-										. strtoupper($TabCSV[$i]["Ville ecole"]) .'_'
-										//. ($TabCSV[$i]["Code interne"] == ''?$TabCSV[$i]["Reference"]:$TabCSV[$i]["Code interne"]) . '_Ecole web !'
+										. strtoupper($TabCSV[$i]["Ville ecole"]) .'_'										
 										. ReferenceECOLE($TabCSV[$i]["Reference école"], $TabCSV[$i]["Nom du projet"]) . '_Ecole web Lumys!'
 										, $PrefixeTirage);   
 										
@@ -116,13 +107,6 @@ function ConvertirCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_file)
 							. EcrireBilanCMD(count(array_unique(array_column($TabCSV, 'Num de commande')))) . '<br>' 
 							. $affiche_Tableau;
 							
-						
-							
-							
-							
-							
-		//echo $affiche_Tableau;
-		
 		
 		if ($GLOBALS['ERREUR_EnCOURS'] != ''){
 			//$affiche_Tableau = '';
@@ -153,19 +137,16 @@ function ConvertirCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_file)
 }
 
 
-function SupressionCommandesVide()
-{	
+function SupressionCommandesVide(){	
 	//§§§§§§§§§§§§§§§§§§§§§§§§§§return $CodeEcole . '_' . substr($NOMPROJETanneeScolaire, -9);
 }
 
 
-function ReferenceECOLE($CodeEcole , $NOMPROJETanneeScolaire)
-{	
+function ReferenceECOLE($CodeEcole , $NOMPROJETanneeScolaire){	
 	return $CodeEcole . '_' . substr($NOMPROJETanneeScolaire, -9);
 }
 
-function EcrireBilanCMD( $NbCommandes)
-{
+function EcrireBilanCMD( $NbCommandes){
 	try {
 		$unBilan = 'Le groupe de commandes comprend ' . $NbCommandes . ' commandes.%';
 		$unTab = array_count_values($GLOBALS['TabResumeProduit']);
@@ -193,24 +174,41 @@ function EcrireBilanCMD( $NbCommandes)
 	}
 }
 
-function EcrireEcole($Ecole, $PrefixeTirage)
-{
+function EcrireEcole($Ecole, $PrefixeTirage){
 	$valRetour = '';
 	if ($Ecole != $GLOBALS['Ecole_EnCOURS']) {   
 		$GLOBALS['Ecole_EnCOURS'] = $Ecole;
 		//PAs suprimer accent 1-10
 		//$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . $Ecole . '@ <br>';
-		$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . SUPRAccents($Ecole) . '@ <br>';
+		$valRetour = '@' . date("Y-m-d") . '_' . $PrefixeTirage . SUPRAccents($Ecole) . '@';
 		
+		//var_dump( $valRetour) ;
+		$EcoleEnCours = new CEcole($valRetour,'@');
+		$monProjetSource = new CProjetSource($EcoleEnCours->CodeEcole, $EcoleEnCours->AnneeScolaire); 
+		if ($monProjetSource->ScriptsPS != ''){
+			$GLOBALS['CataloguePdtENCOURS'] = csv_to_array($GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv', ';'); 
+		}else{
+			$GLOBALS['ERREUR_EnCOURS'] = 'Erreur : Pas de catalogue trouvé pour l\'ecole  : ' . $Ecole ;
+			$GLOBALS['CataloguePdtENCOURS'] = array();
+		}
+
+		
+		
+		
+		//var_dump( $GLOBALS['CataloguePdtENCOURS']) ;
+		//echo $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv <br> <br>';
+		//$AncienCAT = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
+		//var_dump( $AncienCAT) ;
+
+		$valRetour .= ' <br>';
 	}
 	//return utf8_decode($valRetour);
 	return $valRetour;
 }
 
-function EcrireClient($Client)
-{
+function EcrireClient($Client){
 	$valRetour = '';
-	if ($Client != $GLOBALS['Client_EnCOURS']) {
+	if ($Client != $GLOBALS['Client_EnCOURS']){
 		$GLOBALS['Client_EnCOURS'] = $Client;
 		$valRetour = '#' . $Client . '# <br>';
 	}
@@ -218,8 +216,7 @@ function EcrireClient($Client)
 	return $valRetour;
 }
 
-function EcrireCommande($CMD, $NomPhoto, $Classe)
-{
+function EcrireCommande($CMD, $NomPhoto, $Classe){
 	$valRetour = '';
 	foreach ($CMD as $key => $value) {
 		$value = intval($value);
@@ -235,56 +232,62 @@ function EcrireCommande($CMD, $NomPhoto, $Classe)
 	return $valRetour;
 }
 
-function EcrireProduitPhoto($NomPhoto, $ProduitPhoto)
-{
+function EcrireProduitPhoto($NomPhoto, $ProduitPhoto){
     $valRetour = '';
 	//echo utf8_decode(strtolower($ProduitPhoto)) . '<br>';
 	//echo $ProduitPhoto . '<br>';
-	//var_dump( $GLOBALS['CataloguePdtWEB'][1]) ;
-	//$leCodeProduit = $GLOBALS['CataloguePdtWEB'][strtolower($ProduitPhoto)];
-	//$leCodeProduit = $GLOBALS['CataloguePdtWEB'][$ProduitPhoto];
-	//echo ' sqfqsfdqsf  ' . $GLOBALS['CataloguePdtWEB'][0]['Description']. ' sqfqsfdqsf <br>';
+	//var_dump( $GLOBALS['CataloguePdtENCOURS'][1]) ;
+	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][strtolower($ProduitPhoto)];
+	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][$ProduitPhoto];
+	//echo ' sqfqsfdqsf  ' . $GLOBALS['CataloguePdtENCOURS'][0]['Description']. ' sqfqsfdqsf <br>';
 	$leCodeProduit ='';
 	$leCodeFormat ='';
 
-	for($i = 0; $i < count($GLOBALS['CataloguePdtWEB']) ; $i++){
-		//echo $GLOBALS['CataloguePdtWEB'][$i]['Description'] . '<br>';
-		if ($GLOBALS['CataloguePdtWEB'][$i]['Description'] == $ProduitPhoto){
-			$leCodeProduit = $GLOBALS['CataloguePdtWEB'][$i]['Code'];
+	for($i = 0; $i < count($GLOBALS['CataloguePdtENCOURS']) ; $i++){
+		//echo $GLOBALS['CataloguePdtENCOURS'][$i]['Description'] . '<br>';
+		if ($GLOBALS['CataloguePdtENCOURS'][$i]['Description'] == $ProduitPhoto){
+			$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][$i]['Code'];
 			break; 
 		}
 	} 	
+	//var_dump($GLOBALS['CataloguePdtENCOURS']) ;
+	//echo ' KJhlkjhlkjh:kj ' . count($GLOBALS['CataloguePdtENCOURS']);	
 
-	$tabCodesProduit = explode('.', $leCodeProduit);
-	
-	for($i = 0; $i < count($tabCodesProduit) ; $i++){
-		if ($tabCodesProduit[$i]){
-			///Pour classement Lumys
-			if (substr($NomPhoto, -4 )== '-WEB'){$NomPhoto = substr($NomPhoto, 0, -4);}
-			if (substr($NomPhoto, -7 )== '-WEB_nb'){$NomPhoto = substr($NomPhoto, 0, -7) . '_nb';}
-			
-			if (substr($NomPhoto ,-3 )== '_nb'){
-				$valRetour .= substr($NomPhoto ,0,-3 ) . '.jpg_' . $tabCodesProduit[$i] . '_NOIR-ET-BLANC<br>';
-			}
-			else{
-				$valRetour .= str_pad($NomPhoto, 4, "0", STR_PAD_LEFT) . '.jpg_' . $tabCodesProduit[$i] . '<br>';			
-			}
-			array_push($GLOBALS['TabResumeProduit'],$ProduitPhoto);
-			if (! in_array($tabCodesProduit[$i], $GLOBALS['ProduitsNONLABO'])){
-				$leCodeFormat = stristr($tabCodesProduit[$i] , '_', true);
-				//array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);
-				if ($leCodeFormat){
-					array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);	
+	if (count($GLOBALS['CataloguePdtENCOURS']) > 0 ){			
+		$tabCodesProduit = explode($GLOBALS['SeparateurInfoPlanche'], $leCodeProduit); // En Cas de produit multi-planches
+		
+		for($i = 0; $i < count($tabCodesProduit) ; $i++){
+			if ($tabCodesProduit[$i]){
+				///Pour classement Lumys
+				if (substr($NomPhoto, -4 )== '-WEB'){$NomPhoto = substr($NomPhoto, 0, -4);}
+				if (substr($NomPhoto, -7 )== '-WEB_nb'){$NomPhoto = substr($NomPhoto, 0, -7) . '_nb';}
+				
+				if (substr($NomPhoto ,-3 )== '_nb'){
+					$valRetour .= substr($NomPhoto ,0,-3 ) . '.jpg_' . $tabCodesProduit[$i] . '_NOIR-ET-BLANC<br>';
 				}
 				else{
-					$GLOBALS['ERREUR_EnCOURS'] = 'Erreur Ecriture Produit Photo ! ajoutez : "' . $ProduitPhoto . '" dans CatalogueProduits.csv';
-					//echo ' PROBLEME  ' . $valRetour . ' PROBLEME  ' . $valRetour . '  PROBLEME  ' . $valRetour . '  PROBLEME ';
+					$valRetour .= str_pad($NomPhoto, 4, "0", STR_PAD_LEFT) . '.jpg_' . $tabCodesProduit[$i] . '<br>';			
 				}
-				/**/
-					
+				array_push($GLOBALS['TabResumeProduit'],$ProduitPhoto);
+				if (! in_array($tabCodesProduit[$i], $GLOBALS['ProduitsNONLABO'])){
+					$leCodeFormat = stristr($tabCodesProduit[$i] , '_', true);
+					//array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);
+					array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);	
+					/*
+					if ($leCodeFormat){
+						
+					}
+					else{
+						$GLOBALS['ERREUR_EnCOURS'] = 'Erreur Ecriture Produit Photo ! ajoutez : "' . $ProduitPhoto . '" dans votre catalogue produits';
+						//echo ' PROBLEME  ' . $valRetour . ' PROBLEME  ' . $valRetour . '  PROBLEME  ' . $valRetour . '  PROBLEME ';
+					}
+					*/
+						
+				}
 			}
-		}
-	} 
+		} 
+	}
+
 
 	return $valRetour;
 }
@@ -303,12 +306,10 @@ function SUPRAccents($str, $charset='utf-8' ) {
     return $str;
 }
 
-function ConvertirEXCELCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_file)
-{	
+function ConvertirEXCELCMDcsvEnlab($fichierCSV, &$target_file){	
 	$valRetour = false;
-	//	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
-	$GLOBALS['CataloguePdtWEB'] = csv_to_array($GLOBALS['repGABARITS'] .  $CatalogueProduits, ';'); // New 22-10
-	//var_dump( $GLOBALS['CataloguePdtWEB']) ;
+	//$GLOBALS['CataloguePdtENCOURS'] = csv_to_array($GLOBALS['repGABARITS'] .  $CatalogueProduits, ';'); // New 22-10
+	//var_dump( $GLOBALS['CataloguePdtENCOURS']) ;
 	$TabCSV = array();
 	echo '<br><br>';
 	$TabCSV = csv_to_array($fichierCSV, ';');
@@ -410,9 +411,7 @@ function ConvertirEXCELCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_fil
 
 			$tabLigneFichier = explode("<br>", $txtFichier);
 			$corLigneFichier = array();
-/*			
-			var_dump($tabLigneFichier);
-*/			
+			
 			for($i = 0; $i < count($tabLigneFichier); $i++)
 			{ 
 				if (!((substr($tabLigneFichier[$i] ,0,1)=='#')
@@ -423,9 +422,6 @@ function ConvertirEXCELCMDcsvEnlab($CatalogueProduits, $fichierCSV, &$target_fil
 					array_push($corLigneFichier,$tabLigneFichier[$i]);
 				}
 			}
-			//echo "<br><br><br>";
-			//var_dump($corLigneFichier);
-
 
 			# Ouverture en mode écriture
 			$fileopen=(fopen("$target_file",'w'));

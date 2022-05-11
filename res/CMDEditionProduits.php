@@ -19,7 +19,7 @@ $pageRetour = 'CMDCatalogueProduits.php';
 if (isset($_GET['pageRetour'])) { $pageRetour = $_GET['pageRetour'];}
 
 if($isDebug){
-	echo 'un pageRetour : ' . $pageRetour;
+	echo 'un pageRetour : ' . $pageRetour . '<br>';
 }
 $CodeEcole = '';
 $AnneeScolaire = '';
@@ -31,26 +31,63 @@ $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
 $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
+$NumPlanche = 0;
+if (isset($_GET['NumPlanche'])) { $NumPlanche = intval($_GET['NumPlanche']);}
+
 $PDTNumeroLigne = 0;
 $PDTDenomination = 'Mon nom de produit';
-$PDTRecadrage = '(facultatif)';
+
+if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
+if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
+if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
+if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
+
+$PDTCodeScripts = '(facultatif)_(facultatif)_facultatif)_(facultatif)';
+if (isset($_GET['PDTCodeScripts'])) { $PDTCodeScripts = $_GET['PDTCodeScripts'];}
+if (isset($_POST['PDTCodeScripts'])) { $PDTCodeScripts = $_POST['PDTCodeScripts'];}
+
+$tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
+
+$Script = explode('_', $tabPlanches[$NumPlanche]);   
+$PDTTaille = urlencode($Script[0]);
+$PDTTransformation = (count($Script)>1? $Script[1]:'');
+$PDTTeinte = (count($Script)>2? $Script[2]:'');
+$PDTRecadrage = (count($Script)>3? $Script[3]:'');
+
+
+//MAJFichierCatalogue
+if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
+    if($isDebug){
+        echo 'PDTCodeScripts REcupére ' . $PDTCodeScripts;
+        echo '<br><br><br>PDTNumeroLigne ' . $PDTNumeroLigne;
+    }
+    if($PDTNumeroLigne > 0){
+        //MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
+        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+    }
+    //header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
+}
+
+
+/*
 $PDTTaille = '(facultatif)';
 $PDTTransformation = '(facultatif)';
 $PDTTeinte = '(facultatif)';
-if (isset($_GET['PDTNumeroLigne'])) { $PDTNumeroLigne = $_GET['PDTNumeroLigne'];}
-if (isset($_GET['PDTDenomination'])) { $PDTDenomination = $_GET['PDTDenomination'];}
-if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
+$PDTRecadrage = '(facultatif)';
+
+
 if (isset($_GET['PDTTaille'])) { $PDTTaille = $_GET['PDTTaille'];}
 if (isset($_GET['PDTTransformation'])) { $PDTTransformation = $_GET['PDTTransformation'];}
 if (isset($_GET['PDTTeinte'])) { $PDTTeinte = $_GET['PDTTeinte'];}
+if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
 
-if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'];}
-if (isset($_POST['PDTDenomination'])) { $PDTDenomination = $_POST['PDTDenomination'];}
-if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
+
 if (isset($_POST['PDTTaille'])) { $PDTTaille = $_POST['PDTTaille'];}
 if (isset($_POST['PDTTransformation'])) { $PDTTransformation = $_POST['PDTTransformation'];}
 if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
+if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
 
+*/
 
 ?>
 <!DOCTYPE html>
@@ -66,7 +103,7 @@ if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
 <?php
 
 if($isDebug){
-	echo 'un DossierScript : ' . $monProjetSource->ScriptsPS;
+	echo '<br>un DossierScript : ' . $monProjetSource->ScriptsPS;
 }
                         
             $retourMSG = '';	
@@ -81,19 +118,15 @@ if($isDebug){
                 
                 echo $retourMSG;
                 if ($GLOBALS['isDebug']) { 
-                    if ((isset($_GET['PDTTaille']))||(isset($_POST['PDTTaille']))) { 
-                        echo '<br> CodeEcole : ' . $CodeEcole;
-                        echo '<br> AnneeScolaire : ' . $AnneeScolaire;
-                        echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
-                        echo '<br> PDTDenomination : ' . $PDTDenomination;
+                        echo '<//> CodeEcole : ' . $CodeEcole;
+                        echo '<//> AnneeScolaire : ' . $AnneeScolaire;
+                        echo '<//> PDTNumeroLigne : ' . $PDTNumeroLigne;
+                        echo '<//> PDTDenomination : ' . $PDTDenomination;
                         /**/
-                        echo '<br> PDTRecadrage > ' . $PDTRecadrage;
-                        echo '<br> PDTTaille > ' . $PDTTaille;
-                        echo '<br> PDTTransformation > ' . $PDTTransformation;
-                        echo '<br> PDTTeinte > ' . $PDTTeinte;
-                        
-                        
-                    }
+                        echo '<//> PDTRecadrage > ' . $PDTRecadrage;
+                        echo '<//> PDTTaille > ' . $PDTTaille;
+                        echo '<//> PDTTransformation > ' . $PDTTransformation;
+                        echo '<//> PDTTeinte > ' . $PDTTeinte;
                 }
 if ($isImport){
     $ValeurNomDefaut = $PDTDenomination;
@@ -101,7 +134,7 @@ if ($isImport){
     $ValeurNomDefaut = ($PDTNumeroLigne?$PDTDenomination:'');
 }
 
-                ?>
+ ?>
 
 <h3>Dossier de script : <?php echo $monProjetSource->ScriptsPS; ?></h3>
 <div class="DefinitionProduit">
@@ -110,28 +143,48 @@ if ($isImport){
 
 
 <h4>Nom du produit : 
-<input type="text" id="zoneTexteNomCommande" placeholder="<?php echo $PDTDenomination; ?>"
-                            value="<?php echo $ValeurNomDefaut; ?>" name="PDTDenomination" required>
+<input type="text" id="zoneTexteNomCommande" 
+                            placeholder="<?php echo $PDTDenomination; ?>"
+                            value="<?php echo $ValeurNomDefaut; ?>" 
+                            name="PDTDenomination" 
+                            <?php echo ($isImport)?'readonly':''; ?>
+                            required>
+
 <input type="text" id="zonePDTNumeroLigne" placeholder="Nom de votre commande..."
-                            value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>                            
+                            value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>      
+                            
+<input type="text" id="PDTCodeScripts" 
+                            value="<?php echo $PDTCodeScripts; ?>" 
+                            name="PDTCodeScripts" 
+                            readonly
+                            required>                            
+<h2><?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?></h2>
+
+
 </h4>
     <table class="TableDefinitionCodeProduit">
             <tr>
-                <td ><h2>Recadrages :</h2></td>
+                <?php 
+                    $DropListe = $monProjetSource->DropListeScriptsRecadrages($PDTRecadrage);
+                    echo ($DropListe != 'VIDE')?'<td ><h2>Recadrages :</h2></td>':''; 
+                ?>    
                 <td ><h2>Taille :</h2></td>
+                
                 <td ><h2>Transformation :</h2></td>
                 <td ><h2>Teinte :</h2></td>
             </tr>
 
             <tr>
-                <td ><div class="custom-select" style="width:180px;">
-                <select id="PDTRecadrage" name="PDTRecadrage">
-                    <?php       
-                        echo $monProjetSource->DropListeScriptsRecadrages($PDTRecadrage); 
-                    ?>
-                    </select>
-                    </div> 
-                </td>
+                <?php 
+                    if ($DropListe != 'VIDE') {
+                        echo '<td ><div class="custom-select" style="width:180px;">
+                            <select id="PDTRecadrage" name="PDTRecadrage">'.
+                            $DropListe
+                            .'</select>
+                            </div> 
+                        </td>';
+                    }
+                ?>                   
                 <td ><div class="custom-select" style="width:180px;">
                     <select id="PDTTaille" name="PDTTaille">
                     <?php          
@@ -165,17 +218,69 @@ if ($isImport){
   </form>
 </div>
  
-
+<script>
+		var NumPlanche = <?php echo $NumPlanche?>;
+		//alert('TEST ' ); 
+</script>
 <script type="text/javascript" src="<?php Mini('js/APIDialogue.js');?>"></script>
+	
 </body>
 </html>
 
 <?php
 
 function RetourEcranPrecedent($monProjet){
-    $RetourEcran = $GLOBALS['pageRetour']. '&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;
+    $DebutParam = (substr($GLOBALS['pageRetour'], -4) == '.php') ? '?' :  '&';
+   
+    $RetourEcran = $GLOBALS['pageRetour']. $DebutParam. 'CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;
 	return $RetourEcran ;
 }
+
+function ListeFichier($PDTCodeScripts, $NumPlanche = 0){
+    $tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
+    $TitreBouton = '🖉';
+    $maListe = '';
+    for($i = 0; $i < count($tabPlanches); $i++){ 
+        if($i==$NumPlanche){
+            $maListe .=  '<div class="Planche">'.$tabPlanches[$i].'</div>';
+
+        }else{
+            $lien = htmlspecialchars($_SERVER['PHP_SELF']) .'?'.$_SERVER['QUERY_STRING'].'&NumPlanche='  . $i ;
+            $maListe .=  '<div class="Planche"><a href="'. $lien .'" class="icone" title="'.$tabPlanches[$i].'">'.$tabPlanches[$i]. $TitreBouton.'</a></div>';
+       
+            /*
+            $lien = 'index.php' ;
+            $maListe .=  '<div class="Planche">'.$tabPlanches[$i].'</div>';
+            $maListe .=  '<form action="'. $lien .'" method="post">
+
+            <button type="submit"  >'.$tabPlanches[$i]. $TitreBouton.'sdfsdfsdfsddf</button>
+            </form>
+            ';
+           
+            //$lien = 'index.php' ;
+            $maListe .= $lien;
+			$maListe .= '<form name="VoirEnGrand" method="post" action="'. $lien .'" enctype="multipart/form-data"> ';
+
+			$maListe .='<button type="submit" class="NomPhotoZoom">
+			<p>'.$tabPlanches[$i]. $TitreBouton.'</p>
+			</button>';
+
+			$maListe .= '</form>';
+ */
+
+
+        }
+
+
+
+
+    }
+    return $maListe;
+}
+
+
+
+
 /*
 function ValidationOK($monProjet){
     $RetourEcran = htmlspecialchars($_SERVER['PHP_SELF']) . ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire) ;

@@ -15,7 +15,7 @@ $TabResumeProduit = array();
 $TabResumeFormat = array();
 
 //$TTEST = '';
-//echo ConvertirCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
+//echo ConvertirLUMYSCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
 $fichierCSV = '../../2020-11-24 groupée Maternelle Salentine 2020-2021.csv';
 $fichierCSV = '../../2021-04-10 TEST MAX PLANCK-NANTES-2020-2021.csv';
 $fichierCSV = '../../2021-6-1 isolées.csv';
@@ -27,7 +27,7 @@ $fichierLAB = 'TEST.lab';
 
 if (isFichierLumysCSV($fichierCSV)) {
     echo ' Fichier Lumys <br>' ;
-    $RetourConversion = ConvertirCMDcsvEnlab('CatalogueProduits.csv', $fichierCSV , $fichierLAB);
+    $RetourConversion = ConvertirLUMYSCMDcsvEnlab('CatalogueProduits.csv', $fichierCSV , $fichierLAB);
 }else{
     echo ' Fichier Excel <br>' ;		
     $RetourConversion = ConvertirEXCELCMDcsvEnlab('CatalogueProduits.csv', $fichierCSV , $fichierLAB);
@@ -35,7 +35,7 @@ if (isFichierLumysCSV($fichierCSV)) {
 //echo  $fichierLAB ;
 
 
-//echo ConvertirCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);
+//echo ConvertirLUMYSCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);
 //echo ConvertirEXCELCMDcsvEnlab('CatalogueProduits.csv',$fichierCSV , $fichierLAB);
 
 

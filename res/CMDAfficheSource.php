@@ -294,33 +294,6 @@ function MAJFichierBoutique($ListeFichier, $CodeEcole, $AnneeScolaire){
 //echo 'VOILA LES lesFichiersBoutique : ' . $ListeFichier;
 }
 
-function RemplissageDropProduit($monProjet){ 
-	$str =  '';
-	$CataloguePdtWEB = array();
-	$CataloguePdtWEB = csv_to_array('../../GABARITS/CatalogueProduits.csv', ';'); 
-
-	//Supression des doublons !
-	
-	$CataloguePdtWEBFinal=$CataloguePdtWEB  ; 
-
-	$columns = array_column($CataloguePdtWEBFinal, 'Description');
-	array_multisort($columns, SORT_ASC, $CataloguePdtWEBFinal);
-
-	$ListeUniqueProduit = array();
-	$ListeUniqueProduit = array_column($CataloguePdtWEBFinal, 'Code');
-
-	for($i = 0; $i < count($CataloguePdtWEBFinal) ; $i++){
-		if((in_array($CataloguePdtWEBFinal[$i]['Code'],$ListeUniqueProduit))&&($CataloguePdtWEBFinal[$i]['Description']!='')){
-			if ($CataloguePdtWEBFinal[$i]['Code'] !=''){
-				$str .= '<a href=javascript:void(0); Code="'.$CataloguePdtWEBFinal[$i]['Code'].'" onclick="CliqueDropDown(this)">'.$CataloguePdtWEBFinal[$i]['Description'].'</a>';
-			}
-		}
-	} 	
-	return $str;
-
-
-}
-
 function RemplissageDropScriptFormat($monProjet){ 
 	$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjet->ScriptsPS . '.csv';
 	
@@ -477,8 +450,8 @@ function RetourEcranSources($ParamAnnee = ''){
 }	
 
 function AccesCatalogue($monProjet){
-	$RetourEcran = 'CMDCatalogueProduits.php?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
-	return $RetourEcran . '&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;	
+	$RetourEcran = 'CMDCatalogueProduits.php'. ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire);
+	return $RetourEcran  ;	
 }	
 
 //function ValidationCommandes($NomProjet, $ParamAnnee = ''){
@@ -498,7 +471,7 @@ function ValidationCommandesLIBRES($NomProjet){
 	$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
 	$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
 
-	$retourMSG = 'APIDialogue.php?codeMembre=' . $GLOBALS['codeMembre'] .$CMDhttpLocal . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');
+	$retourMSG = 'APIDialogue.php'. ArgumentURL($CMDhttpLocal) ;
 
 	return $retourMSG ;
 }	
