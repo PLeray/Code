@@ -40,47 +40,15 @@ if (isset($_POST['PDTNumeroLigne'])) { $PDTNumeroLigne = $_POST['PDTNumeroLigne'
 $PDTCodeScripts = '(facultatif)_(facultatif)_facultatif)_(facultatif)';
 if (isset($_GET['PDTCodeScripts'])) { $PDTCodeScripts = $_GET['PDTCodeScripts'];}
 if (isset($_POST['PDTCodeScripts'])) { $PDTCodeScripts = $_POST['PDTCodeScripts'];}
-
-$Script = explode('_', $PDTCodeScripts);   
-$PDTTaille = urlencode($Script[0]);
-$PDTTransformation = (count($Script)>1? $Script[1]:'');
-$PDTTeinte = (count($Script)>2? $Script[2]:'');
-$PDTRecadrage = (count($Script)>3? $Script[3]:'');
-
-$PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
-$PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
-$PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
-$PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
-
-					if ($isDebug) { 
-						echo '<br> CodeEcole : ' . $CodeEcole;
-						echo '<br> AnneeScolaire : ' . $AnneeScolaire;
-						echo '<br> PDTNumeroLigne : ' . $PDTNumeroLigne;
-						echo '<br> PDTDenomination : ' . $PDTDenomination;
-						/**/
-						echo '<br> PDTRecadrage > ' . $PDTRecadrage;
-						echo '<br> PDTTaille > ' . $PDTTaille;
-						echo '<br> PDTTransformation > ' . $PDTTransformation;
-						echo '<br> PDTTeinte > ' . $PDTTeinte;
-					}
+$PDTCodeScripts = str_replace('(facultatif)','', $PDTCodeScripts) ;
 
 $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
 //MAJFichierCatalogue
 if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
-    echo 'MAJFichierCatalogue';
-	if($PDTNumeroLigne > 0){
-        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
-    }elseif($PDTNumeroLigne == 0){ // On Ajoute cette ligne du fichier
-        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
-
-    }elseif($PDTNumeroLigne < 0){ // On suprime cette ligne du fichier
-        
-        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
-    }
-	MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+    MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+    header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
 }
-
 
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');

@@ -34,37 +34,22 @@ $PDTCodeScripts = '(facultatif)_(facultatif)_facultatif)_(facultatif)';
 if (isset($_GET['PDTCodeScripts'])) { $PDTCodeScripts = $_GET['PDTCodeScripts'];}
 if (isset($_POST['PDTCodeScripts'])) { $PDTCodeScripts = $_POST['PDTCodeScripts'];}
 
+$PDTCodeScripts = str_replace('(facultatif)','', $PDTCodeScripts) ;
+
+/*
 $Script = explode('_', $PDTCodeScripts);   
 $PDTTaille = urlencode($Script[0]);
 $PDTTransformation = (count($Script)>1? $Script[1]:'');
 $PDTTeinte = (count($Script)>2? $Script[2]:'');
 $PDTRecadrage = (count($Script)>3? $Script[3]:'');
 
-/* 
-
-
-
-$PDTRecadrage = '(facultatif)';
-$PDTTaille = '(facultatif)';
-$PDTTransformation = '(facultatif)';
-$PDTTeinte = '(facultatif)';
-
-if (isset($_GET['PDTRecadrage'])) { $PDTRecadrage = $_GET['PDTRecadrage'];}
-if (isset($_GET['PDTTaille'])) { $PDTTaille = $_GET['PDTTaille'];}
-if (isset($_GET['PDTTransformation'])) { $PDTTransformation = $_GET['PDTTransformation'];}
-if (isset($_GET['PDTTeinte'])) { $PDTTeinte = $_GET['PDTTeinte'];}
-
-
-if (isset($_POST['PDTRecadrage'])) { $PDTRecadrage = $_POST['PDTRecadrage'];}
-if (isset($_POST['PDTTaille'])) { $PDTTaille = $_POST['PDTTaille'];}
-if (isset($_POST['PDTTransformation'])) { $PDTTransformation = $_POST['PDTTransformation'];}
-if (isset($_POST['PDTTeinte'])) { $PDTTeinte = $_POST['PDTTeinte'];}
-*/
 
 $PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
 $PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
 $PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
 $PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
+
+*/
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
@@ -183,11 +168,7 @@ function LienEdition($Ligne, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire){
         $DefinitionProduit = '&PDTNumeroLigne=' . $PDTNumeroLigne . 
         '&PDTDenomination=' . urlencode($NomProduit) ;
         $DefinitionProduit .= '&PDTCodeScripts=';
-   
-        /*$DefinitionProduit .= '&PDTRecadrage=' . ''.
-                            '&PDTTaille=' . ''.
-                            '&PDTTransformation=' . ''.
-                            '&PDTTeinte=' . '';*/
+
     }else{
         $morceau = explode(';', $Ligne);
         $Script = explode('_', $morceau[1]);        
@@ -198,11 +179,7 @@ function LienEdition($Ligne, $PDTNumeroLigne, $CodeEcole, $AnneeScolaire){
         $DefinitionProduit = '&PDTNumeroLigne=' . $PDTNumeroLigne . 
         '&PDTDenomination=' . urlencode($NomProduit) ;
         $DefinitionProduit .= '&PDTCodeScripts=' . $morceau[1];
-        
-        /*$DefinitionProduit .= '&PDTRecadrage=' . ''.
-                            '&PDTTaille=' . urlencode($Script[0]).
-                            '&PDTTransformation=' . (count($Script)>1? urlencode($Script[1]):'').
-                            '&PDTTeinte=' . (count($Script)>2? urlencode($Script[2]):'');*/
+
         
     }
 
