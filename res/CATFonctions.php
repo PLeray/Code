@@ -1208,8 +1208,8 @@ function PhotosManquantes($target_file){
     return $resultat;
 }
 
-function ListeProduitsSelonCatalogue($monCatalogue){ 
-	$fichierCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'. $monCatalogue . '.csv';
+function ListeProduitsSelonCatalogue($monProjetSource){ 
+	$fichierCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue();
 	
 	$CataloguePRODUITS = array();
 	if (file_exists($fichierCatalogueScriptPS)){ 
@@ -1230,7 +1230,8 @@ function ListeProduitsSelonCatalogue($monCatalogue){
 function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$CodeProduit){
     $Supression = ($PDTNumeroLigne<0);
     $PDTNumeroLigne = abs($PDTNumeroLigne);
-    $monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv';
+	$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue();
+	
 	$CataloguePRODUITS = array();
 	if (file_exists($monCatalogueScriptPS)){ 
 		$file = fopen($monCatalogueScriptPS, "r");

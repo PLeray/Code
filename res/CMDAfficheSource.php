@@ -295,8 +295,8 @@ function MAJFichierBoutique($ListeFichier, $CodeEcole, $AnneeScolaire){
 }
 
 function RemplissageDropScriptFormat($monProjet){ 
-	$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjet->ScriptsPS . '.csv';
-	
+	$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjet->NomCatalogue();
+monProjet
 	$CataloguePRODUITS = array();
 	$PremiereLigneARefaire = false;	
 	if (file_exists($monCatalogueScriptPS)){ 

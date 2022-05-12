@@ -292,6 +292,12 @@ function TrouverFichierSource(unFichierPhoto) {
 
 
 function Action_Script_PhotoshopPSP(N_action){
+	/* 
+	if (N_action.indexOf('png') > -1){ //Produit Avec png  de Fond !!							
+		alert ('DossierGabaritSpecifique() ' + DossierGabaritSpecifique()
+		+ ' N_action = ' + N_action );				
+	}
+	*/
 	try {
 		/**/
         if( N_action != ""){
@@ -317,9 +323,9 @@ function Action_Script_PhotoshopPSP(N_action){
 		AjoutBilanGeneration(msg);
 		msg = '  Commande en cours : ' + g_CommandePDTEncours;
 		AjoutBilanGeneration(msg);
-		msg = "     PROBLEME : Pas de script Photoshop (Action) nommé : " + N_action + " dans : '" + g_RepSCRIPTSPhotoshop + "'";
+		msg = "     PROBLEME : Dans Photoshop :: Pas de script (Action) nommé : " + N_action + " dans le dossier : '" + g_RepSCRIPTSPhotoshop + "'";
 		AjoutBilanGeneration(msg);
-		msg = "     SOLUTION PROBABLE : Ajouter un script Photoshop (Action) nommé : " + N_action + " dans : '" + g_RepSCRIPTSPhotoshop + "'";	
+		msg = "     SOLUTION PROBABLE : Dans Photoshop :: Ajouter un script (Action) nommé : " + N_action + " dans : '" + g_RepSCRIPTSPhotoshop + "'";	
 		AjoutBilanGeneration(msg);
 		AjoutBilanGeneration('');		
 		g_Erreur = msg;
@@ -377,9 +383,10 @@ function ImporterAutrePhoto(PathNomAutrePhoto){
 		AjoutBilanGeneration(msg);
 		msg = '  Commande en cours : ' + g_CommandePDTEncours;
 		AjoutBilanGeneration(msg);
-		msg = "     PROBLEME : Pas de fichier Gabarit nommé : " + PathNomAutrePhoto.split('\\').pop().split('/').pop() + " dans : '" + g_Rep_GABARITS + "'";
+		msg = "     PROBLEME : Pas de fichier Gabarit nommé : " + PathNomAutrePhoto.split('\\').pop().split('/').pop() + " dans : '" + DossierGabaritSpecifique() + "'";
+		
 		AjoutBilanGeneration(msg);
-		msg = "     SOLUTION PROBABLE : Ajouter fichier Gabarit nommé : " + PathNomAutrePhoto.split('\\').pop().split('/').pop() + " dans : '" + g_Rep_GABARITS + "'";	
+		msg = "     SOLUTION PROBABLE : Ajouter fichier Gabarit nommé : " + PathNomAutrePhoto.split('\\').pop().split('/').pop() + " dans : '" + DossierGabaritSpecifique() + "'";	
 		AjoutBilanGeneration(msg);
 		AjoutBilanGeneration('');		
 		g_Erreur = msg;
@@ -478,15 +485,9 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							ImporterAutrePhoto(g_RepSOURCE + "/" + FichierIdentite(nomFichierPhoto));					
 						}								
 						// IMPORT FOND D'ici
-						if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+						if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit Avec png  de Fond !!								
 							reussiteTraitement = reussiteTraitement && 
-							ImporterAutrePhoto(g_Rep_GABARITS + g_RepSCRIPTSPhotoshop + '/' + unProduit.Type + '.png');			
-							
-							
-							g_RepSCRIPTSPhotoshop = TrouverRepScriptPSdansBibliotheque(uneEcole);
-
-
-
+							ImporterAutrePhoto(DossierGabaritSpecifique() + unProduit.Type + '.png');			
 						}							
 						// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
 						if (unProduit.Type != "PORTRAIT" 
@@ -577,6 +578,10 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 	return valRetour;
 }
 
+function DossierGabaritSpecifique(){
+	return g_Rep_GABARITS + 'Catalogue' + g_RepSCRIPTSPhotoshop + '/';	
+}
+
 function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 	var nomFichierPhoto = unProduit.FichierPhoto;
 	
@@ -665,9 +670,9 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					}
 					
 					// IMPORT FOND D'ici
-					if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit CARRE-ID Besoin du fichier ID !!							
+					if (unProduit.Type.substr(0, 3).indexOf('png') > -1){ //Produit Avec png  de Fond !!							
 						//reussiteTraitement = reussiteTraitement && 
-						reussiteTraitement = reussiteTraitement && ImporterAutrePhoto(g_Rep_GABARITS + g_RepSCRIPTSPhotoshop + unProduit.Type + '.png');					
+						reussiteTraitement = reussiteTraitement && ImporterAutrePhoto(DossierGabaritSpecifique() + unProduit.Type + '.png');				
 					}
 
 					// 3 : LE TYPE DE PRODUIT / IMAGE ////////////////////
@@ -1457,7 +1462,7 @@ function CreerUnFichiersPresentationWEB(unfichier, extension, unDossier){
 							if (reussiteTraitement){	
 								myDocument = app.activeDocument; 	
 								//////////////// TRANSFORMATIONS //////////////////////
-								//alert ('g_RepSCRIPTSPhotoshop ' + g_RepSCRIPTSPhotoshop);
+								
 								reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(copiefichierVariante);
 								//alert ('copiefichierVariante ' + copiefichierVariante);
 								//SauvegardeJPEG(laPhoto, unPathPlanche + "/" + unNomdePlanche);

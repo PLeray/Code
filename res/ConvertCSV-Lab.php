@@ -155,6 +155,10 @@ function EcrireBilanCMD( $NbCommandes){
 			$unBilan .= '- ' .$key . ': ' . $unTab[$key] . '%';
 		}
 		//echo "erreur avant " . error_get_last();
+		if ($GLOBALS['isDebug']){
+			var_dump($GLOBALS['TabResumeFormat']);
+
+		}
 		$unTab = array_count_values($GLOBALS['TabResumeFormat']);
 		//echo "erreur apres " . error_get_last();
 		//var_dump($GLOBALS['TabResumeFormat']);
@@ -186,19 +190,11 @@ function EcrireEcole($Ecole, $PrefixeTirage){
 		$EcoleEnCours = new CEcole($valRetour,'@');
 		$monProjetSource = new CProjetSource($EcoleEnCours->CodeEcole, $EcoleEnCours->AnneeScolaire); 
 		if ($monProjetSource->ScriptsPS != ''){
-			$GLOBALS['CataloguePdtENCOURS'] = csv_to_array($GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv', ';'); 
+			$GLOBALS['CataloguePdtENCOURS'] = csv_to_array($GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue(), ';'); 
 		}else{
 			$GLOBALS['ERREUR_EnCOURS'] = 'Erreur : Pas de catalogue trouvé pour l\'ecole  : ' . $Ecole ;
 			$GLOBALS['CataloguePdtENCOURS'] = array();
 		}
-
-		
-		
-		
-		//var_dump( $GLOBALS['CataloguePdtENCOURS']) ;
-		//echo $GLOBALS['repGABARITS'] . 'Catalogue'.$monProjetSource->ScriptsPS . '.csv <br> <br>';
-		//$AncienCAT = csv_to_array($GLOBALS['repGABARITS'] .  'CatalogueProduits.csv', ';'); // New 22-10
-		//var_dump( $AncienCAT) ;
 
 		$valRetour .= ' <br>';
 	}

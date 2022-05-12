@@ -131,7 +131,7 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
 
 <?php
     
-    $TabProduits = ListeProduitsSelonCatalogue($monProjetSource->ScriptsPS);
+    $TabProduits = ListeProduitsSelonCatalogue($monProjetSource);
     $retourMSG = '';
     for($i = 1; $i < count($TabProduits); $i++){
         if ($TabProduits[$i] != '') {

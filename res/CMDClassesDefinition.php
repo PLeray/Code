@@ -275,8 +275,7 @@ class CEcole {
 
 			}	
 		}	
-		
-
+	
 		return $resultat;
     }   
 
@@ -284,7 +283,8 @@ class CEcole {
 		$monProjetSource = new CProjetSource($this->CodeEcole, $this->AnneeScolaire);	
 		$DossierScriptsPS = $monProjetSource->ScriptsPS;
 		//$TableauDeProduitsDansDossierScript  = //REcupt tableau des scripts de repScript
-		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'. $DossierScriptsPS . '.csv';	
+		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue();	
+
 		$TableauDeProduitsDansDossierScript = array();
 
 		if (file_exists($monCatalogueScriptPS)){ 
@@ -817,6 +817,9 @@ class CProjetSource {
 			}
 		}
 	}
+	function NomCatalogue(){
+		return 'Catalogue' . $this->ScriptsPS . '.csv';
+	}
 	function DropListeScriptsRecadrages($valDefaut = ''){ 
 		//$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
 		//$laDropliste .= '<option value="">(rien)</option>';
@@ -896,7 +899,7 @@ class CProjetSource {
 		return $laDropliste;
 	}	
 	function TabProduits(){ 
-		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . 'Catalogue'.$this->ScriptsPS . '.csv';		
+		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $this->NomCatalogue()	;	
 		$CataloguePRODUITS = array();
 
 		if (file_exists($monCatalogueScriptPS)){ 
