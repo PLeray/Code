@@ -118,10 +118,11 @@ button:hover {
 
 #zonePDTNumeroLigne {
 display: none;
-
 }
 
-
+#PDTCodeScripts {
+display: none;
+}
 
 .TableDefinitionCodeProduit
 {
@@ -346,11 +347,11 @@ img {
     display: block;
     color: var(--texteGris);
     text-align: center;
-    padding: 14px 16px 20px 50px;;
+    padding: 14px 20px 10px 20px;;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 16px;
 
-    
+    font-family: "Courier New", Times, serif;  
   }
 
   .Description {
@@ -360,9 +361,12 @@ img {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 16px;
+    font-family: "Courier New", Times, serif;  
 
-    
+
+
+      
   }
   
   .topnav a:hover {
@@ -374,6 +378,7 @@ img {
     border: 1px solid var(--FondLigneTabGrisFonce);
     border-bottom: 3px solid white;  
     cursor: default;
+    font-weight: bold;
   }
   .topnav a.active:hover {
 
@@ -382,7 +387,7 @@ img {
   .DefinitionProduit {
 
     margin: 10px;
-    margin-top: -20px;   
+    margin-top: -5px;   
 
     border: 1px solid var(--FondLigneTabGrisFonce);
    }

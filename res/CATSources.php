@@ -115,8 +115,8 @@ if (isset($_GET['BDDRECFileLab']) && isset($_GET['BDDRECLibreCode']) && isset($_
 <table id="Sources">
 	<tr class="header" >
 		<th style="width:90px;"><H3>Référence Ecole</H3></th>	
-		<th style="width:165px;"><H3>Dossier 'actions' Photoshop</H3></th>		
 		<th style="width:120px;"><H3>Année scolaire</H3></th>
+		<th style="width:165px;"><H3>Dossier 'actions' Photoshop</H3></th>			
 		<th style="width:135px;"><H3>Catalogue produit</H3></th>
 		<th  align="left" class="titreProjet"><H4>Nom projet</H4></th>	
 		<th style="width:200px;"><H3>Contenus Projet</H3></th>		
@@ -190,10 +190,10 @@ function AfficheTableauSOURCES(&$nb_fichier, $fichierCSV, $AnneeScolaire){
 						$Dossier = "../.." . urldecode(substr($Dossier, strpos($Dossier, '/SOURCES')));
 						$affiche_Tableau .=	'<tr>			
 					<td class="mini" ><div class="tooltip">' . $TabCSV[$i]["Code"] .'
-								<span class="tooltiptext">'. $Dossier . '</span></div></td>				
-					<td class="mini" ><div class="tooltip">' . $TabCSV[$i]["Rep Scripts PS"] .'
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>	
-					<td class="titreProjet" ><div class="tooltip">' . $TabCSV[$i]["AnneeScolaire"] .'
+					<td class="titreProjet" ><div class="tooltip">' . $TabCSV[$i]["AnneeScolaire"] .'		
+								<span class="tooltiptext">'. $Dossier . '</span></div></td>	
+					<td class="mini" ><div class="tooltip">' . $TabCSV[$i]["Rep Scripts PS"] .'
 								<span class="tooltiptext">'. $Dossier . '</span></div></td>	';
 					$affiche_Tableau .= '<td>'. CodeLienCatalogue($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '</td>';
 					$affiche_Tableau .= '<td align="left" class="titreProjet" ><div class="tooltip"><a href="' . LienImgSource($TabCSV[$i]["Code"], $TabCSV[$i]["AnneeScolaire"]) . '" >' . $TabCSV[$i]["NomProjet"] .'</a>

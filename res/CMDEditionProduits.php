@@ -111,18 +111,19 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
         $retourMSG .= "<h3>Dossier de script : ". $monProjetSource->ScriptsPS .'</h3>';
         
         echo $retourMSG;
+        /*
         if ($GLOBALS['isDebug']) { 
                 echo '<//> CodeEcole : ' . $CodeEcole .'FIN';
                 echo '<//> AnneeScolaire : ' . $AnneeScolaire .'FIN';
                 echo '<//> PDTNumeroLigne : ' . $PDTNumeroLigne .'FIN';
                 echo '<//> PDTDenomination : ' . $PDTDenomination .'FIN';
                 echo '<//> PDTCodeScripts : ' . $PDTCodeScripts .'FIN';
-                /**/                
+             
                 echo '<br><//> PDTRecadrage > ' . $PDTRecadrage;
                 echo '<//> PDTTaille > ' . urldecode($PDTTaille);
                 echo '<//> PDTTransformation > ' . $PDTTransformation;
                 echo '<//> PDTTeinte > ' . $PDTTeinte;
-        }
+        }*/
 if ($isImport){
     $ValeurNomDefaut = $PDTDenomination;
 }else{
@@ -150,12 +151,11 @@ if ($isImport){
                             readonly
                             required>   
 
-<input type="text" id="zonePDTNumeroLigne" placeholder="Nom de votre commande..."
-                            value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>      
+<input type="text" id="zonePDTNumeroLigne" value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>      
                             
                          
 </h4>
-<h4><?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?></h4>
+<h4></h4><?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?>
     <div class="DefinitionProduit">
     <br><br>
     <table class="TableDefinitionCodeProduit">
