@@ -2,10 +2,6 @@
 include_once 'CMDClassesDefinition.php';
 include_once 'APIConnexion.php';
 
-$ProduitsNONLABO = array(
-'15x39cm_CADRE-PANO',
-'10x15cm_TAPIS-SOURIS'
-);
 
 $CataloguePdtENCOURS = array();
 

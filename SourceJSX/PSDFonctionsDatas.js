@@ -41,6 +41,7 @@ var g_PdtSANS_NB = [
 var g_PdtNotLABO = [
 'CADRE-PANO',
 'TAPIS-SOURIS',
+'NON-IMPRIMABLE',
 'XXX'
 ];
 
@@ -90,7 +91,7 @@ function PhotosDeClasse(CodeLigne) {
 function CNomFichierGroupe(NomFichierGroupe) { 
 	//0100-CADR-5A-CM2.jpg
     var CodeFichierGroupe = decodeURI(NomFichierGroupe.substr(0, NomFichierGroupe.lastIndexOf('.'))); //0100-CADR-5A-CM2 sans l'extension
-	alert(' XX23 NomFichierGroupe ' +  NomFichierGroupe +  ' CodeFichierGroupe ' +  CodeFichierGroupe) ;
+	//alert(' XX23 NomFichierGroupe ' +  NomFichierGroupe +  ' CodeFichierGroupe ' +  CodeFichierGroupe) ;
 	this.Numero;
 	this.TypeGroupe;	
 	this.NomClasse;

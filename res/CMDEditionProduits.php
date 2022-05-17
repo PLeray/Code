@@ -46,23 +46,38 @@ $PDTCodeScripts = '(facultatif)_(facultatif)_facultatif)_(facultatif)';
 if (isset($_GET['PDTCodeScripts'])) { $PDTCodeScripts = $_GET['PDTCodeScripts'];}
 if (isset($_POST['PDTCodeScripts'])) { $PDTCodeScripts = $_POST['PDTCodeScripts'];}
 
-$tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], urldecode($PDTCodeScripts));
+if (isset($_GET['SuprPlanche'])) { 
+    if($isDebug){
+        echo '<br>SuprPlanche  ' . $_GET['SuprPlanche'];
+        echo '<br><br>DEPART $PDTCodeScripts ' . $PDTCodeScripts;
+    }    
+    $PDTCodeScripts = SupressionPlancheNum($PDTCodeScripts, $_GET['SuprPlanche']);
+    if($isDebug){
+        echo '<br>SuprPlanche  ' . $_GET['SuprPlanche'];
+        echo '<br><br>ARRIVE $PDTCodeScripts ' . $PDTCodeScripts;
+    }        
+    $NumPlanche = 0;
+}
 
-$Script = explode('_', $tabPlanches[$NumPlanche]);   
+$tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
+
+$nbPlanches = count($tabPlanches);
+
+//if ($nbPlanches <= $NumPlanche > )
+if ($nbPlanches > $NumPlanche ){// La planche existe pas encore c'est une nouvelle
+    $Script = explode('_', $tabPlanches[$NumPlanche]); 
+}else{
+    $Script = explode('_', $tabPlanches[0]); // Nouvelle Planche
+}
+  
 $PDTTaille = $Script[0];
 $PDTTransformation = (count($Script)>1? $Script[1]:'');
 $PDTTeinte = (count($Script)>2? $Script[2]:'');
 $PDTRecadrage = (count($Script)>3? $Script[3]:'');
 
-
 //MAJFichierCatalogue
 if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
-    if($isDebug){
-        echo 'PDTCodeScripts REcupére ' . $PDTCodeScripts;
-        echo '<br><br><br>PDTNumeroLigne ' . $PDTNumeroLigne;
-    }
     if($PDTNumeroLigne > 0){
-        //MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte);
         MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
     }
     //header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
@@ -93,14 +108,16 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
         <h1><img src="img/logo.png" width ="80px" alt="Aide sur l\'étape" >Catalogue produits : Edition d\'un produit '
         . '</h1>';	
         $retourMSG .= "<h2>(Nom du dossier d'Actions dans Photoshop : ". $monProjetSource->ScriptsPS .')</h2>';
+        $retourMSG .= "<h3>Dossier de script : ". $monProjetSource->ScriptsPS .'</h3>';
         
         echo $retourMSG;
         if ($GLOBALS['isDebug']) { 
-                echo '<//> CodeEcole : ' . $CodeEcole;
-                echo '<//> AnneeScolaire : ' . $AnneeScolaire;
-                echo '<//> PDTNumeroLigne : ' . $PDTNumeroLigne;
-                echo '<//> PDTDenomination : ' . $PDTDenomination;
-                /**/
+                echo '<//> CodeEcole : ' . $CodeEcole .'FIN';
+                echo '<//> AnneeScolaire : ' . $AnneeScolaire .'FIN';
+                echo '<//> PDTNumeroLigne : ' . $PDTNumeroLigne .'FIN';
+                echo '<//> PDTDenomination : ' . $PDTDenomination .'FIN';
+                echo '<//> PDTCodeScripts : ' . $PDTCodeScripts .'FIN';
+                /**/                
                 echo '<br><//> PDTRecadrage > ' . $PDTRecadrage;
                 echo '<//> PDTTaille > ' . urldecode($PDTTaille);
                 echo '<//> PDTTransformation > ' . $PDTTransformation;
@@ -114,7 +131,7 @@ if ($isImport){
 
  ?>
 
-<h3>Dossier de script : <?php echo $monProjetSource->ScriptsPS; ?></h3>
+
 <div class="DefinitionProduit">
 <form action="<?php echo RetourEcranPrecedent($monProjetSource); ?>" method="post">
 
@@ -127,19 +144,20 @@ if ($isImport){
                             name="PDTDenomination" 
                             <?php echo ($isImport)?'readonly':''; ?>
                             required>
-
-<input type="text" id="zonePDTNumeroLigne" placeholder="Nom de votre commande..."
-                            value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>      
-                            
 <input type="text" id="PDTCodeScripts" 
                             value="<?php echo $PDTCodeScripts; ?>" 
                             name="PDTCodeScripts" 
                             readonly
-                            required>                            
-<h2><?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?></h2>
+                            required>   
 
-
+<input type="text" id="zonePDTNumeroLigne" placeholder="Nom de votre commande..."
+                            value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>      
+                            
+                         
 </h4>
+<h4><?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?></h4>
+    <div class="DefinitionProduit">
+    <br><br>
     <table class="TableDefinitionCodeProduit">
             <tr>
                 <?php 
@@ -187,26 +205,50 @@ if ($isImport){
                     ?>
                     </select>
                     </div>  
-                </td>                
-  
+                </td> 
+                <?php 
+                if($nbPlanches>1){
+                    
+                    //$lien = htmlspecialchars($_SERVER['PHP_SELF']) .'?'.$_SERVER['QUERY_STRING'].'&SuprPlanche='  . $NumPlanche ;
+                    $lien = getURI(true, array('SuprPlanche','NumPlanche')).'SuprPlanche='  . $NumPlanche ;
+                    echo '<td ><div >
+                    <a  class= "SuprPlanche" href="'. $lien .'" title="Suprimer cette planche du produit">'. (($nbPlanches>1)?'🗑':'').'</a> 
+                    </div> </td> '; 
+
+                }
+
+                ?>                                       
             </tr>
 </table>
+<br><br>
+</div>
 <a href="<?php echo RetourEcranPrecedent($monProjetSource); ?>" class="KO" title="Annuler">Annuler</a>
 
 <button type="submit" id="btnOK" class="OK" >OK</button>
   </form>
 </div>
  
-<script>
-		var NumPlanche = <?php echo $NumPlanche?>;
-		//alert('TEST ' ); 
-</script>
+
+
 <script type="text/javascript" src="<?php Mini('js/APIDialogue.js');?>"></script>
-	
+<script>
+    InitDropListe(<?php echo $NumPlanche ?>);
+</script>	
 </body>
 </html>
 
 <?php
+
+
+function ParamtreEditionProduit(){
+    $Param ='&PDTNumeroLigne='. $GLOBALS['PDTNumeroLigne'] .
+            '&PDTDenomination='. $GLOBALS['PDTDenomination'] .
+            '&CodeEcole='. $GLOBALS['CodeEcole'] .
+            '&AnneeScolaire='. $GLOBALS['AnneeScolaire'] ;
+        
+        //&NumPlanche='.$GLOBALS['NumPlanche'] ;
+        return $Param;
+}
 
 function RetourEcranPrecedent($monProjet){
     $DebutParam = (substr($GLOBALS['pageRetour'], -4) == '.php') ? '?' :  '&';
@@ -217,42 +259,76 @@ function RetourEcranPrecedent($monProjet){
 
 function ListeFichier($PDTCodeScripts, $NumPlanche = 0){
     $tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
-    $TitreBouton = '🖉';
     $maListe = '';
-    for($i = 0; $i < count($tabPlanches); $i++){ 
+
+    $maListe .=' <div class="topnav"><span class="Description" >Planche actions Photoshop : </span>';
+
+    $nbPlanches = count($tabPlanches);
+    for($i = 0; $i < $nbPlanches; $i++){ 
         if($i==$NumPlanche){
-            $maListe .=  '<div class="Planche">'.$tabPlanches[$i].'</div>';
-
+            $maListe .=  '<a id="Planche'.$i.'" class="active" >'.$tabPlanches[$i] .'</a>';
         }else{
-            $lien = htmlspecialchars($_SERVER['PHP_SELF']) .'?'.$_SERVER['QUERY_STRING'].'&NumPlanche='  . $i ;
-            //$maListe .=  '<div class="Planche"><a href="'. $lien .'" class="icone" title="'.$tabPlanches[$i].'">'.$tabPlanches[$i]. $TitreBouton.'</a></div>';
-       
-            /*
-            $lien = 'index.php' ;
-            $maListe .=  '<div class="Planche">'.$tabPlanches[$i].'</div>';
-            $maListe .=  '<form action="'. $lien .'" method="post">
-
-            <button type="submit"  >'.$tabPlanches[$i]. $TitreBouton.'sdfsdfsdfsddf</button>
-            </form>
-            ';
-           
-            //$lien = 'index.php' ;
-            $maListe .= $lien;
-			$maListe .= '<form name="VoirEnGrand" method="post" action="'. $lien .'" enctype="multipart/form-data"> ';
-
-			$maListe .= '</form>';
-            
- */
-			$maListe .='<button type="submit" class="NomPhotoZoom">
-			<p>'.$tabPlanches[$i]. $TitreBouton.'</p>
-			</button>';
-
+            //$lien = htmlspecialchars($_SERVER['PHP_SELF']) .'?'.$_SERVER['QUERY_STRING'].'&NumPlanche='  . $i ;
+            $lien = getURI(true, 'SuprPlanche','NumPlanche') .'NumPlanche='  . $i ;
+            $urlBase = getURI(true, array('SuprPlanche','NumPlanche','PDTCodeScripts')).'NumPlanche='  . $i ;
+            $maListe .=  '<a id="Planche'.$i.'"
+            href="'. $lien .'" 
+            urlBase= "'. $urlBase .'">'.$tabPlanches[$i].'</a>';
         }
+        
     }
+    //$NumPlanche=$nbPlanches;
+    
+    $maListe .= '</div>';
+    //Pour l'ajout de planche
+    $PDTCodeScripts=str_replace('(facultatif)', '', $PDTCodeScripts);
+   //  $lien = htmlspecialchars($_SERVER['PHP_SELF']) .'?'.$_SERVER['QUERY_STRING'].'&NumPlanche='  . $NumPlanche ;
+    //$urlBase = getURI(true, 'PDTCodeScripts'). 'xxxxxPDTCodeScripts='.$PDTCodeScripts.'§___&NumPlanche='  . $nbPlanches;
+    //$lien = $urlBase;
+    $lien = htmlspecialchars($_SERVER['PHP_SELF']) .ArgumentURL(ParamtreEditionProduit()). '&PDTCodeScripts='.$PDTCodeScripts.'§___&NumPlanche='  . $nbPlanches;
+    
+    $maListe .=  '<div><a class="Plus" id="Planche'.$NumPlanche.'"
+    title="Ajouter une planche au produit" href="'. $lien .'">+</a></div>';  
+
     return $maListe;
 }
 
+function SupressionPlancheNum($PDTCodeScripts, $NumPlanche){
+    $tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], urldecode($PDTCodeScripts));
+    $monNouveauProduit = '';
+    var_dump($tabPlanches);
+    $nbPlanches = count($tabPlanches);
+    for($i = 0; $i < $nbPlanches; $i++){ 
+        if($i!=$NumPlanche){
+            if($GLOBALS['isDebug']){
+                echo '<br>planche dans ' . $tabPlanches[$i];
+            }     
+            $monNouveauProduit .= $tabPlanches[$i] . $GLOBALS['SeparateurInfoPlanche'];
+        }
+    }
 
+    return trim(substr($monNouveauProduit, 0, -2)); // -2 car y a un charractere bizarre qui traine !!... 
+}
+
+function getURI($parametre = false, $param_to_delete = array()){ // Fonction pour suprimmer un argument ici 
+    //On convertit le second paramètre en array si ce n'en est pas une
+    $param_to_delete = (!is_array($param_to_delete) ? array($param_to_delete) : $param_to_delete);
+     
+    $adresse = null;
+    foreach($_GET as $cle => $valeur){ //On parcourt toutes les variables en GET
+        if(!in_array($cle, $param_to_delete)){ //On regarde si la variable fait partie de celles à supprimer
+            //Sinon, on l'ajoute à l'adresse
+            $adresse .= ($adresse ? '&' : '?').$cle.($valeur ? '='.$valeur : '');
+        }
+    }
+    if($parametre){
+        //Si le premier paramètre de la fonction est true, on ajoute le nécessaire pour pouvoir ajouter une variable après le retour de la fonction
+        $adresse .= ($adresse ? '&' : '?');
+    }
+    //On ajoute le chemin du fichier sans les paramètres GET
+    $adresse = $_SERVER['PHP_SELF'].$adresse;
+    return $adresse;
+}
 
 
 /*

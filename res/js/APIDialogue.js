@@ -2,18 +2,21 @@
 //
 var ValeurInterdite = "(obligatoire !)";
 var sepPlanches = '§';
+
+
 //var ValeurInterdite = "15x23cm";
 
-InitDropListe(NumPlanche);
-MAJTabPlanche();
+//InitDropListe(PlancheSelect);
 
-//alert(' NumPlanche ' + NumPlanche);
+
+
 
 /*if the user clicks anywhere outside the select box,
 then close all select boxes:*/
 document.addEventListener("click", closeAllSelect);
 
-function InitDropListe() {
+function InitDropListe(NumPlanche) {
+  //alert(' NumPlanche ' + NumPlanche);
   var x, i, j, l, ll, selElmnt, a, b, c;
   /*look for any elements with the class "custom-select":*/
   x = document.getElementsByClassName("custom-select");
@@ -66,54 +69,71 @@ function InitDropListe() {
         closeAllSelect(this);
         this.nextSibling.classList.toggle("select-hide");
         this.classList.toggle("select-arrow-active");
-        MiseAJourPDTCodeScript(0);
+        MiseAJourPDTCodeScript(NumPlanche);
         
       });
   }
   document.getElementById("btnOK").disabled = document.getElementById("PDTCodeScripts").value.includes(ValeurInterdite);
-  MAJTabPlanche();
+
 }
 
 function MiseAJourPDTCodeScript(NumPlanche) {
   var lePDTCodeScripts = document.getElementById("PDTCodeScripts").value;
 
-
   var leTabPlanches = document.getElementById("PDTCodeScripts").value.split(sepPlanches);
   lePDTCodeScripts = '';
   for (i = 0; i < leTabPlanches.length; i++) {
     if(NumPlanche == i){
-      lePDTCodeScripts +=  sepPlanches + document.getElementById("PDTTaille").value;
-      lePDTCodeScripts += '_' + document.getElementById("PDTTransformation").value;
-      lePDTCodeScripts += '_' + document.getElementById("PDTTeinte").value;
+      var ceProduit = sepPlanches;
+      ceProduit += document.getElementById("PDTTaille").value;
+      ceProduit += '_' + document.getElementById("PDTTransformation").value;
+      ceProduit += '_' + document.getElementById("PDTTeinte").value;
       if (document.getElementById("PDTRecadrage") != null){
-        lePDTCodeScripts += '_' + document.getElementById("PDTRecadrage").value;
+        ceProduit += '_' + document.getElementById("PDTRecadrage").value;
       }
+      
+      ceProduit = ceProduit.replaceAll('(facultatif)', ''); 
+      ceProduit = EnleverdernierUnderscrore(ceProduit); 
+      lePDTCodeScripts += ceProduit;
+      //alert('NumPlanche ' + NumPlanche);
+      document.getElementById('Planche' + NumPlanche).innerHTML = ceProduit.substring(1);
+
       //lePDTCodeScripts += '.' + lePDTCodeScripts ;
     }else{
-      lePDTCodeScripts += sepPlanches + leTabPlanches[i];
+      //lePDTCodeScripts += sepPlanches + leTabPlanches[i];
+      lePDTCodeScripts +=  sepPlanches + EnleverdernierUnderscrore(leTabPlanches[i]);
     }
   }
 
-/*
+  //lePDTCodeScripts = EnleverdernierUnderscrore(lePDTCodeScripts.substring(1));
 
+  lePDTCodeScripts = lePDTCodeScripts.substring(1);// Pour enlever le premier "§"
+  
+  document.getElementById("PDTCodeScripts").value = lePDTCodeScripts;
+  for (i = 0; i < leTabPlanches.length; i++) {
+    //ici on met à jour le lien du crayon
+    //alert("Ajout : " + 'Planche' + NumPlanche);
+    //alert("Ajout : " + document.getElementById('Planche' + NumPlanche).getAttribute('urlBase')); 
+    document.getElementById('Planche' + i).href = encodeURI(document.getElementById('Planche' + i).getAttribute('urlBase')  
+            + '&PDTCodeScripts=' + lePDTCodeScripts);
 
-  var lePDTCodeScripts;
-
-
-  //alert('closeAsdqqsdllSelect');
-  //document.getElementByid("PDTCodeScripts").value = document.getElementByid("PDTTaille").value;
-
-  var lePDTCodeScripts = document.getElementById("PDTTaille").value;
-  lePDTCodeScripts += '_' + document.getElementById("PDTTransformation").value;
-  lePDTCodeScripts += '_' + document.getElementById("PDTTeinte").value;
-  if (document.getElementById("PDTRecadrage") != null){
-    lePDTCodeScripts += '_' + document.getElementById("PDTRecadrage").value;
   }
-  */
-  document.getElementById("PDTCodeScripts").value = lePDTCodeScripts.replaceAll('(facultatif)', '').substring(1); // Pour enlever le premier "."
+}
+
+function EnleverdernierUnderscrore(texte) {
+  /**/ 
+  var reduction = texte;
+  while(reduction.substr(-1) == '_'){
+
+    reduction = reduction.slice(0, -1);
+    //alert(reduction);
+   }
+ 
+  return reduction;
 }
 
 function closeAllSelect(elmnt) {
+  //alert('dsq');
   /*a function that will close all select boxes in the document,
   except the current select box:*/
   var x, y, i, xl, yl, arrNo = [];
@@ -141,6 +161,4 @@ function closeAllSelect(elmnt) {
 }
 
 
-function MAJTabPlanche() {
 
-}

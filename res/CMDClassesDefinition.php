@@ -12,6 +12,21 @@ $CSVBibliothequeScriptPS = '../../GABARITS/ActionsScriptsPSP.csv';
 
 $InviteNomProduit = 'Saisissez le nom de votre nouveau produit';
 
+$ProduitsNONLABO = array(
+	'NON-IMPRIMABLE',
+	'TAPIS-SOURIS',
+	'CADRE-PANO'
+);
+
+$ProduitsPourGROUPE = array(
+	'CADRE',  
+	'SITU', 
+	'TRAD', 
+	'PANO', 
+	'CUBE', 
+	'RUCH'	
+);
+
 class CGroupeCmdes {
     var $ListePromoteurs;
     var $ListeCommandes;
@@ -850,9 +865,15 @@ class CProjetSource {
 				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
             }		
         }
+		
+        for($i = 0; $i < count($GLOBALS['ProduitsNONLABO']); $i++){
+			$aSelectionner = ($GLOBALS['ProduitsNONLABO'][$i] == $valDefaut)?'selected':'';
+			$laDropliste .= '<option value="'. $GLOBALS['ProduitsNONLABO'][$i] .'" '.$aSelectionner.'>'. $GLOBALS['ProduitsNONLABO'][$i] .'</option>';
+        }
 		return $laDropliste;
-	}		
-	function DropListeScriptsTransformation($valDefaut = ''){ 
+	}	
+
+	function DropListeAutresScripts($valDefaut = ''){ 
 		$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
 		$laDropliste .= '<option value="">(rien)</option>';
 		$lesScripts = $this->TabScriptsPhotoshop();	
@@ -864,8 +885,16 @@ class CProjetSource {
         }
 		return $laDropliste;
 	}	
+	function DropListeScriptsTransformation($valDefaut = ''){ 
+		$laDropliste = $this->DropListeAutresScripts($valDefaut);	
+        for($i = 0; $i < count($GLOBALS['ProduitsPourGROUPE']); $i++){
+			$aSelectionner = ($GLOBALS['ProduitsPourGROUPE'][$i] == $valDefaut)?'selected':'';
+			$laDropliste .= '<option value="'. $GLOBALS['ProduitsPourGROUPE'][$i] .'" '.$aSelectionner.'>'. $GLOBALS['ProduitsPourGROUPE'][$i] .'</option>';
+        }
+		return $laDropliste;
+	}	
 	function DropListeScriptsTeinte($valDefaut = ''){ 
-		return $this->DropListeScriptsTransformation($valDefaut);	
+		return $this->DropListeAutresScripts($valDefaut);	
 	}	
 	function TabScriptsPhotoshop(){ 
 		$leTableauDeScriptsPhotoshop = array();

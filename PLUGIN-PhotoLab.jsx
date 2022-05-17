@@ -8,7 +8,7 @@
 
 app.bringToFront();
 
-var g_NumVersion = 0.865;
+var g_NumVersion = 0.868;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
@@ -36,6 +36,7 @@ var g_HauteurTabUI = 732;  //100; te
 var g_OriginalRulerUnits = app.preferences.rulerUnits;  
 var g_OriginalTypeUnits = app.preferences.typeUnits;  
 var g_OriginalDisplayDialogs = app.displayDialogs;  
+
 app.preferences.rulerUnits = Units.PIXELS; // Set the ruler units to PIXELS  
 app.preferences.typeUnits = TypeUnits.POINTS;   // Set Type units to POINTS
 app.displayDialogs = DialogModes.NO; // Set Dialogs off 
