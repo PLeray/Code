@@ -506,11 +506,6 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Type);
 							Raffraichir(); 
 						}*/					
-						// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-						if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
-							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);							
-						}
-
 
 						if (myDocument.width > myDocument.height) { 
 							//alert('re re tourne 90');
@@ -522,6 +517,8 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 						} else{
 							reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
 						}
+
+						// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
 
 						//reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
 						
@@ -548,6 +545,13 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 								
 								//if (myDocument.width > myDocument.height) { myDocument.rotateCanvas(-90);}  
 							//} 
+
+
+
+
+						if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
+							//reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);							
+						}							
 							//La sauvegarde ...						
 							SauvegardeJPEG(laPhoto, unPathPlanche);
 							
@@ -692,9 +696,7 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 						Raffraichir(); 
 					}*/					
 					// 2 : Si Portait LA TAILLE DE L'IMAGE FINALE ///////////////////
-					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
-						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);						
-					}
+
 					reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(unProduit.Taille);
 					
 					/*else{ // Sinon !!!		
@@ -714,6 +716,10 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 						if (unProduit.isFichierIndiv() && !unProduit.isProduitGroupe()) {  
 							if (myDocument.width > myDocument.height) { myDocument.rotateCanvas(-90);}  
 						} 
+						
+					if (g_RepSCRIPTSPhotoshop == 'PHOTOLAB-2022-Cadre-Studio2'){ // QQue pour Studio² !!!						
+						//reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP(scriptPoincon);						
+					}
 						//La sauvegarde ...						
 						SauvegardeJPEG(laPhoto, unPathPlanche);
 						

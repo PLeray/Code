@@ -707,7 +707,7 @@ function TitleEtatTirage($fichier, $Etat){
 			$retourMSG = "Accédez à l'interface de mise en pochette rapide de vos commandes et préparer l'expédition à vos clients.";
 			break;		
 		case "5":
-			$retourMSG = "Vous avez expédié vos commandes ? Cliquez ici pour archiver votre groupe de comamndes.";
+			$retourMSG = "Vous avez expédié vos commandes ? Cliquez ici pour archiver votre groupe de commandes.";
 			break;	
 		}
 	}else{

@@ -130,7 +130,7 @@ function execInBackgroundOLD($cmd) {
 }
 
 function IsLocalMachine() {
-	$isLocal = false;
+	//$isLocal = false;
 
   //echo 'L adresse IP de l utilisateur est : '.$_SERVER['REMOTE_ADDR'];
   //echo '<br>L adresse IP du serveur est : '.$_SERVER['SERVER_ADDR'];

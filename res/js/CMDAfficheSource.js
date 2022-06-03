@@ -496,19 +496,19 @@ function CreationCommandeProduitDepuisPhoto() {
 		//var LeProduitSelection = document.getElementById('SelectProduit').innerHTML;	
 		
 		//Affichage  // '&#60;' et '&#62;' pour remplacer les '<' et '>'		
-		//document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos,  document.getElementById('SelectProduit').innerHTML);
-		document.getElementById("myListeCommandes").innerHTML += RecupPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages').textContent);				
+		//document.getElementById("myListeCommandes").innerHTML += VisuRecupPhotosProduits(maListePhotos,  document.getElementById('SelectProduit').innerHTML);
+		document.getElementById("myListeCommandes").innerHTML += VisuRecupPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages').textContent);				
 		
 		//Cequ on enregistre : 
-		//document.getElementById("myListeCommandes").innerHTML += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
+		//document.getElementById("myListeCommandes").innerHTML += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
 		//La commande Sauvée																																
-		//document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
-		document.getElementById('lesCmdesLibres').value += CMDPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages'));														
+		//document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
+		document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages'));														
 		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");	
 	}
 }
 
-function CMDPhotosProduits(ListedePhoto, elementSelection) {
+function EnregistreCMDPhotosProduits(ListedePhoto, elementSelection) {
 	
 	var maCMDPhotosProduits = '<' + elementSelection.textContent + '>' + sepFinLigne;
 	var CMDSelectionPhoto = ListedePhoto.split(sepFinLigne);
@@ -545,7 +545,7 @@ function CodeProduit(Produits) {
 
 
 
-function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
+function VisuRecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 	var strAffichage = '';
 	var CMDSelectionPhoto = ListedePhoto.split(sepFinLigne);
 
@@ -553,6 +553,8 @@ function RecupPhotosProduits(ListedePhoto, LeProduitSelection) {
 		if ( CMDSelectionPhoto[i] !=''){
 			var CMDInfoPhoto = CMDSelectionPhoto[i].split('____');
 			strAffichage += CMDInfoPhoto[1] + 'ex ' +  CMDInfoPhoto[0] + ' : ' + LeProduitSelection + '<br>';
+
+			// Ajouter ici si LeProduitSelection contient portrait A alors renommer fichier photo avec -QCoinA
 		}
 	} 
 	return strAffichage;

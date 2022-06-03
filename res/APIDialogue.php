@@ -195,9 +195,9 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 			</div>
 			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 1 : Enregistrer les fichiers "produits" à Créer.</h1>';
 	
-			$retourMSG .= '<table>
+			$retourMSG .= '<table width="100%">
 			<tr>
-				<td width="50%">';	
+				<td width="60%">';	
 				// A REMETTRE !!! 
 				$monGroupeCmdes = new CGroupeCmdes($target_fichier);
 
@@ -210,7 +210,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 
 				$retourMSG .= '</div>';
 			$retourMSG .= '</td>
-							<td width="50%">';	
+							<td >';	
 			$retourMSG .= '	<div class="msgcontainer">';
 			
 			$retourMSG .= '<h4>'.$Titre.'</h4>';			
@@ -550,8 +550,8 @@ function Etape_50($leFichierLab){ // API_DemandeNOMComamnde(){
 	}		
 
 	$retourMSG .=  '<h3>Cette action va archiver votre commande comme traitée et expédiée.
-	<br><br>Les fichiers photos grand format, destinés à l\'impression seront suprimés, en effet ils ne serviront plus. 
-	<br><br>En outre, ça liberera de la place sur votre disque dur!
+	<br><br>Les fichiers photos grand format, destinés à l\'impression seront supprimés, en effet ils ne serviront plus. 
+	<br><br>En outre, cela liberera de la place sur votre disque dur!
 	<br><br>Vous pourrez toujours la consulter ultérieurement dans l\'historique des commandes expediées :</h3>';
 	
 	$retourMSG .=  '<br><br><img src="img/menuBouton3.png" alt="Image Historique" >';

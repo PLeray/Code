@@ -45,6 +45,7 @@ if (isset($_POST['lesCmdesLibres']) ){
 	if ($isDebug){echo 'VOILA LES RECOMMANDES SELECTIONNEES  pour ' . $lesCmdesLibres;}	
 	MAJFichierCommandes($lesCmdesLibres, $CodeEcole, $AnneeScolaire);
 }
+
 $lesFichiersBoutique = '';
 if (isset($_POST['lesFichiersBoutique']) ){
 	$lesFichiersBoutique = $_POST['lesFichiersBoutique'];
