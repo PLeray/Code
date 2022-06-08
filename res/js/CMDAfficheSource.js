@@ -503,13 +503,13 @@ function CreationCommandeProduitDepuisPhoto() {
 		//document.getElementById("myListeCommandes").innerHTML += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
 		//La commande Sauvée																																
 		//document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
-		document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages'));														
+		document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages'));	
+													
 		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");	
 	}
 }
 
 function EnregistreCMDPhotosProduits(ListedePhoto, elementSelection) {
-	
 	var maCMDPhotosProduits = '<' + elementSelection.textContent + '>' + sepFinLigne;
 	var CMDSelectionPhoto = ListedePhoto.split(sepFinLigne);
 	
@@ -519,28 +519,36 @@ function EnregistreCMDPhotosProduits(ListedePhoto, elementSelection) {
 			
 			for (n = 0; n < parseInt(CMDInfoPhoto[1])  ; n++) {
 								
-				maCMDPhotosProduits += CMDInfoPhoto[0] + '_' + CodeProduit(elementSelection.getAttribute('Code')) + '_1'+ sepFinLigne;
+				maCMDPhotosProduits += CodePhotoProduit(CMDInfoPhoto[0], elementSelection.getAttribute('Code')) + '_1'+ sepFinLigne;
 			}
 		}
 	}
 	return maCMDPhotosProduits.trim();
 
-/*
-	this.TableauInfo = CodeLigne.substr(0,CodeLigne.indexOf(sepNumLigne)).split('_');
-
-	this.FichierPhoto = this.TableauInfo[0];	
-	this.Taille = this.TableauInfo[1] || "";	
-	this.Type = this.TableauInfo[2] || "";
-	this.Teinte = this.TableauInfo[3] || "";
-	this.Nombre = this.TableauInfo[4] || 1;
-*/
-
 }
-function CodeProduit(Produits) {
-	//alert(Produits);
+
+function CodePhotoProduit(laPhoto, Produits) {
+	CMDInfoPhoto = Produits.split('_');
 	var CMDInfoPhoto = Produits.split('_');
+
+		//alert("nom  Produit " +  Produits);
+
+	var depart = Produits.indexOf('Portrait-');
+	if(depart > -1){
+		//alert("potr " + Produits.substr(depart,10));
+		laPhoto = ModifNomFichierQuattro(laPhoto, Produits.substr(depart,10));	
+	}
+
 	Produits =   (CMDInfoPhoto[0] || "") + '_' + (CMDInfoPhoto[1] || "") + '_' + (CMDInfoPhoto[2] || "");
-	return Produits;
+
+	return laPhoto + '_' + Produits;
+}
+
+function ModifNomFichierQuattro(nomPhoto, leQuoin) {
+	leQuoin = leQuoin.replace('Portrait-', '-QCoin');
+	var extension = nomPhoto.split(".").pop();
+	nomPhoto = nomPhoto.substring(0,nomPhoto.indexOf(extension)-1) + leQuoin + '.' + extension;
+	return nomPhoto;
 }
 
 
