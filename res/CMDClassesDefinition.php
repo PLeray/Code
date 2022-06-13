@@ -832,9 +832,12 @@ class CProjetSource {
 			}
 		}
 	}
-	function NomCatalogue(){
-		return 'Catalogue' . $this->ScriptsPS . '.csv';
+	function DossierCatalogue(){
+		return 'Catalogue' . $this->ScriptsPS;
 	}
+	function NomCatalogue(){
+		return $this->DossierCatalogue() . '.csv';
+	}	
 	function DropListeScriptsRecadrages($valDefaut = ''){ 
 		//$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
 		//$laDropliste .= '<option value="">(rien)</option>';

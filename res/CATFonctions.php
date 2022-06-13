@@ -1223,6 +1223,12 @@ function ListeProduitsSelonCatalogue($monProjetSource){
 			}
 			fclose($file);	
 		}			
+	}else{
+		$file = fopen($fichierCatalogueScriptPS, 'w');		
+		//Le catalogue n'existe pas !    
+        fputs($file, "Description;Code\n");
+        fclose($file);
+		CreationDossier($GLOBALS['repGABARITS'] . $monProjetSource->DossierCatalogue());
 	}
 	return $CataloguePRODUITS;
 }
