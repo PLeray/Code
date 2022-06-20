@@ -224,11 +224,35 @@ function InfoAPI() {
 }
 ////////////////////////////////////////////////////////////////////////////////////
 
-function OuvrirPhotoSource(unFichierPhoto){
-	//var leFichierPhotoOK = new File(g_RepSOURCE + "/" + unFichierPhoto); 
-	var leFichierPhotoOK = g_RepSOURCE + "/" + unFichierPhoto; 	
+function NEWOuvrirPhotoSource(unFichierPhoto){
+	var leFichierPhotoOK = unFichierPhoto; 	
 	try {
 		//if(leFichierPhotoOK.exists){
+		if(isFichierExiste(leFichierPhotoOK)){ 
+			var laPhoto = app.open(File(leFichierPhotoOK));
+			return laPhoto;		
+		}				
+	}
+	catch(err) {
+		var msg = 'Ecole en cours : ' + g_CommandeECOLEEncours;
+		AjoutBilanGeneration(msg);
+		msg = '  Commande en cours : ' + g_CommandePDTEncours;
+		AjoutBilanGeneration(msg);
+		msg = '     PROBLEME : Ouverture de la photo : ' + unFichierPhoto;		
+		AjoutBilanGeneration(msg);
+		msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto + " existe bien dans le dossier SOURCE de l'ecole !";	
+		msg = "                       dossier SOURCE de l'ecole : " + g_RepSOURCE;	
+				AjoutBilanGeneration(msg);		
+		AjoutBilanGeneration('');
+		g_Erreur = msg;
+		return null;
+	}
+}
+
+
+function OuvrirPhotoSource(unFichierPhoto){
+	var leFichierPhotoOK = g_RepSOURCE + "/" + unFichierPhoto; 	
+	try {
 		if(isFichierExiste(leFichierPhotoOK)){ 
 			var laPhoto = app.open(File(leFichierPhotoOK));
 			return laPhoto;		
@@ -289,7 +313,6 @@ function TrouverFichierSource(unFichierPhoto) {
 	return FichierRech ;
 }
 */
-
 
 function Action_Script_PhotoshopPSP(N_action){
 	/* 
@@ -446,13 +469,25 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					
 					if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
 						nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
-					}					
-					var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
-					var reussiteTraitement = (laPhoto != null);	
-					if (reussiteTraitement) {
-						//var docName = laPhoto.name;
-						//var basename = docName.match(/(.*)\.[^\.]+$/)[1];
-						//var docPath = laPhoto.path;		SUPRESSION 17/11/2020 ??!!						
+					}		
+					
+					var reussiteTraitement = true;
+					// IMPORT FOND BACK GROUND ici
+					if (unProduit.Type.substr(0, 3).indexOf('fnd') > -1){ //Produit Avec png  de Fond chargé en premier!!
+						var NomFondProduit = DossierGabaritSpecifique() + unProduit.Type + '.png';
+						var laPhoto = NEWOuvrirPhotoSource(NomFondProduit); 
+						reussiteTraitement = (laPhoto != null);	
+
+						reussiteTraitement = reussiteTraitement && 
+						ImporterAutrePhoto(g_RepSOURCE + "/" + nomFichierPhoto);			
+					}else{
+						var laPhoto = NEWOuvrirPhotoSource(g_RepSOURCE + "/" + nomFichierPhoto); 
+						reussiteTraitement = (laPhoto != null);	
+					}
+					//var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+					//reussiteTraitement = (laPhoto != null);	
+					
+					if (reussiteTraitement) {					
 						////////  Cas des fratrie ou Indiv en paysage =>> Portrait /////////
 						//var isFratrie = false;
 						var myDocument = app.activeDocument; 
@@ -628,9 +663,22 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					leRECADRAGE = 'Portrait-A';									
 				}					
 				
-				//alert('Avant OUverture CreerUnProduitPour : ' + nomFichierPhoto ); //////////////////////////////////////////////
-				var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
-				var reussiteTraitement = (laPhoto != null);	
+				var reussiteTraitement = true;
+				// IMPORT FOND BACK GROUND ici
+				if (unProduit.Type.substr(0, 3).indexOf('fnd') > -1){ //Produit Avec png  de Fond chargé en premier!!
+					var NomFondProduit = DossierGabaritSpecifique() + unProduit.Type + '.png';
+					var laPhoto = NEWOuvrirPhotoSource(NomFondProduit); 
+					reussiteTraitement = (laPhoto != null);	
+
+					reussiteTraitement = reussiteTraitement && 
+					ImporterAutrePhoto(g_RepSOURCE + "/" + nomFichierPhoto);			
+				}else{
+					var laPhoto = NEWOuvrirPhotoSource(g_RepSOURCE + "/" + nomFichierPhoto); 
+					reussiteTraitement = (laPhoto != null);	
+				}
+				//var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
+				//reussiteTraitement = (laPhoto != null);	
+
 				if (reussiteTraitement) {
 					var docName = laPhoto.name;
 					//var basename = docName.match(/(.*)\.[^\.]+$/)[1];

@@ -189,8 +189,24 @@ display: none;
     background-color: var(--boutonRouge);
 }
 img {
+
     vertical-align:middle;
+
   }
+
+  .imgProduit {
+    width: 350px; 
+    height: 350px; 
+    object-fit: scale-down;     
+    /* border: 1px solid var(--texteGris);
+    
+        padding: 1px;
+        padding-left: 1px;*/
+        margin:20px;
+
+  }
+
+  
 
 /* Center the image and position the close button */
 .imgcontainer {
@@ -241,7 +257,9 @@ img {
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
 	
     border: 1px solid #888;
-     width: 75%; /*PASSAGE 0 50% Could be more or less, depending on screen size */
+     width: 90%; /*PASSAGE 0 50% Could be more or less, depending on screen size */
+
+     padding-left: 20px;
 }
 
 /* Add Zoom Animation */
@@ -352,22 +370,15 @@ img {
     font-size: 16px;
 
     font-family: "Courier New", Times, serif;  
+
+    border: 1px solid var(--FondLigneTabGrisFonce);
+
+    background-color : var(--FondLigneTabGrisClair);
+
+    margin-top: 2px;
   }
 
-  .Description {
-    float: left;
-    display: block;
-    color: var(--texteGris);
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 16px;
-    font-family: "Courier New", Times, serif;  
 
-
-
-      
-  }
   
   .topnav a:hover {
 
@@ -375,10 +386,12 @@ img {
   }
   
   .topnav a.active {
-    border: 1px solid var(--FondLigneTabGrisFonce);
+
     border-bottom: 3px solid white;  
     cursor: default;
     font-weight: bold;
+    background-color : white;
+    margin-top: 0px;
   }
   .topnav a.active:hover {
 
@@ -386,7 +399,7 @@ img {
   }
   .DefinitionProduit {
 
-    margin: 10px;
+    margin-right: 10px;
     margin-top: -5px;   
 
     border: 1px solid var(--FondLigneTabGrisFonce);
@@ -401,10 +414,10 @@ img {
     height: 50px;
     border-radius: 50%;
 
-    margin-left: 50px;
+    margin-left: 20px;
 
     
-    top: 50px;
+    top: 0px;
 
     color: white;
     font-size: 30px;

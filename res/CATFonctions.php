@@ -1294,4 +1294,65 @@ function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
     return $leCodeProduit;
 }
 */
+
+function RetourneImageProduit($PDTCodeScripts){
+	$tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
+
+	$Script = explode('_', $tabPlanches[0]);   
+	$PDTTaille = urlencode($Script[0]);
+	$PDTTransformation = (count($Script)>1? $Script[1]:'');
+	$PDTTeinte = (count($Script)>2? $Script[2]:'');
+	$PDTRecadrage = (count($Script)>3? $Script[3]:'');
+	
+	$PDTRecadrage = ($PDTRecadrage=='(facultatif)'?'':$PDTRecadrage);
+	$PDTTaille = ($PDTTaille=='(facultatif)'?'':$PDTTaille);
+	$PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
+	$PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
+
+
+	//if($GLOBALS['isDebug']){ echo $PDTCodeScripts .' >>> ' .  $PDTTransformation .'  ' . $PDTTeinte .'  ' . $PDTRecadrage;;}
+
+    return RetourneImagePlanche($PDTTransformation ,$PDTTeinte,$PDTRecadrage);
+}
+
+function RetourneImagePlanche($PDTTransformation ,$PDTTeinte,$PDTRecadrage){
+    //if($GLOBALS['isDebug']){ echo  $PDTTransformation ;}
+    
+    $dir = $GLOBALS['repTIRAGES'];
+
+    $trouveFichierCache = '';
+    $monCodeScript = $PDTTransformation;
+    
+    $urlImage = RetourneExemplePlanche($dir,$trouveFichierCache,$monCodeScript);
+
+    if ($urlImage ==''){
+            $urlImage = 'img/DefautProduit.png';
+    }
+    $urlImage = '<img class = "imgProduit" src="' .$urlImage.'" alt="exemple de produit" >';
+    return $urlImage;
+}
+
+function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$monCodeScript){
+
+    $PaterneDeRecherche = $monCodeScript;
+    if ($trouveFichierCache == ''){   
+        $leFichier = basename($chemin);
+        if (str_contains($leFichier, $PaterneDeRecherche)) {
+            //$trouveFichierCache .= $leFichier. "<br>";   
+            $trouveFichierCache .= $chemin; 
+        }
+        //$trouveFichierCache .= basename($chemin). "<br>";     
+        // Si $chemin est un dossier => on appelle la fonction RetourneExemplePlanche() pour chaque élément (fichier ou dossier) du dossier$chemin
+        if( is_dir($chemin) ){
+            $me = opendir($chemin);
+            while( $child = readdir($me) ){
+                if( $child != '.' && $child != '..' ){
+                    RetourneExemplePlanche( $chemin.DIRECTORY_SEPARATOR.$child , $trouveFichierCache, $PaterneDeRecherche );
+                }
+            }
+        }
+     }   
+
+    return $trouveFichierCache;
+}
 ?>

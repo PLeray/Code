@@ -189,6 +189,18 @@ img {
     vertical-align:middle;
   }
 
+
+  .imgProduit {
+    width: 60px; 
+    height: 60px; 
+    object-fit: scale-down;     
+    /* border: 1px solid var(--texteGris);*/
+    
+        padding: 1px;
+        padding-left: 1px;
+  }
+
+
 /* Center the image and position the close button */
 .imgcontainer {
     text-align: center;

@@ -99,16 +99,13 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
     if($isDebug){
         echo '<br>un DossierScript : ' . $monProjetSource->ScriptsPS;
     }             
-    $retourMSG = '';	
-    $retourMSG .= '<div id="apiReponse" class="modal">
+    $retourMSG = '<div id="apiReponse" class="modal">
     <div class="modal-content animate" >
         <div class="imgcontainer">
             <a href="'.RetourEcranPrecedent($monProjetSource).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
         </div>
         <h1><img src="img/logo.png" width ="80px" alt="Aide sur l\'étape" >Catalogue produits : Edition d\'un produit '
         . '</h1>';	
-        $retourMSG .= "<h2>(Nom du dossier d'Actions dans Photoshop : ". $monProjetSource->ScriptsPS .')</h2>';
-        $retourMSG .= "<h3>Dossier de script : ". $monProjetSource->ScriptsPS .'</h3>';
         
         echo $retourMSG;
         /*
@@ -129,16 +126,28 @@ if ($isImport){
 }else{
     $ValeurNomDefaut = ($PDTNumeroLigne?$PDTDenomination:'');
 }
-
  ?>
 
 
-<div class="DefinitionProduit">
+
+
 <form action="<?php echo RetourEcranPrecedent($monProjetSource); ?>" method="post">
 
 
-
-<h4>Nom du produit : 
+<table width="100%">
+        <tr>
+        <td style="text-align: center; vertical-align: middle; background-color: var(--texteGris);" width="400px">
+                <div >
+                <?php  echo RetourneImagePlanche($PDTTransformation ,$PDTTeinte,$PDTRecadrage);  ?>
+                </div>
+            </td>            
+            <td style="padding-left: 10px; vertical-align: middle; ">
+        <?php            
+            $retourMSG = "<h2>(Nom du dossier d'Actions dans Photoshop : ". $monProjetSource->ScriptsPS .')</h2>';
+            $retourMSG .= "<h3>Dossier de script : ". $monProjetSource->ScriptsPS .'</h3>';
+            $retourMSG .= "<h4>Nom du produit : </h4>";        
+            echo $retourMSG;
+        ?>
 <input type="text" id="zoneTexteNomCommande" 
                             placeholder="<?php echo $PDTDenomination; ?>"
                             value="<?php echo $ValeurNomDefaut; ?>" 
@@ -153,9 +162,14 @@ if ($isImport){
 
 <input type="text" id="zonePDTNumeroLigne" value="<?php echo $PDTNumeroLigne; ?>" name="PDTNumeroLigne" required>      
                             
-                         
-</h4>
-<h4></h4><?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?>
+                                  
+            
+
+
+<h4>Transformation(s) avec actions Photoshop : </h4>
+      
+
+<?php  echo ListeFichier($PDTCodeScripts, $NumPlanche);?>
     <div class="DefinitionProduit">
     <br><br>
     <table class="TableDefinitionCodeProduit">
@@ -220,14 +234,21 @@ if ($isImport){
                 ?>                                       
             </tr>
 </table>
-<br><br>
-</div>
-<a href="<?php echo RetourEcranPrecedent($monProjetSource); ?>" class="KO" title="Annuler">Annuler</a>
+<br>
 
-<button type="submit" id="btnOK" class="OK" >OK</button>
-  </form>
+</td>
+
+</tr>
+</table>
+
+
+<div align="center">
+    <a href="<?php echo RetourEcranPrecedent($monProjetSource); ?>" class="KO" title="Annuler">Annuler</a>
+
+    <button type="submit" id="btnOK" class="OK" >OK</button>
+    </form>
+    </div>
 </div>
- 
 
 
 <script type="text/javascript" src="<?php Mini('js/APIDialogue.js');?>"></script>
@@ -238,7 +259,7 @@ if ($isImport){
 </html>
 
 <?php
-
+//function RetourneImageProduit($monCodeScript){
 
 function ParamtreEditionProduit(){
     $Param ='&PDTNumeroLigne='. $GLOBALS['PDTNumeroLigne'] .
@@ -261,7 +282,7 @@ function ListeFichier($PDTCodeScripts, $NumPlanche = 0){
     $tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
     $maListe = '';
 
-    $maListe .=' <div class="topnav"><span class="Description" >Planche actions Photoshop : </span>';
+    $maListe .=' <div class="topnav">';
 
     $nbPlanches = count($tabPlanches);
     for($i = 0; $i < $nbPlanches; $i++){ 

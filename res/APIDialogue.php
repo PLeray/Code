@@ -197,7 +197,7 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 	
 			$retourMSG .= '<table width="100%">
 			<tr>
-				<td width="60%">';	
+				<td >';	
 				// A REMETTRE !!! 
 				$monGroupeCmdes = new CGroupeCmdes($target_fichier);
 

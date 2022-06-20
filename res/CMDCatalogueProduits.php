@@ -108,6 +108,7 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
 	<tr >	
 		<th >Nom du Produit</th>
 		<th >Code pour actions Photoshop</th>	
+        <th style="width:90px;"></th>	
 		<th style="width:90px;"><font size="-1">Editer</font></th>		
 		<th style="width:90px;"><font size="-1">Suprimer</font></th>
         
@@ -124,7 +125,7 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
             $retourMSG .= '<tr>
                             <td><H3>' . $morceau[0] . '</H3></td>
                             <td>' . $morceau[1] . '</td>
-                        
+                            <td>' .RetourneImageProduit($morceau[1]). '</td>                       
                             <td>' .LienEdition($TabProduits[$i], $i,$monProjetSource->CodeEcole,$monProjetSource->AnneeScolaire). '</td>
                             <td>' .LienSupression($morceau[0],  $i, $monProjetSource->CodeEcole,$monProjetSource->AnneeScolaire). '</td>
                        
