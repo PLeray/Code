@@ -24,7 +24,7 @@ if (isset($_GET['versionDistante'])) {
 		if ($GLOBALS['isDebug']){echo 'Version en ligne : ' .$GLOBALS['VERSIONLOCAL'];}	
 	}
 	//pour tester
-	header('Location: MAJPhotoLab.php'. ArgumentURL('&versionDistante='. $_GET['versionDistante']));
+	//header('Location: MAJPhotoLab.php'. ArgumentURL('&versionDistante='. $_GET['versionDistante']));
 }
 if (isset($_GET['apiSupprimer'])) { 
 	$RechargerPage = true;
@@ -70,7 +70,8 @@ if (isset($_GET['apiSupprimer'])) {
 				/*		
 					$urlCode = urlencode($_SERVER['PHP_SELF']); 	
 		echo '<br> urlencode : ' . $urlCode; 		
-		echo '<br> urldecode : ' . urldecode($urlCode);	*/	
+		echo '<br> urldecode : ' . urldecode($urlCode);	
+		*/	
 			
 		} 
 		?>
