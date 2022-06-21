@@ -1297,8 +1297,26 @@ function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
 
 function RetourneImageProduit($PDTCodeScripts){
 	$tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
+    return RetourneImagePlanche($tabPlanches[0]);
+}
 
-	$Script = explode('_', $tabPlanches[0]);   
+function RetourneImagePlanche($ScriptImage){ 
+    $dir = $GLOBALS['repTIRAGES'];
+
+    $trouveFichierCache = '';
+	$ScriptImagePlanche = $ScriptImage;
+    
+    $urlImage = RetourneExemplePlanche($dir,$trouveFichierCache,$ScriptImagePlanche);
+
+    if ($urlImage ==''){
+            $urlImage = 'img/DefautProduit.png';
+    }
+    $urlImage = '<img class = "imgProduit" src="' .$urlImage.'" alt="exemple de produit" >';
+    return $urlImage;
+}
+
+function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$ScriptImagePlanche){
+	$Script = explode('_', $ScriptImagePlanche);   
 	$PDTTaille = urlencode($Script[0]);
 	$PDTTransformation = (count($Script)>1? $Script[1]:'');
 	$PDTTeinte = (count($Script)>2? $Script[2]:'');
@@ -1309,37 +1327,21 @@ function RetourneImageProduit($PDTCodeScripts){
 	$PDTTransformation = ($PDTTransformation=='(facultatif)'?'':$PDTTransformation);
 	$PDTTeinte = ($PDTTeinte=='(facultatif)'?'':$PDTTeinte);
 
-
-	//if($GLOBALS['isDebug']){ echo $PDTCodeScripts .' >>> ' .  $PDTTransformation .'  ' . $PDTTeinte .'  ' . $PDTRecadrage;;}
-
-    return RetourneImagePlanche($PDTTransformation ,$PDTTeinte,$PDTRecadrage);
-}
-
-function RetourneImagePlanche($PDTTransformation ,$PDTTeinte,$PDTRecadrage){
-    //if($GLOBALS['isDebug']){ echo  $PDTTransformation ;}
-    
-    $dir = $GLOBALS['repTIRAGES'];
-
-    $trouveFichierCache = '';
-    $monCodeScript = $PDTTransformation;
-    
-    $urlImage = RetourneExemplePlanche($dir,$trouveFichierCache,$monCodeScript);
-
-    if ($urlImage ==''){
-            $urlImage = 'img/DefautProduit.png';
-    }
-    $urlImage = '<img class = "imgProduit" src="' .$urlImage.'" alt="exemple de produit" >';
-    return $urlImage;
-}
-
-function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$monCodeScript){
-
-    $PaterneDeRecherche = $monCodeScript;
     if ($trouveFichierCache == ''){   
         $leFichier = basename($chemin);
-        if (str_contains($leFichier, $PaterneDeRecherche)) {
-            //$trouveFichierCache .= $leFichier. "<br>";   
-            $trouveFichierCache .= $chemin; 
+        if (str_contains($leFichier, $PDTTaille)) {
+			if (str_contains($leFichier, $PDTTransformation)) {
+				
+				if (str_contains($leFichier, $PDTTeinte)) {
+					
+					$PDTRecadrage = str_replace('Portrait-', '-QCoin', $PDTRecadrage);
+					if (str_contains($leFichier, $PDTRecadrage)) {
+						//if($GLOBALS['isDebug']){ echo  $chemin ;}
+						//$trouveFichierCache .= $leFichier. "<br>";   
+						$trouveFichierCache .= $chemin; 
+					}
+				}
+			}
         }
         //$trouveFichierCache .= basename($chemin). "<br>";     
         // Si $chemin est un dossier => on appelle la fonction RetourneExemplePlanche() pour chaque élément (fichier ou dossier) du dossier$chemin
@@ -1347,12 +1349,11 @@ function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$monCodeScript){
             $me = opendir($chemin);
             while( $child = readdir($me) ){
                 if( $child != '.' && $child != '..' ){
-                    RetourneExemplePlanche( $chemin.DIRECTORY_SEPARATOR.$child , $trouveFichierCache, $PaterneDeRecherche );
+                    RetourneExemplePlanche( $chemin.DIRECTORY_SEPARATOR.$child , $trouveFichierCache, $ScriptImagePlanche );
                 }
             }
         }
      }   
-
     return $trouveFichierCache;
 }
 ?>

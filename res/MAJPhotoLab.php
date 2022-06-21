@@ -18,19 +18,21 @@ $MessageBox =
 	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"DEBUG":"PROD") . ".css") . '">
     <link rel="stylesheet" type="text/css" href="'. strMini("css/APIDialogue.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-    </head>
+    </head> 
     <body>
 	<body onload="document.getElementById(\'apiReponse\').style.display=\'block\'"><div id="apiReponse" class="modal">
 		<div class="modal-content animate" >
 			<div class="imgcontainer">
-				<br><h1>Mise à jour<br><br><br></h1>
-				<img src="img/Logo-mini.png" alt="Image de fichier" class="apiReponseIMG">
+								<img src="img/Logo-mini.png" alt="Image de fichier" class="apiReponseIMG">
 			</div>';
 
 $MessageBox .= '<div class="msgcontainer">';
-$MessageBox = $MessageBox . '<br><h3>'.$MsgRecupCode.'</h3><br>';
+$MessageBox = $MessageBox . '<br><h3>⚠ Mise à jour ⚠<br><br><br></h3>';
+if (isset($_GET['versionDistante'])){$MessageBox .=  '<h3> versionLocal : ' . $GLOBALS['VERSIONLOCAL'] . ' > version Distante : ' .  $_GET['versionDistante'].'</h3><br>'; }
 
-if (isset($_GET['versionDistante'])){$MessageBox .=  '<br><h3> versionLocal : ' . $GLOBALS['VERSIONLOCAL'] . ' > version Distante : ' .  $_GET['versionDistante'].'</h3><br>'; }
+
+
+$MessageBox = $MessageBox . '<h3>'.$MsgRecupCode.'</h3><br>';
 
 //if ($GLOBALS['isDebug']){$MessageBox = $MessageBox . "<br><h3>".$Etat." (en Debug)<br><br></h3>";}
 //$MessageBox = $MessageBox . "<br><h3>Améliorations !</h3><br>";
@@ -59,10 +61,10 @@ function RecupCODE($urlBase){
 	$commentaire ='';
 	$msgTelechargement ='';
 	if(TelechargerFichier('Code.zip', $urlBase, $msgTelechargement)){ 
-		$commentaire .= " Fichier téléchargé avec succès" . '<br><br>' . $msgTelechargement; 				
+		$commentaire .= "Téléchargement des fichiers : OK ✅" . '<br><br>' . $msgTelechargement; 				
 	} 
 	else { 
-		$commentaire .= " !! Fichier NON téléchargé !! " . '<br><br>' . $msgTelechargement; 	
+		$commentaire .= "Téléchargement des fichiers : Echec ! ❌" . '<br><br>' . $msgTelechargement; 	
 	}
 	$commentaire .= '<br><br>';	
 	return $commentaire;
@@ -135,9 +137,9 @@ function DezipperFichier($Dossier, $fichier) {
 	if ($zip->open($Dossier.$fichier) === TRUE) {
 		$zip->extractTo($Dossier);
 		$zip->close();
-		$MSG = 'Extraction des fichiers : ok';
+		$MSG = 'Extraction des fichiers : OK ✅';
 	} else {
-		$MSG = 'Extraction des fichiers : échec';
+		$MSG = 'Extraction des fichiers : Echec ! ❌';
 	}
 	return $MSG;
 }	

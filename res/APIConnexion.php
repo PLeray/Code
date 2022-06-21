@@ -68,9 +68,9 @@ function ArgumentURL($ARGSupl = ''){
 	return '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod') . $ARGSupl;
 }
 
-function MAJPhotoLab($NouvelleVersion) {
-	if( $GLOBALS['VERSIONLOCAL'] < $NouvelleVersion){ 
-		header('Location: MAJPhotoLab.php'. ArgumentURL('&version='. $NouvelleVersion));
+function MAJPhotoLab($NouvelleVersion) { 
+	if( $GLOBALS['VERSIONLOCAL'] < $NouvelleVersion){ 		 // pour Tester
+		header('Location: MAJPhotoLab.php'. ArgumentURL('&versionDistante='. $NouvelleVersion));
 	}
 }
 

@@ -138,7 +138,7 @@ if ($isImport){
         <tr>
         <td style="text-align: center; vertical-align: middle; background-color: var(--texteGris);" width="400px">
                 <div >
-                <?php  echo RetourneImagePlanche($PDTTransformation ,$PDTTeinte,$PDTRecadrage);  ?>
+                <?php  echo RetourneImagePlanche($tabPlanches[$NumPlanche]);  ?>
                 </div>
             </td>            
             <td style="padding-left: 10px; vertical-align: middle; ">

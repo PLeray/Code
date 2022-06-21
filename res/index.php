@@ -23,6 +23,8 @@ if (isset($_GET['versionDistante'])) {
 		MAJPhotoLab($_GET['versionDistante']);
 		if ($GLOBALS['isDebug']){echo 'Version en ligne : ' .$GLOBALS['VERSIONLOCAL'];}	
 	}
+	//pour tester
+	header('Location: MAJPhotoLab.php'. ArgumentURL('&versionDistante='. $_GET['versionDistante']));
 }
 if (isset($_GET['apiSupprimer'])) { 
 	$RechargerPage = true;
