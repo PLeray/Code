@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.870;
+$VERSIONLOCAL = 0.872;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -140,9 +140,10 @@ function IsLocalMachine() {
 
 function AfficheMenuPage($Page,$maConnexionAPI) {
 	$menuPage = '<center>
-	<div id="mySidenav">';
-		$menuPage .= '<a href="index.php' . ArgumentURL().'" ' . (($Page == "ajoutCommandeGroupee")?' class="actif" ':'') . '   id="ajoutCommandeGroupee" title="Ajouter une Commande Groupée ..."></a>';
+	<div id="mySidenav">';		
+		$menuPage .= '<a href="CATListeCatalogues.php' . ArgumentURL().'" ' . (($Page == "listeCatalogues")?' class="actif" ':'') . '  id="listeCatalogues" title="Catalogues disponibles ..."></a>';
 		$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" ' . (($Page == "sourcePhotos")?' class="actif" ':'') . '  id="sourcePhotos" title="Sources des photos ..."></a>';
+		$menuPage .= '<a href="index.php' . ArgumentURL().'" ' . (($Page == "ajoutCommandeGroupee")?' class="actif" ':'') . '   id="ajoutCommandeGroupee" title="Ajouter une commande groupée ..."></a>';		
 		$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" ' . (($Page == "commandesEnCours")?' class="actif" ':'') . '   id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';
 		$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" ' . (($Page == "commandesExpediees")?' class="actif" ':'') . '   id="commandesExpediees" title="Historique des commandes expediées ..."></a>';
 		$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" ' . (($Page == "administration")?' class="actif" ':'') . '   id="administration" title="Administration ..."></a>';

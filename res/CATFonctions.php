@@ -1208,9 +1208,10 @@ function PhotosManquantes($target_file){
     return $resultat;
 }
 
-function ListeProduitsSelonCatalogue($monProjetSource){ 
-	$fichierCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue();
-	
+//function ListeProduitsSelonCatalogue($monProjetSource){ 
+function ListeProduitsSelonCatalogue($monCatalogueProduit){ 	
+	//$fichierCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue();
+	$fichierCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monCatalogueProduit->NomCatalogue();
 	$CataloguePRODUITS = array();
 	if (file_exists($fichierCatalogueScriptPS)){ 
 		$file = fopen($fichierCatalogueScriptPS, "r");
@@ -1228,11 +1229,13 @@ function ListeProduitsSelonCatalogue($monProjetSource){
 		//Le catalogue n'existe pas !    
         fputs($file, "Description;Code\n");
         fclose($file);
-		CreationDossier($GLOBALS['repGABARITS'] . $monProjetSource->DossierCatalogue());
+		//CreationDossier($GLOBALS['repGABARITS'] . $monProjetSource->DossierCatalogue());
+		CreationDossier($GLOBALS['repGABARITS'] . $monCatalogueProduit->DossierCatalogue());
 	}
 	return $CataloguePRODUITS;
 }
 //function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
+/*
 function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$CodeProduit){
     $Supression = ($PDTNumeroLigne<0);
     $PDTNumeroLigne = abs($PDTNumeroLigne);
@@ -1285,7 +1288,55 @@ function MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$
 
     }
 }
+*/
+function MAJFichierCatalogue($monCatalogueProduit,$PDTNumeroLigne,$PDTDenomination,$CodeProduit){
+    $Supression = ($PDTNumeroLigne<0);
+    $PDTNumeroLigne = abs($PDTNumeroLigne);
+	//$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue();
+	$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $monCatalogueProduit->NomCatalogue();
+	$CataloguePRODUITS = array();
+	if (file_exists($monCatalogueScriptPS)){ 
+		$file = fopen($monCatalogueScriptPS, "r");
+		if ($file) {
+			while(!feof($file)) {
+				$line = trim(fgets($file));
+				if (strpos($line, ';') > 1){
+					array_push($CataloguePRODUITS, $line);
+				}
+			}
+			fclose($file);	
+		}
+        $file = fopen($monCatalogueScriptPS, 'w');
 
+        $lefichier ='';
+
+        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){
+            $morceau = explode(';', $CataloguePRODUITS[$i]);   
+            if(($morceau[0]==$PDTDenomination) &&  ($i != $PDTNumeroLigne)){
+                $PDTDenomination .='> (Doublon) ! Modifiez le nom du produit...';
+            }          
+        }        
+        for($i = 1; $i < count($CataloguePRODUITS) ; $i++){ 
+            //echo '<br>PDTDenomination ' . $PDTDenomination ;
+            if ($i == $PDTNumeroLigne){
+                if(!$Supression){
+                    $lefichier .= $PDTDenomination .';'. $CodeProduit . "\n";
+                }                
+            }else{
+                $lefichier .= $CataloguePRODUITS[$i]. "\n";
+            }            
+        }
+        if ($PDTNumeroLigne == 0) { 
+            $lefichier = $PDTDenomination .';'. $CodeProduit . "\n" . $lefichier;  
+			//$lefichier = $PDTDenomination .';'. CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte) . "\n" . $lefichier;
+        }        
+        $lefichier = "Description;Code\n" . $lefichier;        
+        
+        fputs($file, $lefichier);
+        fclose($file);
+
+    }
+}
 /*
 function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
     $leCodeProduit = ($PDTTaille ==''?'':$PDTTaille);
@@ -1329,7 +1380,7 @@ function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$ScriptImagePlan
 
     if ($trouveFichierCache == ''){   
         $leFichier = basename($chemin);
-        if (str_contains($leFichier, $PDTTaille)) {
+        //if (str_contains($leFichier, $PDTTaille)) {
 			if (str_contains($leFichier, $PDTTransformation)) {
 				
 				if (str_contains($leFichier, $PDTTeinte)) {
@@ -1342,7 +1393,7 @@ function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$ScriptImagePlan
 					}
 				}
 			}
-        }
+        //}
         //$trouveFichierCache .= basename($chemin). "<br>";     
         // Si $chemin est un dossier => on appelle la fonction RetourneExemplePlanche() pour chaque élément (fichier ou dossier) du dossier$chemin
         if( is_dir($chemin) ){

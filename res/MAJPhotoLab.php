@@ -61,10 +61,10 @@ function RecupCODE($urlBase){
 	$commentaire ='';
 	$msgTelechargement ='';
 	if(TelechargerFichier('Code.zip', $urlBase, $msgTelechargement)){ 
-		$commentaire .= "Téléchargement des fichiers : OK ✅" . '<br><br>' . $msgTelechargement; 				
+		$commentaire .= "Téléchargement des fichiers : OK " . '<br><br>' . $msgTelechargement; 				
 	} 
 	else { 
-		$commentaire .= "Téléchargement des fichiers : Echec ! ❌" . '<br><br>' . $msgTelechargement; 	
+		$commentaire .= "Téléchargement des fichiers : Echec ! " . '<br><br>' . $msgTelechargement; 	
 	}
 	$commentaire .= '<br><br>';	
 	return $commentaire;
@@ -137,9 +137,9 @@ function DezipperFichier($Dossier, $fichier) {
 	if ($zip->open($Dossier.$fichier) === TRUE) {
 		$zip->extractTo($Dossier);
 		$zip->close();
-		$MSG = 'Extraction des fichiers : OK ✅';
+		$MSG = 'Extraction des fichiers : OK ';
 	} else {
-		$MSG = 'Extraction des fichiers : Echec ! ❌';
+		$MSG = 'Extraction des fichiers : Echec ! ';
 	}
 	return $MSG;
 }	

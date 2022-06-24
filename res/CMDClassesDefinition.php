@@ -802,9 +802,134 @@ function RecopierPlanche($LienOrigine,$LienDestination){
 	}
 }
 
+class CCatalogueProduit {
+    var $Existe;
+    var $ScriptsPS;
+	
+	function __construct($NomDossiserScript){
+        $this->ScriptsPS = $NomDossiserScript;
+		$this->Existe = (file_exists($GLOBALS['repGABARITS'] . $this->NomCatalogue() ));
+	}	
+	function DossierCatalogue(){
+		return 'Catalogue' . $this->ScriptsPS;
+	}
+	function NomCatalogue(){
+		return $this->DossierCatalogue() . '.csv';
+	}	
+	    
+	function DropListeScriptsRecadrages($valDefaut = ''){ 
+		//$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
+		//$laDropliste .= '<option value="">(rien)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();	
+		$laDropliste = '';	
+        for($i = 1; $i < count($lesScripts); $i++){
+            if (substr($lesScripts[$i],0,9) == 'Portrait-') {
+				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
+				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
+            }		
+        }
+		if($laDropliste == ''){
+			$laDropliste = 'VIDE';
+
+		} else{
+			$laDropliste = '<option value="(facultatif)">(facultatif)</option>
+						<option value="">(rien)</option>'
+						. $laDropliste;
+		}
+		return $laDropliste;
+	}	
+	function DropListeScriptsTailles($valDefaut = ''){ 
+		$laDropliste = '<option value="(obligatoire !)">(obligatoire !)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();		
+        for($i = 1; $i < count($lesScripts); $i++){
+            if (($lesScripts[$i] != '')&&(is_numeric(substr($lesScripts[$i],0,1)))) {
+				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
+				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
+            }		
+        }
+		
+        for($i = 0; $i < count($GLOBALS['ProduitsNONLABO']); $i++){
+			$aSelectionner = ($GLOBALS['ProduitsNONLABO'][$i] == $valDefaut)?'selected':'';
+			$laDropliste .= '<option value="'. $GLOBALS['ProduitsNONLABO'][$i] .'" '.$aSelectionner.'>'. $GLOBALS['ProduitsNONLABO'][$i] .'</option>';
+        }
+		return $laDropliste;
+	}	
+
+	function DropListeAutresScripts($valDefaut = ''){ 
+		$laDropliste = '<option value="(facultatif)">(facultatif)</option>';
+		$laDropliste .= '<option value="">(rien)</option>';
+		$lesScripts = $this->TabScriptsPhotoshop();	
+        for($i = 1; $i < count($lesScripts); $i++){
+            if (($lesScripts[$i] != '')&&(!is_numeric(substr($lesScripts[$i],0,1)))&&(substr($lesScripts[$i],0,9) != 'Portrait-')) {
+				$aSelectionner = ($lesScripts[$i] == $valDefaut)?'selected':'';
+				$laDropliste .= '<option value="'. $lesScripts[$i] .'" '.$aSelectionner.'>'. $lesScripts[$i] .'</option>';
+            }		
+        }
+		return $laDropliste;
+	}	
+	function DropListeScriptsTransformation($valDefaut = ''){ 
+		$laDropliste = $this->DropListeAutresScripts($valDefaut);	
+        for($i = 0; $i < count($GLOBALS['ProduitsPourGROUPE']); $i++){
+			$aSelectionner = ($GLOBALS['ProduitsPourGROUPE'][$i] == $valDefaut)?'selected':'';
+			$laDropliste .= '<option value="'. $GLOBALS['ProduitsPourGROUPE'][$i] .'" '.$aSelectionner.'>'. $GLOBALS['ProduitsPourGROUPE'][$i] .'</option>';
+        }
+		return $laDropliste;
+	}	
+	function DropListeScriptsTeinte($valDefaut = ''){ 
+		return $this->DropListeAutresScripts($valDefaut);	
+	}	
+	function TabScriptsPhotoshop(){ 
+		$leTableauDeScriptsPhotoshop = array();
+		$maBibliothequeScriptPS = $GLOBALS['CSVBibliothequeScriptPS'] ;	
+		//echo $maBibliothequeScriptPS;		
+		if (file_exists($maBibliothequeScriptPS)){ 
+			$file = fopen($maBibliothequeScriptPS, "r");
+			if ($file) {
+				while(!feof($file)) {
+					$line = trim(fgets($file));	
+					//echo '<br>' . $this->AnneeScolaire . ' = ' . substr($line,0,strpos($line, ';'));				
+					if($this->ScriptsPS == substr($line,0,strpos($line, ';'))){
+						$leTableauDeScriptsPhotoshop = explode(';', $line);
+					}
+				}
+				//var_dump($leTableauDeScriptsPhotoshop);
+				fclose($file);	
+			}	
+		}
+		return $leTableauDeScriptsPhotoshop;
+	}	
+	function DropListeProduits(){ 
+		$laDropliste ='';
+		$lesProduits = $this->TabProduits();		
+        for($i = 0; $i < count($lesProduits); $i++){
+            if ($lesProduits[$i] != '') {
+				$morceau = explode(";",  $lesProduits[$i]);
+				$laDropliste .= '<a href=javascript:void(0); Code="'.$morceau[0].'" onclick="CliqueDropDown(this)">'.$morceau[1].'</a>';
+            }		
+        }
+		return $laDropliste;
+	}	
+	function TabProduits(){ 
+		$monCatalogueScriptPS = $GLOBALS['repGABARITS'] . $this->NomCatalogue()	;	
+		$CataloguePRODUITS = array();
+
+		if (file_exists($monCatalogueScriptPS)){ 
+			$file = fopen($monCatalogueScriptPS, "r");
+			if ($file) {
+				while(!feof($file)) {
+					$line = trim(fgets($file));
+					if (strpos($line, ';') > 1){
+						array_push($CataloguePRODUITS, $line);
+					}
+				}
+				fclose($file);	
+			}		
+		}
+		return $CataloguePRODUITS;
+	}
+}
+
 class CProjetSource {
-	//var $FichierPlanche;
-	//var $Fichier;
 	var $NomProjet;
 	var $Dossier;
 	var $CodeEcole;
@@ -832,6 +957,7 @@ class CProjetSource {
 			}
 		}
 	}
+
 	function DossierCatalogue(){
 		return 'Catalogue' . $this->ScriptsPS;
 	}

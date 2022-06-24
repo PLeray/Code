@@ -72,33 +72,6 @@ div.recherche {
 	margin-top: -50px;
 }
 
-/******************************/
-/*     LISTE DE COMMANDES     */
-/******************************/
-#myInputRecherche {
-	background-image: url('../img/searchicon.png');
-	background-position: 2px 2px;
-	background-repeat: no-repeat;
-	width: 50%;
-	font-size: 16px;
-	padding: 5px 20px 12px 60px;
-
-	text-align: left;
-	border: none;
-	border-bottom: 1px solid var(--FondLigneTabGrisFonce); 
-}
-#myInputRecherche:focus {
-	outline: none;
-	border-bottom: 1px solid var(--boutonRouge); 
-}
-
-
-.majCache {
-  position: absolute;
-  right: 8px;
-  Top: -20px;
-}
-
 .zoneTable {
     margin-left: auto;
     margin-right: auto;
@@ -109,7 +82,6 @@ div.recherche {
 
   /*border: 1px solid var(--boutonRouge);*/
 }
-
 img.imgArbo {
     width: 35%;
 	margin: 1%;
@@ -118,38 +90,10 @@ img.imgArbo {
 
 img.VoirIMG {
     width: 100px;
-
 }
-
 img {
   vertical-align:middle;
 }
-
-/*
-.ajoutFICHIER {
-    text-decoration: none;
-	cursor: pointer;
-	text-align: right; 
-
-    font-size: 50px;
-    font-weight: bold;
-    background-color: var(--boutonVert);
-    color: white;
-	padding: 8px 23px;
-	margin: 50px;
-	
-  position: absolute;
-  Right: 8px;
-  Top: -30px;
-  z-index:5;
-	
-	border-radius: 50%;	
-}
-.ajoutFICHIER:hover,
-.ajoutFICHIER:focus {
-	box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 10px 30px 0 rgba(0,0,0,0.19);
-}
-*/
 
 .titreFichier {
 
@@ -225,6 +169,8 @@ color: var(--boutonVert);
 #Sources td, #Sources th {
   border: 1px solid var(--FondLigneTabGrisFonce);
   padding: 2px;
+  height:60px;
+
 }
 #Sources tr:nth-child(even){background-color: var(--FondLigneTabGrisClair);}
 

@@ -109,7 +109,7 @@ if (!$MAJ){
 		<div class="logo"><a href="<?php echo RetourEcranSources($monProjet->AnneeScolaire); ?>" title="Retour à la liste des sources de photos"><img src="img/Logo-Retour.png" alt="Image de fichier"></a>
 		</div>
 
-		<div class="btnCatalogue"><a href="<?php echo AccesCatalogue($monProjet); ?>" title="Retour à la liste des sources de photos"><img src="img/btnCatalogue.png" alt="Image de fichier"></a>
+		<div class="btnCatalogue"><a href="<?php echo AccesCatalogue($monProjet); ?>" title="Voir le catalogues des produits ..."><img src="img/btnCatalogue.png" alt="Image de fichier"></a>
 		</div>
 		
 		<div class="titreFichier">	
@@ -450,7 +450,7 @@ function RetourEcranSources($ParamAnnee = ''){
 }	
 
 function AccesCatalogue($monProjet){
-	$RetourEcran = 'CMDCatalogueProduits.php'. ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire);
+	$RetourEcran = 'CMDCatalogueProduits.php'. ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire . '&pagePrecedenteCatalogueProduits=CMDAfficheSource.php');
 	return $RetourEcran  ;	
 }	
 

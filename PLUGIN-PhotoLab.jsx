@@ -8,7 +8,7 @@
 
 app.bringToFront();
 
-var g_NumVersion = 0.868;
+var g_NumVersion = 0.872;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
@@ -19,14 +19,11 @@ var g_Rep_GABARITS = g_Rep_PHOTOLAB + 'GABARITS/';
 
 var isDebug = ($.fileName.substr(-4) == '.jsx'); //et non .jsxbin !
 
-
 var g_NomVersion = 'PhotoLab PLUGIN BETA v' + g_NumVersion + (isDebug?' !!! DEV-BETA !!!':'');
 //alert('$.fileName.substr(-4)  : ' + $.fileName.substr(-4) + ' is debug : ' + isDebug);
 
 var g_CeCalculateur = '';
 var g_CodeClient = '';
-
-
 
 var g_LargeurUI = 650;
 //var g_HauteurDetailsUI = 1080;
@@ -67,7 +64,6 @@ var g_RepSCRIPTSPhotoshop = 'PHOTOLAB';
 
 var g_RepSOURCE;
 
-
 var g_ProfondeurMAX = 1;
 
 var g_OrdreInversePlanche = true;
@@ -75,7 +71,6 @@ var g_CONFIGtypeConfigWeb = 'WEB-QUATTRO';
 var g_CONFIGisPhotosGroupes = true;
 var g_CONFIGisPhotosIndiv = true;	
 var g_CONFIGisPhotosFratrie = true;
-
 
 var g_RepTIRAGES_DateEcole;
 var g_RepMINIATURES_DateEcole;
@@ -130,12 +125,10 @@ PHOTOLAB.frameLocation = [ -4, -4 ];
 PHOTOLAB.graphics.backgroundColor = PHOTOLAB.graphics.newBrush (PHOTOLAB.graphics.BrushType.SOLID_COLOR, [0.3, 0.3, 0.3]);
 PHOTOLAB.graphics.foregroundColor = PHOTOLAB.graphics.newPen(PHOTOLAB.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
 
-
 //var couleurVert = PHOTOLAB.graphics.newBrush(PHOTOLAB.graphics.BrushType.SOLID_COLOR,[0,0,0.8], 1);
 
 // Zone1Entete 
 var Zone1Entete = PHOTOLAB.add ("group");
-
 
 	// Zone11Config 
 	var Zone11Config = Zone1Entete.add ("group");
@@ -144,7 +137,6 @@ var Zone1Entete = PHOTOLAB.add ("group");
 
 	var statictextBB = Zone11Config.add("statictext", undefined, undefined, {name: "statictextBB"}); 
     statictextBB.text = "Bibliothèque de photos : "; 
-
 	
 	/*
 	var group = Zone1111Action.add ("group {alignChildren: 'left', orientation: ’stack'}");	
@@ -178,10 +170,6 @@ var Zone1Entete = PHOTOLAB.add ("group");
 	*/
 	
 	
-
-
-	
-
 	/*
 	///////// MAC PC ICI TEST ??????? VERIF A FAIRE	
 	if (File.fs !== "Windows") {
@@ -192,10 +180,6 @@ var Zone1Entete = PHOTOLAB.add ("group");
 		var dpDown = group.add ("dropdownlist", undefined, g_TabListeCompilationFichier);
 	}
 		dpDown.graphics.foregroundColor = dpDown.graphics.newPen(dpDown.graphics.PenType.SOLID_COLOR, [1, 1, 1], 1);
-
-
-
-
 
 	dpDown.selection = 0;
 	g_NomFichierEnCours = g_TabListeCompilationFichier[0]; 

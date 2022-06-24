@@ -24,12 +24,34 @@ if($isDebug){
 $CodeEcole = '';
 $AnneeScolaire = '';
 
+/*
 if (isset($_GET['CodeEcole'])) { $CodeEcole = $_GET['CodeEcole'];}
 if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
 
 $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
+*/
+$NomDossiserScript = '';
+
+if ((isset($_GET['CodeEcole'])) && (isset($_GET['AnneeScolaire']))) { 
+    $CodeEcole = $_GET['CodeEcole'];
+    $AnneeScolaire = $_GET['AnneeScolaire'];
+}
+
+$monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
+
+if (isset($_GET['NomDossiserScript'])) {
+     $NomDossiserScript = $_GET['NomDossiserScript'];
+}else{
+    $NomDossiserScript = $monProjetSource->ScriptsPS;
+}
+
+$maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
+$monCatalogueProduit = new CCatalogueProduit($NomDossiserScript); 
+
+
+
 
 $NumPlanche = 0;
 if (isset($_GET['NumPlanche'])) { $NumPlanche = intval($_GET['NumPlanche']);}
@@ -78,7 +100,8 @@ $PDTRecadrage = (count($Script)>3? $Script[3]:'');
 //MAJFichierCatalogue
 if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
     if($PDTNumeroLigne > 0){
-        MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+        //MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+        MAJFichierCatalogue($monCatalogueProduit,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
     }
     //header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
 }
@@ -97,12 +120,12 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
 
 <?php
     if($isDebug){
-        echo '<br>un DossierScript : ' . $monProjetSource->ScriptsPS;
+        echo '<br>un DossierScript : ' . $monCatalogueProduit->ScriptsPS;
     }             
     $retourMSG = '<div id="apiReponse" class="modal">
     <div class="modal-content animate" >
         <div class="imgcontainer">
-            <a href="'.RetourEcranPrecedent($monProjetSource).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
+            <a href="'.RetourEcranPrecedent($monCatalogueProduit).'" class="close" title="Annuler et retour écran général des commandes">&times;</a>				
         </div>
         <h1><img src="img/logo.png" width ="80px" alt="Aide sur l\'étape" >Catalogue produits : Edition d\'un produit '
         . '</h1>';	
@@ -131,7 +154,7 @@ if ($isImport){
 
 
 
-<form action="<?php echo RetourEcranPrecedent($monProjetSource); ?>" method="post">
+<form action="<?php echo RetourEcranPrecedent($monCatalogueProduit); ?>" method="post">
 
 
 <table width="100%">
@@ -143,8 +166,8 @@ if ($isImport){
             </td>            
             <td style="padding-left: 10px; vertical-align: middle; ">
         <?php            
-            $retourMSG = "<h2>(Nom du dossier d'Actions dans Photoshop : ". $monProjetSource->ScriptsPS .')</h2>';
-            $retourMSG .= "<h3>Dossier de script : ". $monProjetSource->ScriptsPS .'</h3>';
+            $retourMSG = "<h2>(Nom du dossier d'Actions dans Photoshop : ". $monCatalogueProduit->ScriptsPS .')</h2>';
+            $retourMSG .= "<h3>Dossier de script : ". $monCatalogueProduit->ScriptsPS .'</h3>';
             $retourMSG .= "<h4>Nom du produit : </h4>";        
             echo $retourMSG;
         ?>
@@ -175,7 +198,7 @@ if ($isImport){
     <table class="TableDefinitionCodeProduit">
             <tr>
                 <?php 
-                    $DropListeRecadrages = $monProjetSource->DropListeScriptsRecadrages($PDTRecadrage);
+                    $DropListeRecadrages = $monCatalogueProduit->DropListeScriptsRecadrages($PDTRecadrage);
                     echo ($DropListeRecadrages != 'VIDE')?'<td ><h2>Recadrages :</h2></td>':''; 
                     //echo $DropListeRecadrages;
                 ?>    
@@ -199,7 +222,7 @@ if ($isImport){
                 <td ><div class="custom-select" style="width:180px;">
                     <select id="PDTTaille" name="PDTTaille">
                     <?php          
-                        echo $monProjetSource->DropListeScriptsTailles($PDTTaille); 
+                        echo $monCatalogueProduit->DropListeScriptsTailles($PDTTaille); 
                     ?>
                     </select>
                     </div>  
@@ -207,7 +230,7 @@ if ($isImport){
                 <td ><div class="custom-select" style="width:250px;">
                 <select id="PDTTransformation" name="PDTTransformation">
                     <?php          
-                        echo $monProjetSource->DropListeScriptsTransformation($PDTTransformation); 
+                        echo $monCatalogueProduit->DropListeScriptsTransformation($PDTTransformation); 
                     ?>
                     </select>
                     </div>  
@@ -215,7 +238,7 @@ if ($isImport){
                 <td ><div class="custom-select" style="width:250px;">
                 <select id="PDTTeinte" name="PDTTeinte">
                     <?php          
-                        echo $monProjetSource->DropListeScriptsTeinte($PDTTeinte); 
+                        echo $monCatalogueProduit->DropListeScriptsTeinte($PDTTeinte); 
                     ?>
                     </select>
                     </div>  
@@ -243,7 +266,7 @@ if ($isImport){
 
 
 <div align="center">
-    <a href="<?php echo RetourEcranPrecedent($monProjetSource); ?>" class="KO" title="Annuler">Annuler</a>
+    <a href="<?php echo RetourEcranPrecedent($monCatalogueProduit); ?>" class="KO" title="Annuler">Annuler</a>
 
     <button type="submit" id="btnOK" class="OK" >OK</button>
     </form>
@@ -271,13 +294,19 @@ function ParamtreEditionProduit(){
         return $Param;
 }
 
+/*
 function RetourEcranPrecedent($monProjet){
     $DebutParam = (substr($GLOBALS['pageRetour'], -4) == '.php') ? '?' :  '&';
    
     $RetourEcran = $GLOBALS['pageRetour']. $DebutParam. 'CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire ;
 	return $RetourEcran ;
+}*/
+function RetourEcranPrecedent($monCatalogueProduit){
+    $DebutParam = (substr($GLOBALS['pageRetour'], -4) == '.php') ? '?' :  '&';
+   
+    $RetourEcran = $GLOBALS['pageRetour']. $DebutParam. 'NomDossiserScript=' . urlencode($monCatalogueProduit->ScriptsPS) ;
+	return $RetourEcran ;
 }
-
 function ListeFichier($PDTCodeScripts, $NumPlanche = 0){
     $tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
     $maListe = '';

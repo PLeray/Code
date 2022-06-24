@@ -224,15 +224,14 @@ function CodeLienImageDossier($Dossier, $nbFichier){
 		<span class="tooltiptext"><br>Cliquez pour aller vers le dossier des fichiers<br><br></span></div>';
 		
 	}
-	$codeHTML = $codeHTML ;
 	
 	return $codeHTML;
 }
 function CodeLienCatalogue($CodeEcole, $AnneeScolaire){	
 	$ImageLien = 'src="img/btnCatalogue.png"';
-	$LienPage = 'CMDCatalogueProduits.php'. ArgumentURL('&CodeEcole=' . $CodeEcole . '&AnneeScolaire=' . $AnneeScolaire);
+	$LienPage = 'CMDCatalogueProduits.php'. ArgumentURL('&CodeEcole=' . $CodeEcole . '&AnneeScolaire=' . $AnneeScolaire . '&pagePrecedenteCatalogueProduits=CATSources.php');
 
-	return  '<a href="' . $LienPage .'" title="Voir le catalogue produits de cette école"><img ' . $ImageLien. 'class="imgArbo"></a>';
+	$codeHTML =  '<a href="' . $LienPage .'" title="Voir le catalogue produits de cette école"><img ' . $ImageLien. 'class="imgArbo"></a>';
 	
 	return $codeHTML;
 }
