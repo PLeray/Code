@@ -21,6 +21,7 @@ $fichierCSV = '../../2021-04-10 TEST MAX PLANCK-NANTES-2020-2021.csv';
 $fichierCSV = '../../2021-6-1 isolées.csv';
 $fichierCSV = '../../Modele Livret des Ventes-NomEcole-Localité-2022-2023.csv';
 $fichierCSV = '../../PIERRE Les Plantes Livret des Ventes-NomEcole-Localité-2021-2022.csv';
+$fichierCSV = '../../2022-10-13 groupée Maurice Pigeon 2022-2023.csv';
 $fichierLAB = 'TEST.lab';
 
 
@@ -35,7 +36,7 @@ if (isFichierLumysCSV($fichierCSV)) {
 //echo  $fichierLAB ;
 
 
-//echo ConvertirLUMYSCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);
+echo ConvertirLUMYSCMDcsvEnlab($TabCSV,$fichierCSV , $fichierLAB);
 //echo ConvertirEXCELCMDcsvEnlab('CatalogueProduits.csv',$fichierCSV , $fichierLAB);
 
 

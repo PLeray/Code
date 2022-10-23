@@ -263,7 +263,9 @@ if ($isImport){
 
 </tr>
 </table>
-
+<?php 
+    if($GLOBALS['isDebug']){ echo RetourEcranPrecedent($monCatalogueProduit);  }  
+?>
 
 <div align="center">
     <a href="<?php echo RetourEcranPrecedent($monCatalogueProduit); ?>" class="KO" title="Annuler">Annuler</a>
@@ -282,7 +284,6 @@ if ($isImport){
 </html>
 
 <?php
-//function RetourneImageProduit($monCodeScript){
 
 function ParamtreEditionProduit(){
     $Param ='&PDTNumeroLigne='. $GLOBALS['PDTNumeroLigne'] .
@@ -346,7 +347,7 @@ function ListeFichier($PDTCodeScripts, $NumPlanche = 0){
 function SupressionPlancheNum($PDTCodeScripts, $NumPlanche){
     $tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], urldecode($PDTCodeScripts));
     $monNouveauProduit = '';
-    var_dump($tabPlanches);
+    //var_dump($tabPlanches);
     $nbPlanches = count($tabPlanches);
     for($i = 0; $i < $nbPlanches; $i++){ 
         if($i!=$NumPlanche){

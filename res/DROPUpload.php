@@ -119,7 +119,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 			<font size="-1">' . $target_file_seul .'0</font></h1>';
 		$retourMSG .= '<table>
 		<tr>
-			<td width="50%">';	
+			<td width="70%">';	
 		
 
 			
@@ -135,7 +135,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 
 			$retourMSG .= '</div>';
 		$retourMSG .= '</td>
-						<td width="50%">';	
+						<td width="30%">';	
 		$retourMSG .= '	<div class="msgcontainer">';
 
 		$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 

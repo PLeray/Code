@@ -50,7 +50,7 @@ if (isset($_GET['OpenRep'])) { // OUVRIR REP !
 	execInBackground('explorer /select,"'.$leRep.'"', true);// true :  on rentre dans le dossier
 } 
 
-$AnneeScolaire = '2021-2022';
+$AnneeScolaire = '2022-2023';
 if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 

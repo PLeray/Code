@@ -101,7 +101,7 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
                 echo LienEdition($PDTDenomination,0, $monCatalogueProduit->ScriptsPS); 
             ?>			
         </div>
-        <h1><img src="img/logo.png" width ="80px">Catalogue des produits avec <?php echo $monCatalogueProduit->ScriptsPS ?></h1>
+        <h1><img src="img/logo.png" width ="80px">Catalogue des produits avec "<?php echo $monCatalogueProduit->NomCatalogue() ?>"</h1>
 
 
     <h2>(Nom du dossier d'Actions dans Photoshop : <?php echo $monCatalogueProduit->ScriptsPS; ?>)</h2>
@@ -144,9 +144,6 @@ if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) {
 </div>
 </div>
 
-    
-
-
 <script type="text/javascript" src="<?php Mini('js/APIDialogue.js');?>"></script>
 </body>
 </html>
@@ -160,7 +157,6 @@ function RetourEcranPrecedent($monProjet){
     
         $RetourEcran = $GLOBALS['pagePrecedenteCatalogueProduits'] . ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire) ;    
    }
-    
     //$RetourEcran = 'CMDAfficheSource.php' . ArgumentURL('&CodeEcole=' . $monProjet->CodeEcole . '&AnneeScolaire=' . $monProjet->AnneeScolaire) ;
 	return $RetourEcran ;
     

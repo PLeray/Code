@@ -308,7 +308,8 @@ class CEcole {
 				while(!feof($file)) {
 					$line = trim(fgets($file));
 					if (strpos($line, ';') > 1){
-						array_push($TableauDeProduitsDansDossierScript, $line);						
+						array_push($TableauDeProduitsDansDossierScript, $line);	
+						//array_push($TableauDeProduitsDansDossierScript, $line . '@' . $monProjetSource->NomCatalogue());						
 					}
 				}
 				fclose($file);	
@@ -328,10 +329,10 @@ class CEcole {
 			if ($TableauDeProduitsNecessaire[$i] != '') {
 				$indiceTrouve = 0;
 				for($j = 0; $j < count($TableauDeProduitsDansDossierScript); $j++){
-					$NomProduitsCatalgue = explode(";", $TableauDeProduitsDansDossierScript[$j]);
-					if( $NomProduitsCatalgue[0] == $TableauDeProduitsNecessaire[$i]){
+					$NomProduitsCatalogue = explode(";", $TableauDeProduitsDansDossierScript[$j]);
+					if( $NomProduitsCatalogue[0] == $TableauDeProduitsNecessaire[$i]){
 						$indiceTrouve = $j;
-						$ligne =  $TableauDeProduitsNecessaire[$i] .';'. $NomProduitsCatalgue[1];//. $GLOBALS['SeparateurInfoCatalogue'];
+						$ligne =  $TableauDeProduitsNecessaire[$i] .';'. $NomProduitsCatalogue[1];//. $GLOBALS['SeparateurInfoCatalogue'];
 						array_push($TableauDeProduitsManquants, $ligne.';'.$this->CodeEcole.';'.$this->AnneeScolaire);
 						break;
 					}
@@ -1109,14 +1110,7 @@ class CImgSource {
 			if (strpos(strtolower($this->Fichier),'fratrie')){
 				$Lien = '../../Code/res/img/Fratries.png';
 			}		
-			/* 	
-			$resultat .= '   
-			<span oncontextmenu="return monMenuContextuel(this)"
-			  onclick="CopierCommandes(this)" 
-			  id="'. urldecode($this->Fichier) . '" 
-			  Nb="0" 
-			  class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
-		  */					  
+				  
 		$resultat .= '   
 			<span  onclick="CopierCommandes(this)" 
 			id="'. urldecode($this->Fichier) . '" 
@@ -1128,30 +1122,6 @@ class CImgSource {
 				src="' . $Lien . '"  title="'. urldecode($this->Fichier) . '">
 			</button>';
 
-	/*
-			$Argument = '&CodeEcole=' . urlencode($this->CodeEcole). '&AnneeScolaire=' . urlencode($this->AnneeScolaire). '&urlImage=' . $LienBig;
-			
-			$resultat .= '<form name="VoirEnGrand" method="post" action="CMDAffichePlanche.php'.ArgumentURL($Argument).'" enctype="multipart/form-data">	
-			<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
-			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
-			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
-
-			$resultat .='<button type="submit" class="NomPhotoZoom">
-			<p>'. substr($this->Fichier, 0, -4)  .'</p>
-			</button>';
-
-			$resultat .= '</form>';
-			*/
-/*
-	
-			$resultat .= '<br>';
-			$resultat .= '<form>';
-			$resultat .='<span class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')">
-			'. substr($this->Fichier, 0, -4)  .'
-			</span>';
-			$resultat .= '</form>';
-*/
-			//$resultat .= '<form>';
 			$resultat .= '<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
 			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
@@ -1174,45 +1144,14 @@ class CImgSource {
 
 			$Argument = '&urlImage=' . $LienBig;
 			$Argument .= '&CodeEcole=' . urlencode($this->CodeEcole). '&AnneeScolaire=' . urlencode($this->AnneeScolaire);
-			
-			//$resultat .= '<p><a href="CMDAffichePlanche.php'.ArgumentURL($Argument) . '" class = "NomPhotoZoom">'. substr($this->Fichier, 0, -4)  .'</a></p>';	
-			
-
-
 
 			$resultat .= '<div class="ImageFichierWeb"></div>';		
-			
 
 		$resultat .= '</span> ';
 		
 		return $resultat;
 	}
-	/*
-	function Ecrire($tabPlanche, &$isRecommande){
-		 $resultat ='';
-		if (in_array($this->FichierPlanche, $tabPlanche)) {
-			$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
-			$resultat = $this->FichierPlanche . PHP_EOL;
-
-			global $EcoleEnCours;
-			
-			
-			$valideNomPlanche = str_replace("#", "%23", $this->FichierPlanche);
-			$Lien = $GLOBALS['repMINIATURES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;			
-			$LienBig = $GLOBALS['repTIRAGES'] . $EcoleEnCours->RepTirage(). '/' . $this->Taille . ' (1ex de chaque)'. '/'  . $valideNomPlanche;	
-			
-			$DossierRECOenCours = CreationDossier($GLOBALS['repTIRAGES'] . $GLOBALS['FichierDossierRECOMMANDE']);
-			$DossierTailleRECOenCours = CreationDossier($DossierRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');
-			$DossierMiniatureRECOenCours = CreationDossier($GLOBALS['repMINIATURES'] . $GLOBALS['FichierDossierRECOMMANDE']);
-			$DossierMiniatureTailleRECOenCours = CreationDossier($DossierMiniatureRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');				
-			
-			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
-			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
-		}
-
-		return $resultat;				
-	}
-	*/		
+	
 }
 class CNomFichierGroupe {
     var $Numero;

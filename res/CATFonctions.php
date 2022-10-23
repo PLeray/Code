@@ -310,7 +310,7 @@ function SuprimeFichierCMDetDossier($strFILELAB){
 	$fichier = $GLOBALS['repCMDLABO'] . $strFILELAB ;
 	if (file_exists($fichier)){ 
 		// NEW SUP ARBORESCENCE FICHIER		
-		//if (substr($strFILELAB, -1, 1) == '1'){
+		if (substr($strFILELAB, -1, 1) == '1'){
 			if($GLOBALS['isDebug']){
 				echo '<br>LAB1 : Là ON SUPPRIME ';
 			}
@@ -333,7 +333,7 @@ function SuprimeFichierCMDetDossier($strFILELAB){
 					SuprArborescenceDossier($GLOBALS['repWEBARBO'].$mesInfosFichier->RepTirage());
 				}
 			}
-		//}
+		}
 
 		//Supression du .lab0
 		SuprFichier($fichier);
@@ -356,10 +356,17 @@ function LienIMGSuprFichierLab($fichier, $Etat) {
 	}
 	else{
 		if (is_numeric($Etat)){
-			if ($Etat < 3){
-				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 
-				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . $fichier .  '"><img src="img/poubelle.png"></a>'; 								
+			if ($Etat == 2){
+				$retour = '<a href="'.$Lien.'"  title="' . 'Vérifier ' . $fichier .  '"><img src="img/Relance.png"></a>'; 								
 			}
+			if ($Etat == 1){
+				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 
+				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer les fichiers générés de ' . $fichier .  '"><img src="img/poubelle.png"></a>'; 								
+			}
+			if ($Etat == 0){
+				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 
+				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer la commande de ' . $fichier .  '"><img src="img/poubelle.png"></a>'; 								
+			}			
 		}
 	}
 	return $retour;
@@ -1112,6 +1119,8 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
 	$resultat = ''; 
     $monGroupeCmdes = new CGroupeCmdes($target_file);
     $monTableauDeProduits = array_unique($monGroupeCmdes->ListeProduitsManquants());
+
+
     if ($monTableauDeProduits != ''){
         $resultat = '<table width="100%" class = "TableProduit">';   
 		$nbProduitsManquant = 0;
@@ -1122,8 +1131,10 @@ function BilanScriptPhotoshop($target_file, &$nbProduitsManquant){
 				$refProduitsManquants = explode(';', $value); 
 				$CommandeRetour=urlencode(substr($target_file,1+strripos($target_file, '/')));
 				//echo $CommandeRetour;
-				if ($refProduitsManquants[1] == ''){ // NODEFINITION pas défini
-					$resultat .=  '<tr class="StyleKO"><td >' . $refProduitsManquants[0] . '</td >
+				if ($refProduitsManquants[1] == ''){ // NO DEFINITION ! pas défini
+					$monProjet = new CProjetSource($refProduitsManquants[2], $refProduitsManquants[3]);
+
+					$resultat .=  '<tr class="StyleKO"><td >' . $refProduitsManquants[0] . '<H5>(' . $monProjet->ScriptsPS . ')</H5></td >
 								<td >' . LienEditionProduit($refProduitsManquants,$CommandeRetour). '</td ></tr>';
 					$nbProduitsManquant = $nbProduitsManquant + 1;
 				}
@@ -1170,8 +1181,6 @@ function LienEditionProduit($leProduit, $CommandeRetour) {
 				'&pageRetour=' . urlencode($CommandeRetour)) ;
 	}
 	//echo '&pageRetour=' . urlencode(basename($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']));
-
-
 
 	return $LienImage.'<a href="'. $Lien . '" class ="icone" title="Editer le produit : '. $leProduit[0].'"> 🖉 </a>';
 
@@ -1346,12 +1355,12 @@ function CodeProduit($PDTRecadrage,$PDTTaille,$PDTTransformation,$PDTTeinte){
 }
 */
 
-function RetourneImageProduit($PDTCodeScripts){
+function RetourneImageProduit($PDTCodeScripts,$isMAJ = true){
 	$tabPlanches = explode($GLOBALS['SeparateurInfoPlanche'], $PDTCodeScripts);
-    return RetourneImagePlanche($tabPlanches[0]);
+    return RetourneImagePlanche($tabPlanches[0] , $isMAJ);
 }
 
-function RetourneImagePlanche($ScriptImage){ 
+function RetourneImagePlanche($ScriptImage,$isMAJ = true){ 
     $dir = $GLOBALS['repTIRAGES'];
 
     $trouveFichierCache = '';
@@ -1361,7 +1370,10 @@ function RetourneImagePlanche($ScriptImage){
 
     if ($urlImage ==''){
             $urlImage = 'img/DefautProduit.png';
-    }
+    }else{
+		//CreationCacheImageProduit($NomImageCache, $urlImage);
+	}
+
     $urlImage = '<img class = "imgProduit" src="' .$urlImage.'" alt="exemple de produit" >';
     return $urlImage;
 }
@@ -1400,11 +1412,16 @@ function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$ScriptImagePlan
             $me = opendir($chemin);
             while( $child = readdir($me) ){
                 if( $child != '.' && $child != '..' ){
-                    RetourneExemplePlanche( $chemin.DIRECTORY_SEPARATOR.$child , $trouveFichierCache, $ScriptImagePlanche );
+                    RetourneExemplePlanche( $chemin.DIRECTORY_SEPARATOR.$child , $trouveFichierCache, $ScriptImagePlanche);
                 }
             }
         }
      }   
     return $trouveFichierCache;
+}
+
+function CreationCacheImageProduit($NomImageCache, $urlExempleImage){ 
+	$NomImageCache = 'SRCImage.php?fichierImage='.$urlExempleImage;	
+	
 }
 ?>

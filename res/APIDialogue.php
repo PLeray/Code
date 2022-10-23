@@ -45,10 +45,13 @@ $PDTCodeScripts = str_replace('(facultatif)','', $PDTCodeScripts) ;
 $monProjetSource = new CProjetSource($CodeEcole, $AnneeScolaire); 
 
 //MAJFichierCatalogue
-if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
-    MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
-    header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
-}
+if (!isset($_GET['isImport'])) { // 15-10 Sauf dans le cas d'un IMPORT !!
+	if ((isset($_GET['PDTNumeroLigne'])) || (isset($_POST['PDTNumeroLigne']))) { 
+		MAJFichierCatalogue($monProjetSource,$PDTNumeroLigne,$PDTDenomination,$PDTCodeScripts);
+		header('Location: CMDCatalogueProduits.php'. ArgumentURL() .'&CodeEcole='.$CodeEcole.'&AnneeScolaire='.$AnneeScolaire );
+	}	
+} 
+
 
 
 $maConnexionAPI = new CConnexionAPI($codeMembre, $isDebug, 'CATPhotolab');
@@ -116,9 +119,7 @@ elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
 }
 elseif (isset($_POST['lesRecommandes']) ){
-	if ($isDebug){
-		echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $_POST['lesRecommandes'];
-	}	
+	if ($isDebug){echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $_POST['lesRecommandes'];	}	
 	echo $EnteteHTML . ETAPE_01(true) . $BotomHTML;	
 
 }
@@ -255,6 +256,8 @@ function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
 }
 
 function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut compiler !
+
+
 	
 	$target_file = $GLOBALS['repCMDLABO'].$strAPI_fichierLAB;
 	$ProduitsManquant = 0;
@@ -277,7 +280,7 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 		$retourMSG .= '<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" > Etape 2 : Créer la commande : ';
 	}	
 			
-
+	if ($GLOBALS['isDebug']){echo 'Etape_20    strAPI_fichierLAB : ' . $strAPI_fichierLAB  . ' isImport : ' . $isImport;	}	
 
 
 			$retourMSG .= '<font size="-1">'.utf8_encode($strAPI_fichierLAB).'</font></h1>';	
@@ -285,7 +288,7 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 	
 			$retourMSG .= '<table>
 			<tr>
-				<td width="50%">';	
+				<td width="70%">';	
 				$retourMSG .= '	<div class="Planchecontainer">';
 
 				$retourMSG .= '<h1>1) Vérification des scripts Photoshop</h1>';
@@ -300,7 +303,7 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 
 			$retourMSG .= '</div>';
 			$retourMSG .= '</td>
-							<td width="50%">';	
+							<td width="30%">';	
 			$retourMSG .= '	<div class="msgcontainer">';
 
 			$retourMSG .= '<h1>2) Vérification des photos  "Sources"</h1>'; 

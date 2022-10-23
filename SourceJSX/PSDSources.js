@@ -156,7 +156,7 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
 
 		var dropdownAnnee_array = ["2019-2020", "2020-2021","2021-2022","2022-2023", "2023-2024","2024-2025"]; 
 		var dropdownAnnee = group2.add("dropdownlist", undefined, undefined, {name: "dropdownAnnee", items: dropdownAnnee_array}); 
-		dropdownAnnee.selection = 2; // Annee par defaut 2020-2021
+		dropdownAnnee.selection = 3; // Annee par defaut 2022-2023
 		for (var i = 0; i < dropdownAnnee.items.length; i++) {if (dropdownAnnee.items[i].text == uneSource.AnneeScolaire ){dropdownAnnee.selection = i;}}
 		
 		

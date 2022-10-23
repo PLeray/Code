@@ -30,9 +30,6 @@ if (isset($_GET['MAJ'])) { // Lancement apres
 	$MAJ = ($_GET['MAJ']=='true')?true:false;
 }
 
-if($isDebug){
-	header("Cache-Control: no-cache, must-revalidate");
-}
 
 $lesPhotoSelection = '';
 if (isset($_POST['lesPhotoSelection']) ){
@@ -442,7 +439,6 @@ function AfficheSOURCESEcole($monProjet){
 
 	return $affiche_Tableau;
 }
-
 	
 function RetourEcranSources($ParamAnnee = ''){
 	$RetourEcran = 'CATSources.php?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod');

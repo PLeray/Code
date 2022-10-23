@@ -61,7 +61,7 @@ class CConnexionAPI {
 }
 
 function VersionPhotoLab(){
-	return '©PhotoLab 2018 - ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSIONLOCAL'].') : Création et visualisation de commandes de photographies';
+	return '©PhotoLab 2018 - ' . $GLOBALS['ANNEE'] . ' (v'.$GLOBALS['VERSIONLOCAL'].') : Création et visualisation de commandes de photographies scolaires';
 }
 
 function ArgumentURL($ARGSupl = ''){

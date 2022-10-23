@@ -470,7 +470,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
 						nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
 					}		
-					
+					//alert('QQQ0055  nomFichierPhoto ' + nomFichierPhoto);
 					var reussiteTraitement = true;
 					// IMPORT FOND BACK GROUND ici
 					if (unProduit.Type.substr(0, 3).indexOf('fnd') > -1){ //Produit Avec png  de Fond chargé en premier!!
@@ -626,12 +626,12 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 	
 	//Recadrage à faire
 	var leRECADRAGE = 'Portrait-' + nomFichierPhoto.substr(10, 1);
-	//alert('QQQ000  : ' + leRECADRAGE +  ' pour le nom photo : ' + nomFichierPhoto);
+	///alert('QQQ000  : ' + leRECADRAGE +  ' pour le nom photo : ' + nomFichierPhoto);
 
 	var nomFichierPhoto = nomFichierPhoto.substr(0,4) + '.jpg';
 	
 	var unNomdePlanche = NomPlancheLabo(unProduit, unProduit.FichierPhoto);
-	//alert('QQQ004 nouveau unNomdePlanche ' + unNomdePlanche);
+	//alert('QQQ004 ProduitQUATTROPonouveau unNomdePlanche ' + unNomdePlanche);
 	var valRetour = unNomdePlanche;
 	var unPathPlanche = g_RepTIRAGES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
 	var unPathMiniature = g_RepMINIATURES_DateEcole + "/" + unProduit.Taille + " (1ex de chaque)/" + unNomdePlanche;
@@ -671,7 +671,7 @@ function CreerUnProduitQUATTROPourLeLaboratoire(unProduit){
 					reussiteTraitement = (laPhoto != null);	
 
 					reussiteTraitement = reussiteTraitement && 
-					ImporterAutrePhoto(g_RepSOURCE + "/" + nomFichierPhoto);			
+					ImporterAutrePhoto(g_RepSOURCE + "/" + nomFichierPhoto);		
 				}else{
 					var laPhoto = NEWOuvrirPhotoSource(g_RepSOURCE + "/" + nomFichierPhoto); 
 					reussiteTraitement = (laPhoto != null);	
@@ -1046,7 +1046,7 @@ function TestIndivPhotoDeGroupe(){
 		var unProduit = new Produit(g_CommandeLabo.ListePlanches[m]);
 		if (unProduit.FichierPhoto.length && unProduit.isNeedGroupeClasse()){//Ouvrir la bonne photo ? Groupe
 			nomFichierGroupe = GroupeClassePourIndiv(unProduit);
-			//msgTest = msgTest + "\n" + unProduit.FichierPhoto + " => " + g_GroupeIndiv[unProduit.FichierPhoto];
+
 			msgTest = msgTest + "\n" + unProduit.FichierPhoto + " => " + nomFichierGroupe;			
 		}
 	}	
@@ -1074,7 +1074,7 @@ function GroupeClassePourIndiv(unProduit){
 				//On renvoie celui qui correspond au produit de groupe demandé
 				unProduit.FichierPhoto = decodeURI(unFichierGroupe);
 				//alert('unProduit.FichierPhoto => ' + unProduit.FichierPhoto );
-				nomGroupe = decodeURI(unFichierGroupe);
+				nomGroupe = decodeURI(unFichierGroupe).trim();  // .trim() new 30/09/2022
 				break;
 			}
 		}		

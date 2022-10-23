@@ -407,7 +407,7 @@ function GenererFichiersLABO() {
 						var unProduit = new Produit(ligne);  						
 						if (unProduit.isProduitLABO()){
 							//SUPRIMMER CA POUR VOIR SI PREND DU TEMPS!
-							//alert("TEST Z39566 unProduit.Nombre : " + unProduit.Nombre);
+							//alert("TEST klklkl g_CommandePDTEncours : " + g_CommandePDTEncours);
 							var plancheCree = CreerUnProduitPourLeLaboratoire(unProduit);							
 						}else{
 							var plancheCree = unProduit.Type;
@@ -685,10 +685,10 @@ function GenererFichiersWEB() {
 		}
 		leSousGroupeDeFichier.sort();
 		//alert('x4545' + TableauTOStr(leSousGroupeDeFichier));
-		//alert(TableauAssociatifTOStr(g_GroupeIndiv));
+
 		
 		progressBar.maxvalue = leSousGroupeDeFichier.length;			
-		//for(var fichier in g_GroupeIndiv){//Pour tout les fichier du Source
+
 		for (var i = 0; i < leSousGroupeDeFichier.length; i++) {	
 				var fichier = leSousGroupeDeFichier[i];
 			//alert('x4545 leSousGroupeDeFichier[i] ' + leSousGroupeDeFichier[i] + ' fichier : ' + fichier );
