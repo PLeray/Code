@@ -18,14 +18,14 @@ var g_TypeGROUPE = [
 
 /**/
 var g_PdtGROUPE = [
+'pngTRAD-',
+'fndTRAD-',
 'PANO', 
 'CAL-PANO', 
 'COMPO-PANO',
 'TRAD', 
 'CAL-TRAD',
 'COMPO-TRAD',
-'pngTRAD-CALENDRIER',
-'fndTRAD-CALENDRIER',
 'DUO-TRAD',
 'CUBE', 
 'CAL-CUBE',
@@ -222,9 +222,12 @@ function Produit(CodeLigne) {
 	};*/
 	this.isProduitGroupe = function(){		
 		var retour = false;
-		//alert('isProduitGroupe ' + g_PdtGROUPE[1] );   g_TypeGROUPE    
+		//alert('isProduitGroupe ' + g_PdtGROUPE[1] );       
 		for (var i = 0; i < g_PdtGROUPE.length; i++) {
-			if (g_PdtGROUPE[i]==this.Type) {
+			//if (g_PdtGROUPE[i]==this.Type) {
+				
+			if (this.Type.indexOf(g_PdtGROUPE[i])>-1) {	
+				//alert('isProduitGroupe  oui ' + g_PdtGROUPE[i] ); 			
 				retour = true;
 				break;
 			}

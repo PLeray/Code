@@ -34,10 +34,11 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
     ColonneDroite.spacing = 10; 
     ColonneDroite.margins = 0; 
 
+	/*
 	var btnScanDossier = ColonneDroite.add("button", undefined, undefined, {name: "btnScanDossier"}); 
 	btnScanDossier.text = "Scanner dossier source";
 	btnScanDossier.helpTip = "Scanner le dossier source et verifier les nom de classes"; 
-
+*/
 
 	var titrelistClasses = ColonneDroite.add("statictext", undefined, undefined, {name: "dsfsdf", justify: "center"}); 
 	titrelistClasses.text = "Noms des classes trouvés :"; 
@@ -46,51 +47,12 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
 	var listClasses = ColonneDroite.add ("edittext", [0, 0, 300, 300], " ", {name: "Noms des classes :", multiline: true});
 	listClasses.text = "Aucune ..."; 
 	
+/*
+	btnScanDossier.onClick = function () {
+		//ScannerLeDossier();
+	}
+*/
 
-	btnScanDossier.onClick = function () {	
-		
-		var typeConfig = 'Rien';
-		if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
-		if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
-		//if (radioStandard.value){typeConfig='Rien';}
-		
-		// A supprimer ulterieureme,nt 
-		SaveConfig(g_OrdreInversePlanche, typeConfig, checkPhotosGroupes.value, checkPhotosIndiv.value, checkPhotosFratrie.value);
-		
-		uneSource.OrdrePlancheInverse = g_OrdreInversePlanche;
-		uneSource.typeConfigWeb = typeConfig;		
-		uneSource.isPhotosGroupes = checkPhotosGroupes.value;
-		uneSource.isPhotosIndiv = checkPhotosIndiv.value;
-		uneSource.isPhotosFratrie = checkPhotosFratrie.value;
-		
-
-		g_RepSOURCE  = uneSource.DossierSources;
-
-		g_TabListeNomsClasses = [];
-		
-		titrelistClasses.text =  "Scan en cours patienter..."; 
-		
-		InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
-		//alert('Avant initialisation');
-		var nbclasses = 0;	
-		var isfratrie = false;
-		var refClasse = '';
-		var nomClasse = '';
-		
-
-		for(var valeur in g_TabListeNomsClasses){
-			 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
-			 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
-			 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
-				 isfratrie = true;
-			}else{
-				nbclasses = nbclasses + 1;	
-			}
-
-		}	
-		listClasses.text = decodeURIComponent(nomClasse);
-		titrelistClasses.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
-	};
 
 	// group5 '1- Dossier des SOURCES du projet :'	
 	var group5 = ColonneGauche.add("group", undefined, {name: "group5"}); 
@@ -117,6 +79,52 @@ var ColonneDroite = dlgEditSOURCE.add("group", undefined, {name: "ColonneDroite"
 			uneSource.DossierSources = leChemin;
 			staticDossier.text = decodeURI(uneSource.DossierSources);
 			editNomProjet.text = decodeURI(NomDossierSOURCE(leRepSOURCE.name));
+
+
+/* scane direct 10-11*/
+
+			var typeConfig = 'Rien';
+			if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
+			if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
+			//if (radioStandard.value){typeConfig='Rien';}
+			
+			// A supprimer ulterieureme,nt 
+			SaveConfig(g_OrdreInversePlanche, typeConfig, checkPhotosGroupes.value, checkPhotosIndiv.value, checkPhotosFratrie.value);
+			
+			uneSource.OrdrePlancheInverse = g_OrdreInversePlanche;
+			uneSource.typeConfigWeb = typeConfig;		
+			uneSource.isPhotosGroupes = checkPhotosGroupes.value;
+			uneSource.isPhotosIndiv = checkPhotosIndiv.value;
+			uneSource.isPhotosFratrie = checkPhotosFratrie.value;
+			
+		
+			g_RepSOURCE  = uneSource.DossierSources;
+		
+			g_TabListeNomsClasses = [];
+			
+			titrelistClasses.text =  "Scan en cours patienter..."; 
+			
+			InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
+			//alert('Avant initialisation');
+			var nbclasses = 0;	
+			var isfratrie = false;
+			var refClasse = '';
+			var nomClasse = '';
+			
+		
+			for(var valeur in g_TabListeNomsClasses){
+				 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
+				 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
+				 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
+					 isfratrie = true;
+				}else{
+					nbclasses = nbclasses + 1;	
+				}
+		
+			}	
+			listClasses.text = decodeURIComponent(nomClasse);
+			titrelistClasses.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
+
 		}
 	}
 	var staticDossier = ColonneGauche.add('edittext {properties: {name: "edittext1", readonly: true, borderless: true}}'); 
@@ -504,6 +512,52 @@ function AfficheImportationSOURCE2(dossierAImporter, DossierDestination) {
 	}
 }
 
+function ScannerLeDossier() { 
+
+		
+		
+	var typeConfig = 'Rien';
+	if (radioQuattro.value){typeConfig='WEB-QUATTRO';}
+	if (radioNB.value){typeConfig='NOIR-ET-BLANC';}
+	//if (radioStandard.value){typeConfig='Rien';}
+	
+	// A supprimer ulterieureme,nt 
+	SaveConfig(g_OrdreInversePlanche, typeConfig, checkPhotosGroupes.value, checkPhotosIndiv.value, checkPhotosFratrie.value);
+	
+	uneSource.OrdrePlancheInverse = g_OrdreInversePlanche;
+	uneSource.typeConfigWeb = typeConfig;		
+	uneSource.isPhotosGroupes = checkPhotosGroupes.value;
+	uneSource.isPhotosIndiv = checkPhotosIndiv.value;
+	uneSource.isPhotosFratrie = checkPhotosFratrie.value;
+	
+
+	g_RepSOURCE  = uneSource.DossierSources;
+
+	g_TabListeNomsClasses = [];
+	
+	PHOTOLAB.titrelistClasses.text =  "Scan en cours patienter..."; 
+	
+	InitialisationSourcePourLeWEB(Folder(g_RepSOURCE), []);
+	//alert('Avant initialisation');
+	var nbclasses = 0;	
+	var isfratrie = false;
+	var refClasse = '';
+	var nomClasse = '';
+	
+
+	for(var valeur in g_TabListeNomsClasses){
+		 refClasse = (refClasse == '')? valeur : (refClasse + "\n" + valeur);
+		 nomClasse = (nomClasse == '')? g_TabListeNomsClasses[valeur] : (nomClasse + "\n" + g_TabListeNomsClasses[valeur]);
+		 if ( nomClasse.toLowerCase().indexOf('fratrie') > -1){
+			 isfratrie = true;
+		}else{
+			nbclasses = nbclasses + 1;	
+		}
+
+	}	
+	PHOTOLAB.listClasses.text = decodeURIComponent(nomClasse);
+	PHOTOLAB.titrelistClasses.text =  nbclasses + " classes trouvés" + (isfratrie?" et des fratries":"") + " : "; 
+};
 
 function AfficheImportationSOURCE(dossierAImporter, DossierDestination) {
 	if (dossierAImporter != DossierDestination) {	

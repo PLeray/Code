@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.872;
+$VERSIONLOCAL = 0.874;
 $ANNEE = '2022';
 
 $repCMDLABO = "../../CMDLABO/";
@@ -200,9 +200,23 @@ function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou
 	//is_dir($AncienNom)
 	
 	if (file_exists($AncienNom)){ 
-		rename($AncienNom, $NouveauNom);
+		renommer_win($AncienNom, $NouveauNom);
 	}	
 }	
+
+
+function renommer_win($oldfile,$newfile) {
+	// renommer en gérant l'erreur de rename
+	if (!rename($oldfile,$newfile)) {
+	   if (copy ($oldfile,$newfile)) {
+		  unlink($oldfile);
+		  return TRUE;
+	   }
+	   else{return FALSE;}	   	   
+	}
+	else{return TRUE;}
+ }
+
 
 /*
 function NomPremierFichierDossier($Directory)

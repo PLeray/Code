@@ -442,13 +442,16 @@ function RemplacementNomCommande($AncienNomDeFichier, $NouveauNomDeFichier){ // 
 }
 
 
-function BDDRECFileLab($strRECFileLab, $BDDRECCode){
+function BDDRecordFileLab($strRECFileLab, $BDDRECCode){
 	if ($GLOBALS['isDebug']){
 		echo "<br> STOP !<br> ";
 	}
-	$line ='';
-	$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . utf8_decode($strRECFileLab) . "0";	
-	
+	//$line ='';
+
+	if (!is_numeric(substr("abcdef", -1))){ // 3-11-2022
+		$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . utf8_decode($strRECFileLab) . "0";	
+	} 
+
 	// New
 	/*Ouvre le fichier et retourne un tableau contenant une ligne par élément*/
 	$lines = file($strURL_RECFileLab);

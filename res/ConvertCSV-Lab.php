@@ -16,6 +16,32 @@ $TabResumeFormat = array();
 
 //echo ConvertirLUMYSCMDcsvEnlab($TabCSV, 'EcoleWEB.csv');
 
+
+function getCSVDelimiter($fichierCSV){	
+	//The delimiters array to look through
+	$delimiters = array(
+	'semicolon' => ";",
+	'tab'       => "\t",
+	'comma'     => ",",
+	);
+	//Load the csv file into a string
+	$csv = file_get_contents($fichierCSV);
+	foreach ($delimiters as $key => $delim) {
+		$res[$key] = substr_count($csv, $delim);
+	}
+	//reverse sort the values, so the [0] element has the most occured delimiter
+	arsort($res);
+	reset($res);
+	$first_key = key($res);
+	return $delimiters[$first_key];
+}
+/*
+
+
+*/
+
+
+
 function ConvertirLUMYSCMDcsvEnlab($fichierCSV, &$target_file){	
 	$valRetour = false;
 
@@ -304,7 +330,10 @@ function ConvertirEXCELCMDcsvEnlab($fichierCSV, &$target_file){
 	//var_dump( $GLOBALS['CataloguePdtENCOURS']) ;
 	$TabCSV = array();
 	echo '<br><br>';
-	$TabCSV = csv_to_array($fichierCSV, ';');
+
+	$TabCSV = csv_to_array($fichierCSV, getCSVDelimiter($fichierCSV));
+	//$TabCSV = csv_to_array($fichierCSV, ';');
+
 	//$isCMDUnique = is_numeric(substr($target_file ,-11,-5));
 	$PrefixeTirage = '';
 	// A Sup

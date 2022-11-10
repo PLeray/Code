@@ -54,14 +54,7 @@ $AnneeScolaire = '2022-2023';
 if (isset($_GET['AnneeScolaire'])) { $AnneeScolaire = $_GET['AnneeScolaire'];}
 
 
-/*
 
-if (isset($_GET['BDDRECFileLab']) && !isset($_GET['BDDRECCode']) && !isset($_GET['CodeEcole']) ) { // Transformation de l'état d'un fichier lab 
-	if ($GLOBALS['isDebug']){
-		echo 'le fichier a transformer : ' . $_GET['BDDRECFileLab'] . ' en : ' . $_GET['BDDRECFileLab'] . '0';
-		}
-	BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
-}else */
 
 if (isset($_GET['BDDARBOwebfile'])) { // Renvoie les planches à générer du fichier lab en parametre
 	$CMDwebArbo = '';

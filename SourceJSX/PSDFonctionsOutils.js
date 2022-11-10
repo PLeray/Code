@@ -1,6 +1,10 @@
 ////////////////////////////// LES FONCTIONS OUTILS //////////////////////////////////////////////
 #include PSDFonctionsDatas.js;
 
+String.prototype.trim = function () {
+    return this.replace(/^\s+/,'').replace(/\s+$/,'');
+}
+
 var scriptPoincon = 'POINCON-S²';
 
 function trimPSL (str) { // car leContenu.trim(); ne fonctionne sou pshp
@@ -228,10 +232,10 @@ function NEWOuvrirPhotoSource(unFichierPhoto){
 	var leFichierPhotoOK = unFichierPhoto; 	
 	try {
 		//if(leFichierPhotoOK.exists){
-		if(isFichierExiste(leFichierPhotoOK)){ 
+		//if(isFichierExiste(leFichierPhotoOK)){ 
 			var laPhoto = app.open(File(leFichierPhotoOK));
 			return laPhoto;		
-		}				
+		//}				
 	}
 	catch(err) {
 		var msg = 'Ecole en cours : ' + g_CommandeECOLEEncours;
@@ -240,7 +244,8 @@ function NEWOuvrirPhotoSource(unFichierPhoto){
 		AjoutBilanGeneration(msg);
 		msg = '     PROBLEME : Ouverture de la photo : ' + unFichierPhoto;		
 		AjoutBilanGeneration(msg);
-		msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto + " existe bien dans le dossier SOURCE de l'ecole !";	
+		//msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto.Split('/').Last() + " existe bien !";	
+		msg = "     SOLUTION PROBABLE : vérifier que le fichier : " + unFichierPhoto + " existe bien !";	
 		msg = "                       dossier SOURCE de l'ecole : " + g_RepSOURCE;	
 				AjoutBilanGeneration(msg);		
 		AjoutBilanGeneration('');
@@ -458,18 +463,23 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 				//alert('TESTZ50 DEBUT CreerUnProduitPour : ' + nomFichierPhoto + ' // Code de unProduit ' + unProduit.Code); //////////////////////////////////////////////
 				if (unProduit.Code){
 					if (unProduit.FichierPhoto.length && unProduit.isNeedGroupeClasse()){//Ouvrir la bonne photo ? Groupe
-						//alert('sdsdsdsdur : ' + nomFichierPhoto ); //////////////////////////////////////////////
+						//alert('Non de depart : ' + nomFichierPhoto ); //////////////////////////////////////////////
 						nomFichierPhoto = GroupeClassePourIndiv(unProduit);
-						//alert('nomFichierPhoto : ' + nomFichierPhoto);
+						//alert('nomFichierPhoto veritable: ' + nomFichierPhoto);
 					}
+					// LA !!!!
+					/*
 					if (unProduit.Type.indexOf('QUATTRO') > -1){ //Produit QUATTRO Besoin du fichier Quatro !!
 						//alert('Pour CADRE-QUATTRO : ' + nomFichierPhoto + ' Sera ' + NextQuattro(nomFichierPhoto) ); 
 						nomFichierPhoto = NextQuattro(nomFichierPhoto);										
 					}	
-					
+					*/
+					/*
+					Ancien code !!! Maintenant c'est vu dans QUATTRO
 					if (unProduit.Type.indexOf('IDENTITE') > -1){ //Produit IDENTITE Besoin du fichier Identite !!
 						nomFichierPhoto = FichierIdentite(nomFichierPhoto);										
-					}		
+					}	*/
+
 					//alert('QQQ0055  nomFichierPhoto ' + nomFichierPhoto);
 					var reussiteTraitement = true;
 					// IMPORT FOND BACK GROUND ici
@@ -486,7 +496,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 					}
 					//var laPhoto = OuvrirPhotoSource(nomFichierPhoto); 	
 					//reussiteTraitement = (laPhoto != null);	
-					
+					//alert('QQQ7777  reussiteTraitement ' + reussiteTraitement);
 					if (reussiteTraitement) {					
 						////////  Cas des fratrie ou Indiv en paysage =>> Portrait /////////
 						//var isFratrie = false;
@@ -499,7 +509,7 @@ function CreerUnProduitPourLeLaboratoire(unProduit){
 								myDocument.rotateCanvas(90);  
 							}  
 						//}	
-						//alert('TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
+						//alert('ZZ99 TRANSFORMATIONS teinte ; ") ' + unProduit.Teinte );
 						//////////////// VERIF-DPI //////////////////////
 						reussiteTraitement = reussiteTraitement && Action_Script_PhotoshopPSP('300DPI');				
 						//////////////// TRANSFORMATIONS //////////////////////
@@ -1065,16 +1075,17 @@ function GroupeClassePourIndiv(unProduit){
 		var unFichierGroupe ='';
 		for (var n = 0; n < TableauListeGroupe.length; n++) {
 			unFichierGroupe = TableauListeGroupe[n];
-			//alert('unFichierGroupe: ' + unFichierGroupe + ' on y cherche : (unProduit.Type.slice(-4)) : ' + unProduit.Type.slice(-4));	
-			
+
 			var uneInfoNomFichierGroupe  = new CNomFichierGroupe(unFichierGroupe);
-			if (unFichierGroupe.indexOf(uneInfoNomFichierGroupe.TypeGroupe) > -1){					
+			//alert('unProduit.Type: ' + unProduit.Type + ' on y cherche : (uneInfoNomFichierGroupe.TypeGroupe) : ' + uneInfoNomFichierGroupe.TypeGroupe);	
+	
+			if (unProduit.Type.indexOf(uneInfoNomFichierGroupe.TypeGroupe) > -1){					
 			//if (unFichierGroupe.indexOf(unProduit.Type.slice(-4)) > -1){
 				//alert(unProduit.FichierPhoto + ' ZZZZ=> fichier groupe de remplacement :  ' + unFichierGroupe);
 				//On renvoie celui qui correspond au produit de groupe demandé
 				unProduit.FichierPhoto = decodeURI(unFichierGroupe);
-				//alert('unProduit.FichierPhoto => ' + unProduit.FichierPhoto );
 				nomGroupe = decodeURI(unFichierGroupe).trim();  // .trim() new 30/09/2022
+				//alert('unProduit.FichierPhoto => ' + unProduit.FichierPhoto );
 				break;
 			}
 		}		

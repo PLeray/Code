@@ -82,7 +82,7 @@ if($isDebug){
 			if (isset($_GET['apiNomCommande']) ){
 				echo 'RECOOOOOOO apiNomCommande  pour : ' . $_GET['apiNomCommande']  ;
 			}
-		BDDRECFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
+			BDDRecordFileLab($_GET['BDDRECFileLab'], $_GET['BDDRECCode']);
 	} 
 	elseif (isset($_GET['apiCMDLAB'])) { // Renvoie les planches à générer du fichier lab en parametre
 		$RechargerPage = true;

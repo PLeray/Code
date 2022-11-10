@@ -8,7 +8,7 @@
 
 app.bringToFront();
 
-var g_NumVersion = 0.872;
+var g_NumVersion = 0.875;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
@@ -306,7 +306,7 @@ PHOTOLAB.onClose = function(){
     app.displayDialogs = g_OriginalDisplayDialogs; // Reset display dialogs   
     app.preferences.typeUnits  = g_OriginalTypeUnits; // Reset ruler units to original settings   
     app.preferences.rulerUnits = g_OriginalRulerUnits; // Reset units to original settings     
-    if(!isDebug){photoshop.quit();}
+    // if(!isDebug){photoshop.quit();}
 };
 
 //Mettre à jour fichier des script de Photoshop Pour PhotoLab mot clé : 'photolab'
