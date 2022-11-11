@@ -585,7 +585,7 @@ width: 500px;
   display: block;
 
   border:none;
-  cursor: url('../img/mini-Loupe.png'), pointer;
+  cursor: pointer;
 
   text-align: center;
   color: var(--boutonRouge);
@@ -595,8 +595,9 @@ width: 500px;
 
 
 #ImgPlancheIndiv {
-  /*  cursor: url('../img/mini-Loupe.png'), pointer;
-  cursor: pointer;*/
+  /*cursor: pointer; */ 
+  cursor: url('../img/mini-Loupe.png'), pointer;
+  
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	/*width: 151px;*/
 
@@ -604,20 +605,22 @@ width: 500px;
 }
 
 #ImgPlancheIndiv:hover {
-  /* opacity: 0.7; */
-  width: 100%;
+  /* opacity: 0.7; 
+  width: 100%;*/
 }
 
 #ImgPlancheGroupe {
-  /*  cursor: url('../img/mini-Loupe.png'), pointer;
-  cursor: pointer;*/
+    cursor: url('../img/mini-Loupe.png'), pointer;
+  /*cursor: pointer;*/
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 	width: 327px;
 }
 #ImgPlancheGroupe:hover {
-  /* opacity: 0.7; */
-  width: 100%;}
+  /* opacity: 0.7; 
+  width: 100%;
+*/
+}
 
 #idAfficheGroupe {
 	/*cursor: pointer;*/
@@ -1212,11 +1215,10 @@ background-position: center;
   position: fixed;
 	top:0px;
 	left: 0px;
-
+  cursor: url('../img/FermerZoom.png'), pointer;
 }
 
-
-img {
+.imageZoom {
 
   padding-top :10px ;
 	max-height: calc(100% - 20px); /*100%;*/

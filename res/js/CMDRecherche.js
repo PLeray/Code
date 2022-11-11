@@ -483,3 +483,26 @@ function coloriserString2(text, debut, fin, color) {
 		+ "<span style='color:" + color + "'>" + text.substring(debut, fin+1) + "</span>"
 		+ text.substring(fin+1);
 }*/
+
+function ZoomPhoto(element)
+{
+	/**/
+
+	var idElement = element.substring(1+element.lastIndexOf('/'));
+
+	
+	var str = '<img class="imageZoom" src="' + element + '" >';
+	//alert(str);
+	var maZone = document.getElementsByClassName("ZoneZoomPhoto")[0];
+	maZone.innerHTML = str;
+	maZone.style.display= "inline-block";
+	maZone.id = 'Zoom'+idElement;
+}
+function FermerZoom()
+{
+	var maZone = document.getElementsByClassName("ZoneZoomPhoto")[0];
+	maZone.style.display= "none";
+
+	// Changer le Plus Moins:
+
+}

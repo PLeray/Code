@@ -4,8 +4,6 @@ include_once 'CATFonctions.php';
 include_once 'ConvertCSV-Lab.php';
 
 
-//$repCommandesLABO = "../../CMDLABO/";
-
 $codeMembre = 0;
 if (isset($_GET['codeMembre'])) { $codeMembre = $_GET['codeMembre'];}
 $isDebug = file_exists ('../debug.txt');

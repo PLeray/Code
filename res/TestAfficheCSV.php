@@ -2,9 +2,6 @@
 <?php
 include 'ConvertCSV-Lab.php';
 
-$repCommandesLABO = '../../CMDLABO';
-
-
 $TabCSV = array();
 
 $Ecole_EnCOURS = '';

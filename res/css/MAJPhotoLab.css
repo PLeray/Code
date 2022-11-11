@@ -1,0 +1,67 @@
+/* Page layout styles */
+body {font-family: Arial, Helvetica, sans-serif;}
+
+h1 { /*Police texte Ecole */
+    text-align: center;
+    color: var(--texteGris);
+    letter-spacing: 3px;
+	padding: 0px;
+	line-height: 20px;
+	font-size: 28px;
+
+	margin: 10px;
+	font-family: "Courier New", Times, serif;
+	
+}
+
+
+.acceuilLiens {
+     margin: 0 auto;
+     width: 100px; 
+}
+
+
+
+p {/*Police Détails Fichier commande et commun  */
+    text-align: right;
+	letter-spacing: 1px;
+	line-height: 1;
+	font-size: 10px;
+}
+
+.mention {/* les mentions  */
+    letter-spacing: 1px;
+	line-height: 1;
+	font-size: 10px;
+    text-align: right;	
+}
+
+#site {
+	display: none ;
+	}
+    
+.cs-loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	z-index: 10;
+}
+
+.cs-loader-inner {
+	transform: translateY(-50%);
+	top: 50%;
+	position: absolute;
+	width: calc(100% - 200px);
+	color: var(--boutonVert);
+	padding: 0 100px;
+	text-align: center;
+}
+
+.cs-loader-inner label {
+	font-size: 60px;
+	opacity: 0;
+	display:inline-block;
+}

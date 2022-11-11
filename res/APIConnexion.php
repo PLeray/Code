@@ -1,7 +1,8 @@
 <?php
-$VERSIONLOCAL = 0.874;
+$VERSIONLOCAL = 0.875;
 $ANNEE = '2022';
 
+$repPHOTOLAB = "../../";
 $repCMDLABO = "../../CMDLABO/";
 $repMINIATURES = "../../CMDLABO/MINIATURES/";
 $repTIRAGES = "../../TIRAGES/";
@@ -117,18 +118,6 @@ function execInBackground($cmd, $isDedans = false) {
 	
 }
 
-
-function execInBackgroundOLD($cmd) {    
-	if (substr(php_uname(), 0, 7) == "Windows"){
-        pclose(popen("start /B ". $cmd, "r")); 
-		echo "Sur OS Windows " . $cmd;
-    }
-    else {
-        exec($cmd . " > /dev/null &");  
-		echo "Sur OS Autres " . $cmd;
-    }
-}
-
 function IsLocalMachine() {
 	//$isLocal = false;
 
@@ -197,42 +186,38 @@ function SuprDossier($Dossier) {
 }	
 
 function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou Dossier
-	//is_dir($AncienNom)
-	
+	//is_dir($AncienNom)	
 	if (file_exists($AncienNom)){ 
-		renommer_win($AncienNom, $NouveauNom);
-	}	
+		return renommer_win($AncienNom, $NouveauNom);
+	}else{
+		EnregistrerLigneLOG($AncienNom . " n existe pas !");
+		return FALSE;
+	}
 }	
-
 
 function renommer_win($oldfile,$newfile) {
 	// renommer en gérant l'erreur de rename
 	if (!rename($oldfile,$newfile)) {
-	   if (copy ($oldfile,$newfile)) {
-		  unlink($oldfile);
-		  return TRUE;
-	   }
-	   else{return FALSE;}	   	   
+		if (copy ($oldfile,$newfile)) {
+			unlink($oldfile);
+			EnregistrerLigneLOG("Copie + Supression de " . $oldfile . " vers " . $newfile);
+			return TRUE;
+		}else{
+			EnregistrerLigneLOG("Impossible de copier " . $oldfile );
+			return FALSE;
+		}	   	   
+	}else{
+		EnregistrerLigneLOG("Renommage " . $oldfile . " en " . $newfile);
+		return TRUE;
 	}
-	else{return TRUE;}
  }
 
 
-/*
-function NomPremierFichierDossier($Directory)
-{
-	$MyDirectory = opendir($Directory) or die('Erreur');
-	while($Entry = @readdir($MyDirectory)) 
-	{
-		if(!is_dir($Directory.'/'.$Entry) && $Entry != '.' && $Entry != '..') 
-		{  
-				echo '<br>' . 	$Entry;			 
-			return $Entry;
-			break;
-		}
-	}
-	closedir($MyDirectory);
-			return false;
+function EnregistrerLigneLOG($laLigne) {
+	$laLigne = date('d-m-y h:i:s') . " >> " . $laLigne;
+	return file_put_contents($GLOBALS['repPHOTOLAB'] . '/LOGInfo.txt', PHP_EOL.$laLigne, FILE_APPEND);
 }
-*/
+
+
+
 ?>

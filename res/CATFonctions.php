@@ -374,10 +374,12 @@ function LienIMGSuprFichierLab($fichier, $Etat) {
 
 function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 	$Extension = '.' . TypeFichier($strFILELAB);
-	
+
+	EnregistrerLigneLOG("Change etat de " .$strFILELAB .  " vers Etat : lab" . $Etat);
+
 	$strBaseName = substr($strFILELAB, 0, strpos($strFILELAB, $Extension));
 
-	if(($Etat == "3" )&& ($strBaseName == $GLOBALS['FichierDossierRECOMMANDE'])){
+	if(($Etat == "3" )&& ($strBaseName == $GLOBALS['FichierDossierRECOMMANDE'])){		
 		if ($GLOBALS['isDebug']) echo ' X chgt etat   BaseName : ' .$strBaseName;		
 		// ON Verifie si le nom de Dossier est OK pour le Laboratoire et suivit !
 	}

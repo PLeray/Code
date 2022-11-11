@@ -73,3 +73,32 @@ p {/*Police D�tails Fichier commande et commun  */
 	font-size: 10px;
     text-align: right;	
 }
+
+#site {
+	display: none ;
+	}
+.cs-loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	z-index: 10;
+}
+
+.cs-loader-inner {
+	transform: translateY(-50%);
+	top: 50%;
+	position: absolute;
+	width: calc(100% - 200px);
+	color: var(--boutonVert);
+	padding: 0 100px;
+	text-align: center;
+}
+
+.cs-loader-inner label {
+	font-size: 60px;
+	opacity: 0;
+	display:inline-block;
+}

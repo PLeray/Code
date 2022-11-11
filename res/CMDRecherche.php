@@ -83,7 +83,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 	  </div>
 	</div>
 </div> 
-<div id="site"">
+<div id="site">
    <!-- Tout le site ici -->
 
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">↑ Remonter ↑</button>
@@ -178,6 +178,10 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 		</div>
 		<div id="main">
 		<div id="zoneRechercheCMD">	
+
+		<div id="sdf" class="ZoneZoomPhoto" onclick="FermerZoom();">
+			</div>		
+					
 		<br><br>
 			<?php 	echo $monGroupeCmdes->Affiche(0); ?>	
 		</div>	

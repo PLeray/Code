@@ -75,7 +75,7 @@ if($isDebug){
 	  </div>
 	</div>
 </div> 
-<div id="site"">
+<div id="site">
    <!-- Tout le site ici -->
 
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">↑ Remonter ↑</button>
@@ -139,6 +139,11 @@ if($isDebug){
 		<div id="zoneListePageCMD">
 			<br><br>
 			<div class="zonePagesCMD">
+
+			<div id="sdf" class="ZoneZoomPhoto" onclick="FermerZoom();">
+			</div>	
+
+			
             <?php
                 if ($NbCMDAffiche < 0 ){
                     echo $monGroupeCmdes->Affiche($TotalCommandes);

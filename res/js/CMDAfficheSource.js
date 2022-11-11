@@ -623,7 +623,7 @@ function ZoomPhoto(element)
 	var x = document.getElementById(idElement).getElementsByClassName("ZoneMoinsPlus")[0];	
 	if(x.classList.contains("ZoneMoinsPlus")){x.classList.replace("ZoneMoinsPlus", "ZoneMoinsPlusZoom");}
 	
-	var str = '<img src="' + element + '" >';
+	var str = '<img class="imageZoom" src="' + element + '" >';
 	//alert(str);
 	var maZone = document.getElementsByClassName("ZoneZoomPhoto")[0];
 	maZone.innerHTML = str;

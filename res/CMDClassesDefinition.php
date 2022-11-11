@@ -443,6 +443,7 @@ class CCommande {
     var $Adresse;
     var $CodePostal;
     var $Ville;
+	var $Ouverte;
 	var $tabProduits;
     
     function __construct($str){
@@ -462,6 +463,10 @@ class CCommande {
 		if ($TailleInfo > 5){$this->Adresse = $this->Adresse . ' ' . $morceau[5];}  
         if ($TailleInfo > 6){$this->CodePostal = $morceau[6];}  
         if ($TailleInfo > 7){$this->Ville = $morceau[7];}   
+		/* new 12-11 */
+		$this->Ouverte = true;
+		if ($TailleInfo > 8){$this->Ouverte = ($morceau[8] != 'FERMER');}  
+
 		$this->tabProduits = array();		
     } 
     function FormatNumCmd(){
@@ -557,7 +562,7 @@ class CCommande {
 
 
 	function Ecrire($tabPlanche, &$isRecommande){
-		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'#'. PHP_EOL; 
+		$resultat ='#'. $this->Numero . '_' . $this->NumFacture . '_' . $this->Prenom . '_' . $this->Nom . '_' . $this->Adresse . '_' . $this->CodePostal .'_' . $this->Ville .'_' . $this->Ouverte .'#'. PHP_EOL; 
 	
 		for($i = 0; $i < count($this->tabProduits); $i++){
 			$isEcris = false;
@@ -698,7 +703,7 @@ class CPlanche {
     }   	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span onclick="SelectionnerCliquePhoto(this)" id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
+		$resultat .= '<span  id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
 
 			global $EcoleEnCours;
 			//echo $GLOBALS['repTIRAGES'] . '<br>';
@@ -711,10 +716,10 @@ class CPlanche {
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			
 			//$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
-			$resultat .= '<img id="ImgPlanche" src="' . $Lien . '">';	
+			$resultat .= '<img class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')" id="ImgPlanche" src="' . $Lien . '">';	
 
 			
-			$resultat .= '<p>'. $this->FichierPlanche .'</p>';
+			$resultat .= '<p onclick="SelectionnerCliquePhoto(this.parentElement)">'. $this->FichierPlanche .'</p>';
 			
 		$resultat .= '</span> ';
 		return $resultat;
@@ -1117,7 +1122,7 @@ class CImgSource {
 			Nb="0" 
 			class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
 
-			$resultat .= '<button class="EnregistrerPhoto" onclick="SelectionnerCliquePhoto(this.parentElement)" >
+			$resultat .= '<button class="EnregistrerPhoto" onclick="ZoomPhoto(\''. $LienBig  .'\')"  >
 			<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
 				src="' . $Lien . '"  title="'. urldecode($this->Fichier) . '">
 			</button>';
@@ -1126,7 +1131,7 @@ class CImgSource {
 			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
 			
-			$resultat .='<button class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')">
+			$resultat .='<button class="NomPhotoZoom" onclick="SelectionnerCliquePhoto(this.parentElement)">
 			<p>'. $this->Fichier  .'</p>
 			</button>';
 			//$resultat .= '</form>';

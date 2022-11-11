@@ -18,6 +18,7 @@ $MessageBox =
 	<link rel="stylesheet" type="text/css" href="'. strMini("css/Couleurs" . ($GLOBALS['isDebug']?"DEBUG":"PROD") . ".css") . '">
     <link rel="stylesheet" type="text/css" href="'. strMini("css/APIDialogue.css") . '">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+
     </head> 
     <body>
 	<body onload="document.getElementById(\'apiReponse\').style.display=\'block\'"><div id="apiReponse" class="modal">

@@ -373,7 +373,7 @@ text-align: left;
 
 
 #ImgPlanche {
-	cursor: pointer;
+  cursor: url('../img/mini-Loupe.png'), pointer;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 	/*box-shadow: -4px 4px 4px 4px var(--boutonVert);
@@ -894,3 +894,32 @@ top: 70px;
 	background: white;
 }
 
+.ZoneZoomPhoto
+{
+  all: unset; 
+  display: none;
+  position:absolute;
+  overflow:hidden; /* or overflow:auto; if you want scrollbars */	
+  background-color: rgba(20, 20, 20, 0.9);
+	height: 100%;
+	width: 100%;
+text-align: center;
+background-image: url('../img/Logo.png');
+background-repeat: no-repeat;
+background-position: center;
+  z-index: 10;
+
+  position: fixed;
+	top:0px;
+	left: 0px;
+  cursor: url('../img/FermerZoom.png'), pointer;
+}
+
+
+
+.imageZoom {
+
+  padding-top :10px ;
+	max-height: calc(100% - 20px); /*100%;*/
+	width: auto;
+}
