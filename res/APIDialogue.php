@@ -118,7 +118,7 @@ elseif (isset($_GET['apiInfoExpeditionArchivage'])) {
 elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
 }
-elseif (isset($_POST['lesRecommandes']) ){
+elseif (isset($_POST['lesRecommandes']) ){    //TitreNomTirage
 	if ($isDebug){echo 'VOILA LES RECO  pour : ' . $_POST['leFichierOriginal']  . ' : ' . $_POST['lesRecommandes'];	}	
 	echo $EnteteHTML . ETAPE_01(true) . $BotomHTML;	
 
@@ -127,7 +127,7 @@ elseif (isset($_POST['lesCmdesLibres']) ){
 	if ($isDebug){
 		echo 'VOILA LES COMAMNDES LIBRES  pour : '  . $_POST['lesCmdesLibres'];
 	}	
-	echo $EnteteHTML . ETAPE_01(false) . $BotomHTML;	
+	echo $EnteteHTML . ETAPE_01(false, $_POST['apiNomTirage']) . $BotomHTML;	
 
 }/*
 elseif (isset($_FILES["myfile"]["tmp_name"]) ){
@@ -165,23 +165,37 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
-function ETAPE_01($isRecommandes) {// Function Pour Enregistrer les recomamndes
+function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregistrer les recomamndes
 	//$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);	
 	if ($isRecommandes){
+
+	
 		$FichierOriginal = $_POST['leFichierOriginal'];
 		$strTabCMD = $_POST['lesRecommandes'];
 		$target_file_seul = MAJRecommandes($FichierOriginal, $strTabCMD);
-		$Titre ='ENREGISTRER LA RECOMMANDE';
+		$Titre ='ENREGISTRER RECOMMANDE(S)';
+
+
+	/*	
+		$InfoSource ='@9999-99-99_(RECOMMANDES) ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+
+
+		$strTabCMD = $_POST['lesRecommandes'];
+		$target_file_seul = MAJRecommandes($InfoSource, $strTabCMD, $TitreNomTirage);
+		$Titre ='ENREGISTRER RECOMMANDE(S)';	
+	
+	*/	
+	
 	}
 	else{
-		$InfoSource ='@8888-88-88_(COMMANDES LIBRES) ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+		$InfoSource ='@8888-88-88_COMMANDES LIBRES : ' . $TitreNomTirage . ' : sur ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
 
 		$strTabCMD = $_POST['lesCmdesLibres'];
 		if($GLOBALS['isDebug']){
 				echo 'VOILA LES COMAMNDES LIBRES  pour : '  . $strTabCMD;
 			}	
-		$target_file_seul = MAJCommandesLibres($InfoSource, $strTabCMD);
-		$Titre ='ENREGISTRER LA COMMANDE LIBRE';
+		$target_file_seul = MAJCommandesLibres($InfoSource, $strTabCMD, $TitreNomTirage);
+		$Titre ='ENREGISTRER COMMANDE(S) LIBRE(S)';
 	}
 
 	unset($_POST);	
