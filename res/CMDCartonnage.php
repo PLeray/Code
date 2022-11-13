@@ -12,6 +12,14 @@
 	if (isset($_GET['isDebug'])) { $isDebug = ($_GET['isDebug'] == 'Debug') ? true : false;}
 	if ($isDebug){header("Cache-Control: no-cache, must-revalidate");}
 
+
+	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$myfileName);
+	$lesCMDFermer='';
+	if (isset($_POST['lesCMDFermer'])) { 	
+		$lesCMDFermer=$_POST['lesCMDFermer'];
+		$monGroupeCmdes->SauvegarderEtatCommandeFermer($_POST['lesCMDFermer']);
+	}
+
 ?>
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -25,7 +33,7 @@ if($isDebug){
 
 
 ?>
-    <title id="PHOTOLAB"><?php echo substr($myfileName,0, -5) ?> : Préparation de commandes</title>
+    <title id="PHOTOLAB"><?php echo $lesCMDFermer.substr($myfileName,0, -5) ?> : Préparation de commandes</title>
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/Couleurs'.($isDebug?'DEBUG':'PROD').'.css');?>">
     <link rel="stylesheet" type="text/css" href="<?php Mini('css/CMDCartonnage.css');?>">
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
@@ -38,6 +46,8 @@ if($isDebug){
 	if (isset($_GET['nbCmd'])) { $NbCMDAffiche = $_GET['nbCmd'];}
 
 	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$myfileName);
+
+
 
     $TotalCommandes = count($monGroupeCmdes->tabCMDLabo);
 	
@@ -77,16 +87,29 @@ if($isDebug){
 </div> 
 <div id="site">
    <!-- Tout le site ici -->
+	
+
+
+	
+
+
+<form name="FormEnvoieFermer" method="post" action="" enctype="multipart/form-data">	
+	<input type="hidden" name="lesCMDFermer" id="lesCMDFermer" value="hfghf" /> 
+	<button onclick="SauverEtatCommandes()" id="btnSauver" title="Sauvegarder état des commandes"></button>
+</form> 
+
+
+
 
 	<button onclick="topFunction()" id="btnRemonter" title="Revenir en haut de la page">↑ Remonter ↑</button>
-	
+
 	<div id="Entete">	
 		<div class="logo"><a href="<?php echo RetourEcranFichier($myfileName); ?>" title="Retour à la liste des commandes groupées"><img src="img/Logo-Retour.png" alt="Image de fichier">
         </a>
 		</div>		
 		<div class="affichageInfoCMD">
             <?php 
-            echo '<p>Il y a <font size="+1"><B>'. $TotalCommandes . '</B></font> commandes au total</p>
+            echo '
 
             <p  title="Afficher toutes les commandes sur une seule page">● Afficher tout : 
 
@@ -98,8 +121,9 @@ if($isDebug){
                 echo '<p>● <a href="'. LienAffichePlusMoins('-','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD ). '" class="moinsplus">-</a>
                 <B><font size="+1"> ';
                 if ($NbCMDAffiche < 10000){echo abs($NbCMDAffiche);}
-                echo ' </font></B><a href="'. LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD ) .'" class="moinsplus">+</a> commandes / page</p>';
+                echo ' </font></B><a href="'. LienAffichePlusMoins('+','&fichierLAB='.urlencode($myfileName).'&numeroCMD='. $numeroCMD ) .'" class="moinsplus">+</a><br><br> commandes / page</p>';
             }
+			echo '<br><p>Il y a <font size="+1"><B>'. $TotalCommandes . '</B></font> commandes au total</p>';
             ?>
 		</div> 	
 		

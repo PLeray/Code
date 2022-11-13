@@ -640,3 +640,14 @@ function FermerZoom()
 	if(x.classList.contains("ZoneMoinsPlusZoom")){x.classList.replace("ZoneMoinsPlusZoom", "ZoneMoinsPlus");}
 }
 
+function VoirPannier() {
+	var ele = document.getElementById('monDetailPannier');
+	if(ele.style.display == "none") {
+		ele.style.display = "block";		
+	}
+	else {
+		ele.style.display = "none";
+
+	}
+}
+

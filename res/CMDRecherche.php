@@ -52,7 +52,9 @@ if($isDebug){
 	$etatFichierLab = AfficheEtatFichierLab($myfileName);
 	
 	
-$isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !== false);
+//$isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !== false);
+
+$isRECOmmandes = false;
 	
 
 ?>
@@ -115,7 +117,7 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 			if (!$isRECOmmandes){
 
 				$LePannier = '	<div class="Planchecontainer">
-					<div class="titreFichier">Pannier des commandes en cours</div>
+					<div class="titreFichier">Pannier des recommandes en cours</div>
 					<table class="TablePlanche"><tr>
 					<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
 					</tr></table>';
@@ -130,8 +132,8 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 
 				echo '
 				<a href="'.RetourEcranFichier($myfileName).'" class="closebtn">&times;</a>
-				<a href=javascript:void(0); id ="Pannier" onclick=VoirPannier() > <img src="img/Pannier.png" alt="Voir pannier de commandes">
-        		</a><br><br><span id ="txtPannier">Voir le pannier en cours</span >
+				<a href=javascript:void(0); id ="Pannier" onclick=VoirPannier() > <img src="img/Pannier.png" title="Voir pannier de recommandes">
+        		</a><br><br>
 				
 				<br><div id="monDetailPannier" >'. $LePannier .'</div>
 
@@ -145,6 +147,9 @@ $isRECOmmandes = (stripos($myfileName, $GLOBALS['FichierDossierRECOMMANDE']) !==
 				<span id ="txtAfficherSelection">Afficher sélection des recommandes</span >
 
 				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier().'" enctype="multipart/form-data">	
+
+					
+
 					<input type="hidden" name="lesRecommandes" id="lesRecommandes" value="" /> 
 					<input type="hidden" name="leFichierOriginal" id="leFichierOriginal" value="'. $myfileName .'" /> 		
 					<button type="submit" id="btnEnregistrerCMD" title="Enregistrer ces recommandes">Enregistrer ces recommandes</button>

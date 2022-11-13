@@ -1031,6 +1031,10 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
 	
 	$TabCMDReco = explode("%", $strTabCMDReco);
 	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$FichierOriginal);
+
+	//$resultat = $monGroupeCmdes->AjouterUneCommande($TitreCommande, $TabCMDReco, $isRecommande);
+
+
 	$resultat = $monGroupeCmdes->Ecrire($TabCMDReco, $isRecommande);
 
    //Ajouter commande au fichier de reco 
@@ -1042,8 +1046,51 @@ function MAJRecommandes($FichierOriginal, $strTabCMDReco) {
   return $NewFichierSeul;
 }
 
+
+function MAJRecommandes_NEW($FichierOriginal, $strTabCMDReco, $TitreCommande) {
+	SuprFichier($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierRECOMMANDE'].".lab2");
+	$NewFichierSeul = $GLOBALS['FichierDossierRECOMMANDE'].".lab0" ;
+	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
+	if (!file_exists($NewFichier)){
+		$file = fopen($NewFichier, 'w');
+			fputs($file, '[Version : 2.0]'.PHP_EOL );
+			fputs($file, '{Etat : 0 : Non enregistre %%Recommandes de tirages dejà effectués}'.PHP_EOL );
+		fclose($file); 
+	}
+
+	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$FichierOriginal);
+
+	$SourceDesCMD = '@9999-99-99_(RECOMMANDES) ' . utf8_decode($monGroupeCmdes->nomFichierCmdes). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+
+
+	$resultat = $SourceDesCMD ."\n";
+
+	$resultat .= '#'. $TitreCommande . '__ Recommandes du ' . date("d F") ."#\n";
+
+
+	$TabCMDReco = explode("%", $strTabCMDReco);
+
+	for($i = 0; $i < count($TabCMDReco); $i++){
+		
+		if ($TabCMDReco[$i] !=''){
+			$maPlanche = new CPlanche($TabCMDReco[$i]);
+			$resultat .= $maPlanche->EcrireLab0();
+		}
+	}
+
+	
+	//Ajouter commande au fichier de commande Libres 
+   file_put_contents($NewFichier, $resultat."\n", FILE_APPEND | LOCK_EX);
+
+   $mesInfosFichier = new CINFOfichierLab($NewFichier); 
+   $mesInfosFichier->MAJResumeFichierCommandes();
+
+  return $NewFichierSeul;
+}
+
+
 // POUR LES COMMANDES LIBRES  ! A REVOIR
-function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
+function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre, $TitreCommande) {
 	SuprFichier($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierCMDESLIBRE'].".lab2");
 	$NewFichierSeul = $GLOBALS['FichierDossierCMDESLIBRE'].".lab0" ;
 	$NewFichier = $GLOBALS['repCMDLABO'] . $NewFichierSeul ;
@@ -1056,7 +1103,7 @@ function MAJCommandesLibres($SourceDesCMD, $strTabCMDLibre) {
 
 	$resultat = $SourceDesCMD ."\n";
 
-	$resultat .= '# # __Tirages d\'exemples du ' . date("d / F") ."#\n";
+	$resultat .= '#'. $TitreCommande . '__Tirages du ' . date("d/m/Y à H:i") ."#\n";
 
 	$resultat .= trim(str_replace($GLOBALS['SeparateurInfoPlanche'] , "\n", $strTabCMDLibre));
 

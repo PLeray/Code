@@ -269,6 +269,22 @@ p {/*Police Détails Fichier commande et commun  */
 }
 
 
+
+#TitreNomTirage {
+  width:  270px;
+  text-align: left;
+  font-size: 18px;
+  padding: 11px;
+  margin-bottom: 13px;
+  color: var(--boutonVert);
+  border: 1px solid #888;
+
+
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
+
 #btnRemonter {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -1084,13 +1100,14 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   border:none;
   padding-bottom: 15px;
   padding-left: 50px;
+  background-color: #f6f6f6;
 }
   /**/
 #ZoneSaisie:focus {outline: none;}
 #LoupeInitZoneSaisie{
   cursor: pointer; 
   position: fixed;
-  margin-top: -15px;
+  margin-top: -5px;
   margin-left: 5px;
 
 
@@ -1108,9 +1125,10 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   
   padding: 14px 10px 0px 10px;
 
-  border: 1px solid var(--FondLigneTabGrisFonce);
-
+  border: 1px solid var(--boutonVert);
+  background-color: #f6f6f6;
   width:  270px;
+
 
 }
 .dropdown:focus {outline: 1px solid #ddd;}
@@ -1120,13 +1138,13 @@ background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   background-color: #f6f6f6;
   min-width: 550px;
   overflow: auto;
-  right:0px;
+  right:-1px;
   z-index: 1;
   font-size: 11px;
   column-width: 200px;
   min-height: 20px;
 
-  border: 1px solid var(--FondLigneTabGrisFonce);
+  border: 1px solid var(--boutonVert);
 }
 /*
 .dropdown-content .Favori {
@@ -1223,4 +1241,90 @@ background-position: center;
   padding-top :10px ;
 	max-height: calc(100% - 20px); /*100%;*/
 	width: auto;
+}
+
+#Pannier {
+  position: fixed; /* Fixed/sticky position */
+top: 10px;
+right: 280px;
+
+
+}
+#Pannier:hover {
+  opacity: 0.5;
+}
+
+#txtPannier {
+
+
+  z-index: 9; /* Make sure it does not overlap */
+
+
+  color: white; /* Text color */
+  font-size: 14px; /* Increase font size */
+
+
+}
+
+#monDetailPannier {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  top: 0px; /* Place the button at the bottom of the page */
+  right: 358px; /* Place the button 30px from the right */
+  z-index: 9; /* Make sure it does not overlap */
+
+  background-color: var(--FondEnteteTableau);
+  color: white; /* Text color */
+
+  padding: 3px; /* Some padding */
+
+
+  width: 50%;
+}
+
+.StyleEcole {/*Police Détails Fichier commande et commun  */
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  background-color:var(--texteGris);
+
+}
+.StyleFichier {/*Police Détails Fichier commande et commun  */
+  text-align: left;
+  font-size: 10px;
+  color: var(--texteGris);
+  padding-left: 10px;
+}
+.StyleTaille {/*Police Détails Fichier commande et commun  */
+  text-align: left;
+  font-size: 10px;
+  color: var(--boutonRouge);
+}
+.StyleProduit {/*Police Détails Fichier commande et commun  */
+  text-align: left;
+  font-size: 10px;
+  color: var(--boutonVert);
+}
+
+.Planchecontainer {
+  height: 500px; 
+  overflow: auto;
+  
+  border: 1px solid var(--FondLigneTabGrisFonce);  
+  background-color: white;
+}
+
+.TablePlanche
+{
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    /* border: 1px solid blue;*/
+
+}
+
+.TablePlanche td
+{
+    /* border: 1px solid rgb(115, 250, 126);*/
+    
 }

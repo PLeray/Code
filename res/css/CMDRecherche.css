@@ -362,6 +362,8 @@ right: 280px;
 	color: var(--FondLigneTabGrisSombre);
   background-color: white;
   border: 1px solid var(--FondLigneTabGrisFonce);
+
+  cursor: pointer;
 }
 
 .grosNumCMD {
@@ -424,6 +426,8 @@ width: 380px;*/
 
 	margin: 10px 10px 10px 10px;	
 	border: 0.5rem dashed var(--boutonVert);
+
+  cursor: pointer;
 }
 
 #ImgPlanche {
@@ -461,9 +465,7 @@ width: 380px;*/
 */
 #txtAfficherSelection{
   margin: 10px 10px 10px 10px;
-  
-
-  
+   
     width: auto; 
     display: inline-block;
   

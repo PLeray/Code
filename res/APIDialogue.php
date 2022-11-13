@@ -115,6 +115,9 @@ elseif (isset($_GET['apiInfoMiseEnPochette'])) {
 elseif (isset($_GET['apiInfoExpeditionArchivage'])) { 
 	echo $EnteteHTML . Etape_50($_GET['apiFichierChgEtat']). $BotomHTML;	
 } 
+elseif (isset($_GET['versionDistante'])) { 
+	echo $EnteteHTML . Etape_60($_GET['versionDistante']). $BotomHTML;	
+} 
 elseif (isset($_FILES['fileToDrop'])) {
 	echo API_DropFILELAB();
 }
@@ -165,30 +168,16 @@ function API_GetCMDLAB($strAPI_CMDLAB){
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
-function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregistrer les recomamndes
+function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregistrer les recomamndes Ou Commande Libres
 	//$target_file_seul = MAJRecommandes($_POST['leFichierOriginal'], $_POST['lesRecommandes']);	
 	if ($isRecommandes){
-
-	
 		$FichierOriginal = $_POST['leFichierOriginal'];
 		$strTabCMD = $_POST['lesRecommandes'];
 		$target_file_seul = MAJRecommandes($FichierOriginal, $strTabCMD);
 		$Titre ='ENREGISTRER RECOMMANDE(S)';
-
-
-	/*	
-		$InfoSource ='@9999-99-99_(RECOMMANDES) ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
-
-
-		$strTabCMD = $_POST['lesRecommandes'];
-		$target_file_seul = MAJRecommandes($InfoSource, $strTabCMD, $TitreNomTirage);
-		$Titre ='ENREGISTRER RECOMMANDE(S)';	
-	
-	*/	
-	
 	}
 	else{
-		$InfoSource ='@8888-88-88_COMMANDES LIBRES : ' . $TitreNomTirage . ' : sur ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+		$InfoSource ='@8888-88-88_COMMANDES LIBRES : ' . $TitreNomTirage . ' sur ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
 
 		$strTabCMD = $_POST['lesCmdesLibres'];
 		if($GLOBALS['isDebug']){
@@ -247,10 +236,13 @@ function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregi
 				//echo "Apres move_uploaded_file";
 				$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
 				$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
+
+				$CMDhttpLocal .= '&CodeEcole='.$_GET['CodeEcole'].'&AnneeScolaire='.$_GET['AnneeScolaire'].'&Side=OK';
+
 				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !								
 		
 				$retourMSG .= '<br><br>
-					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
+					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal,'CMDAfficheSource') . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
 					<br><br>';									
 			}
 			else{
@@ -600,6 +592,29 @@ $retourMSG .= '</td>
 	return $retourMSG;
 	
 }
+
+function Etape_60($NouvelleVersion){ // IL YA UNE MISE A JOUR    $GLOBALS['VERSIONLOCAL'] < $NouvelleVersion
+	$retourMSG = 
+	'<div id="apiReponse" class="modal">
+		<div class="modal-content animate" >
+
+			<h1><img src="img/AIDE.png" alt="Aide sur l\'étape" >Mise à jour de PhotoLab version ' . $NouvelleVersion .
+			
+			'<a href="MAJPhotoLab.php' . ArgumentURL('&versionDistante='. $NouvelleVersion) .'" class="OK" title="ok">OK</a></h1>';
+
+
+	$retourMSG .= '<br>';
+
+	$retourMSG .= '
+		</div>	  
+	</div>
+</div>';	
+
+
+	return $retourMSG;
+	
+}
+
 
 function API_GetFILELAB($strAPI_FILELAB){
 	$GLOBALS['repCMDLABO'] = "CMDLABO/";

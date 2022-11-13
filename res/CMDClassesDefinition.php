@@ -39,9 +39,9 @@ class CGroupeCmdes {
 	var $NbCommande;	
 	
     function __construct($myfileName){
-		$this->tabFICHIERLabo = $myfileName;
-		if (file_exists($myfileName)){
-			$myfile = fopen($myfileName, "r") or die('Unable to open file : ' .$myfileName);
+		$this->nomFichierCmdes = $myfileName;
+		if (file_exists($this->nomFichierCmdes)){
+			$myfile = fopen($this->nomFichierCmdes, "r") or die('Unable to open file : ' .$this->nomFichierCmdes);
 			$this->tabFICHIERLabo = array();
 			// Output one line until end-of-file
 			
@@ -53,7 +53,7 @@ class CGroupeCmdes {
 			fclose($myfile);
 		}	
 
-		$this->DateISOLEE = substr($myfileName, strripos($myfileName, '/') + 1,10);		
+		$this->DateISOLEE = substr($this->nomFichierCmdes, strripos($this->nomFichierCmdes, '/') + 1,10);		
 		$this->colEColes = array();
 		$this->tabCMDLabo = array();
 		if ($this->tabFICHIERLabo){
@@ -69,7 +69,7 @@ class CGroupeCmdes {
 						}	
 */
 						if (stripos($this->tabFICHIERLabo[$i], '(ISOLEES)') !== false) { // C'est des ISOLEES
-							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
+							$this->DossierTirage =  substr($this->nomFichierCmdes, strripos($this->nomFichierCmdes, '/') + 1,-5);	
 							//echo '$this->DossierTirage : ' .$this->DossierTirage;
 							if (!file_exists($GLOBALS['repMINIATURES'].$this->DossierTirage)) {
 								if (file_exists($GLOBALS['repMINIATURES'].$this->DateISOLEE . '-CMD-ISOLEES')) {
@@ -78,12 +78,12 @@ class CGroupeCmdes {
 							} 							
 						}	
 						elseif (stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== false) { // C'est des RECOs
-							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
+							$this->DossierTirage =  substr($this->nomFichierCmdes, strripos($this->nomFichierCmdes, '/') + 1,-5);	
 
 						}				
 						else{ // C'est des PAS des ISOLEES
 							$curEcole = new CEcole($this->tabFICHIERLabo[$i], '');							
-							$this->DossierTirage =  substr($myfileName, strripos($myfileName, '/') + 1,-5);	
+							$this->DossierTirage =  substr($this->nomFichierCmdes, strripos($this->nomFichierCmdes, '/') + 1,-5);	
 							//$this->DossierTirage = $curEcole->DateTirage . '-' .$curEcole->Nom ;
 						}	
 					}
@@ -105,7 +105,7 @@ class CGroupeCmdes {
 					$curProduit->AjoutPlanche($curPlanche);
 				}	
 				/**/
-				elseif (substr($myfileName, -1) == '0') {
+				elseif (substr($this->nomFichierCmdes, -1) == '0') {
 					if(strlen($this->tabFICHIERLabo[$i]) > 7) {
 						$curPlanche = new CPlanche($this->tabFICHIERLabo[$i]);
 						$curProduit->AjoutPlanche($curPlanche);
@@ -152,11 +152,7 @@ class CGroupeCmdes {
 		return $resultat;
 	}	
 	function AffichePlancheAProduire(){
-		$resultat = '<table class="TablePlanche"><tr>
-			<td  width="40%" class ="StyleFichier">FichierSource</td>
-			<td  width="20%" class ="StyleTaille">Taille</td>
-			<td  width="40%" class ="StyleProduit">Produit</td>
-		</tr></table>';
+		$resultat = '';
 		//echo 'Affiche ecole Affiche : ' . count($this->colEColes);
 		for($i = 0; $i < count($this->colEColes); $i++){
 			global $EcoleEnCours;
@@ -180,6 +176,33 @@ class CGroupeCmdes {
 		}
 
 		return $resultat;
+	}	
+
+	function SauvegarderEtatCommandeFermer($strCommandesFermees){
+		if (file_exists($this->nomFichierCmdes)){
+			$myfile = fopen($this->nomFichierCmdes, "r") or die('Unable to open file : ' .$this->nomFichierCmdes);
+			$this->tabFICHIERLabo = array();
+			while(!feof($myfile)) {
+				array_push($this->tabFICHIERLabo,trim(fgets($myfile)));
+			}
+			fclose($myfile);
+			$TableauCommandesFermees = explode($GLOBALS['SeparateurInfoPlanche'], $strCommandesFermees);
+			$myfile = fopen($this->nomFichierCmdes, 'w');
+				for($i = 0; $i < count($this->tabFICHIERLabo); $i++){
+					$maLigne = $this->tabFICHIERLabo[$i];
+					
+					if(substr($maLigne,0,1) == '#') {
+						$curCommande = new CCommande($maLigne);
+						$FlagFERMER = (in_array($curCommande->Numero,$TableauCommandesFermees))?'FERMER':'';
+						$maLigne ='#'. $curCommande->Numero . '_'	. $curCommande->NumFacture . '_' 
+									. $curCommande->Prenom . '_' . $curCommande->Nom . '_' 
+									. $curCommande->Adresse . '__' . $curCommande->CodePostal .'_' . $curCommande->Ville .'_' 
+									. $FlagFERMER .'#'; 																		
+					}
+					fputs($myfile, $maLigne.PHP_EOL );
+				}		
+			fclose($myfile);
+		}	
 	}	
 
 	function Ecrire($tabPlanche, &$isRecommande){
@@ -406,20 +429,7 @@ class CEcole {
 //utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
 
 	function Ecrire($tabPlanche, &$isRecommande){	
-
-		$strDate = MarqueurDateCommande('2022-03-04');
-
-		//$date1 = date($this->DateTirage); // Date du jour
-		//setlocale(LC_TIME, "fr_FR");
-		//$strDate = strftime("%A %d %B %G", strtotime($date1)); //Mercredi 26 octobre 2016
-
-		//$date1 = date($strDtae); // Date du jour
-
-		//$strDate = strftime("%A %d %B %G", strtotime($date1)); //Mercredi 26 octobre 2016	
-		
-
-		//$strDate = MarqueurDateCommande($this->DateTirage);
-		$resultat ='@9999-99-99'.  '_' . $strDate .' (RECOMMANDES) ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
+		$resultat ='@9999-99-99'.  '_RECOMMANDES du ' . MarqueurDateCommande() .' sur : ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
 		//@2020-12-03_(ISOLEES) Elementaire La Chateigneraie-HAUTE GOULAINE_ECOLE-1017_Ecole web !@ 
 		for($i = 0; $i < count($this->tabCommandes); $i++){
 			$isEcris = false;
@@ -460,7 +470,7 @@ class CCommande {
         if ($TailleInfo > 2){$this->Prenom = $morceau[2];}  
         if ($TailleInfo > 3){$this->Nom = $morceau[3];}  
         if ($TailleInfo > 4){$this->Adresse = $morceau[4];}  
-		if ($TailleInfo > 5){$this->Adresse = $this->Adresse . ' ' . $morceau[5];}  
+		if ($TailleInfo > 5){$this->Adresse = trim($this->Adresse . ' ' . $morceau[5]);}  
         if ($TailleInfo > 6){$this->CodePostal = $morceau[6];}  
         if ($TailleInfo > 7){$this->Ville = $morceau[7];}   
 		/* new 12-11 */
@@ -485,7 +495,11 @@ class CCommande {
 			$resultat .= '<div class="commande"  >';				
 				$resultat .= '<button  class="Titrecommande" onclick="VisuCMD(\''.$this->Numero . '\');" > Commande <span class="grosNumCMD">' . $this->FormatNumCmd() . '</span> ' . $this->NumFacture . ' (' . $this->Prenom . ' ' . $this->Nom . ', ' . $this->Adresse . ', ' . $this->CodePostal .' ' . $this->Ville .')</button>';
 				//Le contenu ...
-				$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande">';
+				//$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande" >';
+				$resultat .= '<div id="'. $this->Numero .'" class="Contenucommande" '.  ($this->Ouverte ? '': 'style="display: none;"')    .'>';
+
+
+				
 				
 					for($i = 0; $i < count($this->tabProduits); $i++){
 						$resultat .= $this->tabProduits[$i]->Affiche();
@@ -703,7 +717,7 @@ class CPlanche {
     }   	
 	function Affiche(){
 		$resultat = '';
-		$resultat .= '<span  id="'. urldecode($this->FichierPlanche) . '" class="planche" title="'. urldecode($this->FichierPlanche) . '">';
+		$resultat .= '<span  id="'. urldecode($this->FichierPlanche) . '" class="planche" title="dqsdsq '. urldecode($this->FichierPlanche) . '">';
 
 			global $EcoleEnCours;
 			//echo $GLOBALS['repTIRAGES'] . '<br>';
@@ -716,7 +730,7 @@ class CPlanche {
 			if (!file_exists($LienBig)){$LienBig = $Lien;}
 			
 			//$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
-			$resultat .= '<img class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')" id="ImgPlanche" src="' . $Lien . '">';	
+			$resultat .= '<img class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')" id="ImgPlanche" src="' . $Lien . '" title="Cliquez pour zoomer">';	
 
 			
 			$resultat .= '<p onclick="SelectionnerCliquePhoto(this.parentElement)">'. $this->FichierPlanche .'</p>';
@@ -758,20 +772,12 @@ class CPlanche {
 			//RecopierPlanche($LienBig,$LienBig.".jpg");
 
 		}
-		/*
-		$isRecommande = in_array($this->FichierPlanche, $tabPlanche);
-		if ($isRecommande) {
-			return $this->FichierPlanche;			
-		}	
-		else{
-			return '';			
-		}	*/
 		return $resultat;				
 	}
 	function Ecrire($tabPlanche, &$isRecommande){
 		$resultat ='';
 	   if (in_array($this->FichierPlanche, $tabPlanche)) {
-		   $isRecommande = in_array($this->FichierPlanche, $tabPlanche);
+		   $isRecommande = true; // = in_array($this->FichierPlanche, $tabPlanche);
 		   //$resultat = $this->FichierPlanche . PHP_EOL;
 		   //fputs($Fichier, $lines[$i]);
 		   //(RECOMMANDES) EN COURS
@@ -784,6 +790,13 @@ class CPlanche {
 		}
 		return $resultat;					
 	}
+	function EcrireLab0(){
+		$resultat = $this->FichierSource;
+		$resultat .= '_'. $this->Taille; 
+		$resultat .= '_'. $this->Type;
+		$resultat .= PHP_EOL;
+		return $resultat;					
+	}	
 	function FichiersSourceNecessaires(){
 		$resultat = $this->FichierSource;
 		/**/
@@ -1210,19 +1223,14 @@ function csv_to_array($filename='', $delimiter=';')
     return $data;
 }
 
-function MarqueurDateCommande($strDate) {
-	//date_default_timezone_set('Europe/Paris');
+function MarqueurDateCommande() {
+
 	setlocale(LC_TIME, 'fr_FR');
-	
-	$date = new DateTime($strDate);
-	//echo $date->format('Y-m-d H:i:s');
+
+	$date = new DateTime();
 
 
-	//$date1 = date($strDate); // Date du jour
-
-	//return strftime("%A %d %B %G", strtotime($date1)); //Mercredi 26 octobre 2016	
-
-	return $date->format('d/m/Y');
+	return $date->format('d/m/Y à H:i');
 }
 
 ?>

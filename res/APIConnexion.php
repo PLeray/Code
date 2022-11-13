@@ -71,7 +71,9 @@ function ArgumentURL($ARGSupl = ''){
 
 function MAJPhotoLab($NouvelleVersion) { 
 	if( $GLOBALS['VERSIONLOCAL'] < $NouvelleVersion){ 		 // pour Tester
-		header('Location: MAJPhotoLab.php'. ArgumentURL('&versionDistante='. $NouvelleVersion));
+		//header('Location: MAJPhotoLab.php'. ArgumentURL('&versionDistante='. $NouvelleVersion));
+		header('Location: APIDialogue.php'. ArgumentURL('&versionDistante='. $NouvelleVersion));
+
 	}
 }
 

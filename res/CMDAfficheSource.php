@@ -23,6 +23,10 @@ if (isset($_GET['AnneeScolaire'])) { // Test connexion l'API
 	$AnneeScolaire = $_GET['AnneeScolaire'];
 }
 
+$Side = 'KO';
+if (isset($_GET['Side'])) { 
+	$Side = $_GET['Side'];
+}
 $maConnexionAPI = new CConnexionAPI($codeMembre,$isDebug, 'CATSources');
 
 $MAJ = false;
@@ -93,7 +97,7 @@ $monProjet = new CProjetSource($CodeEcole, $AnneeScolaire);
 
 /* */
 if (!$MAJ){
-	$RefSource = "&CodeEcole=" . urlencode($CodeEcole). "&AnneeScolaire=" . urlencode($AnneeScolaire);
+	$RefSource = "&CodeEcole=" . urlencode($CodeEcole). "&AnneeScolaire=" . urlencode($AnneeScolaire).'&Side='.$Side;
 	
 	echo '<meta http-equiv="refresh" content="0; URL=CMDAfficheSource.php' . ArgumentURL($RefSource.'&MAJ=true') .'"> ';
 }
@@ -137,6 +141,40 @@ if (!$MAJ){
 		</div>
 
 		<div id="mySidenav" class="sidenav">
+
+
+
+<?php 
+		$LePannier = '	<div class="Planchecontainer">
+					<div class="titreFichier">Pannier des commandes libres en cours</div>
+					<table class="TablePlanche"><tr>
+					<td  width="40%" class ="StyleFichier">FichierSource</td><td  width="20%" class ="StyleTaille">Taille</td><td  width="40%" class ="StyleProduit">Produit</td>
+					</tr></table>';
+
+
+				if (file_exists($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierCMDESLIBRE'] . '.lab0')){
+					$monPanierDeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'] . $GLOBALS['FichierDossierCMDESLIBRE'] . '.lab0');		
+					//$retourMSG .= $monGroupeCmdes->tabCMDLabo;	
+					
+					$LePannier .= $monPanierDeCmdes->AffichePlancheAProduire(); 
+				}
+
+				$LePannier .= '</div>';				
+
+				echo '
+
+				<a href=javascript:void(0); id ="Pannier" onclick=VoirPannier() > <img src="img/Pannier.png" title="Voir pannier de commandes libres">
+        		</a><br><br>
+				
+				<br><div id="monDetailPannier" >'. $LePannier .'</div>
+
+
+				<br>
+				<H1>Passage de recommandes</H1>
+				<br>';
+?>
+
+
 			<div class="tab">
 				<button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesTirages')" id="defaultOngletOuvert">Tirages</button>
 				<button class="tablinks" onclick="BasculeOnglet(event, 'ZoneCommandesFichierBoutiques')" >Fichiers boutique</button>
@@ -185,17 +223,21 @@ if (!$MAJ){
 						<?php echo str_replace($sepFinLigne, "<br>", $lesCmdesLibres); ?>      
 					</div>	
 					<form name="FormEnvoieRecos" method="post" action="<?php echo ValidationCommandesLIBRES($monProjet->NomProjet); ?>" enctype="multipart/form-data">	
+						
+						<input type="text" id="TitreNomTirage" placeholder="Nom de vos tirages..." value="" name="apiNomTirage" required>
+
+					
 						<input type="hidden" name="lesPhotoSelection" id="lesPhotoSelection" value="<?php echo $lesPhotoSelection; ?>" /> 
 						<input type="hidden" name="lesCmdesLibres" id="lesCmdesLibres" value="<?php echo $lesCmdesLibres; ?>" /> 					
 
-						<button type="submit" id="btnCmdesLibres" class="btnEnregistrer" disabled >Quitter et enregistrer ces commandes LIBRES</button>
+						<button type="submit" id="btnCmdesLibres" class="btnEnregistrer" disabled >Ajouter les commandes au pannier</button>
 					</form>     
 				</div>	
 				
 				<div id="ZoneCommandesFichierBoutiques" class="tabcontent">
 				<H1>Mes FichiersBoutique</H1><br>		
 				<div>
-					<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerBoutiqueAffiche" onclick=SelectionnerCommandesBoutiquesAffiche() class="caseCheckVide" > ✓ </a></span >
+				<span class = "SelectionToutePlanche">Sélectionner toutes les planches <a href=javascript:void(0); id ="CaseSelectionnerBoutiqueAffiche" onclick=SelectionnerCommandesBoutiquesAffiche() class="caseCheckVide" > ✓ </a></span >
 				</div>	
 				<br>
 					<!-- FICHIERBOUTIQUES ici 
@@ -258,7 +300,7 @@ if (!extension_loaded('gd')) {
 
 <?php 
 if ($MAJ){	
-	$AffichePanneau = false;
+	$AffichePanneau = ($Side == 'OK');
 	//echo "alert('MAJAffichage');";
 	echo 'MAJAffichageSelectionPhotos(true);';
 	
@@ -271,6 +313,9 @@ if ($MAJ){
 		echo 'AfficheRechercheCMD(false);';
 	}
 }
+
+
+
 
 
 ?>
@@ -463,11 +508,12 @@ function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 
 function ValidationCommandesLIBRES($NomProjet){
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
-	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['CodeEcole'] . '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;		
+	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['CodeEcole'] . '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] .'&Side=OK';		
 	$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
 	$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
 
 	$retourMSG = 'APIDialogue.php'. ArgumentURL($CMDhttpLocal) ;
+	//$retourMSG = 'CMDAfficheSource.php'. ArgumentURL($CMDhttpLocal) ;
 
 	return $retourMSG ;
 }	
