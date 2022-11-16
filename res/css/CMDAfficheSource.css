@@ -215,7 +215,7 @@ p {/*Police Détails Fichier commande et commun  */
     box-shadow: 0 5px 8px 0 rgba(0,0,0,0.24),0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
-.EnregistrerPhoto {
+.ZoomerPhoto {
   /**/
   all: unset; 
 }
@@ -458,7 +458,7 @@ font-size: 12px;
 }
 
 .PlancheIndiv {
-	background-color: var(--FondLigneTabGrisClair);
+
 	display: inline-block;	 
 	margin: 0px 0px 10px 15px;
   position: relative;
@@ -466,7 +466,7 @@ font-size: 12px;
 }
 
 .PlancheGroupe {
-	background-color: var(--FondLigneTabGrisClair);
+
   vertical-align: top;
 	margin: 0px 20px 10px 20px;
 	float: left;
@@ -601,7 +601,9 @@ width: 500px;
   width:100%;
   display:block;
 
-  border:none;
+  border: 2px solid var(--FondLigneTabGrisFonce);;
+
+
   cursor: pointer;
 
   text-align: center;
@@ -609,12 +611,10 @@ width: 500px;
 
    text-decoration: none; 
 
-
-   
+   border-radius: 30px;
 }
 .NomPhotoSelection:hover {
-
-  border: 3px dashed  var(--FondLigneTabGrisFonce);
+  border: 2px dashed  var(--boutonRouge);
 }
 
 
@@ -861,9 +861,9 @@ background-image: url('../img/searchicon.png');
 
 }
 #zoneListePageCMD {
-	/* overflow-y: scroll; */cv 
+	/* overflow-y: scroll; */
 
-  min-height: 100%;
+  min-height : 100%;
 
 }
 
@@ -1336,8 +1336,3 @@ right: 280px;
 
 }
 
-.TablePlanche td
-{
-    /* border: 1px solid rgb(115, 250, 126);*/
-    
-}

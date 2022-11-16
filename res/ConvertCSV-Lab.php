@@ -255,7 +255,7 @@ function EcrireCommande($CMD, $NomPhoto, $Classe){
 function EcrireProduitPhoto($NomPhoto, $ProduitPhoto){
     $valRetour = '';
 	//echo utf8_decode(strtolower($ProduitPhoto)) . '<br>';
-	echo ' le ProduitPhoto à trouver ds Cat :' .$ProduitPhoto . '<br>';
+	//echo ' le ProduitPhoto à trouver ds Cat :' .$ProduitPhoto . '<br>';
 	//var_dump( $GLOBALS['CataloguePdtENCOURS'][1]) ;
 	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][strtolower($ProduitPhoto)];
 	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][$ProduitPhoto];
@@ -267,7 +267,7 @@ function EcrireProduitPhoto($NomPhoto, $ProduitPhoto){
 
 
 	for($i = 0; $i < count($GLOBALS['CataloguePdtENCOURS']) ; $i++){
-		echo $GLOBALS['CataloguePdtENCOURS'][$i]['Description'] . '<br>';
+		//echo $GLOBALS['CataloguePdtENCOURS'][$i]['Description'] . '<br>';
 
 		//echo $ProduitPhoto . '<br> et le code : '.$ProduitPhoto . '<br>';
 		if (strtolower($GLOBALS['CataloguePdtENCOURS'][$i]['Description']) == strtolower($ProduitPhoto)){  // Ajouter strlower ici des 2 Cote

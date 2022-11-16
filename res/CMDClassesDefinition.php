@@ -732,8 +732,14 @@ class CPlanche {
 			//$resultat .= '<a href="CMDAffichePlanche.php?urlImage=' . $LienBig . '"><img id="myImgPlanche" src="' . $Lien . '"  title="'. urldecode($this->FichierPlanche) . '"></a>';	
 			$resultat .= '<img class="NomPhotoZoom" onclick="ZoomPhoto(\''. $LienBig  .'\')" id="ImgPlanche" src="' . $Lien . '" title="Cliquez pour zoomer">';	
 
+
 			
-			$resultat .= '<p onclick="SelectionnerCliquePhoto(this.parentElement)">'. $this->FichierPlanche .'</p>';
+			$resultat .='<button class="NomPlancheSelection" onclick="SelectionnerCliquePhoto(this.parentElement)" title="Cliquez pour préparer un tirage">
+			'. $this->FichierPlanche  .'
+			</button>';
+
+
+			//$resultat .= '<p class="NomPlancheSelection" onclick="SelectionnerCliquePhoto(this.parentElement)">'. $this->FichierPlanche .'</p>';
 			
 		$resultat .= '</span> ';
 		return $resultat;
@@ -1135,16 +1141,16 @@ class CImgSource {
 			Nb="0" 
 			class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
 
-			$resultat .= '<button class="EnregistrerPhoto" onclick="ZoomPhoto(\''. $LienBig  .'\')"  >
+			$resultat .= '<button class="ZoomerPhoto" onclick="ZoomPhoto(\''. $LienBig  .'\')"  >
 			<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
-				src="' . $Lien . '"  title="'. urldecode($this->Fichier) . '">
+				src="' . $Lien . '"  title="Cliquez pour agrandir la photo : '. urldecode($this->Fichier) . '">
 			</button>';
 
 			$resultat .= '<input type="hidden" name="lesPhotoSelection" id="ZlesPhotoSelection" value="0" /> 
 			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
 			
-			$resultat .='<button class="NomPhotoSelection" onclick="SelectionnerCliquePhoto(this.parentElement)">
+			$resultat .='<button class="NomPhotoSelection" onclick="SelectionnerCliquePhoto(this.parentElement)" title="Cliquez pour préparer un tirage">
 			<p>'. $this->Fichier  .'</p>
 			</button>';
 			//$resultat .= '</form>';

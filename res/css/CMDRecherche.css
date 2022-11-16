@@ -6,26 +6,6 @@ body {
 	overflow-x:hidden;
 
 }
-/***********************
-body {
-  font-family: Arial, Helvetica, sans-serif;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-*******/
-
-
-/******************************/
-/*       
-* {
-  box-sizing: border-box;
-}
-
-STYLE DE BASE        */
-/******************************/
-
 
 h1 { /*Police texte Ecole */
     text-align: center;
@@ -135,15 +115,10 @@ right: 280px;
 }
 
 #txtPannier {
-
-
   z-index: 9; /* Make sure it does not overlap */
-
 
   color: white; /* Text color */
   font-size: 14px; /* Increase font size */
-
-
 }
 
 
@@ -159,7 +134,6 @@ right: 280px;
 
   padding: 3px; /* Some padding */
 
-
   width: 50%;
 }
 
@@ -168,7 +142,6 @@ right: 280px;
   font-size: 12px;
   color: white;
   background-color:var(--texteGris);
-
 }
 .StyleFichier {/*Police Détails Fichier commande et commun  */
   text-align: left;
@@ -201,13 +174,6 @@ right: 280px;
     width: 100%;
     border-collapse: collapse;
     /* border: 1px solid blue;*/
-
-}
-
-.TablePlanche td
-{
-    /* border: 1px solid rgb(115, 250, 126);*/
-    
 }
 
 #btnRemonter {
@@ -387,7 +353,7 @@ right: 280px;
 	/*position: relative;*/
 	background-color: white;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	transition: max-height 0.2s ease-out;
+	/*transition: max-height 0.2s ease-out;*/
 }
 
 .Contenucommande {
@@ -415,11 +381,21 @@ width: 380px;*/
   display: inline-block;	 
   cursor: pointer;
 
+
+  transform: scale(0.7);
+/*  transform-origin: center;
+	margin-top: -7%;
+  margin-bottom: -7%;*/
+
+  margin: -30px;  
 	/*max-width: 50%;
-  */
-	
+
+
+  width: 70%;
+height: 70%;	  */
 	/*margin: 10px 10px 10px 10px;*/
 }
+
 
 .plancheSELECTIONNER {
 	display: inline-block;	 
@@ -431,21 +407,30 @@ width: 380px;*/
 }
 
 #ImgPlanche {
-
+/*
   transform: scale(0.7);
   transform-origin: center;
 	margin-top: -7%;
   margin-bottom: -7%;
+*/
 
   cursor: url('../img/mini-Loupe.png'), pointer;;
 
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+/*
 	/*box-shadow: -4px 4px 4px 4px var(--boutonVert);
 	animation: shake 0.2s;
 	animation-iteration-count: 1;	*/
+
+
+	border: 1px solid var(--FondLigneTabGrisFonce);
+  
+
+
 }
-#ImgPlanche:hover {opacity: 0.7;}
+#ImgPlanche:hover {
+   /* opacity: 0.7;*/
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
  /* 
 .overlay {
@@ -548,94 +533,6 @@ width: 100%;
 
 }
 
-.page_navigation { 
-/*
-	width: 100%; 
-	text-align: center;
-   border-top: 1px solid var(--FondLigneTabGrisSombre); 	
-	  overflow: hidden;
-
-*/	
-	text-align: center;	
-
-
-  background-color: white;
-  border-bottom: 1px solid var(--FondLigneTabGrisFonce);
-
-
-  
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-  
-  z-index: 1;
-  
-	
-}
-
-.page_navigation ul { 
-
-  margin: -12px;
-
-}
-
-.page_navigation li {
-box-sizing: border-box;
-display: inline-block;	
- background: black;
- border-radius: 50%;
- height: 40px;/*Taille diametre des boutons rond*/	
- width: 40px;
- margin: 7px;
- background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
- 
-  font-size: 14px;	
- padding: 10px; /*Position chiffre  diametre des boutons rond*/	
-}
-
-.page_navigation li a{
-	text-align: center;
-
-	font-weight: bolder;
-	color: var(--FondLigneTabGrisSombre);
-	text-decoration: none;
-	vertical-align: middle;
-}
-
-.page_navigation li:hover{
-
-cursor: pointer;
-
-	 background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
-}
-
-.page_navigation li.active_page {
-	border: 5px solid var(--FondLigneTabGrisFonce);
-	height: 50px;/*Taille diametre des boutons rond*/	
-	width: 50px;
-	margin: 2px;
-	background: radial-gradient(circle at 0px 5px, white, var(--boutonRouge));
-	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-
-}
-
-.page_navigation li.previous_link {
-	 margin: 20px;
- background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
-}
-.page_navigation li.next_link{
-		 margin: 20px;
- background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisFonce));
-
-}
-
-.page_navigation li.previous_link:hover {
-background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
-}
-.page_navigation li.next_link:hover{
-background: radial-gradient(circle at 0px 5px, white, var(--FondLigneTabGrisSombre));
-
-}
 
 /*FIN PAGINATOR*/
 
@@ -979,6 +876,36 @@ background-position: center;
 }
 
 .NomPhotoZoom {
-
   cursor: url('../img/mini-Loupe.png'), pointer;
+}
+
+.NomPlancheSelection {
+
+    width:100%;
+    display:block;
+  
+    border: 3px solid var(--FondLigneTabGrisFonce);;
+  
+    letter-spacing: 1px;
+
+    font-size: 16px;
+    color: var(--FondLigneTabGrisSombre);
+
+    padding: 17px;
+
+    cursor: pointer;
+  
+    text-align: center;
+    /* color: var(--boutonRouge); */
+  
+     text-decoration: none; 
+  
+     border-radius: 30px;
+  }
+.NomPlancheSelection:hover {
+
+  border: 3px dashed  var(--boutonRouge);
+
+
+
 }

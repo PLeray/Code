@@ -83,10 +83,7 @@ if (!EnregistrerLigneLOG("TEST ECRITURE")){
 			
 		} 
 		?>
-		
-		
-		
-		EnregistrerLigneLOG($laLigne)
+
 
 		
 <br><br>
