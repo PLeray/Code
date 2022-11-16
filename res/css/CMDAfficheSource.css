@@ -596,17 +596,25 @@ width: 500px;
   text-align: center;
 }
 
-.NomPhotoZoom {
+.NomPhotoSelection {
 
-  display: block;
+  width:100%;
+  display:block;
 
   border:none;
   cursor: pointer;
 
   text-align: center;
-  color: var(--boutonRouge);
-  min-width:100%
-  /*  text-decoration: none;  */
+  /* color: var(--boutonRouge); */
+
+   text-decoration: none; 
+
+
+   
+}
+.NomPhotoSelection:hover {
+
+  border: 3px dashed  var(--FondLigneTabGrisFonce);
 }
 
 
@@ -614,21 +622,25 @@ width: 500px;
   /*cursor: pointer; */ 
   cursor: url('../img/mini-Loupe.png'), pointer;
   
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	/*width: 151px;*/
+
+	border: 1px solid var(--FondLigneTabGrisFonce);
+  
 
 	 width: 165px;
 }
 
 #ImgPlancheIndiv:hover {
   /* opacity: 0.7; 
-  width: 100%;*/
+  width: 100%;
+  */
+  
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #ImgPlancheGroupe {
     cursor: url('../img/mini-Loupe.png'), pointer;
-  /*cursor: pointer;*/
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 1px solid var(--FondLigneTabGrisFonce);
+
 
 	width: 327px;
 }
@@ -636,6 +648,7 @@ width: 500px;
   /* opacity: 0.7; 
   width: 100%;
 */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #idAfficheGroupe {

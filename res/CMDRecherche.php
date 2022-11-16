@@ -146,7 +146,7 @@ $isRECOmmandes = false;
 				<a href=javascript:void(0); id ="CaseVoirCommandes" onclick=VoirPhotoSelection() class="caseCheckVide"> ✓ </a> 
 				<span id ="txtAfficherSelection">Afficher sélection des recommandes</span >
 
-				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichier().'" enctype="multipart/form-data">	
+				<form name="FormEnvoieRecos" method="post" action="'. EnregistrerFichierReco().'" enctype="multipart/form-data">	
 
 					
 

@@ -58,6 +58,14 @@ if (isset($_GET['apiSupprimer'])) {
 		
 		<?php 
 
+if (!EnregistrerLigneLOG("TEST ECRITURE")){
+
+	echo '<h1>ATTENTION PHOTOLAB NE PEUT ECRIRE ! </h1><br>
+	<h3> Il faut donner les droits en ecriture au serveur local (ex Xammp) sur le dossier "/PhotoLab" pour que le programme fonctionne correctement...</h3>';
+}
+
+
+
 	if ($isDebug ) { 
 		echo "GLOBALS[VERSIONLOCAL] (Version actuelle) : " . $GLOBALS['VERSIONLOCAL'] . " >>>> GET[versionDistante]: (y a t il une version a recupérer ?)  ";
 		if (isset($_GET['versionDistante'])) { 	echo $_GET['versionDistante'];} 
@@ -78,7 +86,7 @@ if (isset($_GET['apiSupprimer'])) {
 		
 		
 		
-
+		EnregistrerLigneLOG($laLigne)
 
 		
 <br><br>

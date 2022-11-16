@@ -236,7 +236,8 @@ function OuvrirFichierLabo() {
 			MsgLOGInfo('Fichier Labo a compiler : ' + g_SelectFichierLab);
 			g_CommandeLabo = new CommandesLabo(OuvrirFichierToTableauDeLigne(g_SelectFichierLab), g_NomFichierEnCours);
 			//alert('TESTZ2 g_CommandeLabo test : ' + g_CommandeLabo.FichierLab);		
-			if (g_CommandeLabo.isRecord()){
+			//if (g_CommandeLabo.isRecord()){
+			if (1){
 				//alert('TESTZ3  est  enregistré');
 				if (g_CommandeLabo.isValide()){
 					//alert('TESTZ5  est  isValide');

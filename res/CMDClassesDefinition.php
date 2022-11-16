@@ -353,7 +353,7 @@ class CEcole {
 				$indiceTrouve = 0;
 				for($j = 0; $j < count($TableauDeProduitsDansDossierScript); $j++){
 					$NomProduitsCatalogue = explode(";", $TableauDeProduitsDansDossierScript[$j]);
-					if( $NomProduitsCatalogue[0] == $TableauDeProduitsNecessaire[$i]){
+					if( strtolower($NomProduitsCatalogue[0]) == strtolower($TableauDeProduitsNecessaire[$i])){
 						$indiceTrouve = $j;
 						$ligne =  $TableauDeProduitsNecessaire[$i] .';'. $NomProduitsCatalogue[1];//. $GLOBALS['SeparateurInfoCatalogue'];
 						array_push($TableauDeProduitsManquants, $ligne.';'.$this->CodeEcole.';'.$this->AnneeScolaire);
@@ -1144,7 +1144,7 @@ class CImgSource {
 			<input type="hidden" name="lesCmdesLibres" id="ZlesCmdesLibres" value="0" /> 
 			<input type="hidden" name="lesFichiersBoutique" id="ZlesFichiersBoutique" value="0" /> ';
 			
-			$resultat .='<button class="NomPhotoZoom" onclick="SelectionnerCliquePhoto(this.parentElement)">
+			$resultat .='<button class="NomPhotoSelection" onclick="SelectionnerCliquePhoto(this.parentElement)">
 			<p>'. $this->Fichier  .'</p>
 			</button>';
 			//$resultat .= '</form>';

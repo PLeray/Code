@@ -178,7 +178,7 @@ function EcrireBilanCMD( $NbCommandes){
 		}
 		//echo "erreur avant " . error_get_last();
 		if ($GLOBALS['isDebug']){
-			var_dump($GLOBALS['TabResumeFormat']);
+			//var_dump($GLOBALS['TabResumeFormat']);
 
 		}
 		$unTab = array_count_values($GLOBALS['TabResumeFormat']);
@@ -214,7 +214,9 @@ function EcrireEcole($Ecole, $PrefixeTirage){
 		if ($monProjetSource->ScriptsPS != ''){
 			$GLOBALS['CataloguePdtENCOURS'] = csv_to_array($GLOBALS['repGABARITS'] . $monProjetSource->NomCatalogue(), ';'); 
 		}else{
-			$GLOBALS['ERREUR_EnCOURS'] = 'Erreur : Pas de catalogue trouvé pour l\'ecole  : ' . $Ecole ;
+			$GLOBALS['ERREUR_EnCOURS'] = 'Erreur : Pas de catalogue trouvé pour l\'ecole  : ' . $Ecole .
+			'<br><br> Code de l\'ecole : ' . $EcoleEnCours->CodeEcole. 
+			'<br> Année scolaire : ' . $EcoleEnCours->AnneeScolaire;
 			$GLOBALS['CataloguePdtENCOURS'] = array();
 		}
 
@@ -253,22 +255,34 @@ function EcrireCommande($CMD, $NomPhoto, $Classe){
 function EcrireProduitPhoto($NomPhoto, $ProduitPhoto){
     $valRetour = '';
 	//echo utf8_decode(strtolower($ProduitPhoto)) . '<br>';
-	//echo $ProduitPhoto . '<br>';
+	echo ' le ProduitPhoto à trouver ds Cat :' .$ProduitPhoto . '<br>';
 	//var_dump( $GLOBALS['CataloguePdtENCOURS'][1]) ;
 	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][strtolower($ProduitPhoto)];
 	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][$ProduitPhoto];
-	//echo ' sqfqsfdqsf  ' . $GLOBALS['CataloguePdtENCOURS'][0]['Description']. ' sqfqsfdqsf <br>';
+	//echo ' sqfqsfdqsf  ' . $GLOBALS['CataloguePdtENCOURS'][0]['Description']. ' sqfqsfdqsf <br><br><br>';
 	$leCodeProduit ='';
 	$leCodeFormat ='';
 
+
+
+
 	for($i = 0; $i < count($GLOBALS['CataloguePdtENCOURS']) ; $i++){
-		//echo $GLOBALS['CataloguePdtENCOURS'][$i]['Description'] . '<br>';
-		if ($GLOBALS['CataloguePdtENCOURS'][$i]['Description'] == $ProduitPhoto){
+		echo $GLOBALS['CataloguePdtENCOURS'][$i]['Description'] . '<br>';
+
+		//echo $ProduitPhoto . '<br> et le code : '.$ProduitPhoto . '<br>';
+		if (strtolower($GLOBALS['CataloguePdtENCOURS'][$i]['Description']) == strtolower($ProduitPhoto)){  // Ajouter strlower ici des 2 Cote
 			$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][$i]['Code'];
 			break; 
 		}
 	} 	
-	//var_dump($GLOBALS['CataloguePdtENCOURS']) ;
+	if ($leCodeProduit ==''){
+		$GLOBALS['ERREUR_EnCOURS'] = 'Erreur : Pas de code produit pour   : ' . $ProduitPhoto .
+		'<br><br> ProduitPhoto : ' . $ProduitPhoto. 
+		'<br> NomPhoto : ' . $NomPhoto;
+		//exit;
+
+	}
+	// var_dump($GLOBALS['CataloguePdtENCOURS']) ;
 	//echo ' KJhlkjhlkjh:kj ' . count($GLOBALS['CataloguePdtENCOURS']);	
 
 	if (count($GLOBALS['CataloguePdtENCOURS']) > 0 ){			
@@ -292,14 +306,11 @@ function EcrireProduitPhoto($NomPhoto, $ProduitPhoto){
 					//array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);
 					array_push($GLOBALS['TabResumeFormat'], $leCodeFormat);	
 					/*
-					if ($leCodeFormat){
-						
-					}
-					else{
+					if ($leCodeFormat ==''){
 						$GLOBALS['ERREUR_EnCOURS'] = 'Erreur Ecriture Produit Photo ! ajoutez : "' . $ProduitPhoto . '" dans votre catalogue produits';
 						//echo ' PROBLEME  ' . $valRetour . ' PROBLEME  ' . $valRetour . '  PROBLEME  ' . $valRetour . '  PROBLEME ';
-					}
-					*/
+					}*/
+					
 						
 				}
 			}

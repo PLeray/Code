@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.875;
+$VERSIONLOCAL = 0.876;
 $ANNEE = '2022';
 
 $repPHOTOLAB = "../../";
@@ -188,13 +188,17 @@ function SuprDossier($Dossier) {
 }	
 
 function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou Dossier
-	//is_dir($AncienNom)	
-	if (file_exists($AncienNom)){ 
-		return renommer_win($AncienNom, $NouveauNom);
-	}else{
-		EnregistrerLigneLOG($AncienNom . " n existe pas !");
-		return FALSE;
+	$isReussis = true;	
+	if ($AncienNom != $NouveauNom) {
+		if (file_exists($AncienNom)){ 
+			$isReussis = renommer_win($AncienNom, $NouveauNom);
+		}else{
+			EnregistrerLigneLOG($AncienNom . " n existe pas !");
+			$isReussis = FALSE;
+		}
 	}
+	return $isReussis; 
+
 }	
 
 function renommer_win($oldfile,$newfile) {
@@ -202,14 +206,14 @@ function renommer_win($oldfile,$newfile) {
 	if (!rename($oldfile,$newfile)) {
 		if (copy ($oldfile,$newfile)) {
 			unlink($oldfile);
-			EnregistrerLigneLOG("Copie + Supression de " . $oldfile . " vers " . $newfile);
+			EnregistrerLigneLOG("2-Copie-Supr + Supression de " . $oldfile . " vers " . $newfile);
 			return TRUE;
 		}else{
 			EnregistrerLigneLOG("Impossible de copier " . $oldfile );
 			return FALSE;
 		}	   	   
 	}else{
-		EnregistrerLigneLOG("Renommage " . $oldfile . " en " . $newfile);
+		EnregistrerLigneLOG("1-Renommage " . $oldfile . " en " . $newfile);
 		return TRUE;
 	}
  }

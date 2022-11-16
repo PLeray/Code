@@ -236,14 +236,23 @@ function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregi
 				//echo "Apres move_uploaded_file";
 				$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
 				$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
-
-				$CMDhttpLocal .= '&CodeEcole='.$_GET['CodeEcole'].'&AnneeScolaire='.$_GET['AnneeScolaire'].'&Side=OK';
+				
+				if (!$isRecommandes){
+					$CMDhttpLocal .= '&CodeEcole='.$_GET['CodeEcole'].'&AnneeScolaire='.$_GET['AnneeScolaire'].'&Side=OK';
+				}
+				
 
 				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !								
-		
-				$retourMSG .= '<br><br>
-					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal,'CMDAfficheSource') . '" class="OK" title="Valider et retour écran général des commandes">OK</a>			
-					<br><br>';									
+	
+				$retourMSG .= '<br><br>';
+						
+				if ($isRecommandes){
+					$CMDhttpLocal .= '&fichierLAB=' . $FichierOriginal;	
+					$retourMSG .= '<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal,'CMDRecherche') . '" class="OK" title="Valider et retour écran précédent">OK</a>';		
+				}else{
+					$retourMSG .= '<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal,'CMDAfficheSource') . '" class="OK" title="Valider et retour écran précédent">OK</a>';
+				}					
+				$retourMSG .= '<br><br>';									
 			}
 			else{
 				$retourMSG = "APIPhotoLab : Erreur " . $target_fichier . " est manquant !";

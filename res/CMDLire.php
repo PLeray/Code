@@ -15,8 +15,11 @@ function RetourEcranFichier($myfileName){
 	return $RetourEcran . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
 }
 
-function EnregistrerFichier(){
-	return 'APIDialogue.php' . '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod') ;
+function EnregistrerFichierReco(){
+	return 'APIDialogue.php' . '?codeMembre=' . $GLOBALS['codeMembre']
+	 . '&isDebug=' . ($GLOBALS['isDebug']?'Debug':'Prod')
+	 //. '&DepuisLeFichier='. $DepuisLeFichier
+	 ;
 }
 
 function FormatNumCmd($strCMD){

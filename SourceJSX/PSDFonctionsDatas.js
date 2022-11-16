@@ -326,8 +326,10 @@ function CommandesLabo(tableaudeLabo, FichierLab) {
 		var CodeTrouve = this.TableauLignes[0].substr(14); //Lecture de la commande
 		CodeTrouve = CodeTrouve.substr(0,CodeTrouve.indexOf(sepNumLigne)); 
 		//alert( 'isRecord = (b64_md5('+ CodeCherche + ') :' + hex_md5(CodeCherche) + ' =' + CodeTrouve);		//this.FichierLab = 'xx';
-		return (hex_md5(CodeCherche) == CodeTrouve); // false
-		//return true; // A supprimer !!
+		
+		//return (hex_md5(CodeCherche) == CodeTrouve); // false
+		
+		return true; // A supprimer !!
 	};
 }
 
