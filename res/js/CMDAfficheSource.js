@@ -158,6 +158,7 @@ function closeNav() {
 }
 
 function CopierCommandes(x) {
+	//alert('ZZ 06 document.getElementById("lesPhotoSelection").value  : ' + document.getElementById("lesPhotoSelection").value);
 	x.querySelector("#ZlesPhotoSelection").value = document.getElementById("lesPhotoSelection").value;
 	x.querySelector("#ZlesCmdesLibres").value = document.getElementById("lesCmdesLibres").value;
 	x.querySelector("#ZlesFichiersBoutique").value = document.getElementById("lesFichiersBoutique").value;
@@ -371,6 +372,16 @@ function MAJEnregistrementSelectionPhotos() {
 	 							 + mesPlanches[i].getAttribute('Nb').trim() + sepFinLigne;
 	}	
 
+	//alert('mesRecoInfo : ' + mesRecoInfo + '    ' + sepFinLigne);
+	var mesPlanches = mesRecoInfo.split(sepFinLigne);
+	mesPlanches.sort();
+	mesRecoInfo ='';
+	for (i = 0; i < mesPlanches.length; i++) {
+		mesRecoInfo = mesRecoInfo  + mesPlanches[i] + sepFinLigne;
+	  }	
+	  //alert('mesRecoInfo : ' + mesRecoInfo);
+
+	/*	  */
 	document.getElementById('lesPhotoSelection').value =  mesRecoInfo;
 
 	var maListePhotos = document.getElementById("myListePhoto");
@@ -383,7 +394,7 @@ function MAJEnregistrementSelectionPhotos() {
 
 function MAJAffichageSelectionPhotos(chargement = false) {
 	var TableauSelectionPhotos = document.getElementById('lesPhotoSelection').value.split(sepFinLigne);
-	//alert('TableauSelectionPhotos ' + TableauSelectionPhotos);
+	//alert('ZZ 05 TableauSelectionPhotos ' + TableauSelectionPhotos);
 	for (i = 0; i < TableauSelectionPhotos.length  ; i++) {
 		//alert('TableauSelectionPhotos : "'  + TableauSelectionPhotos[i] + '"');	
 		if(TableauSelectionPhotos[i].trim()!=''){
@@ -492,17 +503,9 @@ function CreationCommandeProduitDepuisPhoto() {
 		var maListePhotos = document.getElementById('lesPhotoSelection').value;
 		
 		document.getElementById('lesPhotoSelection').value =  '';
-		//var maListePhotos = document.getElementById("myListePhoto").innerHTML;
-		//var LeProduitSelection = document.getElementById('SelectProduit').innerHTML;	
-		
-		//Affichage  // '&#60;' et '&#62;' pour remplacer les '<' et '>'		
-		//document.getElementById("myListeCommandes").innerHTML += VisuRecupPhotosProduits(maListePhotos,  document.getElementById('SelectProduit').innerHTML);
+
 		document.getElementById("myListeCommandes").innerHTML += VisuRecupPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages').textContent);				
 		
-		//Cequ on enregistre : 
-		//document.getElementById("myListeCommandes").innerHTML += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
-		//La commande Sauvée																																
-		//document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('SelectProduit'));
 		document.getElementById('lesCmdesLibres').value += EnregistreCMDPhotosProduits(maListePhotos,  document.getElementById('btnAjouterTirages'));	
 													
 		document.getElementById("btnCmdesLibres").disabled = (document.getElementById("myListeCommandes").innerHTML === "");	
@@ -605,11 +608,6 @@ function CliqueDropDown(element) {
 	document.getElementById("btnAjouterTirages").textContent = element.innerText;
 	document.getElementById("btnAjouterTirages").setAttribute('Code', element.getAttribute('Code'));
 	
-	//document.getElementById("SelectProduit").setAttribute('Code', element.getAttribute('Code'));
-
-	//filterProduits();
-	//document.getElementById("btnAjouterTirages").disabled = ((document.getElementById("myListePhoto").innerHTML === "")
-	//							||(document.getElementById("SelectProduit").innerHTML === ""));
 	document.getElementById("btnAjouterTirages").disabled = ((document.getElementById("myListePhoto").innerHTML === "")
 								||(document.getElementById("btnAjouterTirages").textContent === ""));
 	SelectionProduit();

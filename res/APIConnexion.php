@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.878;
+$VERSIONLOCAL = 0.879;
 $ANNEE = '2022';
 
 $repPHOTOLAB = "../../";
