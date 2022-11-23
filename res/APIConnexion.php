@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.879;
+$VERSIONLOCAL = 0.880;
 $ANNEE = '2022';
 
 $repPHOTOLAB = "../../";
@@ -132,8 +132,8 @@ function IsLocalMachine() {
 function AfficheMenuPage($Page,$maConnexionAPI) {
 	$menuPage = '<center>
 	<div id="mySidenav">';		
-		$menuPage .= '<a href="CATListeCatalogues.php' . ArgumentURL().'" ' . (($Page == "listeCatalogues")?' class="actif" ':'') . '  id="listeCatalogues" title="Catalogues disponibles ..."></a>';
 		$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" ' . (($Page == "sourcePhotos")?' class="actif" ':'') . '  id="sourcePhotos" title="Sources des photos ..."></a>';
+		$menuPage .= '<a href="CATListeCatalogues.php' . ArgumentURL().'" ' . (($Page == "listeCatalogues")?' class="actif" ':'') . '  id="listeCatalogues" title="Catalogues disponibles ..."></a>';		
 		$menuPage .= '<a href="index.php' . ArgumentURL().'" ' . (($Page == "ajoutCommandeGroupee")?' class="actif" ':'') . '   id="ajoutCommandeGroupee" title="Ajouter une commande groupée ..."></a>';		
 		$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" ' . (($Page == "commandesEnCours")?' class="actif" ':'') . '   id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';
 		$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" ' . (($Page == "commandesExpediees")?' class="actif" ':'') . '   id="commandesExpediees" title="Historique des commandes expediées ..."></a>';
@@ -189,6 +189,8 @@ function SuprDossier($Dossier) {
 
 function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou Dossier
 	$isReussis = true;	
+	$AncienNom = trim($AncienNom);
+	$NouveauNom = trim($NouveauNom);
 	if ($AncienNom != $NouveauNom) {
 		if (file_exists($AncienNom)){ 
 			$isReussis = renommer_win($AncienNom, $NouveauNom);
@@ -198,7 +200,6 @@ function RenommerFichierOuDossier($AncienNom, $NouveauNom){ // Nom De Fichier ou
 		}
 	}
 	return $isReussis; 
-
 }	
 
 function renommer_win($oldfile,$newfile) {

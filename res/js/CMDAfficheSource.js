@@ -464,24 +464,24 @@ function MAJCommandes() {
 */
 function NbPlancheMOINS(element) {
 	//alert('NbPlancheMOINS');
-	var nombre = parseInt( element.parentElement.parentElement.getAttribute('Nb'));
+	var nombre = parseInt( element.parentElement.getAttribute('Nb'));
 	nombre = nombre -1;
 	
 	//if (nombre < 1) {SelectionSurPhoto(element.parentElement.parentElement);}
-	if (nombre < 1) {RemplacementClassSelection(element.parentElement.parentElement);}
 
-	
+	if ((nombre < 1)&&(!element.classList.contains("ZoneMoinsPlusZoom"))) {RemplacementClassSelection(element.parentElement);}
 
-	element.parentElement.parentElement.setAttribute('Nb',  ' ' + nombre +  ' ');
+
+	element.parentElement.setAttribute('Nb',  ' ' + nombre +  ' ');
 	MAJEnregistrementSelectionPhotos();
 	//alert('Moins : ' + element.parentElement.parentElement.getAttribute('id') +  '  x' + element.parentElement.parentElement.getAttribute('Nb')); 
 
 }
 function NbPlanchePLUS(element) {
 	//alert('NbPlanchePLUS');
-	var nombre = parseInt( element.parentElement.parentElement.getAttribute('Nb'));
+	var nombre = parseInt( element.parentElement.getAttribute('Nb'));
 	nombre = nombre + 1;
-	element.parentElement.parentElement.setAttribute('Nb', ' ' + nombre +  ' ');	
+	element.parentElement.setAttribute('Nb', ' ' + nombre +  ' ');	
 	MAJEnregistrementSelectionPhotos();
 	//alert('PLUS : ' + element.parentElement.parentElement.getAttribute('id') +  '  x' + element.parentElement.parentElement.getAttribute('Nb')); 
 }
@@ -613,13 +613,15 @@ function CliqueDropDown(element) {
 	SelectionProduit();
 }
 
-function ZoomPhoto(element)
+function ZoomPhoto(element,y)
 {
 	/**/
+	SelectionnerCliquePhoto(y);
 
 	var idElement = element.substring(1+element.lastIndexOf('/'));
 	var x = document.getElementById(idElement).getElementsByClassName("ZoneMoinsPlus")[0];	
 	if(x.classList.contains("ZoneMoinsPlus")){x.classList.replace("ZoneMoinsPlus", "ZoneMoinsPlusZoom");}
+
 	
 	var str = '<img class="imageZoom" src="' + element + '" >';
 	//alert(str);

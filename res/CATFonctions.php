@@ -450,8 +450,9 @@ function BDDRecordFileLab($strRECFileLab, $BDDRECCode){
 	}
 	//$line ='';
 
-	if (!is_numeric(substr("abcdef", -1))){ // 3-11-2022
-		$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . utf8_decode($strRECFileLab) . "0";	
+	$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . utf8_decode($strRECFileLab);
+	if (!is_numeric(substr($strRECFileLab, -1))){ // 3-11-2022
+		$strURL_RECFileLab .= "0";	
 	} 
 
 	// New

@@ -695,16 +695,17 @@ class CPlanche {
 
 		if (substr($str,0,1) == 'P'){	
 			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
-			
-			$morceau = explode($GLOBALS['SeparateurInfoPlanche'], $this->FichierPlanche);
+			$NomfichierSansExtension = substr($this->FichierPlanche,0,strrpos($this->FichierPlanche, "."));
+			$morceau = explode($GLOBALS['SeparateurInfoPlanche'], $NomfichierSansExtension);
 			//echo 'sdgsdgfd ' . count($morceau)	;
 			if (count($morceau)< 2) {
-				$morceau = explode(".", $this->FichierPlanche); // Comme avant
+				$morceau = explode(".", $NomfichierSansExtension); // Comme avant
 			}
 			$this->IndexOrdre = $morceau[0];
 			$this->FichierSource = $morceau[1]. '.jpg';
 			$this->Type = $morceau[2];
 			$this->Taille = $morceau[3]; 
+			$this->Teinte = (count($morceau) > 4)?$morceau[4]:'';   	
 		}else{
 			//echo "<br>XX SeparateurInfoPlancheLab0 : " . $GLOBALS['SeparateurInfoPlancheLab0']. "  <br>// FichierPlanche " .  $this->FichierPlanche	;
 			$morceau = explode($GLOBALS['SeparateurInfoPlancheLab0'], $this->FichierPlanche);
@@ -712,6 +713,7 @@ class CPlanche {
 			$this->FichierSource = $morceau[0];
 			$this->Taille = (count($morceau) > 1)?$morceau[1]:'';
 			$this->Type = (count($morceau) > 2)?$morceau[2]:'';
+			//$this->Teinte = (count($morceau) > 3)?$morceau[3]:'';     
 			//var_dump($morceau) ;
 		}
     }   	
@@ -790,6 +792,7 @@ class CPlanche {
 		   $resultat = $this->FichierSource;
 		   $resultat .= '_'. $this->Taille; 
 		   $resultat .= '_'. $this->Type;
+		   $resultat .= '_'. $this->Teinte;
 		   $resultat .= PHP_EOL;
 		   ///////////////////////////////////////////////////
 				
@@ -800,6 +803,7 @@ class CPlanche {
 		$resultat = $this->FichierSource;
 		$resultat .= '_'. $this->Taille; 
 		$resultat .= '_'. $this->Type;
+		$resultat .= '_'. $this->Teinte;
 		$resultat .= PHP_EOL;
 		return $resultat;					
 	}	
@@ -1141,7 +1145,7 @@ class CImgSource {
 			Nb="0" 
 			class="'.($this->isGroupe()?'PlancheGroupe':'PlancheIndiv') .'">';	
 
-			$resultat .= '<button class="ZoomerPhoto" onclick="ZoomPhoto(\''. $LienBig  .'\')"  >
+			$resultat .= '<button class="ZoomerPhoto" onclick="ZoomPhoto(\''. $LienBig  .'\',this.parentElement)"  >
 			<img id="'. ($this->isGroupe()?'ImgPlancheGroupe':'ImgPlancheIndiv') .'" 
 				src="' . $Lien . '"  title="Cliquez pour agrandir la photo : '. urldecode($this->Fichier) . '">
 			</button>';
@@ -1156,9 +1160,9 @@ class CImgSource {
 			//$resultat .= '</form>';
 
 			$resultat .= '<span class="ZoneMoinsPlus">';					
-			$resultat .= '<span onclick="NbPlancheMOINS(this)"  class="moinsplus">-</span>
+			$resultat .= '<span onclick="NbPlancheMOINS(this.parentElement)"  class="moinsplus">-</span>
 							<span class="NombrePhoto"> 0 </span>
-							<span onclick="NbPlanchePLUS(this)"  class="moinsplus">+</span>';			
+							<span onclick="NbPlanchePLUS(this.parentElement)"  class="moinsplus">+</span>';			
 			$resultat .= '</span>';	
 
 			$resultat .= ($this->isGroupe()?'<span>':'');			

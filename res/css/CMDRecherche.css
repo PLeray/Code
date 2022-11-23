@@ -404,6 +404,7 @@ height: 70%;	  */
 	border: 0.5rem dashed var(--boutonVert);
 
   cursor: pointer;
+  transform: scale(0.7);
 }
 
 #ImgPlanche {
