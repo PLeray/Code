@@ -737,7 +737,14 @@ class CPlanche {
 
 			
 			$resultat .='<button class="NomPlancheSelection" onclick="SelectionnerCliquePhoto(this.parentElement)" title="Cliquez pour préparer un tirage">
-			'. $this->FichierPlanche  .'
+
+			<span style="color:Fuchsia">'.$this->IndexOrdre .'</span>.
+			<span style="color:LimeGreen">'. substr($this->FichierSource,0,-4).'</span>.
+			<span style="color:DarkTurquoise">'.$this->Type .'</span>.
+			<span style="color:DarkOrchid">'.$this->Taille .'</span>.
+			<span style="color:Turquoise">'.$this->Teinte .'</span>.jpg
+
+
 			</button>';
 
 
