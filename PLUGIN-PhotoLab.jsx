@@ -8,7 +8,7 @@
 
 app.bringToFront();
 
-var g_NumVersion = 0.875;
+var g_NumVersion = 0.881;
 
 var is_PC = (File.fs == "Windows") ? true : false ; 
 
