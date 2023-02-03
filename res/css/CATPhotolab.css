@@ -134,6 +134,7 @@ img {
   vertical-align:middle;
 }
 
+
 /*
 .ajoutFICHIER {
     text-decoration: none;
@@ -254,23 +255,24 @@ img {
 
 .tooltip .tooltiptext {
   top: 110%;
-  margin-left: -235px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -10px; /* Use half of the width (120/2 = 60), to center the tooltip */
   
   visibility: hidden;
-  width: 470px;/* Use half of the width (120/2 = 60), to center the tooltip */
+  width: 1000px;/* Use half of the width (120/2 = 60), to center the tooltip */
   background-color: var(--FondBDialog); 
-  color: black;
+  color: var(--boutonVert); 
   text-align: left;
-  border-radius: 6px;
-  padding: 5px 15px 0;
-  position: absolute;
-  z-index: 1;
+  font-size: 12px;
 
-  /*left: 100%;*/
+  line-height: 18px;
+  border-radius: 6px;
+  padding: 5px 5px 5px 5px;
+  position: absolute;
+
 
   opacity: 0;
   transition: opacity 0.3s;
-  font-size: 10px;
+
   z-index: 100;
   border: 1px solid var(--FondLigneTabGrisFonce);
 }
@@ -282,10 +284,30 @@ img {
   opacity: 1;
 }
 
+.DetailCMDNegatif {
+	filter: invert(1);
+	padding: 4px;
+}
+.DetailCMDNegatif:hover {
+
+	border: 2px solid var(--boutonVert);
+	padding: 2px;
+}
+
+.DetailCMD {
+
+	padding: 4px;
+}
+.DetailCMD:hover {
+
+	border: 2px solid var(--boutonRouge);
+	padding: 2px;
+}
+
 /* NOUVELLE Progress bar*/
 .boiteProgressBar {
 	width: 100%;
-	background-color: var(--FondLigneTabGrisFonce);
+	background-color: var(--boutonRouge);
 }
 
 .progressBar {
@@ -303,13 +325,14 @@ img {
 .containerCMDPLanche {
   position: relative;
   text-align: left;
+  left : 10px;
 
 }
 .txtCMDPLanche {
   position: absolute;
   top: 50%;
-  left: 5px;
-  transform: translate(0%, -50%);
+  left: 0px;
+  transform: translate(-20%, -50%);
   
 }
 

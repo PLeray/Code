@@ -96,7 +96,7 @@ class CINFOfichierLab {
     function RepTirage(){
 		$leRepTirage = '';
 		if ($this->EtatFichier){
-			if (stripos($this->NomEcole, '(ISOLEES)') !== false) { // C'est des ISOLEES
+			if ((stripos($this->NomEcole, '(ISOLEES)') !== false)&&(stripos($this->NomEcole,  '(RECOMMANDES)') !== true)) { // C'est des ISOLEES
 				//$leRepTirage = substr($this->Fichier, strripos($this->Fichier, '/'),10) . '-CMD-ISOLEES' ;
 				$leRepTirage = substr($this->Fichier, 0, -5);
 			}	
@@ -109,18 +109,42 @@ class CINFOfichierLab {
 		}
 		return $leRepTirage;
     } 
-	/**/
 	function TexteSyntheseCommande(){	
+/*
 		$unBilan = 'Il y a ' . $this->NbCommandes . ' commandes dans ce groupe de commandes.<br>';
+		$unBilan .= $this->SyntheseDetailCommande();
+		$unBilan .= 'Il y a ' . $this->NbPlanches . ' fichiers a imprimer.<br>';
+		$unBilan .= $this->SyntheseFormatLabo();
+*/
+
+		$unBilan = '<table width="100%" cellspacing="0" >
+		<tr>
+		<td >Il y a <strong>' . $this->NbPlanches . '</strong> fichiers a imprimer.</td>
+		<td>Il y a <strong>' . $this->NbCommandes . '</strong> commandes dans ce groupe de commandes.</td>
+		</tr>
+		<tr>
+		<td VALIGN="TOP">'.$this->SyntheseFormatLabo().'</td>
+		<td VALIGN="TOP">'.$this->SyntheseDetailCommande().'</td>
+		</tr>
+		</table>';
+
+
+		return $unBilan;	
+	}	
+	function SyntheseDetailCommande(){	
+		$unBilan = '';
 		foreach ($this->TabResumeProduit as $key => $row) {
 			$unBilan .= '- ' .$key . ' : ' . $this->TabResumeProduit[$key] . '<br>';
 		}
-		$unBilan .= 'Il y a ' . $this->NbPlanches . ' fichiers a imprimer.<br>';
+		return $unBilan;	
+	}
+	function SyntheseFormatLabo(){	
+		$unBilan = '';
 		foreach ($this->TabResumeFormat as $key => $row) {
 			$unBilan .= '- Format ' .$key . ' : ' . $this->TabResumeFormat[$key] . '<br>';
 		}	
 		return $unBilan;	
-	}	
+	}			
 
     function MAJSyntheseCommande(){
 		try {
@@ -503,8 +527,8 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 		'<tr style="background-color:'.$laCouleur.'">
 		
 			<td class="titreCommande" >' . $mesInfosFichier->DateTirage .'</td>			
-			<td align="left" class="titreCommande" ><div class="tooltip">' . $mesInfosFichier->AffichageNomCMD
-								 . '<span class="tooltiptext">'. $mesInfosFichier->TexteSyntheseCommande() . '</span></div></td>		
+			<td align="left" class="titreCommande" ><div class="tooltip"><img class="DetailCMD" src="img/DetailsCMD.png"><span class="tooltiptext">'. $mesInfosFichier->TexteSyntheseCommande() . '</span></div>
+			' . $mesInfosFichier->AffichageNomCMD . '</td>		
 			<td>'. CodeLienImageDossier($mesInfosFichier) . '</td>	';
 	
 		if(($mesInfosFichier->EtatFichier < 2)&&($mesInfosFichier->EtatFichier > 0)){
@@ -566,6 +590,32 @@ function AfficheTableauCommandeEnCours(&$nb_fichier, $isEnCours){
 	$affiche_Tableau .=	'</tr>';
 	return $affiche_Tableau;
 }
+
+function AfficheBilanLABOEnCours(&$nb_fichier, $isEnCours){
+	$affiche_Tableau = '';
+	$tabLignesFichierLabo = TableauRepFichier('.lab', $isEnCours);
+	rsort($tabLignesFichierLabo);
+	for($i = 0; $i < count($tabLignesFichierLabo); $i++){
+		// Un objet pour récupérer les infos Fichier !!! 
+		
+		
+		$mesInfosFichier = new CINFOfichierLab($GLOBALS['repCMDLABO'] . $tabLignesFichierLabo[$i]); 
+		$nb_fichier++;
+
+		$affiche_Tableau .=
+		'<tr class="mini" align="left">
+		
+			<td >' . $mesInfosFichier->DateTirage .'</td>			
+			<td  >' . $mesInfosFichier->AffichageNomCMD	. '</td>		
+			<td><STRONG>Total ' . $mesInfosFichier->NbPlanches . ' planches</STRONG><br>
+			' . $mesInfosFichier->SyntheseFormatLabo() . '<br></td>	';
+	}
+	$affiche_Tableau .=	'</tr>';
+	return $affiche_Tableau;
+}
+
+
+
 
 ///////////////////////////////////
 //Pour l'historique a changer !!!!!
@@ -1129,7 +1179,11 @@ function CodeLienImageDossier($mesInfosFichier){
 	$Lien = $GLOBALS['g_IsLocalMachine'] && ($mesInfosFichier->EtatFichier > 0);
 	$DossierOK =($Lien )? 'OK':'KO' ;
 	$codeHTML = '<div class="containerCMDPLanche">
-		<div class="txtCMDPLanche">' . $mesInfosFichier->NbCommandes . ' <span class="mini">commandes</span><br>' . $mesInfosFichier->NbPlanches . ' <span class="mini">planches</span></div>'. '<img src="img/Dossier' . $DossierOK . '.png"></div>';	
+	
+		<div class="txtCMDPLanche">' . $mesInfosFichier->NbCommandes . ' <span class="mini">commandes</span><br>
+		' . $mesInfosFichier->NbPlanches . ' <span class="mini">planches</span></div>'. 
+		'<img src="img/Dossier' . $DossierOK . '.png">
+		</div>';	
 	
 	if ($Lien) {
 		$codeHTML = '<div class="tooltip">
@@ -1418,6 +1472,8 @@ function RetourneImagePlanche($ScriptImage,$isMAJ = true){
 
     $trouveFichierCache = '';
 	$ScriptImagePlanche = $ScriptImage;
+
+	//echo ' ScriptImagePlanche : ' . $ScriptImagePlanche;
     
     $urlImage = RetourneExemplePlanche($dir,$trouveFichierCache,$ScriptImagePlanche);
 
@@ -1432,6 +1488,9 @@ function RetourneImagePlanche($ScriptImage,$isMAJ = true){
 }
 
 function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$ScriptImagePlanche){
+
+	
+
 	$Script = explode('_', $ScriptImagePlanche);   
 	$PDTTaille = urlencode($Script[0]);
 	$PDTTransformation = (count($Script)>1? $Script[1]:'');
@@ -1445,20 +1504,25 @@ function RetourneExemplePlanche($chemin, &$trouveFichierCache, &$ScriptImagePlan
 
     if ($trouveFichierCache == ''){   
         $leFichier = basename($chemin);
-        //if (str_contains($leFichier, $PDTTaille)) {
-			if (str_contains($leFichier, $PDTTransformation)) {
-				
-				if (str_contains($leFichier, $PDTTeinte)) {
+		//if (str_contains($leFichier, $ScriptImagePlanche)) {
+
+			//echo ' leFichier : ' . $leFichier;
+
+			if (str_contains($leFichier, '.' . $PDTTaille )) {
+				if (str_contains($leFichier, '.' . $PDTTransformation)) {
 					
-					$PDTRecadrage = str_replace('Portrait-', '-QCoin', $PDTRecadrage);
-					if (str_contains($leFichier, $PDTRecadrage)) {
-						//if($GLOBALS['isDebug']){ echo  $chemin ;}
-						//$trouveFichierCache .= $leFichier. "<br>";   
-						$trouveFichierCache .= $chemin; 
+					if (str_contains($leFichier, '.' . $PDTTeinte)) {
+						
+						$PDTRecadrage = str_replace('Portrait-', '-QCoin', $PDTRecadrage);
+						if (str_contains($leFichier, $PDTRecadrage)) {
+							//if($GLOBALS['isDebug']){ echo  $chemin ;}
+							//$trouveFichierCache .= $leFichier. "<br>";   
+							$trouveFichierCache .= $chemin; 
+						}
 					}
 				}
 			}
-        //}
+		//}
         //$trouveFichierCache .= basename($chemin). "<br>";     
         // Si $chemin est un dossier => on appelle la fonction RetourneExemplePlanche() pour chaque élément (fichier ou dossier) du dossier$chemin
         if( is_dir($chemin) ){

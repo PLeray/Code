@@ -338,8 +338,9 @@ function GenererFichiersLABO() {
 			{		
 				if (isEcole(ligne)){// Mise à jour des SOURCES !!
 					var uneEcole = new Ecole(ligne);  
-					//alert('Commentaire : ' + uneEcole.Commentaire.substr(0, 11) + ' Est une ecole Web !!!!! : ' + uneEcole.isEcoleWEB());
-					if  (uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) {
+					//alert('g_CommandeLabo.FichierLab : ' + g_CommandeLabo.FichierLab + ' uneEcole.NomEcole : ' + uneEcole.NomEcole);
+					if  ((uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) && (! (uneEcole.NomEcole.indexOf('RECOMMANDES') > -1))) {
+					//if  ((uneEcole.NomEcole.indexOf('(ISOLEES)') > -1) ) {
 						var ladate=new Date();
 						//repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-CMD-ISOLEES';
 						repTirage = ladate.getFullYear()+"-"+twoDigit((ladate.getMonth()+1))+"-"+twoDigit(ladate.getDate())+'-Commandes Isolees';

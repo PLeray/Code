@@ -4,6 +4,19 @@
   Top: 0px;
 }
 
+.titreMenu {
+
+  display:inline-flex;
+
+  margin-top: 110px;
+
+  color: var(--texteGris);
+
+
+font-size: 10px;
+  text-align: center;
+  z-index:5;
+}
 
 #mySidenav a {
   position: relative;
@@ -13,9 +26,10 @@
 
   height: 110px;
   width: 110px;
-
+  margin: 5px ;
   margin-bottom: 20px ;
-
+  
+text-decoration : none;
   text-align: center;
   z-index:5;
 }

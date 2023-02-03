@@ -109,7 +109,7 @@ if($isDebug){
 if($RechargerPage){ 
 	echo '<META HTTP-EQUIV="Refresh" CONTENT=" '. ($isDebug?$TemporisationDebug:'3') .'; URL=CATPhotolab.php' . ArgumentURL() .'">';
 }else{
-	echo '<META HTTP-EQUIV="Refresh" CONTENT="5; URL=CATPhotolab.php' . ArgumentURL() .'">';
+	//echo '<META HTTP-EQUIV="Refresh" CONTENT="15; URL=CATPhotolab.php' . ArgumentURL() .'">';
 }
 ?>	
 
@@ -141,9 +141,13 @@ if($RechargerPage){
 			  
 		<th style="width:110px;" onclick="sortTable(0)"><H3>Date</H3></th>
 
-		<th  onclick="sortTable(1)"><H3>Groupes de commandes de produits photo</H3></th>
+		<th ><H3 align="left" > <a href="CATBilanLabo.php<?php echo ArgumentURL(); ?>"><img class="DetailCMDNegatif" src="img/DetailsCMD.png"></a>Groupes de commandes de produits photo </H3>
+		
+	</th>
 	
-		<th  style="width:150px;" ><H3>Commandes<br><br>Planches</H3></th>	
+		<th  style="width:190px;" ><H3>Commandes<br><br>Planches
+		
+		</H3></th>	
 		<th class="HeaderAction"  style="width:150px;" ><H3>Création des planches</H3></th>
 		<th class="HeaderAction"  style="width:150px;" ><H3>Imprimer planches</H3></th>
 		<th class="HeaderAction"  style="width:150px;" ><H3>Mettre en pochette</H3></th>

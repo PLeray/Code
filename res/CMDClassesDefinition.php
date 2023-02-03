@@ -68,7 +68,7 @@ class CGroupeCmdes {
 							$this->DossierTirage =  $GLOBALS['FichierDossierRECOMMANDE'] ;															
 						}	
 */
-						if (stripos($this->tabFICHIERLabo[$i], '(ISOLEES)') !== false) { // C'est des ISOLEES
+						if ((stripos($this->tabFICHIERLabo[$i], '(ISOLEES)') !== false)&&(stripos($this->tabFICHIERLabo[$i], '(RECOMMANDES)') !== true)) { // C'est des ISOLEES
 							$this->DossierTirage =  substr($this->nomFichierCmdes, strripos($this->nomFichierCmdes, '/') + 1,-5);	
 							//echo '$this->DossierTirage : ' .$this->DossierTirage;
 							if (!file_exists($GLOBALS['repMINIATURES'].$this->DossierTirage)) {
@@ -1220,24 +1220,31 @@ class CNomFichierGroupe {
 
 function csv_to_array($filename='', $delimiter=';')
 {
-    //echo ('$filename ' . $filename);
-	if (!file_exists($filename) || !is_readable($filename))
-        return FALSE;
+	try {
+		//echo ('$filename ' . $filename);
+		if (!file_exists($filename) || !is_readable($filename))
+			return FALSE;
 
-    $header = NULL;
-    $data = array();
-    if (($handle = fopen($filename, 'r')) !== FALSE)
-    {
-        while (($row = fgetcsv($handle, 0, $delimiter)) !== FALSE)
-        {
-            if(!$header)
-                $header = $row;
-            else
-                $data[] = array_combine($header, $row);
-        }
-        fclose($handle);
-    }
-    return $data;
+		$header = NULL;
+		$data = array();
+		if (($handle = fopen($filename, 'r')) !== FALSE)
+		{
+			while (($row = fgetcsv($handle, 0, $delimiter)) !== FALSE)
+			{
+				if(!$header)
+					$header = $row;
+				else
+					$data[] = array_combine($header, $row);
+			}
+			fclose($handle);
+		}
+		return $data;
+	}
+	catch (ErrorException $e) {
+		echo ('message ' . $e->getMessage() . 'row : ' .$row);
+		return false;
+	}
+	
 }
 
 function MarqueurDateCommande() {

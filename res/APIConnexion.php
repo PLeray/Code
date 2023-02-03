@@ -1,5 +1,5 @@
 <?php
-$VERSIONLOCAL = 0.880;
+$VERSIONLOCAL = 0.881;
 $ANNEE = '2022';
 
 $repPHOTOLAB = "../../";
@@ -132,17 +132,27 @@ function IsLocalMachine() {
 function AfficheMenuPage($Page,$maConnexionAPI) {
 	$menuPage = '<center>
 	<div id="mySidenav">';		
-		$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" ' . (($Page == "sourcePhotos")?' class="actif" ':'') . '  id="sourcePhotos" title="Sources des photos ..."></a>';
-		$menuPage .= '<a href="CATListeCatalogues.php' . ArgumentURL().'" ' . (($Page == "listeCatalogues")?' class="actif" ':'') . '  id="listeCatalogues" title="Catalogues disponibles ..."></a>';		
-		$menuPage .= '<a href="index.php' . ArgumentURL().'" ' . (($Page == "ajoutCommandeGroupee")?' class="actif" ':'') . '   id="ajoutCommandeGroupee" title="Ajouter une commande groupée ..."></a>';		
-		$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" ' . (($Page == "commandesEnCours")?' class="actif" ':'') . '   id="commandesEnCours" title="Commandes en cours de préparation ..."></a>';
-		$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" ' . (($Page == "commandesExpediees")?' class="actif" ':'') . '   id="commandesExpediees" title="Historique des commandes expediées ..."></a>';
-		$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" ' . (($Page == "administration")?' class="actif" ':'') . '   id="administration" title="Administration ..."></a>';
+		$menuPage .= '<a href="CATSources.php' . ArgumentURL().'" ' . (($Page == "sourcePhotos")?' class="actif" ':'') . '  id="sourcePhotos" title="Sources des photos par écoles ...">
+			<span class="titreMenu">Photos par écoles</span></a>';
+		$menuPage .= '<a href="CATListeCatalogues.php' . ArgumentURL().'" ' . (($Page == "listeCatalogues")?' class="actif" ':'') . '  id="listeCatalogues" title="Catalogues de produits ...">
+		<span class="titreMenu">Catalogues de produits</span></a>';	
+		$menuPage .= '<a href="index.php' . ArgumentURL().'" ' . (($Page == "ajoutCommandeGroupee")?' class="actif" ':'') . '   id="ajoutCommandeGroupee" title="Ajouter une commande groupée ...">
+		<span class="titreMenu">Ajouter des commandes</span></a>';
+		
+		$menuPage .= '<a href="CATPhotolab.php' . ArgumentURL().'" ' . (($Page == "commandesEnCours")?' class="actif" ':'') . '   id="commandesEnCours" title="Commandes en cours de préparation ...">
+		<span class="titreMenu">Gestion commandes</span></a>';
+		$menuPage .= '<a href="CATHistorique.php' . ArgumentURL().'" ' . (($Page == "commandesExpediees")?' class="actif" ':'') . '   id="commandesExpediees" title="Historique des commandes expediées ...">
+		<span class="titreMenu">Commandes livrées</span></a>';
+		$menuPage .= '<a href="' . $maConnexionAPI->Adresse().'" ' . (($Page == "administration")?' class="actif" ':'') . '   id="administration" title="Administration ...">
+		<span class="titreMenu">Adminitration PhotoLab</span></a>';
 		$menuPage .= '</div>
 		</center>';
 	
 		echo $menuPage;
 }
+
+
+//                                                                                                                                                <span class="titre">Photos</span>
 
 function Mini($Nom) {
 	echo strMini($Nom);
@@ -218,7 +228,6 @@ function renommer_win($oldfile,$newfile) {
 		return TRUE;
 	}
  }
-
 
 function EnregistrerLigneLOG($laLigne) {
 	$laLigne = date('d-m-y h:i:s') . " >> " . $laLigne;
