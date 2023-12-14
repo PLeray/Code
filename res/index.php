@@ -31,7 +31,7 @@ if (isset($_GET['apiSupprimer'])) {
 	if ($isDebug){
 		echo '<br>apiSupprimer   : ' . $_GET['apiSupprimer']  ;
 	}			
-	SuprimeFichierCMDetDossier(utf8_decode($_GET['apiSupprimer']));
+	SuprimeFichierCMDetDossier(DECODE_Utf8($_GET['apiSupprimer']));
 }
 ?>
 

@@ -177,7 +177,7 @@ function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregi
 		$Titre ='ENREGISTRER RECOMMANDE(S)';
 	}
 	else{
-		$InfoSource ='@8888-88-88_COMMANDES LIBRES : ' . $TitreNomTirage . ' sur ' . utf8_decode($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+		$InfoSource ='@8888-88-88_COMMANDES LIBRES : ' . $TitreNomTirage . ' sur ' . DECODE_Utf8($_GET['BDDRECFileLab']). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
 
 		$strTabCMD = $_POST['lesCmdesLibres'];
 		if($GLOBALS['isDebug']){
@@ -242,7 +242,7 @@ function ETAPE_01($isRecommandes, $TitreNomTirage = '') {// Function Pour Enregi
 				}
 				
 
-				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !								
+				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(ENCODE_Utf8(substr(basename($mesInfosFichier->Fichier),0,-1) ));	 // Il faut enlever le "0" de .lab pour demander anregistrement !								
 	
 				$retourMSG .= '<br><br>';
 						
@@ -298,7 +298,7 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 	if ($GLOBALS['isDebug']){echo 'Etape_20    strAPI_fichierLAB : ' . $strAPI_fichierLAB  . ' isImport : ' . $isImport;	}	
 
 
-			$retourMSG .= '<font size="-1">'.utf8_encode($strAPI_fichierLAB).'</font></h1>';	
+			$retourMSG .= '<font size="-1">'.ENCODE_Utf8($strAPI_fichierLAB).'</font></h1>';	
 			
 	
 			$retourMSG .= '<table>
@@ -325,7 +325,7 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 			$retourMSG .= '<div style="padding-left:20px">'.PhotosManquantes($target_file).'</div>';  
 
 			$retourMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
-			$retourMSG .= "<h3>".utf8_encode(substr($strAPI_fichierLAB,0,-1))."</h3>";
+			$retourMSG .= "<h3>".ENCODE_Utf8(substr($strAPI_fichierLAB,0,-1))."</h3>";
 			if($ProduitsManquant>0){
 				$retourMSG .= '<h3>Vous ne pouvez pas créer votre commande, car un ou plusieurs produits de la commande ne sont pas définis!</h3>';
 				$retourMSG .= "<h2>Corrigez les erreurs de produit</h2>";
@@ -342,7 +342,7 @@ function Etape_20($strAPI_fichierLAB, $isImport = false){ // Mesage il faut comp
 				if($isImport){
 					$CMDhttpLocal = '&CMDdate=' . substr($mesInfosFichier->Fichier, 0, 10);	
 					$CMDhttpLocal .= '&CMDnbPlanches=' . $mesInfosFichier->NbPlanches;
-					$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename(substr($mesInfosFichier->Fichier,0,-1))));	
+					$CMDhttpLocal .= '&BDDFileLab=' . urlencode(ENCODE_Utf8(basename(substr($mesInfosFichier->Fichier,0,-1))));	
 					$retourMSG .= '<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" 
 					class="OK" title="Valider et Retour écran général des commandes">OK</a>';					
 				}else{
@@ -418,7 +418,7 @@ function Etape_30($leFichierLab){ // API_DemandeNOMComamnde(){
 
 	
 	$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
-	$CMDhttpLocal .= '&BDDFileLab='. utf8_encode($leFichierLab) ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
+	$CMDhttpLocal .= '&BDDFileLab='. ENCODE_Utf8($leFichierLab) ;	 // Il faut enlever le "0" de .lab pour demander anregistrement !
 	
 	$ActionServeur = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) ;	
 
@@ -717,14 +717,14 @@ function API_UIConfirmation($strAPI_fichierLAB, $Etat){
 		break;	
 	}
 
-	$retourMSG .=  "<br><h1>".utf8_encode(substr($strAPI_fichierLAB,0,-5))."</h1>";
+	$retourMSG .=  "<br><h1>".ENCODE_Utf8(substr($strAPI_fichierLAB,0,-5))."</h1>";
 	
 	
 	if ($GLOBALS['isDebug']){$retourMSG = $retourMSG . "<br><h3>".$Etat." (en Debug)<br><br></h3>";}
 	$retourMSG = $retourMSG . "<br><h3>Si oui valider !</h3><br>";
 
 	$CMDhttpLocal = '?codeMembre=' . $GLOBALS['codeMembre'] . '&isDebug=' .($GLOBALS['isDebug'] ? 'Debug' : 'Prod');
-	$CMDhttpLocal = $CMDhttpLocal . '&apiFichierChgEtat='. urlencode(utf8_encode($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
+	$CMDhttpLocal = $CMDhttpLocal . '&apiFichierChgEtat='. urlencode(ENCODE_Utf8($strAPI_fichierLAB)) .'&apiEtat=' . $Etat;
 	
 	$retourMSG .= '<br><br>
 		<a href="../index.php" class="KO" title="Valider et retour écran général des commandes">Annuler</a>

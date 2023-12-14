@@ -1,6 +1,6 @@
 <?php
 $VERSIONLOCAL = 0.881;
-$ANNEE = '2022';
+$ANNEE = '2023';
 
 $repPHOTOLAB = "../../";
 $repCMDLABO = "../../CMDLABO/";
@@ -234,6 +234,17 @@ function EnregistrerLigneLOG($laLigne) {
 	return file_put_contents($GLOBALS['repPHOTOLAB'] . '/LOGInfo.txt', PHP_EOL.$laLigne, FILE_APPEND);
 }
 
+function ENCODE_Utf8($unTexte) {
+	//return utf8_encode($unTexte);
+	
+	// ???? return mb_convert_encoding($unTexte, 'UTF-8', 'ISO-8859-1');
+	return $unTexte;
+}
 
+function DECODE_Utf8($unTexte) {
+	//return utf8_decode($unTexte);;
+	
+	return $unTexte;
+}
 
 ?>

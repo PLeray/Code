@@ -45,17 +45,17 @@ if($isDebug){
 		if ($isDebug){
 			echo '<br>apiSupprimer   : ' . $_GET['apiSupprimer']  ;
 		}			
-		SuprimeFichierCMDetDossier(utf8_decode($_GET['apiSupprimer']));
+		SuprimeFichierCMDetDossier(DECODE_Utf8($_GET['apiSupprimer']));
 	}
 	elseif (isset($_GET['ValideNomCommande']) ){
 		/*if (isset($_GET['apiFichierChgEtat'])){
 			$AncienNomFichier = $_GET['apiFichierChgEtat'];
 		}else{
-			$AncienNomFichier = utf8_decode($GLOBALS['FichierDossierRECOMMANDE']) . 'lab2';
+			$AncienNomFichier = DECODE_Utf8($GLOBALS['FichierDossierRECOMMANDE']) . 'lab2';
 		}*/
 		//$AncienNomFichier = $_GET['BDDFileLab'];
 
-		RemplacementNomCommande(utf8_decode($_GET['BDDFileLab']), utf8_decode($_GET['ValideNomCommande']) ); // Sans L'extension
+		RemplacementNomCommande(DECODE_Utf8($_GET['BDDFileLab']), DECODE_Utf8($_GET['ValideNomCommande']) ); // Sans L'extension
 	}
 	elseif (isset($_POST['lesRecommandes']) ){
 		$RechargerPage = true;

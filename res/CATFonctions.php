@@ -276,7 +276,7 @@ class CINFOfichierArbo {
 		
 				}
 				if ($identifiant == '@')  {
-					//NEW UtF8//$morceau = explode("_", utf8_encode(str_replace("@", "", $tabLignesFichierLabo[$i])));
+					//NEW UtF8//$morceau = explode("_", ENCODE_Utf8(str_replace("@", "", $tabLignesFichierLabo[$i])));
 							$morceau = explode("_", str_replace("@", "", $tabLignesFichierLabo[$i]));
 							$this->DateTirage = $morceau[0];
 							$this->NomEcole = $morceau[1];		
@@ -384,11 +384,11 @@ function LienIMGSuprFichierLab($fichier, $Etat) {
 				$retour = '<a href="'.$Lien.'"  title="' . 'Vérifier ' . $fichier .  '"><img src="img/Relance.png"></a>'; 								
 			}
 			if ($Etat == 1){
-				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 
+				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . ENCODE_Utf8($fichier) .  '"><img src="img/poubelle.png"></a>'; 
 				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer les fichiers générés de ' . $fichier .  '"><img src="img/poubelle.png"></a>'; 								
 			}
 			if ($Etat == 0){
-				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . utf8_encode($fichier) .  '"><img src="img/poubelle.png"></a>'; 
+				//NEW2 UTF-8 $retour = '<a href="'.$Lien.'"  title="' . 'Supprimer ' . ENCODE_Utf8($fichier) .  '"><img src="img/poubelle.png"></a>'; 
 				$retour = '<a href="'.$Lien.'"  title="' . 'Supprimer la commande de ' . $fichier .  '"><img src="img/poubelle.png"></a>'; 								
 			}			
 		}
@@ -414,8 +414,8 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 		$NouveauNomDeFichier = $GLOBALS['repCMDLABO'] . $strBaseName . $Extension . $Etat;	
 
 
-		//$AncienNomDeFichier = utf8_encode($AncienNomDeFichier);
-		//$NouveauNomDeFichier = utf8_encode($NouveauNomDeFichier);
+		//$AncienNomDeFichier = ENCODE_Utf8($AncienNomDeFichier);
+		//$NouveauNomDeFichier = ENCODE_Utf8($NouveauNomDeFichier);
 
 
 		if ($GLOBALS['isDebug']){
@@ -424,7 +424,7 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 		}
 		RenommerFichierOuDossier($AncienNomDeFichier, $NouveauNomDeFichier);
 
-		//$fichierdeBase = $GLOBALS['repCMDLABO'] . utf8_decode($strBaseName) ;
+		//$fichierdeBase = $GLOBALS['repCMDLABO'] . DECODE_Utf8($strBaseName) ;
 		$fichierdeBase = $GLOBALS['repCMDLABO'] . $strBaseName ;
 		if ($Etat > 2){
 			SuprFichier($fichierdeBase . $Extension . '0');
@@ -439,13 +439,13 @@ function ChangeEtat($strFILELAB, $Etat){ // QD On revient du serveur
 }
 
 function RemplacementNomCommande($AncienNomDeFichier, $NouveauNomDeFichier){ // Nouveau Nom SANS extention
-	//$NomTemporaire =utf8_decode($GLOBALS['FichierDossierRECOMMANDE']);
+	//$NomTemporaire =DECODE_Utf8($GLOBALS['FichierDossierRECOMMANDE']);
 	//$AncienNomDeDossier =  substr($AncienNomDeFichier,0,-5);
 	//$NouveauNomDeDossier =  substr($NouveauNomDeFichier,0,-5);
 	//$AncienNomDeDossier =  substr(($AncienNomDeFichier),0,-5);
 	//$NouveauNomDeDossier =  substr(($NouveauNomDeFichier),0,-5);
 	
-	//$NouveauNomDeFichier = utf8_encode($NouveauNomDeFichier);
+	//$NouveauNomDeFichier = ENCODE_Utf8($NouveauNomDeFichier);
 	$AncienNomDeDossier =  substr(($AncienNomDeFichier),0,-5);
 	$NouveauNomDeDossier =  substr(($NouveauNomDeFichier),0,-5);
 
@@ -474,7 +474,7 @@ function BDDRecordFileLab($strRECFileLab, $BDDRECCode){
 	}
 	//$line ='';
 
-	$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . utf8_decode($strRECFileLab);
+	$strURL_RECFileLab = $GLOBALS['repCMDLABO'] . DECODE_Utf8($strRECFileLab);
 	if (!is_numeric(substr($strRECFileLab, -1))){ // 3-11-2022
 		$strURL_RECFileLab .= "0";	
 	} 
@@ -964,7 +964,7 @@ function LienEtatLab($fichier, $EtatVise) {
 				$lien =  'APIDialogue.php' . ArgumentURL() . '&apiInfoExpeditionArchivage=OUI'.'&apiFichierChgEtat='. urlencode($fichier) ;
 			}
 			else{
-			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $EtatVise);
+			//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(ENCODE_Utf8($fichier)) .'&apiEtat=' . $EtatVise);
 			$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($fichier) .'&apiEtat=' . $EtatVise);		
 			
 			}
@@ -980,7 +980,7 @@ function LienEtatCMDWEB($fichier, $Etat) {
 	$EtatActuel = substr($fichier,-1);
 	$lien = '#';
 	if ($EtatActuel > 0){
-		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(utf8_encode($fichier)) .'&apiEtat=' . $Etat);
+		//NEW2 UTF-8 return $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode(ENCODE_Utf8($fichier)) .'&apiEtat=' . $Etat);
 		$lien =  $GLOBALS['maConnexionAPI']->CallServeur('&apiFichierChgEtat='. urlencode($fichier) .'&apiEtat=' . $Etat);			
 	} else {
 		$lien =  'APIDialogue.php' . ArgumentURL() . '&apiCMDEnCours=' . urlencode($fichier) ;
@@ -1111,7 +1111,7 @@ function MAJRecommandes_NEW($FichierOriginal, $strTabCMDReco, $TitreCommande) {
 
 	$monGroupeCmdes = new CGroupeCmdes($GLOBALS['repCMDLABO'].$FichierOriginal);
 
-	$SourceDesCMD = '@9999-99-99_(RECOMMANDES) ' . utf8_decode($monGroupeCmdes->nomFichierCmdes). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
+	$SourceDesCMD = '@9999-99-99_(RECOMMANDES) ' . DECODE_Utf8($monGroupeCmdes->nomFichierCmdes). '_' .$_GET['CodeEcole']. '_' .$_GET['AnneeScolaire']. '_Ecole web !@';
 
 
 	$resultat = $SourceDesCMD ."\n";

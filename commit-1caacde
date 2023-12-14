@@ -18,7 +18,7 @@ index 3cca8eb..c696caa 100644
  			//$resultat = '<div class="produit">'; //Debut du produit
 -			$resultat = '<span class="produit">'; //Debut du produit
 +			$resultat = '<span id="'. $NomProduit .'" class="produit">'; //Debut du produit
- 			//NEW UTF-8 $NomProduit = utf8_encode(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
+ 			//NEW UTF-8 $NomProduit = ENCODE_Utf8(str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur])));
 -			$NomProduit = str_replace("<", "", str_replace(">", "", $tabFICHIERLabo[$curseur]));
 -			$NomProduit = str_replace("%", "<br>", $NomProduit);
 +

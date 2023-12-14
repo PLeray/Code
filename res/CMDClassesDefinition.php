@@ -273,7 +273,7 @@ class CEcole {
 	var $DossierTirage;
 
     function __construct($str, $DossierTirage){
-        //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("@", "", $str)));
+        //NEW UTF-8 $morceau = explode("_", ENCODE_Utf8(str_replace("@", "", $str)));
         $morceau = explode("_", str_replace("@", "", $str));
 
 		//echo '<br> $morceau ' . print_r ($morceau);
@@ -426,7 +426,7 @@ class CEcole {
 	
 		return $resultat;
 	}	
-//utf8_encode(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
+//ENCODE_Utf8(strftime('%A %d %B, %H:%M', strtotime($this->DateTirage)));
 
 	function Ecrire($tabPlanche, &$isRecommande){	
 		$resultat ='@9999-99-99'.  '_RECOMMANDES du ' . MarqueurDateCommande() .' sur : ' . $this->Nom . '_' . $this->CodeEcole . '_' . $this->AnneeScolaire . '_' . $this->Details.'@'.PHP_EOL; 
@@ -457,10 +457,10 @@ class CCommande {
 	var $tabProduits;
     
     function __construct($str){
-        //NEW UTF-8 $this->CmdClient = utf8_encode($str);
+        //NEW UTF-8 $this->CmdClient = ENCODE_Utf8($str);
         $this->CmdClient = $str;
 		//$morceau = explode(".", $this->CmdClient);
-        //NEW UTF-8 $morceau = explode("_", utf8_encode(str_replace("#", "", $str)));
+        //NEW UTF-8 $morceau = explode("_", ENCODE_Utf8(str_replace("#", "", $str)));
         $morceau = explode("_", str_replace("#", "", $str));
 					//echo $str . "   ...  ";
 		$this->Numero = $morceau[0];
@@ -694,7 +694,7 @@ class CPlanche {
 		//echo '<br><br><br> fsd : ' . $this->FichierPlanche;		
 
 		if (substr($str,0,1) == 'P'){	
-			//NEW UTF-8 $morceau = explode(".", utf8_encode($this->FichierPlanche));
+			//NEW UTF-8 $morceau = explode(".", ENCODE_Utf8($this->FichierPlanche));
 			$NomfichierSansExtension = substr($this->FichierPlanche,0,strrpos($this->FichierPlanche, "."));
 			$morceau = explode($GLOBALS['SeparateurInfoPlanche'], $NomfichierSansExtension);
 			//echo 'sdgsdgfd ' . count($morceau)	;
@@ -782,8 +782,8 @@ class CPlanche {
 			$DossierMiniatureRECOenCours = CreationDossier($GLOBALS['repMINIATURES'] . $GLOBALS['FichierDossierRECOMMANDE']);
 			$DossierMiniatureTailleRECOenCours = CreationDossier($DossierMiniatureRECOenCours . '/' . $this->Taille . ' (1ex de chaque)');				
 			
-			RecopierPlanche(utf8_decode($Lien),utf8_decode($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
-			RecopierPlanche(utf8_decode($LienBig),utf8_decode($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
+			RecopierPlanche(DECODE_Utf8($Lien),DECODE_Utf8($DossierMiniatureTailleRECOenCours. '/'  . $valideNomPlanche));
+			RecopierPlanche(DECODE_Utf8($LienBig),DECODE_Utf8($DossierTailleRECOenCours. '/'  . $valideNomPlanche));
 			//RecopierPlanche($LienBig,$LienBig.".jpg");
 
 		}

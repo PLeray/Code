@@ -445,7 +445,7 @@ function GenererFichiersLABO() {
 			g_CommandeAVANCEMENT = Number( ( m + 1)  / (nbLigneFichier - 1) ); //g_CommandeLabo.NbPlanchesACreer()
 			g_CommandeAVANCEMENT = (g_CommandeAVANCEMENT>1)?1:g_CommandeAVANCEMENT; 
 			txtTraitement.text = String ( m + 1 ) + " / " +  String (nbLigneFichier) 
-			+ "\n              pour stopper le traitement : \n       Appui long sur les touche MAJ + 'x'";	
+			+ "\n              pour stopper le traitement : \n   Faites un Appui long sur les touches MAJ + 'x'";	
 	
 		}
 		/////// Retour sur le temps Passé   //////////////

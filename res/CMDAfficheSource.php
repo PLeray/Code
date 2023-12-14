@@ -58,8 +58,6 @@ if (isset($_POST['lesFichiersBoutique']) ){
 
 $monProjet = new CProjetSource($CodeEcole, $AnneeScolaire);
 
-
-
 // echo $monProjet->NomProjet . $monProjet->NomProjet . $monProjet->NomProjet;
 ?>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -500,7 +498,7 @@ function ValidationCommandesFICHIERBOUTIQUES($NomProjet){
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
 	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['CodeEcole'] . '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;		
 	$CMDhttpLocal .= '&CMDwebArbo='. urlencode('CORR');
-	$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(NomCorrectionARBO($NomProjet)));	
+	$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(ENCODE_Utf8(NomCorrectionARBO($NomProjet)));	
 
 	$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);
 	return $retourMSG ;
@@ -510,7 +508,7 @@ function ValidationCommandesLIBRES($NomProjet){
 	$CMDhttpLocal = '&CMDdate=' . date("Y-m-d"); 
 	$CMDhttpLocal .= '&CodeEcole=' . $GLOBALS['CodeEcole'] . '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] .'&Side=OK';		
 	$CMDhttpLocal .= '&CMDLibre='. urlencode('LIBRE');
-	$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(utf8_encode($NomProjet));	
+	$CMDhttpLocal .= '&BDDRECFileLab=' . urlencode(ENCODE_Utf8($NomProjet));	
 
 	$retourMSG = 'APIDialogue.php'. ArgumentURL($CMDhttpLocal) ;
 	//$retourMSG = 'CMDAfficheSource.php'. ArgumentURL($CMDhttpLocal) ;

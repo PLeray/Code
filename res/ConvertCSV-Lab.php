@@ -96,9 +96,10 @@ function ConvertirLUMYSCMDcsvEnlab($fichierCSV, &$target_file){
 		{
 			$i++;
 			if($key == 'Nom de la photo'){$colNomDeLaPhoto = $i;}// numero col Nom de la photo, la commande commence apres
+			if($key == 'Numero de la Photo'){$colNomDeLaPhoto = $i;}// numero col Numero de la Photo, la commande commence apres
 			if($key == 'Nom'){$isAvantColonneNom = false;}		
 			if($colNomDeLaPhoto && $isAvantColonneNom){$nbColonneCommnandes++;}					  
-			//echo $i. ' : ' . $key.'<br />';
+
 		}		
 		$nbColonneCommnandes--; //On ne prend pas le colonne Nom
 		//echo '<br /> $colNomDeLaPhoto ' . $colNomDeLaPhoto.'  $nbColonneCommnandes ' . $nbColonneCommnandes.'<br /><br /> ';	
@@ -222,7 +223,7 @@ function EcrireEcole($Ecole, $PrefixeTirage){
 
 		$valRetour .= ' <br>';
 	}
-	//return utf8_decode($valRetour);
+	//return DECODE_Utf8($valRetour);
 	return $valRetour;
 }
 
@@ -232,7 +233,7 @@ function EcrireClient($Client){
 		$GLOBALS['Client_EnCOURS'] = $Client;
 		$valRetour = '#' . $Client . '# <br>';
 	}
-	//return utf8_decode($valRetour);
+	//return DECODE_Utf8($valRetour);
 	return $valRetour;
 }
 
@@ -248,13 +249,13 @@ function EcrireCommande($CMD, $NomPhoto, $Classe){
 			}			
 		}
 	}
-	//return utf8_decode($valRetour);
+	//return DECODE_Utf8($valRetour);
 	return $valRetour;
 }
 
 function EcrireProduitPhoto($NomPhoto, $ProduitPhoto){
     $valRetour = '';
-	//echo utf8_decode(strtolower($ProduitPhoto)) . '<br>';
+	//echo DECODE_Utf8(strtolower($ProduitPhoto)) . '<br>';
 	//echo ' le ProduitPhoto à trouver ds Cat :' .$ProduitPhoto . '<br>';
 	//var_dump( $GLOBALS['CataloguePdtENCOURS'][1]) ;
 	//$leCodeProduit = $GLOBALS['CataloguePdtENCOURS'][strtolower($ProduitPhoto)];
@@ -385,7 +386,7 @@ function ConvertirEXCELCMDcsvEnlab($fichierCSV, &$target_file){
 			if($key == 'Nom de la classe'){ // numero col Nom de la photo est avant , + 1 (Classe) pour le livret des ventes
 				$colNomDeLaPhoto = $i - 1;// numero col Nom de la photo est avant !!!
 			}// numero col Nom de la photo, + 1 (Classe) pour le livret des ventes
-			if($key == 'Nom'){$isAvantColonneNom = false;} // Ca n'arrive jamais ca pour le moment dans un livret de vente (Une colonne apres les produits)
+			//if($key == 'Nom'){$isAvantColonneNom = false;} // Ca n'arrive jamais ca pour le moment dans un livret de vente (Une colonne apres les produits)
 			if($colNomDeLaPhoto && $isAvantColonneNom){$nbColonneCommnandes++;}					  
 			//echo $i. ' : ' . $key.'<br />';
 		}		
@@ -404,7 +405,7 @@ function ConvertirEXCELCMDcsvEnlab($fichierCSV, &$target_file){
 				$affiche_Tableau .= EcrireClient($TabCSV[$i]['Numero de la Photo'] . '_' 
 											.  '_' 
 											.  '_' 
-											.  '_' 
+											. $TabCSV[$i]["Nom"] . '_'  
 											.  '_' 								
 											.  '_' 								
 											.  '_' );  

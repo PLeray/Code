@@ -31,13 +31,13 @@ function FormatNumCmd($strCMD){
 
 function VersionFichierLab($tabFICHIERLabo){
 	$Info = $tabFICHIERLabo[0];
-	//NEW UTF-8 return utf8_encode($Info);
+	//NEW UTF-8 return ENCODE_Utf8($Info);
 	return $Info;
 }
 
 function EtatFichierLab($tabFICHIERLabo){
     $Info = $tabFICHIERLabo[1];
-	//NEW UTF-8 return utf8_encode($Info);
+	//NEW UTF-8 return ENCODE_Utf8($Info);
 	return $Info;
 }
 
@@ -53,7 +53,7 @@ function AfficheEtatFichierLab($myfileName){
 		break;
 	case "3":  //. substr($myfileName,0,10)    strftime(" in French %A and",); $date = strftime("%d %B %Y", strtotime($date1));
 		//$retourMSG = "Les planches ont été envoyé au labo le " .date('l d B',strtotime(substr($myfileName,0,10)) ).    "."; 
-		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " . utf8_encode(date("d / m / Y", strtotime(substr($myfileName,0,10)) )).    "."; 
+		$retourMSG = "Les planches de cette commandes ont été envoyé au labo " . ENCODE_Utf8(date("d / m / Y", strtotime(substr($myfileName,0,10)) )).    "."; 
 		break;		
 	case "4":
 		$retourMSG = "Les planches de cette commande sont en cours d'empaquetage.";

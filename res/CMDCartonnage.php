@@ -128,7 +128,7 @@ if($isDebug){
 		</div> 	
 		
 		<div class="titreFichier">	
-			<?php echo pathinfo(utf8_encode($myfileName))['filename'] ;?>
+			<?php echo pathinfo(ENCODE_Utf8($myfileName))['filename'] ;?>
 			<?php echo '<p style="color:Green;"><b>' . $etatFichierLab . '</b></p>';?>
 			<br>
 			<p>Affichage commandes :	

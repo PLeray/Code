@@ -291,9 +291,9 @@ function LienEtatArbo($fichier , $CodeEcole, $nbFichier) {
 		$CMDhttpLocal .= '&CMDwebArbo='. urlencode('ARBO');
 		$CMDhttpLocal .= '&CodeEcole=' . $CodeEcole;
 		$CMDhttpLocal .= '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;  
-		//$CMDhttpLocal .= '&CMDwebArbo=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));		
-		//$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents($fichierARBO))));	
-		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename($fichierARBO)));	
+		//$CMDhttpLocal .= '&CMDwebArbo=' . urlencode(ENCODE_Utf8(basename(SUPRAccents($fichierARBO))));		
+		//$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(ENCODE_Utf8(basename(SUPRAccents($fichierARBO))));	
+		$CMDhttpLocal .= '&BDDARBOwebfile=' . urlencode(ENCODE_Utf8(basename($fichierARBO)));	
 		
 		$retourMSG = $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal);				
 	}	
@@ -329,8 +329,8 @@ function LienImageArbo($fichier, $CodeEcole, $nbFichier) {
 		$LienPage .= '&CMDwebArbo='. urlencode('ARBO');
 		$LienPage .= '&CodeEcole=' . $CodeEcole;
 		$LienPage .= '&AnneeScolaire=' . $GLOBALS['AnneeScolaire'] ;  	
-		//$LienPage .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(SUPRAccents(NomfichierARBO($fichier)))));	
-		$LienPage .= '&BDDARBOwebfile=' . urlencode(utf8_encode(basename(NomfichierARBO($fichier))));
+		//$LienPage .= '&BDDARBOwebfile=' . urlencode(ENCODE_Utf8(basename(SUPRAccents(NomfichierARBO($fichier)))));	
+		$LienPage .= '&BDDARBOwebfile=' . urlencode(ENCODE_Utf8(basename(NomfichierARBO($fichier))));
 		
 		$LienPage = $GLOBALS['maConnexionAPI']->CallServeur($LienPage);	
 	}
@@ -362,12 +362,12 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire, $s
 	
 	if ($GLOBALS['isDebug']){
 		echo "<br> STOP !<br> ";
-		echo '<br><br>' . utf8_decode($NewFichier);
+		echo '<br><br>' . DECODE_Utf8($NewFichier);
 		echo '<br><br> strListeFichiers ' . $strListeFichiers;
 	}
 	
 	$Tabl = [];
-	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
+	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . DECODE_Utf8($NewFichier) . "0";	
 
 	if (file_exists($strURL_NewFichier)) { 	$Tabl = file($strURL_NewFichier); }//Les commande existantes s'il y en a 
 	
@@ -376,7 +376,7 @@ function BDDARBOwebfile($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire, $s
 		fputs($file, $ligne);
 		$ligne = '{Etat 1 :0% %%'. (($strListeFichiers != '')? str_replace("§","<br>",$strListeFichiers):'TOUTES LES PHOTOS') . '....}' . "\n";
 		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
-		$nomFichier = utf8_decode($NewFichier);
+		$nomFichier = DECODE_Utf8($NewFichier);
 		
 		$ligne =   (($strListeFichiers != '')?'@CORR_':'@ARBO_') . substr($nomFichier,5 , -4).'_'. $CodeEcole .'_'. $Annnescolaire .'_Fichiers de présentation pour boutique en ligne!@' . "\n";
 		//$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";
@@ -414,7 +414,7 @@ function BDDLibreRECFileLab($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire
 	//$monProjet = RecupProjetSourceEcole("../../SOURCES/Sources.csv", $CodeEcole, $Annnescolaire);
 	
 	$Tabl = [];
-	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . utf8_decode($NewFichier) . "0";	
+	$strURL_NewFichier = $GLOBALS['repCMDLABO'] . DECODE_Utf8($NewFichier) . "0";	
 
 	if (file_exists($strURL_NewFichier)) {
 		$Tabl = file($strURL_NewFichier); 
@@ -429,7 +429,7 @@ function BDDLibreRECFileLab($NewFichier, $BDDRECCode, $CodeEcole, $Annnescolaire
 		fputs($file, $ligne);
 		$ligne = $ligneResume . "\n";
 		fputs($file, $ligne);    //{Etat 1 :1%%Le groupe de commandes comp....}
-		$nomFichier = utf8_decode($NewFichier);
+		$nomFichier = DECODE_Utf8($NewFichier);
 		
 		$ligne =   (($strListeFichiers != '')?'@CORR_':'@ARBO_') . substr($nomFichier,5 , -4).'_'.$CodeEcole.'_Fichiers de présentation pour boutique en ligne!@' . "\n";
 		//$ligne =  '@2021-02-26_L2-Ecole TEST-MAROU_'.$CodeEcole.'_Ecole web !@' . "\n";

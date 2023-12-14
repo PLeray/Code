@@ -17,7 +17,7 @@ if(is_uploaded_file($_FILES["myfile"]["tmp_name"])) { // Recup le fichier lab up
 
 function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)	
 	$retourTraitementMSG = '';	
-	//$target_file_seul = utf8_decode(basename($_FILES['myfile']['name']));
+	//$target_file_seul = DECODE_Utf8(basename($_FILES['myfile']['name']));
 	$target_file_seul = SUPRAccents(basename($_FILES['myfile']['name']));
 	$target_file = $GLOBALS['repCMDLABO'] . $target_file_seul . "0";// 0 etat : uploadé / enregistré
 	//echo $target_file;
@@ -52,12 +52,12 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				if ($RetourConversion) {					
 					$retourTraitementMSG .= "<h1>3) Créer les planches de la commande</h3>"  ;
 					
-					$retourTraitementMSG .= "<h3>" .	utf8_encode(substr($target_file ,14,-5)) . "</h3>";					
+					$retourTraitementMSG .= "<h3>" .	ENCODE_Utf8(substr($target_file ,14,-5)) . "</h3>";					
 					$uploadOk = 2; // Flag test si OK
 					$target_file_seul = substr($target_file, 14, -1); // Pour etre dans la même forme que . lab pas lab0
 				}	
 				else {					
-					$retourTraitementMSG .= '<h3>' .	utf8_encode(substr($target_file ,14,-5)) . '</h3>';	
+					$retourTraitementMSG .= '<h3>' .	ENCODE_Utf8(substr($target_file ,14,-5)) . '</h3>';	
 					$retourTraitementMSG .= '<h2>'. $GLOBALS['ERREUR_EnCOURS'] .'</h2>'  ;
 					$target_file = '';
 					$uploadOk = 0;
@@ -87,7 +87,7 @@ function API_PostFILELAB() {//upload de fichier par DROP (15 octobre)
 				//echo "Apres move_uploaded_file";
 				$CMDhttpLocal = '&CMDdate=' . substr($target_file_seul, 0, 10);	
 				$CMDhttpLocal .= '&CMDnbPlanches=' . $NBPlanches;
-				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(utf8_encode(basename($target_file_seul)));	
+				$CMDhttpLocal .= '&BDDFileLab=' . urlencode(ENCODE_Utf8(basename($target_file_seul)));	
 				
 				$retourTraitementMSG .= '<br><br>
 					<a href="' . $GLOBALS['maConnexionAPI']->CallServeur($CMDhttpLocal) . '" class="OK" title="Valider et retour écran général des commandes">OK ANCIEN</a>			
